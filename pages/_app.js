@@ -1,13 +1,16 @@
+import { useEffect } from "react";
 import "../styles/globals.css";
-import "../styles/NavBar.module.css";
 import Layout from "./components/Layout";
+import { AuthProvider } from "./context/authContext";
 
-export default function App({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   return (
-    <div>
+    <AuthProvider>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </div>
+    </AuthProvider>
   );
 }
+
+export default App;

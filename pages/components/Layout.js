@@ -1,10 +1,20 @@
-import NavBar from "./NavBar";
+import { useContext, useEffect } from "react";
+import Navbar from "./NavBar";
+import AuthContext from "../context/authContext";
 
-export default function Layout({ children }) {
+const Layout = ({ children }) => {
+  const { sessionCheck } = useContext(AuthContext);
+
+  useEffect(() => {
+    sessionCheck();
+  }, []);
+
   return (
-    <>
-      <NavBar />
-      {children}
-    </>
+    <div>
+      <Navbar />
+      <main>{children}</main>
+    </div>
   );
-}
+};
+
+export default Layout;

@@ -1,7 +1,10 @@
 import Link from "next/link";
+import { useContext } from "react";
+import AuthContext from "../context/authContext";
 import { useRouter } from "next/router";
 
-export default function NavBar() {
+const Navbar = () => {
+  const { isAuthenticated, logout } = useContext(AuthContext);
   const router = useRouter();
 
   return (
@@ -11,11 +14,15 @@ export default function NavBar() {
           Home
         </a>
       </Link>
-      <Link href="/about">
-        <a className={`link ${router.pathname === "/about" ? "active" : ""}`}>
-          About
-        </a>
-      </Link>
+      {isAuthenticated ? (
+        <button onClick={logout}>Logout</button>
+      ) : (
+        <Link href="/login">
+          <a>Login</a>
+        </Link>
+      )}
     </nav>
   );
-}
+};
+
+export default Navbar;
