@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import Seo from "./components/Seo";
-import apiPaths from "./services/apiRoutes";
+import apiPaths from "../services/apiRoutes";
 import AuthContext from "./context/authContext";
 
 const HomePage = () => {

@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
-import apiPaths from "../services/apiRoutes";
-import { requestServer } from "../services/apiService";
+import apiPaths from "../../services/apiRoutes";
+import { requestServer } from "../../services/apiService";
 
 const AuthContext = createContext();
 
