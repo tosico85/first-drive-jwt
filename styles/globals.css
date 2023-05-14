@@ -14,3 +14,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.link {
+  margin-right: 10px;
+}
