@@ -3,6 +3,7 @@ import Seo from "./components/Seo";
 import apiPaths from "../services/apiRoutes";
 import AuthContext from "./context/authContext";
 import { requestServer } from "../services/apiService";
+import Link from "next/link";
 
 const HomePage = () => {
   const [cargoOrder, setCargoOrder] = useState([]);
@@ -26,6 +27,43 @@ const HomePage = () => {
     <>
       <h1>Welcome to the Main Page</h1>
       <p>현재 등록 중인 화물 건입니다.</p>
+      <ul>
+        {cargoOrder.length > 0 &&
+          cargoOrder.map((item) => {
+            const {
+              cargoDsc,
+              cargoTon,
+              create_dtm,
+              ordNo,
+              ordStatus,
+              truckType,
+              updateDt,
+              urgent,
+            } = item;
+            return (
+              <li key={item.cargo_seq}>
+                <Link
+                  href={{
+                    pathname: `/orders/${item.cargo_seq}`,
+                  }}
+                >
+                  <a>
+                    {`${cargoDsc} ${cargoTon} ${create_dtm} ${ordNo} ${ordStatus} ${truckType} ${updateDt} ${urgent}`}
+                  </a>
+                </Link>
+              </li>
+            );
+          })}
+      </ul>
+      <div>
+        <Link
+          href={{
+            pathname: `/orders/create`,
+          }}
+        >
+          <a>화물 등록</a>
+        </Link>
+      </div>
     </>
   );
 };
