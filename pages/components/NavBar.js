@@ -11,7 +11,7 @@ const Navbar = () => {
     e.preventDefault();
 
     if (isAuthenticated) {
-      router.push(href);
+      router.push(e.target.href);
     } else {
       // 로그인이 필요한 경우 경고 메시지 출력 및 로그인 페이지로 리다이렉트
       alert("로그인이 필요합니다.");

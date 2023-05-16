@@ -44,7 +44,7 @@ const HomePage = () => {
               <li key={item.cargo_seq}>
                 <Link
                   href={{
-                    pathname: `/orders/${item.cargo_seq}`,
+                    pathname: `/orders/detail/${item.cargo_seq}`,
                   }}
                 >
                   <a>

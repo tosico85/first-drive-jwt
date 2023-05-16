@@ -4,16 +4,21 @@ import apiPaths from "../../services/apiRoutes";
 import { requestServer } from "../../services/apiService";
 import Seo from "../components/Seo";
 
-export default function Detail({ params }) {
+export default function Detail() {
+  const router = useRouter();
   const [cargoOrder, setCargoOrder] = useState({});
-  const [cargo_seq] = params || [];
 
   useEffect(() => {
     (async () => {
+      const {
+        query: { param: cargo_seq },
+      } = router;
+
       const result = await requestServer(apiPaths.custReqGetCargoOrder, {
         cargo_seq,
       });
       console.log(result);
+
       if (result.length > 0) {
         setCargoOrder(() => result[0]);
       }
@@ -24,13 +29,7 @@ export default function Detail({ params }) {
     <div>
       <Seo title={"화물 상세"} />
       <h1>화물 상세</h1>
-      <div>{JSON.stringify(cargoOrder)}</div>
+      <div>{JSON.stringify(cargoOrder.cargoDsc)}</div>
     </div>
   );
-}
-
-export async function getServerSideProps({ params: { params } }) {
-  return {
-    props: { params },
-  };
 }
