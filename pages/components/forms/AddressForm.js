@@ -22,7 +22,7 @@ const AddressForm = ({ clsf, register, getValues, errors, setAddress }) => {
   }, []);
 
   const getGugunList = async () => {
-    const sido = getValues(`${clsf}AddressSido`);
+    const sido = getValues(`${clsf}Wide`);
     console.log(sido);
 
     if (sido === "") {
@@ -39,8 +39,8 @@ const AddressForm = ({ clsf, register, getValues, errors, setAddress }) => {
   };
 
   const getDongList = async () => {
-    const sido = getValues(`${clsf}AddressSido`);
-    const gugun = getValues(`${clsf}AddressGugun`);
+    const sido = getValues(`${clsf}Wide`);
+    const gugun = getValues(`${clsf}Sgg`);
     console.log(sido, gugun);
 
     if (gugun === "") {
@@ -64,9 +64,9 @@ const AddressForm = ({ clsf, register, getValues, errors, setAddress }) => {
           onChange={getGugunList}
           list={sidoList.map(({ nm }) => nm)}
           title={"주소(시/도)"}
-          name={`${clsf}AddressSido`}
+          name={`${clsf}Wide`}
         />
-        {errors[`${clsf}AddressSido`]?.message}
+        {errors[`${clsf}Wide`]?.message}
       </div>
       <div>
         <ComboBox
@@ -74,27 +74,27 @@ const AddressForm = ({ clsf, register, getValues, errors, setAddress }) => {
           onChange={getDongList}
           list={gugunList.map(({ nm }) => nm)}
           title={"주소(구/군)"}
-          name={`${clsf}AddressGugun`}
+          name={`${clsf}Sgg`}
         />
-        {errors[`${clsf}AddressGugun`]?.message}
+        {errors[`${clsf}Sgg`]?.message}
       </div>
       <div>
         <ComboBox
           register={register}
           list={dongList.map(({ nm }) => nm)}
           title={"주소(읍/면/동)"}
-          name={`${clsf}AddressDong`}
+          name={`${clsf}Dong`}
         />
-        {errors[`${clsf}AddressDong`]?.message}
+        {errors[`${clsf}Dong`]?.message}
       </div>
       <div>
         <input
-          {...register(`${clsf}AddressDetail`, {
+          {...register(`${clsf}Detail`, {
             required: "상세주소를 입력해주세요.",
           })}
           type="text"
         />
-        {errors[`${clsf}AddressDetail`]?.message}
+        {errors[`${clsf}Detail`]?.message}
       </div>
     </>
   );

@@ -6,6 +6,7 @@ import apiPaths from "../../services/apiRoutes";
 import AddressForm from "../components/forms/AddressForm";
 import DateInput from "../components/forms/DateInput";
 import ComboBox from "../components/forms/ComboBox";
+import { cargoTestData } from "./testData";
 
 export default function OrderCreate() {
   const [cargoTonList, setCargoTonList] = useState([]);
@@ -39,7 +40,15 @@ export default function OrderCreate() {
         setCargoTonList(data);
       }
     })();
+
+    loadTestData();
   }, []);
+
+  const loadTestData = () => {
+    Object.keys(cargoTestData).forEach((key) => {
+      setValue(key, cargoTestData[key]);
+    });
+  };
 
   const getTruckTypeList = async () => {
     const cargoTon = getValues("cargoTon");
@@ -51,17 +60,17 @@ export default function OrderCreate() {
     }
   };
 
-  const onValid = () => {
-    //console.log(startAddress);
-    console.log(
-      getValues([
-        "startAddressSido",
-        "startAddressGugun",
-        "startAddressDong",
-        "startAddressDetail",
-        "startPlanDt",
-      ])
+  const createCargoOrder = async () => {
+    const cargoOrder = getValues();
+    const result = await requestServer(
+      apiPaths.custReqAddCargoOrder,
+      cargoOrder
     );
+    console.log(result);
+  };
+
+  const onValid = () => {
+    createCargoOrder();
   };
 
   const oninvalid = () => {
@@ -121,7 +130,7 @@ export default function OrderCreate() {
         </div>
         <p></p>
         <div>
-          <span>차량톤수</span>
+          <span>차량톤수(t)</span>
           <ComboBox
             register={register}
             onChange={getTruckTypeList}
@@ -137,6 +146,28 @@ export default function OrderCreate() {
             list={truckTypeList.map(({ nm }) => nm)}
             title={"차량종류"}
             name={"truckType"}
+          />
+        </div>
+        <div>
+          <span>적재중량(t)</span>
+          <input
+            type="number"
+            step="any"
+            placeholder="차량톤수의 110%까지"
+            {...register("frgton", {
+              onChange: (e) => {
+                const cargoTon = Number(getValues("cargoTon"));
+                const frgTon = Number(e.target.value);
+                const maxTon = cargoTon * 1.1;
+                if (frgTon > maxTon) {
+                  e.target.value = maxTon.toString();
+                }
+                if (frgTon < 0) {
+                  e.target.value = "0";
+                }
+                console.log(maxTon);
+              },
+            })}
           />
         </div>
         <p></p>
@@ -198,17 +229,82 @@ export default function OrderCreate() {
           />
           {errors.farePaytype?.message}
         </div>
-
-        {/* 
-        endAreaPhone	하차지 전화번호
-        firstType	의뢰자구분("01","02"중 선택)*01:일반화주,02:주선/운송사
-        firstShipperNm	원화주명
-        firstShipperInfo	원화주 전화번호
-        firstShipperBizNo	원화주 사업자번호(firstType이 "02"인 경우 필수)
-        taxbillType	전자세금계산서 발행여부("Y")
-        payPlanYmd	운송료지급예정일("YYYYMMDD")
-        ddID	담당자 아이디 */}
-
+        <div>
+          <span>하차지 전화번호</span>
+          <input
+            {...register("endAreaPhone", {
+              required: "하차지 전화번호를 입력해주세요.",
+            })}
+            type="tel"
+            maxLength={11}
+            placeholder={"'-'없이 입력하세요"}
+          />
+          {errors.endAreaPhone?.message}
+        </div>
+        <div>
+          <span>의뢰자 구분</span>
+          <select {...register("firstType")}>
+            <option value={"01"}>일반화주</option>
+            <option value={"02"}>주선/운송사</option>
+          </select>
+          {errors.firstType?.message}
+        </div>
+        <div>
+          <span>원화주 명</span>
+          <input
+            {...register("firstShipperNm", {
+              required: "원화주 명을 입력해주세요.",
+            })}
+            type="text"
+          />
+          {errors.firstShipperNm?.message}
+        </div>
+        <div>
+          <span>원화주 전화번호</span>
+          <input
+            {...register("firstShipperInfo", {
+              required: "원화주 전화번호를 입력해주세요.",
+            })}
+            type="tel"
+            maxLength={11}
+            placeholder={"'-'없이 입력하세요"}
+          />
+          {errors.firstShipperInfo?.message}
+        </div>
+        <div>
+          <span>원화주 사업자번호</span>
+          <input
+            {...register("firstShipperBizNo", {
+              required:
+                getValues("firstType") === "02"
+                  ? "원화주 사업자번호을 입력해주세요."
+                  : false,
+            })}
+            type="text"
+            maxLength={10}
+            placeholder="의뢰자 주선/운송사인 경우 필수"
+          />
+          {errors.firstShipperBizNo?.message}
+        </div>
+        <div>
+          <span>운송료 지불구분</span>
+          <ComboBox
+            register={register}
+            list={["Y"]}
+            title={"전자세금계산서 발행여부"}
+            name={"taxbillType"}
+          />
+          {errors.taxbillType?.message}
+        </div>
+        <div>
+          <DateInput
+            register={register}
+            setValue={setValue}
+            name={"payPlanYmd"}
+            title={"운송료지급예정일"}
+          />
+        </div>
+        <p></p>
         <input type="submit" />
       </form>
     </div>
