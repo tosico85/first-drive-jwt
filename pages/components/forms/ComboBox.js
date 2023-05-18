@@ -1,8 +1,15 @@
-const ComboBox = ({ register, onChange, list, title, name }) => {
+const ComboBox = ({
+  register,
+  onChange,
+  list,
+  title,
+  name,
+  essentialYn = true,
+}) => {
   return (
     <select
       {...register(name, {
-        required: `${title}을(를) 입력해주세요`,
+        required: essentialYn ? `${title}을(를) 입력해주세요` : false,
         onChange,
       })}
     >

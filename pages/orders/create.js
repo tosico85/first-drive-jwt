@@ -6,9 +6,11 @@ import apiPaths from "../../services/apiRoutes";
 import AddressForm from "../components/forms/AddressForm";
 import DateInput from "../components/forms/DateInput";
 import ComboBox from "../components/forms/ComboBox";
-import { cargoTestData } from "./testData";
+import { useRouter } from "next/router";
+import cargoTestData from "../../testData";
 
 export default function OrderCreate() {
+  const router = useRouter();
   const [cargoTonList, setCargoTonList] = useState([]);
   const [truckTypeList, setTruckTypeList] = useState([]);
   const LOAD_TYPE_LIST = [
@@ -41,13 +43,21 @@ export default function OrderCreate() {
       }
     })();
 
-    loadTestData();
+    //loadTestData();
   }, []);
 
+  // TEST DATA 로드
   const loadTestData = () => {
-    Object.keys(cargoTestData).forEach((key) => {
-      setValue(key, cargoTestData[key]);
-    });
+    setTimeout(() => {
+      setValue("cargoTon", cargoTestData["cargoTon"]);
+      getTruckTypeList();
+
+      setTimeout(() => {
+        Object.keys(cargoTestData).forEach((key) => {
+          setValue(key, cargoTestData[key]);
+        });
+      }, 2000);
+    }, 2000);
   };
 
   const getTruckTypeList = async () => {
@@ -62,11 +72,17 @@ export default function OrderCreate() {
 
   const createCargoOrder = async () => {
     const cargoOrder = getValues();
-    const result = await requestServer(
+    const { result, resultCd } = await requestServer(
       apiPaths.custReqAddCargoOrder,
       cargoOrder
     );
-    console.log(result);
+
+    if (resultCd === "00") {
+      alert("화물 오더가 등록되었습니다.");
+      router.push("/");
+    } else {
+      alert(result);
+    }
   };
 
   const onValid = () => {
@@ -105,27 +121,30 @@ export default function OrderCreate() {
           <span>혼적여부</span>
           <ComboBox
             register={register}
-            list={["Y", "N"]}
+            list={["혼적"]}
             title={"혼적여부"}
             name={"multiCargoGub"}
+            essentialYn={false}
           />
         </div>
         <div>
           <span>긴급여부</span>
           <ComboBox
             register={register}
-            list={["Y", "N"]}
+            list={["긴급"]}
             title={"긴급여부"}
             name={"urgent"}
+            essentialYn={false}
           />
         </div>
         <div>
           <span>왕복여부</span>
           <ComboBox
             register={register}
-            list={["Y", "N"]}
+            list={["왕복"]}
             title={"왕복여부"}
             name={"shuttleCargoInfo"}
+            essentialYn={false}
           />
         </div>
         <p></p>

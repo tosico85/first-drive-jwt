@@ -1,4 +1,4 @@
-export const cargoTestData = {
+const cargoTestData = {
   cargoDsc: "사과박스 500개",
   cargoTon: "1.4",
   endAreaPhone: "01012112121",
@@ -14,9 +14,9 @@ export const cargoTestData = {
   firstShipperNm: "김화주",
   firstType: "01",
   frgton: "1.54",
-  multiCargoGub: "Y",
+  multiCargoGub: "혼적",
   payPlanYmd: "20230518",
-  shuttleCargoInfo: "Y",
+  shuttleCargoInfo: "왕복",
   startDetail: "1번지",
   startDong: "강동면",
   startLoad: "지게차",
@@ -25,5 +25,7 @@ export const cargoTestData = {
   startWide: "강원",
   taxbillType: "Y",
   truckType: "윙바디",
-  urgent: "Y",
+  urgent: "긴급",
 };
+
+export default cargoTestData;
