@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
           router.push("/");
         }
       } else {
-        console.log("타냐?");
         router.push("/login");
       }
     })();

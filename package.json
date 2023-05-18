@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "export": "next export",
-    "predeploy": "npm run build && npm run export",
+    "predeploy": "cross-env NODE_ENV=production npm run build",
     "deploy": "gh-pages -d out"
   },
   "dependencies": {
@@ -23,8 +23,8 @@
   "devDependencies": {
     "eslint": "8.10.0",
     "eslint-config-next": "12.1.0",
+    "cross-env": "^7.0.3",
     "gh-pages": "^5.0.0"
   },
   "homepage": "http://tosico85.github.io/first-drive"
-  
 }

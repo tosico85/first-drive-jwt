@@ -3,7 +3,7 @@ import { requestServer } from "../../../services/apiService";
 import apiPaths from "../../../services/apiRoutes";
 import ComboBox from "./ComboBox";
 
-const AddressForm = ({ clsf, register, getValues, errors, setAddress }) => {
+const AddressForm = ({ clsf, register, getValues, errors }) => {
   const [sidoList, setSidoList] = useState([]);
   const [gugunList, setGugunList] = useState([]);
   const [dongList, setDongList] = useState([]);
