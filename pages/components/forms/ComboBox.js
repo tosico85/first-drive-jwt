@@ -1,11 +1,8 @@
-const ComboBox = ({
-  register,
-  onChange,
-  list,
-  title,
-  name,
-  essentialYn = true,
-}) => {
+import { useFormContext } from "react-hook-form";
+
+const ComboBox = ({ onChange, list, title, name, essentialYn = true }) => {
+  const { register } = useFormContext();
+
   return (
     <select
       {...register(name, {

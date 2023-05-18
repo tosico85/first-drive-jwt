@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import { requestServer } from "../../../services/apiService";
 import apiPaths from "../../../services/apiRoutes";
 import ComboBox from "./ComboBox";
+import { FormProvider, useFormContext } from "react-hook-form";
 
-const AddressForm = ({ clsf, register, getValues, errors }) => {
+const AddressForm = ({ clsf, errors }) => {
   const [sidoList, setSidoList] = useState([]);
   const [gugunList, setGugunList] = useState([]);
   const [dongList, setDongList] = useState([]);
+
+  const methods = useFormContext();
+  const { register, getValues } = methods;
 
   useEffect(() => {
     (async () => {
@@ -59,32 +63,35 @@ const AddressForm = ({ clsf, register, getValues, errors }) => {
   return (
     <>
       <div>
-        <ComboBox
-          register={register}
-          onChange={getGugunList}
-          list={sidoList.map(({ nm }) => nm)}
-          title={"주소(시/도)"}
-          name={`${clsf}Wide`}
-        />
+        <FormProvider {...methods}>
+          <ComboBox
+            onChange={getGugunList}
+            list={sidoList.map(({ nm }) => nm)}
+            title={"주소(시/도)"}
+            name={`${clsf}Wide`}
+          />
+        </FormProvider>
         {errors[`${clsf}Wide`]?.message}
       </div>
       <div>
-        <ComboBox
-          register={register}
-          onChange={getDongList}
-          list={gugunList.map(({ nm }) => nm)}
-          title={"주소(구/군)"}
-          name={`${clsf}Sgg`}
-        />
+        <FormProvider {...methods}>
+          <ComboBox
+            onChange={getDongList}
+            list={gugunList.map(({ nm }) => nm)}
+            title={"주소(구/군)"}
+            name={`${clsf}Sgg`}
+          />
+        </FormProvider>
         {errors[`${clsf}Sgg`]?.message}
       </div>
       <div>
-        <ComboBox
-          register={register}
-          list={dongList.map(({ nm }) => nm)}
-          title={"주소(읍/면/동)"}
-          name={`${clsf}Dong`}
-        />
+        <FormProvider {...methods}>
+          <ComboBox
+            list={dongList.map(({ nm }) => nm)}
+            title={"주소(읍/면/동)"}
+            name={`${clsf}Dong`}
+          />
+        </FormProvider>
         {errors[`${clsf}Dong`]?.message}
       </div>
       <div>
@@ -99,5 +106,11 @@ const AddressForm = ({ clsf, register, getValues, errors }) => {
     </>
   );
 };
+
+/* export async function getStaticProps(context) {
+  return {
+    props: context,
+  };
+} */
 
 export default AddressForm;

@@ -1,4 +1,4 @@
 module.exports = {
-  assetPrefix: "/first-drive/",
-  basePath: "/first-drive",
+  //assetPrefix: "/first-drive/",
+  //basePath: "/first-drive",
 };

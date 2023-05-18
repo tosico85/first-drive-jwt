@@ -1,8 +1,10 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
+import { useFormContext } from "react-hook-form";
 
-function DateInput({ title, register, setValue, name }) {
+function DateInput({ title, name }) {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const { register, setValue } = useFormContext();
 
   const handleDateChange = (date) => {
     setSelectedDate(date);

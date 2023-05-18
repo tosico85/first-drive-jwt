@@ -1,7 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import Seo from "./components/Seo";
+import { useEffect, useState } from "react";
 import apiPaths from "../services/apiRoutes";
-import AuthContext from "./context/authContext";
 import { requestServer } from "../services/apiService";
 import Link from "next/link";
 

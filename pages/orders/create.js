@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import Seo from "../components/Seo";
 import { useEffect, useState } from "react";
 import { requestServer } from "../../services/apiService";
@@ -23,6 +23,8 @@ export default function OrderCreate() {
   ];
   const PAY_TYPE_LIST = ["선착불", "인수증", "카드"];
 
+  const methods = useForm({ mode: "onSubmit" });
+
   const {
     register,
     handleSubmit,
@@ -33,7 +35,7 @@ export default function OrderCreate() {
     reset,
     resetField,
     formState: { errors },
-  } = useForm({ mode: "onSubmit" });
+  } = methods;
 
   useEffect(() => {
     (async () => {
@@ -101,71 +103,68 @@ export default function OrderCreate() {
 
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
         <p>상차지 주소</p>
-        <AddressForm
-          key={1}
-          clsf={"start"}
-          register={register}
-          getValues={getValues}
-          errors={errors}
-        />
+        <FormProvider {...methods}>
+          <AddressForm key={1} clsf={"start"} errors={errors} />
+        </FormProvider>
         <p>하차지 주소</p>
-        <AddressForm
-          key={2}
-          clsf={"end"}
-          register={register}
-          getValues={getValues}
-          errors={errors}
-        />
+        <FormProvider {...methods}>
+          <AddressForm key={2} clsf={"end"} errors={errors} />
+        </FormProvider>
         <p></p>
         <div>
           <span>혼적여부</span>
-          <ComboBox
-            register={register}
-            list={["혼적"]}
-            title={"혼적여부"}
-            name={"multiCargoGub"}
-            essentialYn={false}
-          />
+          <FormProvider {...methods}>
+            <ComboBox
+              list={["혼적"]}
+              title={"혼적여부"}
+              name={"multiCargoGub"}
+              essentialYn={false}
+            />
+          </FormProvider>
         </div>
         <div>
           <span>긴급여부</span>
-          <ComboBox
-            register={register}
-            list={["긴급"]}
-            title={"긴급여부"}
-            name={"urgent"}
-            essentialYn={false}
-          />
+          <FormProvider {...methods}>
+            <ComboBox
+              list={["긴급"]}
+              title={"긴급여부"}
+              name={"urgent"}
+              essentialYn={false}
+            />
+          </FormProvider>
         </div>
         <div>
           <span>왕복여부</span>
-          <ComboBox
-            register={register}
-            list={["왕복"]}
-            title={"왕복여부"}
-            name={"shuttleCargoInfo"}
-            essentialYn={false}
-          />
+          <FormProvider {...methods}>
+            <ComboBox
+              list={["왕복"]}
+              title={"왕복여부"}
+              name={"shuttleCargoInfo"}
+              essentialYn={false}
+            />
+          </FormProvider>
         </div>
         <p></p>
         <div>
           <span>차량톤수(t)</span>
-          <ComboBox
-            register={register}
-            onChange={getTruckTypeList}
-            list={cargoTonList.map(({ nm }) => nm)}
-            title={"차량톤수"}
-            name={"cargoTon"}
-          />
+          <FormProvider {...methods}>
+            <ComboBox
+              onChange={getTruckTypeList}
+              list={cargoTonList.map(({ nm }) => nm)}
+              title={"차량톤수"}
+              name={"cargoTon"}
+            />
+          </FormProvider>
         </div>
         <div>
           <span>차량종류</span>
-          <ComboBox
-            register={register}
-            list={truckTypeList.map(({ nm }) => nm)}
-            title={"차량종류"}
-            name={"truckType"}
-          />
+          <FormProvider {...methods}>
+            <ComboBox
+              list={truckTypeList.map(({ nm }) => nm)}
+              title={"차량종류"}
+              name={"truckType"}
+            />
+          </FormProvider>
         </div>
         <div>
           <span>적재중량(t)</span>
@@ -191,40 +190,36 @@ export default function OrderCreate() {
         </div>
         <p></p>
         <div>
-          <DateInput
-            register={register}
-            setValue={setValue}
-            name={"startPlanDt"}
-            title={"상차일자"}
-          />
+          <FormProvider {...methods}>
+            <DateInput name={"startPlanDt"} title={"상차일자"} />
+          </FormProvider>
         </div>
         <div>
-          <DateInput
-            register={register}
-            setValue={setValue}
-            name={"endPlanDt"}
-            title={"하차일자"}
-          />
+          <FormProvider {...methods}>
+            <DateInput name={"endPlanDt"} title={"하차일자"} />
+          </FormProvider>
         </div>
         <p></p>
         <div>
           <span>상차방법</span>
-          <ComboBox
-            register={register}
-            list={LOAD_TYPE_LIST}
-            title={"상차방법"}
-            name={"startLoad"}
-          />
+          <FormProvider {...methods}>
+            <ComboBox
+              list={LOAD_TYPE_LIST}
+              title={"상차방법"}
+              name={"startLoad"}
+            />
+          </FormProvider>
           {errors.startLoad?.message}
         </div>
         <div>
           <span>하차방법</span>
-          <ComboBox
-            register={register}
-            list={LOAD_TYPE_LIST}
-            title={"하차방법"}
-            name={"endLoad"}
-          />
+          <FormProvider {...methods}>
+            <ComboBox
+              list={LOAD_TYPE_LIST}
+              title={"하차방법"}
+              name={"endLoad"}
+            />
+          </FormProvider>
           {errors.endLoad?.message}
         </div>
         <p></p>
@@ -240,12 +235,14 @@ export default function OrderCreate() {
         </div>
         <div>
           <span>운송료 지불구분</span>
-          <ComboBox
-            register={register}
-            list={PAY_TYPE_LIST}
-            title={"운송료 지불구분"}
-            name={"farePaytype"}
-          />
+
+          <FormProvider {...methods}>
+            <ComboBox
+              list={PAY_TYPE_LIST}
+              title={"운송료 지불구분"}
+              name={"farePaytype"}
+            />
+          </FormProvider>
           {errors.farePaytype?.message}
         </div>
         <div>
@@ -307,21 +304,19 @@ export default function OrderCreate() {
         </div>
         <div>
           <span>운송료 지불구분</span>
-          <ComboBox
-            register={register}
-            list={["Y"]}
-            title={"전자세금계산서 발행여부"}
-            name={"taxbillType"}
-          />
+          <FormProvider {...methods}>
+            <ComboBox
+              list={["Y"]}
+              title={"전자세금계산서 발행여부"}
+              name={"taxbillType"}
+            />
+          </FormProvider>
           {errors.taxbillType?.message}
         </div>
         <div>
-          <DateInput
-            register={register}
-            setValue={setValue}
-            name={"payPlanYmd"}
-            title={"운송료지급예정일"}
-          />
+          <FormProvider {...methods}>
+            <DateInput name={"payPlanYmd"} title={"운송료지급예정일"} />
+          </FormProvider>
         </div>
         <p></p>
         <input type="submit" />
