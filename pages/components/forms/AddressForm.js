@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import { requestServer } from "../../../services/apiService";
 import apiPaths from "../../../services/apiRoutes";
-import ComboBox from "./ComboBox";
-import { FormProvider, useFormContext } from "react-hook-form";
 
-const AddressForm = ({ clsf, errors }) => {
+const AddressForm = ({ addressChange, addressValue, clsf }) => {
   const [sidoList, setSidoList] = useState([]);
   const [gugunList, setGugunList] = useState([]);
   const [dongList, setDongList] = useState([]);
 
-  const methods = useFormContext();
-  const { register, getValues } = methods;
+  const [sido, setSido] = useState("");
+  const [gugun, setGugun] = useState("");
+  const [dong, setDong] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -25,16 +24,19 @@ const AddressForm = ({ clsf, errors }) => {
     })();
   }, []);
 
-  const getGugunList = async () => {
-    const sido = getValues(`${clsf}Wide`);
-    console.log(sido);
+  const getGugunList = async (e) => {
+    const {
+      target: { value: selectdSido },
+    } = e;
 
-    if (sido === "") {
-      setGugunList([]);
-    } else {
+    setSido(() => selectdSido);
+    setGugunList([]);
+    setDongList([]);
+
+    if (selectdSido !== "") {
       const { code, data: gugunList } = await requestServer(
         apiPaths.apiOrderAddr,
-        { sido }
+        { sido: selectdSido }
       );
       if (code === 1) {
         setGugunList(gugunList);
@@ -42,17 +44,17 @@ const AddressForm = ({ clsf, errors }) => {
     }
   };
 
-  const getDongList = async () => {
-    const sido = getValues(`${clsf}Wide`);
-    const gugun = getValues(`${clsf}Sgg`);
-    console.log(sido, gugun);
+  const getDongList = async (e) => {
+    const {
+      target: { value: selectedGugun },
+    } = e;
+    setGugun(() => selectedGugun);
+    setDongList([]);
 
-    if (gugun === "") {
-      setDongList([]);
-    } else {
+    if (selectedGugun !== "") {
       const { code, data: dongList } = await requestServer(
         apiPaths.apiOrderAddr,
-        { sido, gugun }
+        { sido, gugun: selectedGugun }
       );
       if (code === 1) {
         setDongList(dongList);
@@ -60,48 +62,51 @@ const AddressForm = ({ clsf, errors }) => {
     }
   };
 
+  const handleInputAddress = (e) => {
+    const {
+      target: { value: seledtedDong },
+    } = e;
+    setDong(() => seledtedDong);
+
+    const returnValue = {};
+    returnValue[`${clsf}Wide`] = sido;
+    returnValue[`${clsf}Sgg`] = gugun;
+    returnValue[`${clsf}Dong`] = seledtedDong;
+
+    addressChange(returnValue);
+  };
+
   return (
     <>
       <div>
-        <FormProvider {...methods}>
-          <ComboBox
-            onChange={getGugunList}
-            list={sidoList.map(({ nm }) => nm)}
-            title={"주소(시/도)"}
-            name={`${clsf}Wide`}
-          />
-        </FormProvider>
-        {errors[`${clsf}Wide`]?.message}
+        <select onChange={getGugunList}>
+          <option value="">주소(시/도)</option>
+          {sidoList.map(({ nm }, i) => (
+            <option key={i} value={nm}>
+              {nm}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
-        <FormProvider {...methods}>
-          <ComboBox
-            onChange={getDongList}
-            list={gugunList.map(({ nm }) => nm)}
-            title={"주소(구/군)"}
-            name={`${clsf}Sgg`}
-          />
-        </FormProvider>
-        {errors[`${clsf}Sgg`]?.message}
+        <select onChange={getDongList}>
+          <option value="">주소(구/군)</option>
+          {gugunList.map(({ nm }, i) => (
+            <option key={i} value={nm}>
+              {nm}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
-        <FormProvider {...methods}>
-          <ComboBox
-            list={dongList.map(({ nm }) => nm)}
-            title={"주소(읍/면/동)"}
-            name={`${clsf}Dong`}
-          />
-        </FormProvider>
-        {errors[`${clsf}Dong`]?.message}
-      </div>
-      <div>
-        <input
-          {...register(`${clsf}Detail`, {
-            required: "상세주소를 입력해주세요.",
-          })}
-          type="text"
-        />
-        {errors[`${clsf}Detail`]?.message}
+        <select onChange={handleInputAddress}>
+          <option value="">주소(읍/면/동)</option>
+          {dongList.map(({ nm }, i) => (
+            <option key={i} value={nm}>
+              {nm}
+            </option>
+          ))}
+        </select>
       </div>
     </>
   );

@@ -1,17 +1,18 @@
-import { useFormContext } from "react-hook-form";
+import { useEffect, useState } from "react";
 
-const ComboBox = ({ onChange, list, title, name, essentialYn = true }) => {
-  const { register } = useFormContext();
+const ComboBox = ({ onComboChange, list, selectedValue, title }) => {
+  const [comboValue, setComboValue] = useState("");
+  const [comboList, setComboList] = useState([]);
+
+  useEffect(() => {
+    setComboValue(selectedValue);
+    setComboList(list);
+  }, []);
 
   return (
-    <select
-      {...register(name, {
-        required: essentialYn ? `${title}을(를) 입력해주세요` : false,
-        onChange,
-      })}
-    >
+    <select onChange={onComboChange}>
       <option value="">{title}</option>
-      {list.map((item, i) => (
+      {comboList.map((item, i) => (
         <option key={i} value={item}>
           {item}
         </option>

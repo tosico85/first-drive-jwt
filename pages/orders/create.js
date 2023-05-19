@@ -1,13 +1,13 @@
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import Seo from "../components/Seo";
 import { useEffect, useState } from "react";
 import { requestServer } from "../../services/apiService";
 import apiPaths from "../../services/apiRoutes";
 import AddressForm from "../components/forms/AddressForm";
 import DateInput from "../components/forms/DateInput";
-import ComboBox from "../components/forms/ComboBox";
 import { useRouter } from "next/router";
 import cargoTestData from "../../testData";
+import { format } from "date-fns";
 
 export default function OrderCreate() {
   const router = useRouter();
@@ -34,6 +34,7 @@ export default function OrderCreate() {
     setValue,
     reset,
     resetField,
+    control,
     formState: { errors },
   } = methods;
 
@@ -43,6 +44,11 @@ export default function OrderCreate() {
       if (code === 1) {
         setCargoTonList(data);
       }
+
+      const curDt = format(new Date(), "yyyyMMdd");
+      setValue("startPlanDt", getValues("startPlanDt") || curDt);
+      setValue("endPlanDt", getValues("endPlanDt") || curDt);
+      setValue("payPlanYmd", getValues("payPlanYmd") || curDt);
     })();
 
     //loadTestData();
@@ -73,7 +79,10 @@ export default function OrderCreate() {
   };
 
   const createCargoOrder = async () => {
-    const cargoOrder = getValues();
+    const cargoOrder = (({ startAddress, endAddress, ...rest }) => rest)(
+      getValues()
+    );
+    console.log(cargoOrder);
     const { result, resultCd } = await requestServer(
       apiPaths.custReqAddCargoOrder,
       cargoOrder
@@ -92,7 +101,7 @@ export default function OrderCreate() {
   };
 
   const oninvalid = () => {
-    console.log(getValues("startPlanDt"));
+    //console.log(getValues("startPlanDt"));
     console.log(errors);
   };
 
@@ -103,68 +112,122 @@ export default function OrderCreate() {
 
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
         <p>상차지 주소</p>
-        <FormProvider {...methods}>
-          <AddressForm key={1} clsf={"start"} errors={errors} />
-        </FormProvider>
+        <Controller
+          control={control}
+          name="startAddress"
+          rules={{ required: "상차지 주소를 입력해주세요." }}
+          render={({ field: { value } }) => (
+            <AddressForm
+              addressChange={(returnValue) => {
+                const { startWide, startSgg, startDong } = returnValue;
+                setValue("startWide", startWide);
+                setValue("startSgg", startSgg);
+                setValue("startDong", startDong);
+                setValue("startAddress", returnValue);
+                console.log(getValues());
+              }}
+              addressValue={value}
+              clsf="start"
+            />
+          )}
+        />
+        {errors.startAddress?.message}
+        <div>
+          <input
+            {...register(`startDetail`, {
+              required: "상세주소를 입력해주세요.",
+            })}
+            type="text"
+            placeholder="상차지 상세주소"
+          />
+          {errors[`startDetail`]?.message}
+        </div>
         <p>하차지 주소</p>
-        <FormProvider {...methods}>
-          <AddressForm key={2} clsf={"end"} errors={errors} />
-        </FormProvider>
+        <Controller
+          control={control}
+          name="endAddress"
+          rules={{ required: "하차지 주소를 입력해주세요." }}
+          render={({ field: { value } }) => (
+            <AddressForm
+              addressChange={(returnValue) => {
+                const { endWide, endSgg, endDong } = returnValue;
+                setValue("endWide", endWide);
+                setValue("endSgg", endSgg);
+                setValue("endDong", endDong);
+                setValue("endAddress", returnValue);
+                console.log(getValues());
+              }}
+              addressValue={value}
+              clsf="end"
+            />
+          )}
+        />
+        {errors.endAddress?.message}
+        <div>
+          <input
+            {...register(`endDetail`, {
+              required: "상세주소를 입력해주세요.",
+            })}
+            type="text"
+            placeholder="하차지 상세주소"
+          />
+          {errors[`endDetail`]?.message}
+        </div>
         <p></p>
         <div>
           <span>혼적여부</span>
-          <FormProvider {...methods}>
-            <ComboBox
-              list={["혼적"]}
-              title={"혼적여부"}
-              name={"multiCargoGub"}
-              essentialYn={false}
-            />
-          </FormProvider>
+          <select {...register("multiCargoGub")}>
+            <option value="">혼적여부</option>
+            <option value={"혼적"}>혼적</option>
+          </select>
         </div>
         <div>
           <span>긴급여부</span>
-          <FormProvider {...methods}>
-            <ComboBox
-              list={["긴급"]}
-              title={"긴급여부"}
-              name={"urgent"}
-              essentialYn={false}
-            />
-          </FormProvider>
+          <select {...register("urgent")}>
+            <option value="">긴급여부</option>
+            <option value={"긴급"}>긴급</option>
+          </select>
         </div>
         <div>
           <span>왕복여부</span>
-          <FormProvider {...methods}>
-            <ComboBox
-              list={["왕복"]}
-              title={"왕복여부"}
-              name={"shuttleCargoInfo"}
-              essentialYn={false}
-            />
-          </FormProvider>
+          <select {...register("shuttleCargoInfo")}>
+            <option value="">왕복여부</option>
+            <option value={"왕복"}>왕복</option>
+          </select>
         </div>
         <p></p>
         <div>
           <span>차량톤수(t)</span>
-          <FormProvider {...methods}>
-            <ComboBox
-              onChange={getTruckTypeList}
-              list={cargoTonList.map(({ nm }) => nm)}
-              title={"차량톤수"}
-              name={"cargoTon"}
-            />
-          </FormProvider>
+          <select
+            {...register("cargoTon", {
+              required: `차량톤수(t)를 입력해주세요`,
+              onChange: () => getTruckTypeList(),
+            })}
+          >
+            <option value="">차량톤수(t)</option>
+            {cargoTonList &&
+              cargoTonList.map(({ nm }, i) => (
+                <option key={i} value={nm}>
+                  {nm}
+                </option>
+              ))}
+          </select>
         </div>
         <div>
           <span>차량종류</span>
-          <FormProvider {...methods}>
-            <ComboBox
-              list={truckTypeList.map(({ nm }) => nm)}
-              title={"차량종류"}
-              name={"truckType"}
-            />
-          </FormProvider>
+          <select
+            {...register("truckType", {
+              required: `차량종류를 입력해주세요`,
+            })}
+          >
+            <option value="">차량종류</option>
+            {truckTypeList &&
+              truckTypeList.map(({ nm }, i) => (
+                <option key={i} value={nm}>
+                  {nm}
+                </option>
+              ))}
+          </select>
         </div>
         <div>
           <span>적재중량(t)</span>
@@ -190,36 +253,64 @@ export default function OrderCreate() {
         </div>
         <p></p>
         <div>
-          <FormProvider {...methods}>
-            <DateInput name={"startPlanDt"} title={"상차일자"} />
-          </FormProvider>
+          <Controller
+            control={control}
+            name="startPlanDt"
+            rules={{ required: "상차일자를 입력해주세요." }}
+            render={({ field: { onChange } }) => (
+              <DateInput
+                onDateChange={onChange}
+                dateValue={getValues("startPlanDt")}
+                title="상차일자"
+              />
+            )}
+          />
         </div>
         <div>
-          <FormProvider {...methods}>
-            <DateInput name={"endPlanDt"} title={"하차일자"} />
-          </FormProvider>
+          <Controller
+            control={control}
+            name="endPlanDt"
+            rules={{ required: "하차일자를 입력해주세요." }}
+            render={({ field: { onChange } }) => (
+              <DateInput
+                onDateChange={onChange}
+                dateValue={getValues("endPlanDt")}
+                title="하차일자"
+              />
+            )}
+          />
         </div>
         <p></p>
         <div>
           <span>상차방법</span>
-          <FormProvider {...methods}>
-            <ComboBox
-              list={LOAD_TYPE_LIST}
-              title={"상차방법"}
-              name={"startLoad"}
-            />
-          </FormProvider>
+          <select
+            {...register("startLoad", {
+              required: `상차방법을 입력해주세요`,
+            })}
+          >
+            <option value="">상차방법</option>
+            {LOAD_TYPE_LIST.map((item, i) => (
+              <option key={i} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
           {errors.startLoad?.message}
         </div>
         <div>
           <span>하차방법</span>
-          <FormProvider {...methods}>
-            <ComboBox
-              list={LOAD_TYPE_LIST}
-              title={"하차방법"}
-              name={"endLoad"}
-            />
-          </FormProvider>
+          <select
+            {...register("endLoad", {
+              required: `하차방법을 입력해주세요`,
+            })}
+          >
+            <option value="">하차방법</option>
+            {LOAD_TYPE_LIST.map((item, i) => (
+              <option key={i} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
           {errors.endLoad?.message}
         </div>
         <p></p>
@@ -235,14 +326,18 @@ export default function OrderCreate() {
         </div>
         <div>
           <span>운송료 지불구분</span>
-
-          <FormProvider {...methods}>
-            <ComboBox
-              list={PAY_TYPE_LIST}
-              title={"운송료 지불구분"}
-              name={"farePaytype"}
-            />
-          </FormProvider>
+          <select
+            {...register("farePaytype", {
+              required: `운송료 지불구분을 입력해주세요`,
+            })}
+          >
+            <option value="">운송료 지불구분</option>
+            {PAY_TYPE_LIST.map((item, i) => (
+              <option key={i} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
           {errors.farePaytype?.message}
         </div>
         <div>
@@ -303,20 +398,30 @@ export default function OrderCreate() {
           {errors.firstShipperBizNo?.message}
         </div>
         <div>
-          <span>운송료 지불구분</span>
-          <FormProvider {...methods}>
-            <ComboBox
-              list={["Y"]}
-              title={"전자세금계산서 발행여부"}
-              name={"taxbillType"}
-            />
-          </FormProvider>
+          <span>전자세금계산서 발행여부</span>
+          <select
+            {...register("taxbillType", {
+              required: `전자세금계산서 발행여부을 입력해주세요`,
+            })}
+          >
+            <option value="">전자세금계산서 발행여부</option>
+            <option value="Y">Y</option>
+          </select>
           {errors.taxbillType?.message}
         </div>
         <div>
-          <FormProvider {...methods}>
-            <DateInput name={"payPlanYmd"} title={"운송료지급예정일"} />
-          </FormProvider>
+          <Controller
+            control={control}
+            name="payPlanYmd"
+            rules={{ required: "운송료지급예정일을 입력해주세요." }}
+            render={({ field: { onChange } }) => (
+              <DateInput
+                onDateChange={onChange}
+                dateValue={getValues("payPlanYmd")}
+                title="운송료지급예정일"
+              />
+            )}
+          />
         </div>
         <p></p>
         <input type="submit" />
