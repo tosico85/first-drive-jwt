@@ -81,4 +81,10 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+export async function getServerSideProps({ children }) {
+  return {
+    props: { children },
+  };
+}
+
 export default AuthContext;

@@ -12,7 +12,9 @@
     "deploy": "gh-pages -d out"
   },
   "dependencies": {
+    "@next-tools/dynamic": "^0.0.11",
     "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
     "next": "12.1.0",
     "react": "17.0.2",
     "react-datepicker": "^4.11.0",
@@ -20,10 +22,10 @@
     "react-hook-form": "^7.43.9"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "eslint": "8.10.0",
     "eslint-config-next": "12.1.0",
-    "cross-env": "^7.0.3",
     "gh-pages": "^5.0.0"
   },
   "homepage": "http://tosico85.github.io/first-drive"
