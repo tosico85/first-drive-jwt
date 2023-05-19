@@ -11,6 +11,7 @@ import { format } from "date-fns";
 
 export default function OrderCreate() {
   const router = useRouter();
+  const [paramData, setParamData] = useState(cargoTestData);
   const [cargoTonList, setCargoTonList] = useState([]);
   const [truckTypeList, setTruckTypeList] = useState([]);
   const LOAD_TYPE_LIST = [
@@ -49,32 +50,35 @@ export default function OrderCreate() {
       setValue("startPlanDt", getValues("startPlanDt") || curDt);
       setValue("endPlanDt", getValues("endPlanDt") || curDt);
       setValue("payPlanYmd", getValues("payPlanYmd") || curDt);
-    })();
 
-    //loadTestData();
+      await loadParamData();
+    })();
   }, []);
 
   // TEST DATA 로드
-  const loadTestData = () => {
-    setTimeout(() => {
-      setValue("cargoTon", cargoTestData["cargoTon"]);
-      getTruckTypeList();
+  const loadParamData = async () => {
+    setValue("cargoTon", paramData["cargoTon"] || "");
 
-      setTimeout(() => {
-        Object.keys(cargoTestData).forEach((key) => {
-          setValue(key, cargoTestData[key]);
-        });
-      }, 2000);
-    }, 2000);
+    if (paramData["cargoTon"]) {
+      await getTruckTypeList();
+      Object.keys(paramData).forEach((key) => {
+        console.log(key, paramData[key]);
+        setValue(key, paramData[key]);
+      });
+    }
   };
 
   const getTruckTypeList = async () => {
     const cargoTon = getValues("cargoTon");
-    const { code, data } = await requestServer(apiPaths.apiOrderTruckType, {
-      cargoTon,
-    });
-    if (code === 1) {
-      setTruckTypeList(data);
+    setTruckTypeList([]);
+
+    if (cargoTon !== "") {
+      const { code, data } = await requestServer(apiPaths.apiOrderTruckType, {
+        cargoTon,
+      });
+      if (code === 1) {
+        setTruckTypeList(data);
+      }
     }
   };
 
@@ -124,9 +128,12 @@ export default function OrderCreate() {
                 setValue("startSgg", startSgg);
                 setValue("startDong", startDong);
                 setValue("startAddress", returnValue);
-                console.log(getValues());
               }}
-              addressValue={value}
+              addressValue={{
+                startWide: paramData.startWide,
+                startSgg: paramData.startSgg,
+                startDong: paramData.startDong,
+              }}
               clsf="start"
             />
           )}
@@ -155,9 +162,12 @@ export default function OrderCreate() {
                 setValue("endSgg", endSgg);
                 setValue("endDong", endDong);
                 setValue("endAddress", returnValue);
-                console.log(getValues());
               }}
-              addressValue={value}
+              addressValue={{
+                endWide: paramData.endWide,
+                endSgg: paramData.endSgg,
+                endDong: paramData.endDong,
+              }}
               clsf="end"
             />
           )}
@@ -205,12 +215,11 @@ export default function OrderCreate() {
             })}
           >
             <option value="">차량톤수(t)</option>
-            {cargoTonList &&
-              cargoTonList.map(({ nm }, i) => (
-                <option key={i} value={nm}>
-                  {nm}
-                </option>
-              ))}
+            {cargoTonList.map(({ nm }, i) => (
+              <option key={i} value={nm}>
+                {nm}
+              </option>
+            ))}
           </select>
         </div>
         <div>

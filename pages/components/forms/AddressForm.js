@@ -20,16 +20,41 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
 
       if (code === 1) {
         setSidoList(sidoList);
+
+        // 전달받은 주소 set
+        console.log("addressValue", addressValue);
+        if (addressValue) {
+          await setParamDatas();
+        }
       }
     })();
   }, []);
 
-  const getGugunList = async (e) => {
+  const setParamDatas = async () => {
+    const wide = addressValue[`${clsf}Wide`];
+    const sgg = addressValue[`${clsf}Sgg`];
+    const dng = addressValue[`${clsf}Dong`];
+
+    setSido(() => wide);
+    await getGugunList(wide);
+
+    setGugun(() => sgg);
+    await getDongList(wide, sgg);
+
+    setDong(() => dng);
+    returnValues(dng);
+  };
+
+  const handleSelectSido = async (e) => {
     const {
       target: { value: selectdSido },
     } = e;
 
     setSido(() => selectdSido);
+    await getGugunList(selectdSido);
+  };
+
+  const getGugunList = async (selectdSido) => {
     setGugunList([]);
     setDongList([]);
 
@@ -44,12 +69,18 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
     }
   };
 
-  const getDongList = async (e) => {
+  const handleSelectGugun = async (e) => {
     const {
       target: { value: selectedGugun },
     } = e;
+
     setGugun(() => selectedGugun);
+    await getDongList(sido, selectedGugun);
+  };
+
+  const getDongList = async (sido, selectedGugun) => {
     setDongList([]);
+    console.log(sido);
 
     if (selectedGugun !== "") {
       const { code, data: dongList } = await requestServer(
@@ -67,7 +98,10 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
       target: { value: seledtedDong },
     } = e;
     setDong(() => seledtedDong);
+    returnValues(seledtedDong);
+  };
 
+  const returnValues = (seledtedDong) => {
     const returnValue = {};
     returnValue[`${clsf}Wide`] = sido;
     returnValue[`${clsf}Sgg`] = gugun;
@@ -79,7 +113,7 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
   return (
     <>
       <div>
-        <select onChange={getGugunList}>
+        <select value={sido} onChange={handleSelectSido}>
           <option value="">주소(시/도)</option>
           {sidoList.map(({ nm }, i) => (
             <option key={i} value={nm}>
@@ -89,7 +123,7 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
         </select>
       </div>
       <div>
-        <select onChange={getDongList}>
+        <select value={gugun} onChange={handleSelectGugun}>
           <option value="">주소(구/군)</option>
           {gugunList.map(({ nm }, i) => (
             <option key={i} value={nm}>
@@ -99,7 +133,7 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
         </select>
       </div>
       <div>
-        <select onChange={handleInputAddress}>
+        <select value={dong} onChange={handleInputAddress}>
           <option value="">주소(읍/면/동)</option>
           {dongList.map(({ nm }, i) => (
             <option key={i} value={nm}>
@@ -111,11 +145,5 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
     </>
   );
 };
-
-/* export async function getStaticProps(context) {
-  return {
-    props: context,
-  };
-} */
 
 export default AddressForm;
