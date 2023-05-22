@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import apiPaths from "../services/apiRoutes";
-import { requestServer } from "../services/apiService";
 import Link from "next/link";
+import AuthContext from "./context/authContext";
 
 const HomePage = () => {
+  const { requestServer } = useContext(AuthContext);
   const [cargoOrder, setCargoOrder] = useState([]);
 
   const getOrderList = async () => {

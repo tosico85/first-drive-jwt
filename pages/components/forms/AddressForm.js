@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
-import { requestServer } from "../../../services/apiService";
+import { useContext, useEffect, useState } from "react";
 import apiPaths from "../../../services/apiRoutes";
+import AuthContext from "../../context/authContext";
 
 const AddressForm = ({ addressChange, addressValue, clsf }) => {
+  const { requestServer } = useContext(AuthContext);
+
   const [sidoList, setSidoList] = useState([]);
   const [gugunList, setGugunList] = useState([]);
   const [dongList, setDongList] = useState([]);
@@ -61,7 +63,9 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
     if (selectdSido !== "") {
       const { code, data: gugunList } = await requestServer(
         apiPaths.apiOrderAddr,
-        { sido: selectdSido }
+        {
+          sido: selectdSido,
+        }
       );
       if (code === 1) {
         setGugunList(gugunList);
@@ -85,7 +89,10 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
     if (selectedGugun !== "") {
       const { code, data: dongList } = await requestServer(
         apiPaths.apiOrderAddr,
-        { sido, gugun: selectedGugun }
+        {
+          sido,
+          gugun: selectedGugun,
+        }
       );
       if (code === 1) {
         setDongList(dongList);

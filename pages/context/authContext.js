@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { createContext, useEffect, useState } from "react";
 import apiPaths from "../../services/apiRoutes";
-import { requestServer } from "../../services/apiService";
+import { callServer } from "../../services/apiService";
 
 const AuthContext = createContext();
 
@@ -25,15 +25,29 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const sessionCheck = async () => {
+    console.log("isAuthenticated : ", isAuthenticated);
+    console.log("pathname : ", router.pathname);
     const result = await requestServer(apiPaths.userSessionCheck, {});
 
-    if (result.resultCd === "00") {
-      setIsAuthenticated(() => true);
+    if (result.resultCd === "00" || result.resultCd === "01") {
+      setIsAuthenticated(true);
     } else {
-      setIsAuthenticated(() => false);
+      setIsAuthenticated(false);
     }
 
-    return result.resultCd === "00";
+    return result.resultCd == "00";
+  };
+
+  const requestServer = async (path, params) => {
+    const result = await callServer(path, params);
+
+    if (result.resultCd === "LN") {
+      //Login Need
+      setIsAuthenticated(false);
+      router.push("/");
+    }
+
+    return result;
   };
 
   const login = async (email, password) => {
@@ -74,7 +88,14 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, join, login, logout, sessionCheck }}
+      value={{
+        isAuthenticated,
+        join,
+        login,
+        logout,
+        requestServer,
+        sessionCheck,
+      }}
     >
       {children}
     </AuthContext.Provider>

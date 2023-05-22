@@ -1,7 +1,7 @@
 import apiPaths from "./apiRoutes";
 import axios from "axios";
 
-export const requestServer = async (path, params) => {
+export const callServer = async (path, params) => {
   const requestUrl = `${apiPaths.baseUrl}${path}`;
   let result = {};
   try {

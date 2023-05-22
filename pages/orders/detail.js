@@ -1,11 +1,13 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import apiPaths from "../../services/apiRoutes";
-import { requestServer } from "../../services/apiService";
 import Seo from "../components/Seo";
+import AuthContext from "../context/authContext";
 
 export default function Detail() {
   const router = useRouter();
+  const { requestServer } = useContext(AuthContext);
   const [cargoOrder, setCargoOrder] = useState({});
 
   useEffect(() => {
@@ -29,7 +31,17 @@ export default function Detail() {
     <div>
       <Seo title={"화물 상세"} />
       <h1>화물 상세</h1>
-      <div>{JSON.stringify(cargoOrder.cargoDsc)}</div>
+      <div>{JSON.stringify(cargoOrder)}</div>
+      <div>
+        <Link
+          href={{
+            pathname: `/orders/modify`,
+            query: cargoOrder,
+          }}
+        >
+          <a>화물 수정</a>
+        </Link>
+      </div>
     </div>
   );
 }
