@@ -40,6 +40,28 @@ export default function Detail() {
     }
   };
 
+  const handleDelete = async (e) => {
+    e.preventDefault();
+
+    if (cargoOrder.ordNo?.length > 0) {
+      alert("배차신청된 오더는 취소가 불가합니다.");
+    } else {
+      const { resultCd, result } = await requestServer(
+        apiPaths.custReqCancelCargoOrder,
+        {
+          cargo_seq: cargoOrder.cargo_seq,
+        }
+      );
+
+      if (resultCd === "00") {
+        alert("화물 취소가 완료되었습니다.");
+        router.push("/");
+      } else {
+        alert(result);
+      }
+    }
+  };
+
   return (
     <div>
       <Seo title={"화물 상세"} />
@@ -53,6 +75,7 @@ export default function Detail() {
         >
           <a onClick={handleModify}>화물 수정</a>
         </Link>
+        <a onClick={handleDelete}>화물 삭제</a>
       </div>
     </div>
   );
