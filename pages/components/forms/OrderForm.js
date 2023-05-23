@@ -7,10 +7,9 @@ import { useRouter } from "next/router";
 import { format } from "date-fns";
 import AuthContext from "../../context/authContext";
 
-export default function OrderForm({ mode = "C", editData }) {
+export default function OrderForm({ isEdit = false, editData = {} }) {
   const router = useRouter();
   const { requestServer } = useContext(AuthContext);
-  const [isEdit, setIsEdit] = useState(mode === "M");
   const [paramData, setParamData] = useState(editData || {});
   const [cargoTonList, setCargoTonList] = useState([]);
   const [truckTypeList, setTruckTypeList] = useState([]);
@@ -51,8 +50,9 @@ export default function OrderForm({ mode = "C", editData }) {
       setValue("endPlanDt", getValues("endPlanDt") || curDt);
       setValue("payPlanYmd", getValues("payPlanYmd") || curDt);
 
-      console.log("?????????????", editData);
-      await loadParamData();
+      if (isEdit) {
+        await loadParamData();
+      }
     })();
   }, []);
 
@@ -99,12 +99,40 @@ export default function OrderForm({ mode = "C", editData }) {
     }
   };
 
+  const updateCargoOrder = async () => {
+    const cargoOrder = (({
+      startAddress,
+      endAddress,
+      change_dtm,
+      change_user,
+      ...rest
+    }) => rest)(getValues());
+
+    console.log(cargoOrder);
+    const { result, resultCd } = await requestServer(
+      apiPaths.custReqModCargoOrder,
+      cargoOrder
+    );
+
+    if (resultCd === "00") {
+      alert("화물 오더가 수정되었습니다.");
+      router.push("/");
+    } else {
+      alert(result);
+    }
+  };
+
   const onValid = () => {
-    createCargoOrder();
+    if (isEdit) {
+      updateCargoOrder();
+    } else {
+      createCargoOrder();
+    }
   };
 
   const oninvalid = () => {
     //console.log(getValues("startPlanDt"));
+    //console.log(editData);
     console.log(errors);
   };
 
@@ -123,6 +151,7 @@ export default function OrderForm({ mode = "C", editData }) {
               setValue("startSgg", startSgg);
               setValue("startDong", startDong);
               setValue("startAddress", returnValue);
+              console.log(returnValue);
             }}
             addressValue={{
               startWide: paramData.startWide,
@@ -157,6 +186,7 @@ export default function OrderForm({ mode = "C", editData }) {
               setValue("endSgg", endSgg);
               setValue("endDong", endDong);
               setValue("endAddress", returnValue);
+              console.log(returnValue);
             }}
             addressValue={{
               endWide: paramData.endWide,
@@ -427,7 +457,7 @@ export default function OrderForm({ mode = "C", editData }) {
         />
       </div>
       <p></p>
-      <input type="submit" />
+      <input type="submit" value={isEdit ? "화물 수정" : "화물 등록"} />
     </form>
   );
 }

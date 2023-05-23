@@ -27,6 +27,19 @@ export default function Detail() {
     })();
   }, []);
 
+  const handleModify = (e) => {
+    e.preventDefault();
+
+    if (cargoOrder.ordNo?.length > 0) {
+      alert("배차신청된 오더는 수정이 불가합니다.");
+    } else {
+      router.push({
+        pathname: e.target.href,
+        query: cargoOrder,
+      });
+    }
+  };
+
   return (
     <div>
       <Seo title={"화물 상세"} />
@@ -36,10 +49,9 @@ export default function Detail() {
         <Link
           href={{
             pathname: `/orders/modify`,
-            query: cargoOrder,
           }}
         >
-          <a>화물 수정</a>
+          <a onClick={handleModify}>화물 수정</a>
         </Link>
       </div>
     </div>

@@ -10,7 +10,7 @@ export default function OrderCreate() {
       <Seo title="화물 등록" />
       <h1>화물 등록</h1>
 
-      <OrderForm ode="C" />
+      <OrderForm />
     </div>
   );
 }

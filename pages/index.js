@@ -30,6 +30,7 @@ const HomePage = () => {
         {cargoOrder.length > 0 &&
           cargoOrder.map((item) => {
             const {
+              cargo_seq,
               cargoDsc,
               cargoTon,
               create_dtm,
@@ -48,7 +49,7 @@ const HomePage = () => {
                   }}
                 >
                   <a>
-                    {`${cargoDsc} ${cargoTon} ${create_dtm} ${ordNo} ${ordStatus} ${truckType} ${updateDt} ${urgent}`}
+                    {`${cargo_seq} ${cargoDsc} ${cargoTon} ${create_dtm} ${ordNo} ${ordStatus} ${truckType} ${updateDt} ${urgent}`}
                   </a>
                 </Link>
               </li>

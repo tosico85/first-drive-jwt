@@ -10,7 +10,7 @@ const Navbar = () => {
   const handleClick = (e) => {
     e.preventDefault();
 
-    console.log(">>>>>>>>>>>>>>", isAuthenticated);
+    //console.log(">>>>>>>>>>>>>>", isAuthenticated);
     if (isAuthenticated) {
       router.push(e.target.href);
     } else {

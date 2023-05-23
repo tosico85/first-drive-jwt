@@ -12,7 +12,7 @@ export default function OrderModify() {
       <Seo title="화물 등록" />
       <h1>화물 수정</h1>
 
-      <OrderForm mode="M" editData={modifyData} />
+      <OrderForm isEdit={true} editData={modifyData} />
     </div>
   );
 }

@@ -24,7 +24,7 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
         setSidoList(sidoList);
 
         // 전달받은 주소 set
-        console.log("addressValue", addressValue);
+        //console.log("addressValue", addressValue);
         if (addressValue) {
           await setParamDatas();
         }
@@ -44,7 +44,7 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
     await getDongList(wide, sgg);
 
     setDong(() => dng);
-    returnValues(dng);
+    returnValues(wide, sgg, dng);
   };
 
   const handleSelectSido = async (e) => {
@@ -52,6 +52,7 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
       target: { value: selectdSido },
     } = e;
 
+    returnValues(selectdSido, "", "");
     setSido(() => selectdSido);
     await getGugunList(selectdSido);
   };
@@ -78,13 +79,14 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
       target: { value: selectedGugun },
     } = e;
 
+    returnValues(sido, selectedGugun, "");
     setGugun(() => selectedGugun);
     await getDongList(sido, selectedGugun);
   };
 
   const getDongList = async (sido, selectedGugun) => {
     setDongList([]);
-    console.log(sido);
+    //console.log(sido);
 
     if (selectedGugun !== "") {
       const { code, data: dongList } = await requestServer(
@@ -105,14 +107,14 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
       target: { value: seledtedDong },
     } = e;
     setDong(() => seledtedDong);
-    returnValues(seledtedDong);
+    returnValues(sido, gugun, seledtedDong);
   };
 
-  const returnValues = (seledtedDong) => {
+  const returnValues = (sSido, sSgg, sDong) => {
     const returnValue = {};
-    returnValue[`${clsf}Wide`] = sido;
-    returnValue[`${clsf}Sgg`] = gugun;
-    returnValue[`${clsf}Dong`] = seledtedDong;
+    returnValue[`${clsf}Wide`] = sSido;
+    returnValue[`${clsf}Sgg`] = sSgg;
+    returnValue[`${clsf}Dong`] = sDong;
 
     addressChange(returnValue);
   };
