@@ -24,7 +24,7 @@ const HomePage = () => {
 
   return (
     <>
-      <h1>Welcome to the Main Page</h1>
+      <h1 className="text-blue-600">Welcome to the Main Page</h1>
       <p>현재 등록 중인 화물 건입니다.</p>
       <ul>
         {cargoOrder.length > 0 &&
