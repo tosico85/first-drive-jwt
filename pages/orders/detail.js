@@ -54,7 +54,7 @@ export default function Detail() {
       );
 
       if (resultCd === "00") {
-        alert("화물 취소가 완료되었습니다.");
+        alert("화물 오더가 취소되었습니다.");
         router.push("/");
       } else {
         alert(result);
@@ -67,6 +67,7 @@ export default function Detail() {
       <Seo title={"화물 상세"} />
       <h1>화물 상세</h1>
       <div>{JSON.stringify(cargoOrder)}</div>
+      <p></p>
       <div>
         <Link
           href={{
@@ -75,7 +76,10 @@ export default function Detail() {
         >
           <a onClick={handleModify}>화물 수정</a>
         </Link>
-        <a onClick={handleDelete}>화물 삭제</a>
+        <span> </span>
+        <Link href={"/"}>
+          <a onClick={handleDelete}>화물 삭제</a>
+        </Link>
       </div>
     </div>
   );
