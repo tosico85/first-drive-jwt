@@ -62,7 +62,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center h-full">
+    <div className="flex items-center h-full bg-white dark:bg-gray-800">
       <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-6 md:px-8 lg:px-10 mx-auto">
         {mode === "login" ? (
           <div className="self-center mb-6 text-xl font-light text-gray-600 sm:text-2xl dark:text-white">
@@ -70,16 +70,16 @@ const LoginPage = () => {
           </div>
         ) : (
           <>
-            <div class="self-center mb-2 text-xl font-light text-gray-800 sm:text-2xl dark:text-white">
+            <div className="self-center mb-2 text-xl font-light text-gray-800 sm:text-2xl dark:text-white">
               Create a new account
             </div>
-            <span class="justify-center text-sm text-center text-gray-500 flex-items-center dark:text-gray-400">
+            <span className="justify-center text-sm text-center text-gray-500 flex-items-center dark:text-gray-400">
               Already have an account ?
               <a
                 href="#"
                 onClick={toggleMode}
                 target="_blank"
-                class="text-sm text-blue-500 underline hover:text-blue-700"
+                className="text-sm text-blue-500 underline hover:text-blue-700"
               >
                 Sign in
               </a>
