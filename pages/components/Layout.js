@@ -1,9 +1,12 @@
+import { useRouter } from "next/router";
 import Navbar from "./NavBar";
 
 const Layout = ({ children }) => {
+  const router = useRouter();
+
   return (
     <div>
-      <Navbar />
+      {router.pathname !== "/login" && <Navbar />}
       <main>{children}</main>
     </div>
   );
