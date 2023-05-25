@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../context/authContext";
 import { useRouter } from "next/router";
 
@@ -13,28 +13,33 @@ const user = {
   imageUrl:
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
-const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Team", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-  { name: "Reports", href: "#", current: false },
-];
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const open = false;
-
-const Navbar = () => {
+const Navbar = ({ current }) => {
+  const [open, setOpen] = useState(false);
   const { isAuthenticated, logout } = useContext(AuthContext);
   const router = useRouter();
+
+  const navigation = [
+    { name: "Home", href: "/", current: "/" === router.pathname },
+    {
+      name: "화물등록",
+      href: "/orders/create",
+      current: "/orders/create" === router.pathname,
+    },
+  ];
+
+  const userNavigation = [
+    { name: "Your Profile", href: "#" },
+    {
+      name: "Sign out",
+      href: "#",
+      onclick: logout,
+    },
+  ];
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -159,9 +164,17 @@ const Navbar = () => {
               <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                 <span className="sr-only">Open main menu</span>
                 {open ? (
-                  <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                  <XMarkIcon
+                    className="block h-6 w-6"
+                    aria-hidden="true"
+                    onClick={() => setOpen(false)}
+                  />
                 ) : (
-                  <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                  <Bars3Icon
+                    className="block h-6 w-6"
+                    aria-hidden="true"
+                    onClick={() => setOpen(true)}
+                  />
                 )}
               </Disclosure.Button>
             </div>
@@ -182,6 +195,7 @@ const Navbar = () => {
                   "block rounded-md px-3 py-2 text-base font-medium"
                 )}
                 aria-current={item.current ? "page" : undefined}
+                onClick={() => setOpen(false)}
               >
                 {item.name}
               </Disclosure.Button>
@@ -218,6 +232,10 @@ const Navbar = () => {
                   key={item.name}
                   as="a"
                   href={item.href}
+                  onClick={() => {
+                    if (item.onclick) item.onclick();
+                    setOpen(false);
+                  }}
                   className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                 >
                   {item.name}
