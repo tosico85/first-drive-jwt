@@ -1,3 +1,15 @@
+@font-face {
+  font-family: "Spoqa Han Sans";
+  src: url("/path/to/spoqa-han-sans.woff2") format("woff2"),
+    url("/path/to/spoqa-han-sans.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#__next {
+  height: 100%;
+}

@@ -62,7 +62,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center h-full bg-white dark:bg-gray-800">
+    <div className="h-full flex items-center bg-white dark:bg-gray-800">
       <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-6 md:px-8 lg:px-10 mx-auto">
         {mode === "login" ? (
           <div className="self-center mb-6 text-xl font-light text-gray-600 sm:text-2xl dark:text-white">

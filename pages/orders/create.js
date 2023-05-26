@@ -6,7 +6,7 @@ export default function OrderCreate() {
   const router = useRouter();
 
   return (
-    <div>
+    <div className="h-full">
       <Seo title="화물 등록" />
       <h1>화물 등록</h1>
 

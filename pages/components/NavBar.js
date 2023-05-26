@@ -6,22 +6,22 @@ import { useRouter } from "next/router";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
+import localRoutes from "../../services/localRoutes";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Navbar = ({ current }) => {
+const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const { isAuthenticated, logout } = useContext(AuthContext);
+  const { isAuthenticated, userInfo, logout } = useContext(AuthContext);
   const router = useRouter();
+
+  const user = {
+    name: userInfo.name,
+    email: userInfo.email,
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+  };
 
   const navigation = [
     { name: "Home", href: "/", current: "/" === router.pathname },
@@ -41,42 +41,11 @@ const Navbar = ({ current }) => {
     },
   ];
 
-  const handleClick = (e) => {
-    e.preventDefault();
+  const currentPage = localRoutes.find((item) => item.path === router.pathname);
 
-    //console.log(">>>>>>>>>>>>>>", isAuthenticated);
-    if (isAuthenticated) {
-      router.push(e.target.href);
-    } else {
-      // 로그인이 필요한 경우 경고 메시지 출력 및 로그인 페이지로 리다이렉트
-      alert("로그인이 필요합니다.");
-      router.push("/login");
-    }
-  };
-  {
-    /* <nav>
-    <Link href="/">
-      <a onClick={handleClick} className={`link`}>
-        Home
-      </a>
-    </Link>
-    {isAuthenticated ? (
-      <Link href="">
-        <a onClick={logout} className={`link`}>
-          Logout
-        </a>
-      </Link>
-    ) : (
-      <Link href="/login">
-        <a className={`link`}>Login</a>
-      </Link>
-    )}
-  </nav>
-*/
-  }
   return (
-    <Disclosure as="nav" className="bg-gray-800">
-      <>
+    <div className="fixed w-full">
+      <Disclosure as="nav" className="bg-gray-800 w-full">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
@@ -84,7 +53,10 @@ const Navbar = ({ current }) => {
                 <img
                   className="h-8 w-8"
                   src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                  alt="Your Company"
+                  alt="Go home"
+                  onClick={() => {
+                    router.push("/");
+                  }}
                 />
               </div>
               <div className="hidden md:block">
@@ -113,8 +85,8 @@ const Navbar = ({ current }) => {
                   type="button"
                   className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
+                  {/* <span className="sr-only">View notifications</span>
+                  <BellIcon className="h-6 w-6" aria-hidden="true" /> */}
                 </button>
 
                 {/* Profile dropdown */}
@@ -218,13 +190,13 @@ const Navbar = ({ current }) => {
                   {user.email}
                 </div>
               </div>
-              <button
+              {/* <button
                 type="button"
                 className="ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
               >
                 <span className="sr-only">View notifications</span>
                 <BellIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
+              </button> */}
             </div>
             <div className="mt-3 space-y-1 px-2">
               {userNavigation.map((item) => (
@@ -244,8 +216,15 @@ const Navbar = ({ current }) => {
             </div>
           </div>
         </Disclosure.Panel>
-      </>
-    </Disclosure>
+      </Disclosure>
+      <header className="bg-white shadow-md w-full">
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900 font-sans">
+            {currentPage?.name}
+          </h1>
+        </div>
+      </header>
+    </div>
   );
 };
 
