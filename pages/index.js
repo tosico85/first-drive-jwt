@@ -23,7 +23,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <>
+    <div className="py-6">
       <h1 className="text-blue-600">Welcome to the Main Page</h1>
       <p>현재 등록 중인 화물 건입니다.</p>
       <ul>
@@ -65,7 +65,7 @@ const HomePage = () => {
           <a>화물 등록</a>
         </Link>
       </div>
-    </>
+    </div>
   );
 };
 

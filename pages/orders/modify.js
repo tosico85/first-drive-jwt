@@ -8,9 +8,8 @@ export default function OrderModify() {
   const [modifyData, setModifyData] = useState(router.query || {});
 
   return (
-    <div>
+    <div className="py-6">
       <Seo title="화물 등록" />
-      <h1>화물 수정</h1>
 
       <OrderForm isEdit={true} editData={modifyData} />
     </div>

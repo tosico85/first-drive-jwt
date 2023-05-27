@@ -10,6 +10,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .triangle {
+    @apply w-0 h-0 border-l-[7px] border-r-[7px] border-b-[14px] border-transparent border-solid border-b-blue-800;
+  }
+}
+
 #__next {
   height: 100%;
 }
