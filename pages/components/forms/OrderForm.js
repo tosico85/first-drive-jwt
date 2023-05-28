@@ -514,95 +514,138 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
       </div>
       <div className="border-b border-gray-900/10 dark:border-gray-900/40 py-8 mb-8">
         <h2 className="text-lg font-semibold leading-7">화주 및 의뢰 정보</h2>
-        <p className="mt-1 text-sm leading-6 mb-5 text-gray-600 dark:text-gray-300">
+        <p className="mt-1 text-sm leading-6 mb-10 text-gray-600 dark:text-gray-300">
           원화주 정보와 운송료 관련 정보를 입력하세요
         </p>
         <div>
-          <span>의뢰자 구분</span>
-          <select {...register("firstType")}>
-            <option value={"01"}>일반화주</option>
-            <option value={"02"}>주선/운송사</option>
-          </select>
-          {errors.firstType?.message}
-        </div>
-        <div>
-          <span>운송료 지불구분</span>
-          <select
-            {...register("farePaytype", {
-              required: `운송료 지불구분을 입력해주세요`,
-            })}
-          >
-            <option value="">운송료 지불구분</option>
-            {PAY_TYPE_LIST.map((item, i) => (
-              <option key={i} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-          {errors.farePaytype?.message}
-        </div>
-        <div>
-          <Controller
-            control={control}
-            name="payPlanYmd"
-            rules={{ required: "운송료지급예정일을 입력해주세요." }}
-            render={({ field: { onChange } }) => (
-              <DateInput
-                onDateChange={onChange}
-                dateValue={getValues("payPlanYmd")}
-                title="운송료지급예정일"
+          <h2 className="text-base font-semibold leading-7 mb-3">의뢰 정보</h2>
+          <div className="grid gap-y-3 lg:grid-cols-4 lg:gap-x-10">
+            <div>
+              <label className="block text-sm font-medium leading-6">
+                의뢰자 구분
+              </label>
+              <select
+                {...register("firstType")}
+                className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+              >
+                <option value={"01"}>일반화주</option>
+                <option value={"02"}>주선/운송사</option>
+              </select>
+              {errors.firstType?.message}
+            </div>
+            <div>
+              <label className="block text-sm font-medium leading-6">
+                운송료 지불구분
+              </label>
+              <select
+                {...register("farePaytype", {
+                  required: `운송료 지불구분을 입력해주세요`,
+                })}
+                className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+              >
+                <option value="">운송료 지불구분</option>
+                {PAY_TYPE_LIST.map((item, i) => (
+                  <option key={i} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+              {errors.farePaytype?.message}
+            </div>
+            <div>
+              <label className="block text-sm font-medium leading-6">
+                운송료 지급 예정일
+              </label>
+              <Controller
+                control={control}
+                name="payPlanYmd"
+                rules={{ required: "운송료지급예정일을 입력해주세요." }}
+                render={({ field: { onChange } }) => (
+                  <DateInput
+                    onDateChange={onChange}
+                    dateValue={getValues("payPlanYmd")}
+                  />
+                )}
               />
-            )}
-          />
+            </div>
+          </div>
         </div>
-        <div>
-          <span>원화주 명</span>
-          <input
-            {...register("firstShipperNm", {
-              required: "원화주 명을 입력해주세요.",
-            })}
-            type="text"
-          />
-          {errors.firstShipperNm?.message}
+        <div className="mt-10">
+          <h2 className="text-base font-semibold leading-7 mb-3">
+            원화주 정보
+          </h2>
+          <div className="grid gap-y-3 lg:grid-cols-4 lg:gap-x-10">
+            <div>
+              <label className="block text-sm font-medium leading-6">
+                원화주 명
+              </label>
+              <input
+                {...register("firstShipperNm", {
+                  required: "원화주 명을 입력해주세요.",
+                })}
+                type="text"
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+              />
+              {errors.firstShipperNm?.message}
+            </div>
+            <div>
+              <label className="block text-sm font-medium leading-6">
+                원화주 전화번호
+              </label>
+              <input
+                {...register("firstShipperInfo", {
+                  required: "원화주 전화번호를 입력해주세요.",
+                })}
+                type="tel"
+                maxLength={11}
+                placeholder={"'-'없이 입력하세요"}
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+              />
+              {errors.firstShipperInfo?.message}
+            </div>
+            <div>
+              <label className="block text-sm font-medium leading-6">
+                원화주 사업자번호
+              </label>
+              <input
+                {...register("firstShipperBizNo", {
+                  required:
+                    getValues("firstType") === "02"
+                      ? "원화주 사업자번호을 입력해주세요."
+                      : false,
+                })}
+                type="text"
+                maxLength={10}
+                placeholder="의뢰자 주선/운송사인 경우 필수"
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+              />
+              {errors.firstShipperBizNo?.message}
+            </div>
+          </div>
         </div>
-        <div>
-          <span>원화주 전화번호</span>
-          <input
-            {...register("firstShipperInfo", {
-              required: "원화주 전화번호를 입력해주세요.",
-            })}
-            type="tel"
-            maxLength={11}
-            placeholder={"'-'없이 입력하세요"}
-          />
-          {errors.firstShipperInfo?.message}
-        </div>
-        <div>
-          <span>원화주 사업자번호</span>
-          <input
-            {...register("firstShipperBizNo", {
-              required:
-                getValues("firstType") === "02"
-                  ? "원화주 사업자번호을 입력해주세요."
-                  : false,
-            })}
-            type="text"
-            maxLength={10}
-            placeholder="의뢰자 주선/운송사인 경우 필수"
-          />
-          {errors.firstShipperBizNo?.message}
-        </div>
-        <div>
-          <span>전자세금계산서 발행여부</span>
-          <select
-            {...register("taxbillType", {
-              required: `전자세금계산서 발행여부을 입력해주세요`,
-            })}
-          >
-            <option value="">전자세금계산서 발행여부</option>
-            <option value="Y">Y</option>
-          </select>
-          {errors.taxbillType?.message}
+        <div className="mt-10">
+          <div className="relative flex gap-x-3">
+            <div className="flex h-6 items-center">
+              <input
+                {...register("taxbillType", {
+                  onChange: () => {
+                    setValue("taxbillType", getValues("taxbillType") || "");
+                  },
+                })}
+                type="checkbox"
+                value={"Y"}
+                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+              />
+            </div>
+            <div className="text-sm leading-6">
+              <label htmlFor="candidates" className="font-medium">
+                전자세금계산서 발행여부
+              </label>
+              <p className="text-gray-500 dark:text-gray-400">
+                (선택)전자세금계산서 발행여부를 체크해주세요.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
