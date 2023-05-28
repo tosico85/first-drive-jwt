@@ -195,7 +195,7 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
           <h2 className="mt-10 mb-3 text-base font-semibold leading-7">
             기타사항
           </h2>
-          <div className="grid lg:grid-cols-6 grid-cols-2">
+          <div className="grid lg:grid-cols-6 grid-cols-1">
             <div>
               <label className="block text-sm font-medium leading-6">
                 상차일자
@@ -293,7 +293,7 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
             기타사항
           </h2>
 
-          <div className="grid lg:grid-cols-5 grid-cols-2 lg:gap-x-10 gap-y-3">
+          <div className="grid lg:grid-cols-5 grid-cols-1 lg:gap-x-10 gap-y-3">
             <div>
               <label className="block text-sm font-medium leading-6">
                 하차일자
