@@ -7,6 +7,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
   const router = useRouter();
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export const AuthProvider = ({ children }) => {
 
     if (result.resultCd === "00" || result.resultCd === "01") {
       setIsAuthenticated(true);
+      setUserInfo(result.userInfo);
     } else {
       setIsAuthenticated(false);
     }
@@ -60,6 +62,7 @@ export const AuthProvider = ({ children }) => {
     const result = await requestServer(apiPaths.userLogin, params);
     if (result.resultCd === "00") {
       setIsAuthenticated(true);
+      setUserInfo(result.userInfo);
       router.push("/");
     }
     return result;
@@ -90,6 +93,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         isAuthenticated,
+        userInfo,
         join,
         login,
         logout,

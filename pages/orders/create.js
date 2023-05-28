@@ -6,9 +6,8 @@ export default function OrderCreate() {
   const router = useRouter();
 
   return (
-    <div>
+    <div className="h-full py-6">
       <Seo title="화물 등록" />
-      <h1>화물 등록</h1>
 
       <OrderForm />
     </div>

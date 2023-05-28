@@ -63,9 +63,8 @@ export default function Detail() {
   };
 
   return (
-    <div>
+    <div className="py-6">
       <Seo title={"화물 상세"} />
-      <h1>화물 상세</h1>
       <div>{JSON.stringify(cargoOrder)}</div>
       <p></p>
       <div>

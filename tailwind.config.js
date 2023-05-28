@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./pages/**/*.js"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["Spoqa Han Sans", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };
