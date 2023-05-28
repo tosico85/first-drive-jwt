@@ -27,7 +27,7 @@ const Layout = ({ children }) => {
           className={
             "h-full mx-auto max-w-7xl px-5 lg:px-8 " +
             (isLogin
-              ? "-mt-24"
+              ? ""
               : "bg-white text-gray-900 dark:bg-gray-600 dark:text-slate-50 pt-32")
           }
         >
