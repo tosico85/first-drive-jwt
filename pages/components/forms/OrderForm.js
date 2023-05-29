@@ -10,7 +10,7 @@ import AuthContext from "../../context/authContext";
 export default function OrderForm({ isEdit = false, editData = {} }) {
   const router = useRouter();
   const { requestServer } = useContext(AuthContext);
-  const [paramData, setParamData] = useState(editData || {});
+  //const [paramData, setParamData] = useState(editData || {});
   const [cargoTonList, setCargoTonList] = useState([]);
   const [truckTypeList, setTruckTypeList] = useState([]);
   const LOAD_TYPE_LIST = [
@@ -58,12 +58,12 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
 
   // TEST DATA 로드
   const loadParamData = async () => {
-    setValue("cargoTon", paramData["cargoTon"] || "");
+    setValue("cargoTon", editData["cargoTon"] || "");
 
-    if (paramData["cargoTon"]) {
+    if (editData["cargoTon"]) {
       await getTruckTypeList();
-      Object.keys(paramData).forEach((key) => {
-        setValue(key, paramData[key]);
+      Object.keys(editData).forEach((key) => {
+        setValue(key, editData[key]);
       });
     }
   };
@@ -166,9 +166,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                     console.log(returnValue);
                   }}
                   addressValue={{
-                    startWide: paramData.startWide,
-                    startSgg: paramData.startSgg,
-                    startDong: paramData.startDong,
+                    startWide: editData.startWide,
+                    startSgg: editData.startSgg,
+                    startDong: editData.startDong,
                   }}
                   clsf="start"
                 />
@@ -263,9 +263,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                     console.log(returnValue);
                   }}
                   addressValue={{
-                    endWide: paramData.endWide,
-                    endSgg: paramData.endSgg,
-                    endDong: paramData.endDong,
+                    endWide: editData.endWide,
+                    endSgg: editData.endSgg,
+                    endDong: editData.endDong,
                   }}
                   clsf="end"
                 />

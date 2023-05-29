@@ -1,17 +1,16 @@
 import Seo from "../components/Seo";
 import { useRouter } from "next/router";
 import OrderForm from "../components/forms/OrderForm";
-import { useEffect, useState } from "react";
 
 export default function OrderModify() {
   const router = useRouter();
-  const [modifyData, setModifyData] = useState(router.query || {});
+  //const [modifyData, setModifyData] = useState();
 
   return (
     <div className="py-6">
-      <Seo title="화물 등록" />
+      <Seo title="화물 수정" />
 
-      <OrderForm isEdit={true} editData={modifyData} />
+      <OrderForm isEdit={true} editData={router.query || {}} />
     </div>
   );
 }
