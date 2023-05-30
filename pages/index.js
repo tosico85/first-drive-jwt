@@ -58,82 +58,84 @@ const HomePage = () => {
               endPlanDt, //하차일("YYYYMMDD")
               cargoDsc, //화물상세내용
               ordStatus, //화물상태(접수,완료등)
+              create_dtm, //등록일시
             } = item;
             return (
               <li
-                class="border-b border-gray-100 dark:border-gray-200 flex justify-between gap-x-6 py-5"
+                className="border-b border-gray-100 dark:border-gray-200 flex justify-between gap-x-6 py-5"
                 key={cargo_seq}
                 onClick={() => handleDetail(cargo_seq)}
               >
-                <div class="flex gap-x-4 w-full">
-                  <div class="min-w-0 flex-col w-full">
+                <div className="flex gap-x-1 w-full justify-between">
+                  <div className="flex flex-col w-fit lg:gap-x-10 lg:flex-row lg:items-start">
                     <div className="flex w-full items-center gap-x-5 mb-2">
-                      <p class="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-900">
+                      <p className="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                         {cargoDsc}
                       </p>
-                      <p class="flex items-center gap-x-3 text-sm leading-6 text-gray-900">
+                      <p className="flex items-center gap-x-3 text-sm leading-6 text-gray-900 dark:text-white">
                         {truckType}
                       </p>
                       <div className="flex items-center gap-x-3">
                         {urgent && (
-                          <p class="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-red-500 text-xs text-white">
+                          <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-red-500 text-xs text-white">
                             {urgent}
                           </p>
                         )}
                         {multiCargoGub && (
-                          <p class="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-indigo-500 text-xs text-white">
+                          <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-indigo-500 text-xs text-white">
                             {multiCargoGub}
                           </p>
                         )}
                         {shuttleCargoInfo && (
-                          <p class="px-1 py-0 rounded-md flex items-center h-5 bg-yellow-500 text-xs text-white">
+                          <p className="px-1 py-0 rounded-md flex items-center h-5 bg-yellow-500 text-xs text-white">
                             {shuttleCargoInfo}
                           </p>
                         )}
                       </div>
                     </div>
-                    <div className="flex justify-between">
-                      <div className="flex gap-x-4 items-center">
-                        <div>
-                          <p class="mt-1 truncate text-xs leading-5 text-gray-500">
-                            {`${startWide} ${startSgg} ${startDong}`}
-                          </p>
-                          <p class="mt-1 truncate text-xs leading-5 text-gray-500">
-                            {formatDate(startPlanDt)}
-                          </p>
-                        </div>
-                        <div>
-                          <svg
-                            width="18"
-                            height="18"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth={1.5}
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"
-                            />
-                          </svg>
-                        </div>
-                        <div>
-                          <p class="mt-1 truncate text-xs leading-5 text-gray-500">
-                            {`${endWide} ${endSgg} ${endDong}`}
-                          </p>
-                          <p class="mt-1 truncate text-xs leading-5 text-gray-500">
-                            {formatDate(endPlanDt)}
-                          </p>
-                        </div>
+                    <div className="flex gap-x-4 items-center">
+                      <div>
+                        <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-300">
+                          {`${startWide} ${startSgg} ${startDong}`}
+                        </p>
+                        <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-300">
+                          {formatDate(startPlanDt)}
+                        </p>
                       </div>
                       <div>
-                        <div className="text-sm text-gray-500 px-2 py-1 border border-gray-200 rounded-full">
-                          {ordStatus}
-                        </div>
+                        <svg
+                          width="18"
+                          height="18"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={1.5}
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"
+                          />
+                        </svg>
                       </div>
+                      <div>
+                        <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-300">
+                          {`${endWide} ${endSgg} ${endDong}`}
+                        </p>
+                        <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-300">
+                          {formatDate(endPlanDt)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col justify-center items-end gap-y-2">
+                    <div className="text-sm w-fit h-fit text-gray-500 dark:text-gray-300 px-3 py-1 border border-gray-200 rounded-full">
+                      <p>{ordStatus}</p>
+                    </div>
+                    <div className="hidden sm:block text-sm w-fit h-fit text-gray-500 dark:text-gray-400 px-3 py-1">
+                      <p>{create_dtm}</p>
                     </div>
                   </div>
                 </div>

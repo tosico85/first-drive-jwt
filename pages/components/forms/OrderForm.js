@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { appendErrors, Controller, useForm } from "react-hook-form";
 import { useContext, useEffect, useState } from "react";
 import apiPaths from "../../../services/apiRoutes";
 import AddressForm from "./AddressForm";
@@ -186,7 +186,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
             <Controller
               control={control}
               name="startAddress"
-              rules={{ required: "상차지 주소를 입력해주세요." }}
+              rules={{
+                required: "상차지 주소를 입력해주세요.",
+              }}
               render={() => (
                 <AddressForm
                   addressChange={(returnValue) => {
@@ -194,8 +196,15 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                     setValue("startWide", startWide);
                     setValue("startSgg", startSgg);
                     setValue("startDong", startDong);
-                    setValue("startAddress", returnValue);
-                    console.log(returnValue);
+
+                    if (
+                      (startWide || "" != "") &&
+                      (startSgg || "" != "") &&
+                      (startDong || "" != "")
+                    ) {
+                      setValue("startAddress", returnValue);
+                    }
+                    //console.log(returnValue);
                   }}
                   addressValue={{
                     startWide: editData.startWide,
@@ -206,7 +215,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                 />
               )}
             />
-            {errors.startAddress?.message}
+            <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+              {errors.startAddress?.message}
+            </div>
           </div>
           <div>
             <label className="block text-sm font-medium leading-6">
@@ -220,7 +231,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
               placeholder="상차지 상세주소"
               className="block sm:w-10/12 w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
             />
-            {errors[`startDetail`]?.message}
+            <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+              {errors[`startDetail`]?.message}
+            </div>
           </div>
         </div>
         <div>
@@ -261,7 +274,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                   </option>
                 ))}
               </select>
-              {errors.startLoad?.message}
+              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                {errors.startLoad?.message}
+              </div>
             </div>
           </div>
         </div>
@@ -291,7 +306,14 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                     setValue("endWide", endWide);
                     setValue("endSgg", endSgg);
                     setValue("endDong", endDong);
-                    setValue("endAddress", returnValue);
+
+                    if (
+                      (endWide || "" != "") &&
+                      (endSgg || "" != "") &&
+                      (endDong || "" != "")
+                    ) {
+                      setValue("endAddress", returnValue);
+                    }
                     console.log(returnValue);
                   }}
                   addressValue={{
@@ -303,7 +325,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                 />
               )}
             />
-            {errors.endAddress?.message}
+            <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+              {errors.endAddress?.message}
+            </div>
           </div>
           <div>
             <label className="block text-sm font-medium leading-6">
@@ -317,7 +341,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
               placeholder="하차지 상세주소"
               className="block sm:w-10/12 w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
             />
-            {errors[`endDetail`]?.message}
+            <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+              {errors[`endDetail`]?.message}
+            </div>
           </div>
         </div>
         <div>
@@ -359,7 +385,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                   </option>
                 ))}
               </select>
-              {errors.endLoad?.message}
+              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                {errors.endLoad?.message}
+              </div>
             </div>
             <div className="">
               <label className="block text-sm font-medium leading-6">
@@ -374,7 +402,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                 placeholder={"'-'없이 입력하세요"}
                 className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
               />
-              {errors.endAreaPhone?.message}
+              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                {errors.endAreaPhone?.message}
+              </div>
             </div>
           </div>
         </div>
@@ -393,7 +423,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
             type="text"
             className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
           />
-          {errors.cargoDsc?.message}
+          <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+            {errors.cargoDsc?.message}
+          </div>
         </div>
         <div className="mt-10">
           <fieldset>
@@ -542,7 +574,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                 <option value={"01"}>일반화주</option>
                 <option value={"02"}>주선/운송사</option>
               </select>
-              {errors.firstType?.message}
+              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                {errors.firstType?.message}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium leading-6">
@@ -561,7 +595,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                   </option>
                 ))}
               </select>
-              {errors.farePaytype?.message}
+              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                {errors.farePaytype?.message}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium leading-6">
@@ -597,7 +633,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                 type="text"
                 className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
               />
-              {errors.firstShipperNm?.message}
+              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                {errors.firstShipperNm?.message}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium leading-6">
@@ -612,7 +650,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                 placeholder={"'-'없이 입력하세요"}
                 className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
               />
-              {errors.firstShipperInfo?.message}
+              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                {errors.firstShipperInfo?.message}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium leading-6">
@@ -630,7 +670,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
                 placeholder="의뢰자 주선/운송사인 경우 필수"
                 className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
               />
-              {errors.firstShipperBizNo?.message}
+              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                {errors.firstShipperBizNo?.message}
+              </div>
             </div>
           </div>
         </div>
