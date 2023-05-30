@@ -2,10 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import apiPaths from "../services/apiRoutes";
 import Link from "next/link";
 import AuthContext from "./context/authContext";
+import { useRouter } from "next/router";
+import { formatDate } from "../utils/StringUtils";
 
 const HomePage = () => {
   const { requestServer } = useContext(AuthContext);
   const [cargoOrder, setCargoOrder] = useState([]);
+  const router = useRouter();
 
   const getOrderList = async () => {
     const url = apiPaths.custReqGetCargoOrder;
@@ -22,48 +25,130 @@ const HomePage = () => {
     })();
   }, []);
 
+  //상세보기
+  const handleDetail = (cargo_seq) => {
+    router.push({
+      pathname: "/orders/detail",
+      query: { param: cargo_seq },
+    });
+  };
+
   return (
     <div className="py-6">
-      <h1 className="text-blue-600">Welcome to the Main Page</h1>
-      <p>현재 등록 중인 화물 건입니다.</p>
-      <ul>
+      <h3 className="text-base font-semibold leading-7 ">
+        현재 등록 중인 화물 건입니다.
+      </h3>
+      <p className="text-right">{`${cargoOrder.length} 건`}</p>
+      <ul className="mt-6 border-y border-gray-200 dark:border-gray-300">
         {cargoOrder.length > 0 &&
           cargoOrder.map((item) => {
             const {
               cargo_seq,
-              cargoDsc,
-              cargoTon,
-              create_dtm,
-              ordNo,
-              ordStatus,
-              truckType,
-              updateDt,
-              urgent,
+              startWide, //상차지 시/도
+              startSgg, //상차지 구/군
+              startDong, //상차지 읍/면/동
+              endWide, //하차지 시/도
+              endSgg, //하차지 구/군
+              endDong, //하차지 읍/면/동
+              multiCargoGub, //혼적여부("혼적")
+              urgent, //긴급여부("긴급")
+              shuttleCargoInfo, //왕복여부("왕복")
+              truckType, //차량종류
+              startPlanDt, //상차일("YYYYMMDD")
+              endPlanDt, //하차일("YYYYMMDD")
+              cargoDsc, //화물상세내용
+              ordStatus, //화물상태(접수,완료등)
             } = item;
             return (
-              <li key={item.cargo_seq}>
-                <Link
-                  href={{
-                    pathname: `/orders/detail`,
-                    query: { param: `${item.cargo_seq}` },
-                  }}
-                >
-                  <a>
-                    {`${cargo_seq} ${cargoDsc} ${cargoTon} ${create_dtm} ${ordNo} ${ordStatus} ${truckType} ${updateDt} ${urgent}`}
-                  </a>
-                </Link>
+              <li
+                class="border-b border-gray-100 dark:border-gray-200 flex justify-between gap-x-6 py-5"
+                key={cargo_seq}
+                onClick={() => handleDetail(cargo_seq)}
+              >
+                <div class="flex gap-x-4 w-full">
+                  <div class="min-w-0 flex-col w-full">
+                    <div className="flex w-full items-center gap-x-5 mb-2">
+                      <p class="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-900">
+                        {cargoDsc}
+                      </p>
+                      <p class="flex items-center gap-x-3 text-sm leading-6 text-gray-900">
+                        {truckType}
+                      </p>
+                      <div className="flex items-center gap-x-3">
+                        {urgent && (
+                          <p class="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-red-500 text-xs text-white">
+                            {urgent}
+                          </p>
+                        )}
+                        {multiCargoGub && (
+                          <p class="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-indigo-500 text-xs text-white">
+                            {multiCargoGub}
+                          </p>
+                        )}
+                        {shuttleCargoInfo && (
+                          <p class="px-1 py-0 rounded-md flex items-center h-5 bg-yellow-500 text-xs text-white">
+                            {shuttleCargoInfo}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex justify-between">
+                      <div className="flex gap-x-4 items-center">
+                        <div>
+                          <p class="mt-1 truncate text-xs leading-5 text-gray-500">
+                            {`${startWide} ${startSgg} ${startDong}`}
+                          </p>
+                          <p class="mt-1 truncate text-xs leading-5 text-gray-500">
+                            {formatDate(startPlanDt)}
+                          </p>
+                        </div>
+                        <div>
+                          <svg
+                            width="18"
+                            height="18"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={1.5}
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"
+                            />
+                          </svg>
+                        </div>
+                        <div>
+                          <p class="mt-1 truncate text-xs leading-5 text-gray-500">
+                            {`${endWide} ${endSgg} ${endDong}`}
+                          </p>
+                          <p class="mt-1 truncate text-xs leading-5 text-gray-500">
+                            {formatDate(endPlanDt)}
+                          </p>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-sm text-gray-500 px-2 py-1 border border-gray-200 rounded-full">
+                          {ordStatus}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </li>
             );
           })}
       </ul>
-      <div>
-        <Link
-          href={{
-            pathname: `/orders/create`,
-          }}
+      <div className="mt-6 flex items-center justify-end gap-x-6">
+        <button
+          type="button"
+          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          onClick={() => router.push("/orders/create")}
         >
-          <a>화물 등록</a>
-        </Link>
+          화물 등록
+        </button>
       </div>
     </div>
   );
