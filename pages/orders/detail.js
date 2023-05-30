@@ -110,7 +110,7 @@ export default function Detail() {
           <div className="mt-4 border-y border-gray-100 dark:border-gray-300">
             <dl className="divide-y divide-gray-100 dark:divide-gray-500">
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   상차지 주소
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -121,7 +121,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   상차일자
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -129,7 +129,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   상차방법
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -148,7 +148,7 @@ export default function Detail() {
           <div className="mt-4 border-y border-gray-100 dark:border-gray-300">
             <dl className="divide-y divide-gray-100 dark:divide-gray-500">
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   하차지 주소
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -159,7 +159,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   하차일자
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -167,7 +167,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   하차방법
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -175,7 +175,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   하차지 전화번호
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -194,7 +194,7 @@ export default function Detail() {
           <div className="mt-4 border-y border-gray-100 dark:border-gray-300">
             <dl className="divide-y divide-gray-100 dark:divide-gray-500">
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   화물상세내용
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -202,7 +202,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   화물 선택사항
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -222,7 +222,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   차량 톤수(t)
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -230,7 +230,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   차량 종류
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -238,7 +238,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   적재 중량(t)
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -257,7 +257,7 @@ export default function Detail() {
           <div className="mt-4 border-y border-gray-100 dark:border-gray-300">
             <dl className="divide-y divide-gray-100 dark:divide-gray-500">
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   의뢰자 구분
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -265,7 +265,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   운송료 지불구분
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -273,7 +273,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   운송료 지급 예정일
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -281,7 +281,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   원화주 명
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -289,7 +289,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   원화주 전화번호
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -297,7 +297,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   원화주 사업자번호
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
@@ -305,7 +305,7 @@ export default function Detail() {
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                   전자세금계산서 발행여부
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">

@@ -63,8 +63,22 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
     if (editData["cargoTon"]) {
       await getTruckTypeList();
       Object.keys(editData).forEach((key) => {
-        setValue(key, editData[key]);
+        if (
+          [
+            "taxbillType",
+            "multiCargoGub",
+            "urgent",
+            "shuttleCargoInfo",
+          ].includes(key)
+        ) {
+          setValue(key, (editData[key] || "") != "");
+        } else {
+          setValue(key, editData[key]);
+        }
       });
+
+      console.log("editData : ", editData);
+      console.log("cargoOrder : ", getValues());
     }
   };
 
@@ -82,10 +96,26 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
     }
   };
 
+  const checkboxValueReset = (object) => {
+    // 체크박스 control을 위한 처리
+    [
+      { key: "taxbillType", value: "Y" },
+      { key: "multiCargoGub", value: "혼적" },
+      { key: "urgent", value: "긴급" },
+      { key: "shuttleCargoInfo", value: "왕복" },
+    ].forEach((item) => {
+      object[item.key] = object[item.key] ? item.value : "";
+    });
+
+    return object;
+  };
+
   const createCargoOrder = async () => {
     const cargoOrder = (({ startAddress, endAddress, ...rest }) => rest)(
       getValues()
     );
+    cargoOrder = checkboxValueReset(cargoOrder);
+
     const { result, resultCd } = await requestServer(
       apiPaths.custReqAddCargoOrder,
       cargoOrder
@@ -107,6 +137,8 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
       change_user,
       ...rest
     }) => rest)(getValues());
+
+    cargoOrder = checkboxValueReset(cargoOrder);
 
     console.log(cargoOrder);
     const { result, resultCd } = await requestServer(
@@ -372,16 +404,8 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
               <div className="relative flex gap-x-3">
                 <div className="flex h-6 items-center">
                   <input
-                    {...register("multiCargoGub", {
-                      onChange: () => {
-                        setValue(
-                          "multiCargoGub",
-                          getValues("multiCargoGub") || ""
-                        );
-                      },
-                    })}
+                    {...register("multiCargoGub")}
                     type="checkbox"
-                    value={"혼적"}
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
                 </div>
@@ -397,13 +421,8 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
               <div className="relative flex gap-x-3">
                 <div className="flex h-6 items-center">
                   <input
-                    {...register("urgent", {
-                      onChange: () => {
-                        setValue("urgent", getValues("urgent") || "");
-                      },
-                    })}
+                    {...register("urgent")}
                     type="checkbox"
-                    value={"긴급"}
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
                 </div>
@@ -419,16 +438,8 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
               <div className="relative flex gap-x-3">
                 <div className="flex h-6 items-center">
                   <input
-                    {...register("shuttleCargoInfo", {
-                      onChange: () => {
-                        setValue(
-                          "shuttleCargoInfo",
-                          getValues("shuttleCargoInfo") || ""
-                        );
-                      },
-                    })}
+                    {...register("shuttleCargoInfo")}
                     type="checkbox"
-                    value={"왕복"}
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
                 </div>
@@ -627,11 +638,7 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
           <div className="relative flex gap-x-3">
             <div className="flex h-6 items-center">
               <input
-                {...register("taxbillType", {
-                  onChange: () => {
-                    setValue("taxbillType", getValues("taxbillType") || "");
-                  },
-                })}
+                {...register("taxbillType")}
                 type="checkbox"
                 value={"Y"}
                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
