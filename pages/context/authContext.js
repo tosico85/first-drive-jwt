@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false);
     }
 
-    alert.log(result);
+    alert(result);
     return result.resultCd == "00" || result.resultCd == "01";
   };
 
