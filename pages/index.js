@@ -62,14 +62,14 @@ const HomePage = () => {
             } = item;
             return (
               <li
-                className="border-b border-gray-100 dark:border-gray-200 flex justify-between gap-x-6 py-5"
+                className="border-b border-gray-100 dark:border-gray-200 flex justify-between gap-x-6 py-5 lg:px-5 hover:bg-gray-100"
                 key={cargo_seq}
                 onClick={() => handleDetail(cargo_seq)}
               >
                 <div className="flex gap-x-1 w-full justify-between">
                   <div className="flex flex-col w-fit lg:gap-x-10 lg:flex-row lg:items-start">
                     <div className="flex lg:flex-col lg:items-start gap-y-2 lg:w-80 w-full items-center gap-x-5 mb-2">
-                      <p className="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                      <p className="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-500 dark:text-gray-300">
                         {cargoDsc}
                       </p>
                       <div className="flex items-center gap-x-3">
@@ -77,17 +77,17 @@ const HomePage = () => {
                           {truckType}
                         </p>
                         {urgent && (
-                          <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-red-500 text-xs text-white">
+                          <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-red-400 text-xs text-white">
                             {urgent}
                           </p>
                         )}
                         {multiCargoGub && (
-                          <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-indigo-500 text-xs text-white">
+                          <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-indigo-400 text-xs text-white">
                             {multiCargoGub}
                           </p>
                         )}
                         {shuttleCargoInfo && (
-                          <p className="px-1 py-0 rounded-md flex items-center h-5 bg-yellow-500 text-xs text-white">
+                          <p className="px-1 py-0 rounded-md flex items-center h-5 bg-yellow-400 text-xs text-white">
                             {shuttleCargoInfo}
                           </p>
                         )}
@@ -131,7 +131,16 @@ const HomePage = () => {
                     </div>
                   </div>
                   <div className="flex flex-col justify-center items-end gap-y-2">
-                    <div className="text-sm w-fit h-fit text-gray-500 dark:text-gray-300 px-3 py-1 border border-gray-200 rounded-full">
+                    <div
+                      className={
+                        "text-sm w-fit h-fit text-white font-bold dark:text-gray-300 px-2 py-1 rounded-full " +
+                        (ordStatus == "화물등록"
+                          ? "bg-slate-400 ring-slate-400"
+                          : ordStatus == "배차신청"
+                          ? "bg-orange-400 ring-orange-400"
+                          : "bg-indigo-400 ring-indigo-400")
+                      }
+                    >
                       <p>{ordStatus}</p>
                     </div>
                     <div className="hidden sm:block text-sm w-fit h-fit text-gray-500 dark:text-gray-400 px-3 py-1">
