@@ -38,7 +38,11 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false);
     }
 
-    alert(result);
+    alert(JSON.stringify(result));
+    alert(
+      "result.resultCd == 00 || result.resultCd == 01",
+      result.resultCd == "00" || result.resultCd == "01"
+    );
     return result.resultCd == "00" || result.resultCd == "01";
   };
 
