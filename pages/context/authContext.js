@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false);
     }
 
-    return result.resultCd == "00";
+    return result.resultCd == "00" || result.resultCd == "01";
   };
 
   const requestServer = async (path, params) => {

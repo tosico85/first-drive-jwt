@@ -68,14 +68,14 @@ const HomePage = () => {
               >
                 <div className="flex gap-x-1 w-full justify-between">
                   <div className="flex flex-col w-fit lg:gap-x-10 lg:flex-row lg:items-start">
-                    <div className="flex w-full items-center gap-x-5 mb-2">
+                    <div className="flex lg:flex-col lg:items-start gap-y-2 lg:w-80 w-full items-center gap-x-5 mb-2">
                       <p className="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-900 dark:text-white">
                         {cargoDsc}
                       </p>
-                      <p className="flex items-center gap-x-3 text-sm leading-6 text-gray-900 dark:text-white">
-                        {truckType}
-                      </p>
                       <div className="flex items-center gap-x-3">
+                        <p className="px-2 py-0 rounded-md flex items-center h-5 shadow-md bg-gray-500 text-xs text-white dark:border dark:border-gray-700">
+                          {truckType}
+                        </p>
                         {urgent && (
                           <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-red-500 text-xs text-white">
                             {urgent}
@@ -93,12 +93,12 @@ const HomePage = () => {
                         )}
                       </div>
                     </div>
-                    <div className="flex gap-x-4 items-center">
+                    <div className="flex text-xs lg:text-sm gap-x-4 items-center">
                       <div>
-                        <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-300">
+                        <p className="mt-1 truncate leading-5 text-gray-500 dark:text-gray-300">
                           {`${startWide} ${startSgg} ${startDong}`}
                         </p>
-                        <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-300">
+                        <p className="mt-1 truncate leading-5 text-gray-500 dark:text-gray-300">
                           {formatDate(startPlanDt)}
                         </p>
                       </div>
@@ -121,10 +121,10 @@ const HomePage = () => {
                         </svg>
                       </div>
                       <div>
-                        <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-300">
+                        <p className="mt-1 truncate leading-5 text-gray-500 dark:text-gray-300">
                           {`${endWide} ${endSgg} ${endDong}`}
                         </p>
-                        <p className="mt-1 truncate text-xs leading-5 text-gray-500 dark:text-gray-300">
+                        <p className="mt-1 truncate leading-5 text-gray-500 dark:text-gray-300">
                           {formatDate(endPlanDt)}
                         </p>
                       </div>
