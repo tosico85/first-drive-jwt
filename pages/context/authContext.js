@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
       const isLoggedIn = await sessionCheck();
       console.log("isAuthenticated : ", isLoggedIn);
       console.log("pathname : ", router.pathname);
+      alert(isLoggedIn);
       if (isLoggedIn) {
         if (router.pathname == "/login") {
           router.push("/");
@@ -37,6 +38,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false);
     }
 
+    alert.log(result);
     return result.resultCd == "00" || result.resultCd == "01";
   };
 
