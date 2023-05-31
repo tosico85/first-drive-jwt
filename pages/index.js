@@ -68,7 +68,7 @@ const HomePage = () => {
               >
                 <div className="flex gap-x-1 w-full justify-between">
                   <div className="flex flex-col w-fit lg:gap-x-10 lg:flex-row lg:items-start">
-                    <div className="flex lg:flex-col lg:items-start gap-y-2 lg:w-80 w-full items-center gap-x-5 mb-2">
+                    <div className="flex flex-col items-start gap-y-2 lg:w-80 w-full gap-x-5 mb-2">
                       <p className="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-500 dark:text-gray-300">
                         {cargoDsc}
                       </p>
