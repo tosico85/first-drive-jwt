@@ -1,18 +1,23 @@
 import { useContext, useEffect, useState } from "react";
 import apiPaths from "../services/apiRoutes";
-import Link from "next/link";
 import AuthContext from "./context/authContext";
 import { useRouter } from "next/router";
 import { formatDate } from "../utils/StringUtils";
 
 const HomePage = () => {
-  const { requestServer } = useContext(AuthContext);
+  const { requestServer, userInfo } = useContext(AuthContext);
   const [cargoOrder, setCargoOrder] = useState([]);
   const router = useRouter();
 
   const getOrderList = async () => {
-    const url = apiPaths.custReqGetCargoOrder;
-    const params = {};
+    const url =
+      userInfo.auth_code == "ADMIN"
+        ? apiPaths.adminGetCargoOrder
+        : apiPaths.custReqGetCargoOrder;
+
+    console.log(userInfo);
+    console.log(url);
+    const params = { delete_yn: "N" };
 
     const result = await requestServer(url, params);
     setCargoOrder(() => result);
@@ -23,7 +28,7 @@ const HomePage = () => {
     (async () => {
       await getOrderList();
     })();
-  }, []);
+  }, [userInfo]);
 
   //상세보기
   const handleDetail = (cargo_seq) => {
@@ -135,10 +140,10 @@ const HomePage = () => {
                       className={
                         "text-sm w-fit h-fit text-white font-bold dark:text-gray-300 px-2 py-1 rounded-full " +
                         (ordStatus == "화물등록"
-                          ? "bg-slate-400 ring-slate-400"
+                          ? "bg-indigo-400 ring-indigo-400"
                           : ordStatus == "배차신청"
                           ? "bg-orange-400 ring-orange-400"
-                          : "bg-indigo-400 ring-indigo-400")
+                          : "bg-slate-400 ring-slate-400")
                       }
                     >
                       <p>{ordStatus}</p>
