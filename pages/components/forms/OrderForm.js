@@ -7,9 +7,16 @@ import { useRouter } from "next/router";
 import { format } from "date-fns";
 import AuthContext from "../../context/authContext";
 
-export default function OrderForm({ isEdit = false, editData = {} }) {
+export default function OrderForm({
+  isEdit = false,
+  editData = {},
+  isDirectApi = false,
+}) {
   const router = useRouter();
-  const { requestServer } = useContext(AuthContext);
+  const {
+    requestServer,
+    userInfo: { auth_code },
+  } = useContext(AuthContext);
   //const [paramData, setParamData] = useState(editData || {});
   const [cargoTonList, setCargoTonList] = useState([]);
   const [truckTypeList, setTruckTypeList] = useState([]);
@@ -111,6 +118,7 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
       getValues()
     );
     cargoOrder = checkboxValueReset(cargoOrder);
+    cargoOrder.fee = "0";
 
     const { result, resultCd } = await requestServer(
       apiPaths.custReqAddCargoOrder,
@@ -138,16 +146,48 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
     cargoOrder = checkboxValueReset(cargoOrder);
 
     console.log(cargoOrder);
-    const { result, resultCd } = await requestServer(
-      apiPaths.custReqModCargoOrder,
+
+    /**
+     * 1. 화주가 접수상태의 화물 수정
+     * 2. 관리자가 접수상태의 화물/운송료 정보 수정
+     * 3. 관리자가 배차신청 상태의 화물정보 수정
+     */
+    const url = apiPaths.custReqModCargoOrder;
+    if (auth_code === "ADMIN") {
+      if (isDirectApi) {
+        url = apiPaths.apiOrderMod;
+      } else {
+        url = apiPaths.adminModCargoOrder;
+        cargoOrder.fee = "0";
+      }
+    }
+
+    const { result, resultCd, code, message } = await requestServer(
+      url,
       cargoOrder
     );
 
-    if (resultCd === "00") {
-      alert("화물 오더가 수정되었습니다.");
-      router.push("/");
+    // API의 경우 리턴 양식이 다름
+    if (isDirectApi) {
+      if (code === 1) {
+        alert("배차 신청정보가 수정되었습니다.");
+        router.push({
+          pathname: "/orders/detail",
+          query: { param: cargoOrder.cargo_seq },
+        });
+      } else {
+        alert(message);
+      }
     } else {
-      alert(result);
+      if (resultCd === "00") {
+        alert("화물 오더가 수정되었습니다.");
+        router.push({
+          pathname: "/orders/detail",
+          query: { param: cargoOrder.cargo_seq },
+        });
+      } else {
+        alert(result);
+      }
     }
   };
 
@@ -412,7 +452,9 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
           화물 내용과 차량정보를 입력해주세요.
         </p>
         <div className="mt-10">
-          <span>화물상세내용</span>
+          <label className="block text-sm font-medium leading-6">
+            화물상세내용
+          </label>
           <input
             {...register("cargoDsc", {
               required: "화물상세내용을 입력해주세요.",
@@ -552,7 +594,7 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
           </div>
         </div>
       </div>
-      <div className="border-b border-gray-900/10 dark:border-gray-900/40 py-8 mb-8">
+      <div className="border-b border-gray-900/10 dark:border-gray-900/40 py-8">
         <h2 className="text-lg font-semibold leading-7">화주 및 의뢰 정보</h2>
         <p className="mt-1 text-sm leading-6 mb-10 text-gray-600 dark:text-gray-300">
           원화주 정보와 운송료 관련 정보를 입력하세요
@@ -695,6 +737,44 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
         </div>
       </div>
 
+      {auth_code === "ADMIN" && (
+        <div className="border-b border-gray-900/10 dark:border-gray-900/40 py-8">
+          <h2 className="text-lg font-semibold leading-7">운송료 정보</h2>
+          <p className="mt-1 text-sm leading-6 mb-10 text-gray-600 dark:text-gray-300">
+            운송료를 입력해주세요.(최소 20,000)
+          </p>
+
+          <div className="mt-10">
+            <div className="grid gap-y-3 lg:grid-cols-5 lg:gap-x-10">
+              <div>
+                <label className="block text-sm font-medium leading-6">
+                  운송료
+                </label>
+                <input
+                  {...register("fare")}
+                  type="number"
+                  maxLength={10}
+                  placeholder={"최소 운송료 20,000"}
+                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                />
+              </div>
+              <div className="hidden">
+                <label className="block text-sm font-medium leading-6">
+                  수수료
+                </label>
+                <input
+                  {...register("fee")}
+                  type="number"
+                  maxLength={10}
+                  placeholder={"수수료눈 운송료의 50% 미만입니다."}
+                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="mt-6 flex items-center justify-end gap-x-6">
         <button
           type="button"
@@ -703,12 +783,21 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
         >
           Cancel
         </button>
-        <button
-          type="submit"
-          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          {isEdit ? "화물 수정" : "화물 등록"}
-        </button>
+        {isDirectApi ? (
+          <button
+            type="submit"
+            className="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
+          >
+            배차신청 수정
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            {isEdit ? "화물 수정" : "화물 등록"}
+          </button>
+        )}
       </div>
     </form>
   );

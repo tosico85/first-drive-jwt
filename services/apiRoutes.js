@@ -12,6 +12,7 @@ const USER_LOGIN_CHECK = "/user/sessionCheck";
 const ADMIN_GET_USER_LIST = "/admin/get/user/list"; //사용자 목록 조회
 const ADMIN_CHANGE_AUTH = "/admin/change/auth"; //사용자 권한 변경
 const ADMIN_GET_CARGO_ORDER = "/admin/get/cargo/order"; //화물정보조회
+const ADMIN_MOD_CARGO_ORDER = "/admin/mod/cargo/order"; //화물부가정보조회(수수료/운송료)
 
 //Call24 APIs (ADMIN)
 const API_ORDER_ADD = "/api/order/addOrder"; //화물등록
@@ -48,6 +49,7 @@ const apiPaths = {
   adminGetUserList: ADMIN_GET_USER_LIST,
   adminChangeAuth: ADMIN_CHANGE_AUTH,
   adminGetCargoOrder: ADMIN_GET_CARGO_ORDER,
+  adminModCargoOrder: ADMIN_MOD_CARGO_ORDER,
 
   // Cust
   custReqAddCargoOrder: CUST_REQ_ADD_CARGO_ORDER,

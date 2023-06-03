@@ -4,6 +4,11 @@ import { AuthProvider } from "./context/authContext";
 import Layout from "./components/Layout";
 import "../styles/globals.css";
 import "react-datepicker/dist/react-datepicker.css";
+import Modal from "react-modal";
+
+// Set app element for react-modal
+Modal.setAppElement("#__next");
+
 class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
