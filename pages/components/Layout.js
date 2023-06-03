@@ -9,10 +9,10 @@ const Layout = ({ children }) => {
   const isLogin = router.pathname === "/login";
 
   return (
-    <div className="h-full">
+    <div className="h-full relative">
       {!isLogin && (
         <>
-          <header className="bg-white absolute z-1 shadow-md w-full dark:bg-slate-700 dark:shadow-2xl">
+          <header className="bg-white absolute shadow-md w-full dark:bg-slate-700 dark:shadow-2xl">
             <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
               <h1 className="text-2xl font-bold tracking-tight text-gray-900 font-sans mt-16  dark:text-gray-200">
                 {currentPage?.name}
@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
           <Navbar />
         </>
       )}
-      <main className={isLogin ? "h-full" : "h-max"}>
+      <main className={" " + (isLogin ? "h-full" : "h-max")}>
         <div
           className={
             "h-full mx-auto max-w-7xl px-5 lg:px-8 " +

@@ -139,7 +139,7 @@ const HomePage = () => {
                     <div
                       className={
                         "text-sm w-fit h-fit text-white font-bold dark:text-gray-300 px-2 py-1 rounded-full " +
-                        (ordStatus == "화물등록"
+                        (ordStatus == "화물접수"
                           ? "bg-indigo-400 ring-indigo-400"
                           : ordStatus == "배차신청"
                           ? "bg-orange-400 ring-orange-400"

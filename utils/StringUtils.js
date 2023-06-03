@@ -33,3 +33,7 @@ export const formatPhoneNumber = (inputData) => {
 
   return result;
 };
+
+export const isEmpty = (obj) => {
+  return obj || "" == "";
+};

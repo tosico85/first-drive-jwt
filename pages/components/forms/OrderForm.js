@@ -1,4 +1,4 @@
-import { appendErrors, Controller, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useContext, useEffect, useState } from "react";
 import apiPaths from "../../../services/apiRoutes";
 import AddressForm from "./AddressForm";
@@ -28,12 +28,8 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
   const {
     register,
     handleSubmit,
-    setError,
-    clearErrors,
     getValues,
     setValue,
-    reset,
-    resetField,
     control,
     formState: { errors },
   } = methods;
@@ -131,6 +127,7 @@ export default function OrderForm({ isEdit = false, editData = {} }) {
 
   const updateCargoOrder = async () => {
     const cargoOrder = (({
+      ordStatus,
       startAddress,
       endAddress,
       change_dtm,
