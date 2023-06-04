@@ -29,7 +29,7 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
       if (resultCd === "00") {
         alert("화물 오더가 수정되었습니다.");
         const fare = getValues("fare");
-        onComplete({ fare, fee: "0" });
+        onComplete({ fare });
       } else {
         alert(result);
       }
@@ -72,7 +72,7 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
                 {errors.fare?.message}
               </div>
             </div>
-            <div className="hidden">
+            {/* <div className="hidden">
               <label className="block text-sm font-medium leading-6">
                 수수료
               </label>
@@ -86,7 +86,7 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
               <div className="text-red-500 mx-auto mb-6 font-bold text-center">
                 {errors.fee?.message}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

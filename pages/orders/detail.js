@@ -121,7 +121,7 @@ export default function Detail() {
 
     console.log(cargoOrder);
     //console.log(isEmpty(cargoOrder.fare));
-    if (isEmpty(cargoOrder.fare)) {
+    if (isEmpty(cargoOrder.fare) || cargoOrder.fare === "0") {
       openModal();
     } else {
       const { code, message } = await requestServer(apiPaths.apiOrderAdd, {
@@ -413,9 +413,44 @@ export default function Detail() {
               </div>
             </dl>
           </div>
+          <h3 className="mt-10 text-base font-semibold leading-7 ">
+            (관리자)부가정보
+          </h3>
+          <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400">
+            운송료 및 등록일자
+          </p>
+          <div className="mt-4 border-y border-gray-100 dark:border-gray-300">
+            <dl className="divide-y divide-gray-100 dark:divide-gray-500">
+              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                  운송료
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                  {cargoOrder.fare}
+                </dd>
+              </div>
+              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                  수수료
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                  {cargoOrder.fee}
+                </dd>
+              </div>
+              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                  배차신청일
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                  {formatDate(cargoOrder.allocReqDt) || "-"}
+                </dd>
+              </div>
+            </dl>
+          </div>
         </div>
       </div>
-      <div className="mt-6 pb-6 flex items-center justify-end gap-x-6">
+
+      <div className="mt-6 pb-6 flex items-center justify-end lg:gap-x-6 gap-x-3">
         <button
           type="button"
           onClick={() => router.push("/")}
@@ -450,24 +485,26 @@ export default function Detail() {
             )}
           </>
         )}
-        {cargoOrder.ordStatus === "배차신청" && (
-          <>
-            <button
-              type="button"
-              className="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
-              onClick={handleAdminOrderModify}
-            >
-              배차신청 수정
-            </button>
-            <button
-              type="button"
-              className="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
-              onClick={handleAdminOrderDelete}
-            >
-              배차신청 취소
-            </button>
-          </>
-        )}
+
+        {userInfo.auth_code === "ADMIN" &&
+          cargoOrder.ordStatus === "배차신청" && (
+            <>
+              <button
+                type="button"
+                className="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
+                onClick={handleAdminOrderModify}
+              >
+                배차신청 수정
+              </button>
+              <button
+                type="button"
+                className="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
+                onClick={handleAdminOrderDelete}
+              >
+                배차신청 취소
+              </button>
+            </>
+          )}
       </div>
     </div>
   );

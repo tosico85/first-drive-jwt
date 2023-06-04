@@ -118,7 +118,6 @@ export default function OrderForm({
       getValues()
     );
     cargoOrder = checkboxValueReset(cargoOrder);
-    cargoOrder.fee = "0";
 
     const { result, resultCd } = await requestServer(
       apiPaths.custReqAddCargoOrder,
@@ -158,7 +157,6 @@ export default function OrderForm({
         url = apiPaths.apiOrderMod;
       } else {
         url = apiPaths.adminModCargoOrder;
-        cargoOrder.fee = "0";
       }
     }
 
@@ -757,8 +755,7 @@ export default function OrderForm({
                   placeholder={"최소 운송료 20,000"}
                   className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
                 />
-              </div>
-              <div className="hidden">
+                {/* <div className="hidden">
                 <label className="block text-sm font-medium leading-6">
                   수수료
                 </label>
@@ -769,6 +766,7 @@ export default function OrderForm({
                   placeholder={"수수료눈 운송료의 50% 미만입니다."}
                   className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
                 />
+              </div> */}
               </div>
             </div>
           </div>

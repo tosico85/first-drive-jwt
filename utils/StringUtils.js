@@ -1,5 +1,5 @@
 export const formatDate = (inputDate) => {
-  if (!inputDate) {
+  if (isEmpty(inputDate)) {
     return "";
   }
 
