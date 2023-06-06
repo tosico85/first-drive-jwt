@@ -1,11 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useContext, useEffect, useState } from "react";
 import apiPaths from "../../../services/apiRoutes";
-import { useRouter } from "next/router";
 import AuthContext from "../../context/authContext";
 
 export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
-  const router = useRouter();
   const { requestServer } = useContext(AuthContext);
 
   const methods = useForm({ mode: "onSubmit" });

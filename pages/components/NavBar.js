@@ -30,6 +30,11 @@ const Navbar = () => {
       href: "/orders/create",
       current: "/orders/create" === router.pathname,
     },
+    {
+      name: "사용자관리",
+      href: "/manage/user/list",
+      current: "/manage/user/list" === router.pathname,
+    },
   ];
 
   const userNavigation = [

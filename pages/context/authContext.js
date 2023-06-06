@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const result = await requestServer(apiPaths.userLogin, params);
-    if (result.resultCd === "00") {
+    if (result.resultCd === "00" || result.resultCd === "01") {
       setIsAuthenticated(true);
       setUserInfo(result.userInfo);
       router.push("/");

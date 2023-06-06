@@ -23,7 +23,7 @@ const LoginPage = () => {
 
     if (mode === "login") {
       const { resultCd, result } = await login(email, password);
-      if (resultCd != "00") {
+      if (resultCd != "00" && resultCd != "01") {
         setError("submitError", {
           type: "manual",
           message: "이메일 또는 패스워드가 일치하지 않습니다.",
