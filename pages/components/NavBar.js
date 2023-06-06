@@ -23,19 +23,25 @@ const Navbar = () => {
     imageUrl: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
   };
 
-  const navigation = [
+  let navigation = [
     { name: "Home", href: "/", current: "/" === router.pathname },
     {
       name: "화물등록",
       href: "/orders/create",
       current: "/orders/create" === router.pathname,
     },
+  ];
+  const navigationAdmin = [
     {
       name: "사용자관리",
       href: "/manage/user/list",
       current: "/manage/user/list" === router.pathname,
     },
   ];
+
+  if (userInfo.auth_code === "ADMIN") {
+    navigation = [...navigation, ...navigationAdmin];
+  }
 
   const userNavigation = [
     { name: "Your Profile", href: "#" },
