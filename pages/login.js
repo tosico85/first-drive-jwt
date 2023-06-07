@@ -26,7 +26,7 @@ const LoginPage = () => {
       if (resultCd != "00" && resultCd != "01") {
         setError("submitError", {
           type: "manual",
-          message: "이메일 또는 패스워드가 일치하지 않습니다.",
+          message: result,
         });
 
         console.log(errors);
@@ -45,6 +45,7 @@ const LoginPage = () => {
           setError("submitError", { message: result });
         }
       } else {
+        alert("회원 가입 신청되었습니다. 관리자 승인 후 이용 가능합니다.");
         reset();
         toggleMode();
       }
@@ -205,6 +206,9 @@ const LoginPage = () => {
             <div className="flex w-full">
               <button
                 type="submit"
+                onClick={() => {
+                  clearErrors();
+                }}
                 className="py-2 px-4  bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
               >
                 {mode === "login" ? "Login" : "Join"}

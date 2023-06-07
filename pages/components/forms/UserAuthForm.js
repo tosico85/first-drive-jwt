@@ -6,11 +6,14 @@ import AuthContext from "../../context/authContext";
 export default function UserAuthForm({ selectedUser, onCancel, onComplete }) {
   const { requestServer } = useContext(AuthContext);
   const LOAD_TYPE_LIST = [
-    { value: "USER", name: "사용자" },
+    { value: "USER", name: "사용자(화주)" },
     { value: "ADMIN", name: "관리자" },
   ];
 
   useEffect(() => {
+    if (selectedUser.auth_code == "APPLY") {
+      selectedUser.auth_code = "USER";
+    }
     setValue("auth_code", selectedUser.auth_code);
   }, [selectedUser]);
   {
@@ -25,13 +28,13 @@ export default function UserAuthForm({ selectedUser, onCancel, onComplete }) {
   } = methods;
 
   const updateUserAuth = async () => {
-    console.log(selectedUser);
+    //console.log(selectedUser);
     if (selectedUser.email) {
       const user = { email: selectedUser.email, ...getValues() };
 
-      console.log(user);
+      //console.log(user);
       const { result, resultCd } = await requestServer(
-        apiPaths.adminChangeAuth,
+        apiPaths.adminChangeUser,
         user
       );
 
@@ -72,7 +75,7 @@ export default function UserAuthForm({ selectedUser, onCancel, onComplete }) {
                 {...register("auth_code", {
                   required: `권한을 입력해주세요`,
                 })}
-                className="block w-full lg:w-1/4 rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                className="block w-full lg:w-3/4 rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
               >
                 {LOAD_TYPE_LIST.map((item, i) => (
                   <option key={i} value={item.value}>

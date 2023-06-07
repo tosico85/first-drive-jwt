@@ -413,40 +413,44 @@ export default function Detail() {
               </div>
             </dl>
           </div>
-          <h3 className="mt-10 text-base font-semibold leading-7 ">
-            (관리자)부가정보
-          </h3>
-          <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400">
-            운송료 및 등록일자
-          </p>
-          <div className="mt-4 border-y border-gray-100 dark:border-gray-300">
-            <dl className="divide-y divide-gray-100 dark:divide-gray-500">
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-                  운송료
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                  {cargoOrder.fare}
-                </dd>
+          {userInfo.auth_code === "ADMIN" && (
+            <>
+              <h3 className="mt-10 text-base font-semibold leading-7 ">
+                (관리자)부가정보
+              </h3>
+              <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400">
+                운송료 및 등록일자
+              </p>
+              <div className="mt-4 border-y border-gray-100 dark:border-gray-300">
+                <dl className="divide-y divide-gray-100 dark:divide-gray-500">
+                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                      운송료
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                      {cargoOrder.fare}
+                    </dd>
+                  </div>
+                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                      수수료
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                      {cargoOrder.fee}
+                    </dd>
+                  </div>
+                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                      배차신청일
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                      {formatDate(cargoOrder.allocReqDt) || "-"}
+                    </dd>
+                  </div>
+                </dl>
               </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-                  수수료
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                  {cargoOrder.fee}
-                </dd>
-              </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-                  배차신청일
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                  {formatDate(cargoOrder.allocReqDt) || "-"}
-                </dd>
-              </div>
-            </dl>
-          </div>
+            </>
+          )}
         </div>
       </div>
 
