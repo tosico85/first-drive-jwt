@@ -755,7 +755,20 @@ export default function OrderForm({
                   placeholder={"최소 운송료 20,000"}
                   className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
                 />
-                {/* <div className="hidden">
+              </div>
+              <div>
+                <label className="block text-sm font-medium leading-6">
+                  운송료(화주노출용)
+                </label>
+                <input
+                  {...register("fareView")}
+                  type="number"
+                  maxLength={10}
+                  placeholder={"최소 운송료 20,000"}
+                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                />
+              </div>
+              {/* <div className="hidden">
                 <label className="block text-sm font-medium leading-6">
                   수수료
                 </label>
@@ -767,7 +780,6 @@ export default function OrderForm({
                   className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
                 />
               </div> */}
-              </div>
             </div>
           </div>
         </div>

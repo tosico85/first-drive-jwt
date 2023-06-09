@@ -26,8 +26,8 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
 
       if (resultCd === "00") {
         alert("화물 오더가 수정되었습니다.");
-        const fare = getValues("fare");
-        onComplete({ fare });
+        const [fare, fareView] = getValues(["fare", "fareView"]);
+        onComplete({ fare, fareView });
       } else {
         alert(result);
       }
@@ -68,6 +68,23 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
               />
               <div className="text-red-500 mx-auto mb-6 font-bold text-center">
                 {errors.fare?.message}
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium leading-6">
+                운송료(화주노출용)
+              </label>
+              <input
+                {...register("fareView", {
+                  required: "운송료를 입력해주세요.",
+                })}
+                type="number"
+                maxLength={10}
+                placeholder={"숫자만 입력하세요"}
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+              />
+              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                {errors.fareView?.message}
               </div>
             </div>
             {/* <div className="hidden">

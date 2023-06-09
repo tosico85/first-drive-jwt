@@ -12,10 +12,10 @@ function DateInput({ onDateChange, dateValue, title }) {
         setSelectedDate(dateObject);
       } catch (e) {}
     }
-  }, []);
+  }, [dateValue]);
 
   const handleDateChange = (date) => {
-    console.log(date);
+    //console.log(date);
     try {
       const formattedDate = format(date, "yyyyMMdd");
       setSelectedDate(date);
