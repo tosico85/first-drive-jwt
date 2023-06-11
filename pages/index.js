@@ -18,7 +18,7 @@ const HomePage = () => {
 
     console.log(userInfo);
     console.log(url);
-    const params = { delete_yn: "N" };
+    const params = {};
 
     const result = await requestServer(url, params);
     setCargoOrder(() => result);
@@ -94,11 +94,24 @@ const HomePage = () => {
           >
             배차완료
           </div>
+          <div
+            className={
+              "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-slate-400 hover:shadow-md " +
+              (searchStatus == "취소"
+                ? "bg-slate-400 text-white"
+                : "text-slate-400")
+            }
+            onClick={() => handleSearchStatus("취소")}
+          >
+            취소
+          </div>
         </div>
         <p className="text-right">{`${
           cargoOrder.filter((item) => {
             if (searchStatus === "ALL") {
               return true;
+            } else if (searchStatus === "취소") {
+              return item.delete_yn === "Y";
             } else {
               return item.ordStatus === searchStatus;
             }
@@ -111,6 +124,8 @@ const HomePage = () => {
             .filter((item) => {
               if (searchStatus === "ALL") {
                 return true;
+              } else if (searchStatus === "취소") {
+                return item.delete_yn === "Y";
               } else {
                 return item.ordStatus === searchStatus;
               }
@@ -207,12 +222,16 @@ const HomePage = () => {
                     <div className="flex flex-col justify-center items-end gap-y-2">
                       <div
                         className={
-                          "text-sm w-fit h-fit text-white font-bold dark:text-gray-300 px-2 py-1 rounded-full " +
+                          "text-sm w-fit h-fit text-white font-bold px-2 py-1 rounded-full " +
                           (ordStatus == "화물접수"
                             ? "bg-indigo-400 ring-indigo-400"
                             : ordStatus == "배차신청"
                             ? "bg-orange-400 ring-orange-400"
-                            : "bg-slate-400 ring-slate-400")
+                            : ordStatus == "배차완료"
+                            ? "bg-purple-400 ring-bg-purple-400"
+                            : ordStatus == "배차취소"
+                            ? "bg-slate-400 ring-bg-slate-400"
+                            : "bg-zinc-400 ring-zinc-400")
                         }
                       >
                         <p>{ordStatus}</p>
