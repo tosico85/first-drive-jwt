@@ -23,6 +23,7 @@ export default function OrderForm({
   const [cargoTonList, setCargoTonList] = useState([]);
   const [truckTypeList, setTruckTypeList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalStartEnd, setModalStartEnd] = useState("");
   const LOAD_TYPE_LIST = [
     "지게차",
     "수작업",
@@ -208,6 +209,7 @@ export default function OrderForm({
 
   const handleAddressButton = (e, startEnd) => {
     e.preventDefault();
+    setModalStartEnd(startEnd);
     openModal();
   };
 
@@ -220,6 +222,14 @@ export default function OrderForm({
   };
 
   const callbackModal = (retVal) => {
+    if (retVal) {
+      editData[`${modalStartEnd}Wide`] = retVal["wide"];
+      editData[`${modalStartEnd}Sgg`] = retVal["sgg"];
+      editData[`${modalStartEnd}Dong`] = retVal["dong"];
+      setValue(`${modalStartEnd}Address`, editData);
+    }
+
+    console.log(editData);
     closeModal();
   };
 
@@ -228,7 +238,7 @@ export default function OrderForm({
       top: "50%",
       left: "50%",
       width: "80%",
-      height: "auto",
+      height: "80%",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
     },
@@ -242,7 +252,11 @@ export default function OrderForm({
         contentLabel="Modal"
         style={customModalStyles}
       >
-        <UserAddressModal />
+        <UserAddressModal
+          onCancel={closeModal}
+          onComplete={callbackModal}
+          startEnd={modalStartEnd}
+        />
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
         <div className="border-b border-gray-900/10 dark:border-gray-900/40 pb-8">
