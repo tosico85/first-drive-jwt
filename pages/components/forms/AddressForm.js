@@ -15,24 +15,29 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
 
   useEffect(() => {
     (async () => {
-      const { code, data: sidoList } = await requestServer(
-        apiPaths.apiOrderAddr,
-        {}
-      );
+      //console.log(">> AddressForm useEffect()");
+      if (sidoList.length == 0) {
+        const { code, data: sidoList } = await requestServer(
+          apiPaths.apiOrderAddr,
+          {}
+        );
 
-      if (code === 1) {
-        setSidoList(sidoList);
+        if (code === 1) {
+          setSidoList(sidoList);
 
-        // 전달받은 주소 set
-        //console.log("addressValue", addressValue);
-        if (addressValue) {
-          await setParamDatas();
+          // 전달받은 주소 set
+          //console.log("addressValue", addressValue);
         }
       }
+      if (addressValue[`${clsf}Wide`]) {
+        //console.log(">> Call setParamDatas()");
+        await setParamDatas();
+      }
     })();
-  }, []);
+  }, [addressValue]);
 
   const setParamDatas = async () => {
+    //console.log(">> setParamDatas()");
     const wide = addressValue[`${clsf}Wide`];
     const sgg = addressValue[`${clsf}Sgg`];
     const dng = addressValue[`${clsf}Dong`];
@@ -48,6 +53,7 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
   };
 
   const handleSelectSido = async (e) => {
+    //console.log(">> handleSelectSido()");
     const {
       target: { value: selectdSido },
     } = e;

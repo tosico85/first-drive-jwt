@@ -24,6 +24,17 @@ export default function OrderForm({
   const [truckTypeList, setTruckTypeList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalStartEnd, setModalStartEnd] = useState("");
+  const [startAddressData, setStartAddressData] = useState({
+    startWide: editData.startWide,
+    startSgg: editData.startSgg,
+    startDong: editData.startDong,
+  });
+  const [endAddressData, setEndAddressData] = useState({
+    endWide: editData.endWide,
+    endSgg: editData.endSgg,
+    endDong: editData.endDong,
+  });
+
   const LOAD_TYPE_LIST = [
     "지게차",
     "수작업",
@@ -41,6 +52,7 @@ export default function OrderForm({
     handleSubmit,
     getValues,
     setValue,
+    clearErrors,
     control,
     formState: { errors },
   } = methods;
@@ -84,8 +96,8 @@ export default function OrderForm({
         }
       });
 
-      console.log("editData : ", editData);
-      console.log("cargoOrder : ", getValues());
+      //console.log("editData : ", editData);
+      //console.log("cargoOrder : ", getValues());
     }
   };
 
@@ -223,13 +235,20 @@ export default function OrderForm({
 
   const callbackModal = (retVal) => {
     if (retVal) {
-      editData[`${modalStartEnd}Wide`] = retVal["wide"];
-      editData[`${modalStartEnd}Sgg`] = retVal["sgg"];
-      editData[`${modalStartEnd}Dong`] = retVal["dong"];
-      setValue(`${modalStartEnd}Address`, editData);
+      let addressObj = {};
+      addressObj[`${modalStartEnd}Wide`] = retVal["wide"];
+      addressObj[`${modalStartEnd}Sgg`] = retVal["sgg"];
+      addressObj[`${modalStartEnd}Dong`] = retVal["dong"];
+
+      setValue(`${modalStartEnd}Detail`, retVal["detail"]);
+
+      if (modalStartEnd === "start") {
+        setStartAddressData(addressObj);
+      } else {
+        setEndAddressData(addressObj);
+      }
     }
 
-    console.log(editData);
     closeModal();
   };
 
@@ -285,9 +304,7 @@ export default function OrderForm({
               <Controller
                 control={control}
                 name="startAddress"
-                rules={{
-                  required: "상차지 주소를 입력해주세요.",
-                }}
+                rules={{ required: "상차지 주소를 입력해주세요." }}
                 render={() => (
                   <AddressForm
                     addressChange={(returnValue) => {
@@ -303,13 +320,10 @@ export default function OrderForm({
                       ) {
                         setValue("startAddress", returnValue);
                       }
+                      clearErrors();
                       //console.log(returnValue);
                     }}
-                    addressValue={{
-                      startWide: editData.startWide,
-                      startSgg: editData.startSgg,
-                      startDong: editData.startDong,
-                    }}
+                    addressValue={startAddressData}
                     clsf="start"
                   />
                 )}
@@ -387,9 +401,19 @@ export default function OrderForm({
           <p className="mt-1 text-sm leading-6 mb-5 text-gray-600 dark:text-gray-300">
             하차지 주소 및 하차방법, 하차일자, 연락처 정보를 입력해주세요.
           </p>
-          <h2 className="mt-10 mb-3 text-base font-semibold leading-7">
-            하차지 주소
-          </h2>
+          <div className="mt-10 mb-3 grid grid-cols-2 sm:grid-cols-5 justify-between items-center">
+            <h2 className="text-base font-semibold leading-7">하차지 주소</h2>
+            <div className="text-right sm:text-left">
+              <button
+                className="rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
+                onClick={(e) => {
+                  handleAddressButton(e, "end");
+                }}
+              >
+                주소록에서 가져오기
+              </button>
+            </div>
+          </div>
           <div className="grid grid-cols-1">
             <div className="mb-5">
               <label className="block text-sm font-medium leading-6">
@@ -399,7 +423,7 @@ export default function OrderForm({
                 control={control}
                 name="endAddress"
                 rules={{ required: "하차지 주소를 입력해주세요." }}
-                render={({ field: { value } }) => (
+                render={() => (
                   <AddressForm
                     addressChange={(returnValue) => {
                       const { endWide, endSgg, endDong } = returnValue;
@@ -414,13 +438,10 @@ export default function OrderForm({
                       ) {
                         setValue("endAddress", returnValue);
                       }
-                      console.log(returnValue);
+                      //console.log(returnValue);
+                      clearErrors();
                     }}
-                    addressValue={{
-                      endWide: editData.endWide,
-                      endSgg: editData.endSgg,
-                      endDong: editData.endDong,
-                    }}
+                    addressValue={endAddressData}
                     clsf="end"
                   />
                 )}
