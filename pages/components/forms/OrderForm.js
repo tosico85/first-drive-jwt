@@ -57,6 +57,9 @@ export default function OrderForm({
     formState: { errors },
   } = methods;
 
+  //let startBaseYn = "N";
+  //let endBaseYn = "N";
+
   useEffect(() => {
     (async () => {
       const { code, data } = await requestServer(apiPaths.apiOrderCargoTon, {});
@@ -234,6 +237,7 @@ export default function OrderForm({
   };
 
   const callbackModal = (retVal) => {
+    console.log("retVal >> ", retVal);
     if (retVal) {
       let addressObj = {};
       addressObj[`${modalStartEnd}Wide`] = retVal["wide"];

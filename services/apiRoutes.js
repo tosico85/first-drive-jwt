@@ -12,6 +12,7 @@ const USER_LOGIN_CHECK = "/user/sessionCheck";
 const USER_ADDRESS_LIST = "/user/address/list"; //주소목록 조회
 const USER_ADDRESS_BASE = "/user/address/base"; //기본주소 조회
 const USER_ADDRESS_ADD = "/user/address/add"; //주소 등록 (상하차지구분, 주소(시도, 시군구, 동, 상세주소)로 merge처리)
+const USER_ADDRESS_DEL = "/user/address/del"; //주소 등록 (상하차지구분, 주소(시도, 시군구, 동, 상세주소)로 merge처리)
 
 //ADMIN APIs  (TO-DO)
 const ADMIN_GET_USER_LIST = "/admin/get/user/list"; //사용자 목록 조회
@@ -54,6 +55,7 @@ const apiPaths = {
   userAddressList: USER_ADDRESS_LIST,
   userAddressBase: USER_ADDRESS_BASE,
   userAddressAdd: USER_ADDRESS_ADD,
+  userAddressDel: USER_ADDRESS_DEL,
 
   // Admin
   adminGetUserList: ADMIN_GET_USER_LIST,
