@@ -59,15 +59,6 @@ export default function UserAddressModal({ startEnd, onCancel, onComplete }) {
     }
   };
 
-  const handleSelect = () => {
-    const address = addressList.find((item) => item.checked == true);
-    if (!address) {
-      alert("주소를 선택해주세요.");
-      return;
-    }
-    onComplete(address);
-  };
-
   const handleChecked = (key) => {
     const list = [...addressList];
     list.forEach((item) => {
@@ -79,6 +70,15 @@ export default function UserAddressModal({ startEnd, onCancel, onComplete }) {
     });
     //console.log(list);
     setAddressList(list);
+  };
+
+  const handleSelect = () => {
+    const address = addressList.find((item) => item.checked == true);
+    if (!address) {
+      alert("주소를 선택해주세요.");
+      return;
+    }
+    onComplete(address);
   };
 
   return (

@@ -57,8 +57,8 @@ export default function OrderForm({
     formState: { errors },
   } = methods;
 
-  //let startBaseYn = "N";
-  //let endBaseYn = "N";
+  let startBaseYn = "N";
+  let endBaseYn = "N";
 
   useEffect(() => {
     (async () => {
@@ -74,6 +74,8 @@ export default function OrderForm({
 
       if (isEdit) {
         await loadParamData();
+      } else {
+        prefillBaseAddress();
       }
     })();
   }, []);
@@ -118,6 +120,33 @@ export default function OrderForm({
     }
   };
 
+  // 상하차지 기본주소 프리필
+  const prefillBaseAddress = async () => {
+    const {
+      result: { start, end },
+    } = await requestServer(apiPaths.userAddressBase, {});
+
+    if (Object.keys(start).length > 0) {
+      setStartAddressData({
+        startWide: start.wide,
+        startSgg: start.sgg,
+        startDong: start.dong,
+        startDetail: start.detail,
+      });
+      startBaseYn = start.baseYn;
+    }
+
+    if (Object.keys(end).length > 0) {
+      setEndAddressData({
+        endWide: end.wide,
+        endSgg: end.sgg,
+        endDong: end.dong,
+        endDetail: end.detail,
+      });
+      endBaseYn = end.baseYn;
+    }
+  };
+
   const checkboxValueReset = (object) => {
     // 체크박스 control을 위한 처리
     [
@@ -132,12 +161,51 @@ export default function OrderForm({
     return object;
   };
 
+  // 상하차지 주소정보 update
+  const regStartEndAddress = async () => {
+    let [wide, sgg, dong, detail] = getValues([
+      "startWide",
+      "startSgg",
+      "startDong",
+      "startDetail",
+    ]);
+    const startAddress = {
+      wide,
+      sgg,
+      dong,
+      detail,
+      baseYn: startBaseYn,
+      startEnd: "start",
+    };
+    await requestServer(apiPaths.userAddressAdd, startAddress);
+
+    [wide, sgg, dong, detail] = getValues([
+      "endWide",
+      "endSgg",
+      "endDong",
+      "endDetail",
+    ]);
+    const endAddress = {
+      wide,
+      sgg,
+      dong,
+      detail,
+      baseYn: endBaseYn,
+      startEnd: "end",
+    };
+    await requestServer(apiPaths.userAddressAdd, endAddress);
+  };
+
   const createCargoOrder = async () => {
     const cargoOrder = (({ startAddress, endAddress, ...rest }) => rest)(
       getValues()
     );
     cargoOrder = checkboxValueReset(cargoOrder);
 
+    // 상하차지 주소정보 update
+    await regStartEndAddress();
+
+    // 화물등록
     const { result, resultCd } = await requestServer(
       apiPaths.custReqAddCargoOrder,
       cargoOrder
@@ -248,8 +316,10 @@ export default function OrderForm({
 
       if (modalStartEnd === "start") {
         setStartAddressData(addressObj);
+        startBaseYn = retVal.baseYn;
       } else {
         setEndAddressData(addressObj);
+        endBaseYn = retVal.baseYn;
       }
     }
 
