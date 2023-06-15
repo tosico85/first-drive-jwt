@@ -19,12 +19,12 @@
     "react-datepicker": "^4.11.0",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.43.9",
-    "react-modal": "^3.16.1"
+    "react-modal": "^3.16.1",
+    "dotenv": "^16.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.0.3",
     "eslint": "8.10.0",
     "eslint-config-next": "12.1.0",
     "gh-pages": "^5.0.0",

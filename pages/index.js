@@ -48,8 +48,8 @@ const HomePage = () => {
       <h3 className="text-base font-semibold leading-7 ">
         현재 등록 중인 화물 건입니다.
       </h3>
-      <div className="flex justify-between mt-5">
-        <div className="flex gap-x-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 mt-5">
+        <div className="flex justify-between sm:justify-start sm:gap-x-3">
           <div
             className={
               "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-slate-400 hover:shadow-md " +
@@ -155,7 +155,7 @@ const HomePage = () => {
                   key={cargo_seq}
                   onClick={() => handleDetail(cargo_seq)}
                 >
-                  <div className="flex gap-x-1 w-full justify-between">
+                  <div className="flex flex-col sm:flex-row gap-x-1 w-full justify-between">
                     <div className="flex flex-col w-fit lg:gap-x-10 lg:flex-row lg:items-start">
                       <div className="flex flex-col items-start gap-y-2 lg:w-80 w-full gap-x-5 mb-2">
                         <p className="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-500 dark:text-gray-300">

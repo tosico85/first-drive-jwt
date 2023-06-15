@@ -1,4 +1,5 @@
-const BASE_URL = "https://6corps.co.kr";
+const BASE_URL = "https://6corps.co.kr"; //화물24 API URL
+const JUSO_URL = process.env.API_JUSO_URL;
 
 //User
 const USER_JOIN = "/user/join";
@@ -80,6 +81,9 @@ const apiPaths = {
   apiOrderGetAll: API_ORDER_GET_ALL,
   apiAllocCancel: API_ALLOC_CANCEL,
   apiReturnAllocNotice: API_RETURN_ALLOC_NOTICE,
+
+  // 주소 URL
+  apiJusoUrl: JUSO_URL,
 };
 
 export default apiPaths;
