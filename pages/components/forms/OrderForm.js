@@ -8,7 +8,6 @@ import { format } from "date-fns";
 import AuthContext from "../../context/authContext";
 import Modal from "react-modal";
 import UserAddressModal from "../modals/UserAddressModal";
-import SearchAddressModal from "../modals/SearchAddressModal";
 
 export default function OrderForm({
   isEdit = false,
@@ -23,9 +22,7 @@ export default function OrderForm({
   //const [paramData, setParamData] = useState(editData || {});
   const [cargoTonList, setCargoTonList] = useState([]);
   const [truckTypeList, setTruckTypeList] = useState([]);
-  const [isUAModalOpen, setIsUAModalOpen] = useState(false);
-  const [isSAModalOpen, setIsSAModalOpen] = useState(false);
-  const [modalStartEnd, setModalStartEnd] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [startAddressData, setStartAddressData] = useState({
     startWide: editData.startWide,
     startSgg: editData.startSgg,
@@ -59,6 +56,7 @@ export default function OrderForm({
     formState: { errors },
   } = methods;
 
+  let modalStartEnd = "";
   let startBaseYn = "N";
   let endBaseYn = "N";
 
@@ -292,58 +290,45 @@ export default function OrderForm({
     console.log(errors);
   };
 
-  const handleUserAddressButton = (e, startEnd) => {
+  const handleAddressButton = (e, startEnd) => {
     e.preventDefault();
-    setModalStartEnd(startEnd);
-    openUAModal();
+    modalStartEnd = startEnd;
+    openModal();
   };
 
-  const handleSearchAddressButton = (e, startEnd) => {
-    e.preventDefault();
-    setModalStartEnd(startEnd);
-    openSAModal();
+  const openModal = () => {
+    setIsModalOpen(true);
   };
 
-  const openUAModal = () => {
-    setIsUAModalOpen(true);
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
-  const closeUAModal = () => {
-    setIsUAModalOpen(false);
-  };
-
-  const openSAModal = () => {
-    setIsSAModalOpen(true);
-  };
-
-  const closeSAModal = () => {
-    setIsSAModalOpen(false);
-  };
-
-  const callbackSAModal = (retVal) => {
-    closeSAModal();
-  };
-
-  const callbackUAModal = (retVal) => {
+  const callbackModal = (retVal) => {
     console.log("retVal >> ", retVal);
     if (retVal) {
-      let addressObj = {};
-      addressObj[`${modalStartEnd}Wide`] = retVal["wide"];
-      addressObj[`${modalStartEnd}Sgg`] = retVal["sgg"];
-      addressObj[`${modalStartEnd}Dong`] = retVal["dong"];
-
-      setValue(`${modalStartEnd}Detail`, retVal["detail"]);
-
-      if (modalStartEnd === "start") {
-        setStartAddressData(addressObj);
-        startBaseYn = retVal.baseYn;
-      } else {
-        setEndAddressData(addressObj);
-        endBaseYn = retVal.baseYn;
-      }
+      setAddressInput(retVal);
     }
 
-    closeUAModal();
+    closeModal();
+  };
+
+  const setAddressInput = (address) => {
+    let addressObj = {};
+    addressObj[`${modalStartEnd}Wide`] = address["wide"];
+    addressObj[`${modalStartEnd}Sgg`] = address["sgg"];
+    addressObj[`${modalStartEnd}Dong`] = address["dong"];
+
+    setValue(`${modalStartEnd}Detail`, address["detail"]);
+
+    console.log("addressObj >> ", addressObj);
+    if (modalStartEnd === "start") {
+      setStartAddressData(addressObj);
+      startBaseYn = address.baseYn;
+    } else {
+      setEndAddressData(addressObj);
+      endBaseYn = address.baseYn;
+    }
   };
 
   const customModalStyles = {
@@ -357,29 +342,63 @@ export default function OrderForm({
     },
   };
 
+  function searchAddress(startEnd) {
+    modalStartEnd = startEnd;
+
+    new daum.Postcode({
+      oncomplete: function (data) {
+        console.log(data);
+        const { sido, sigungu, bname1, bname2, buildingName } = data;
+
+        let convSido = sido?.substring(0, 2); //시/도는 무조건 앞 2글자
+        let splitSigungu = sigungu?.split(" ");
+        let convGugun = splitSigungu.shift(); //시군구의 첫번째 단어만 시/군 항목으로 사용
+
+        //세종시 예외처리
+        if (convSido == "세종") {
+          convGugun = sido.substring(2); //'특별자치시'
+        }
+
+        //시군구 데이터 정제
+        const pattern = /^(.*?)(시|군|구)$/;
+        if (!/^(동구|남구|북구|서구|중구)$/i.test(convGugun)) {
+          convGugun = convGugun.replace(pattern, "$1");
+        }
+        //console.log("splitSigungu", splitSigungu);
+
+        //동 데이터 만들기. 시군구 앞단어 빼고 나머지, 법정동1, 2 합쳐서 처리
+        const extraSigungu = splitSigungu.join(" ");
+        let convDong = [extraSigungu, bname1, bname2]
+          .join(" ")
+          .replace("  ", " ")
+          .trim();
+
+        console.log("convSido", convSido);
+        console.log("convGugun", convGugun);
+        console.log("convDong", convDong);
+
+        setAddressInput({
+          wide: convSido,
+          sgg: convGugun,
+          dong: convDong,
+          detail: buildingName,
+          baseYn: "N",
+        });
+      },
+    }).open();
+  }
+
   return (
     <div>
       <Modal
-        isOpen={isUAModalOpen}
-        onRequestClose={closeUAModal}
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
         contentLabel="Modal"
         style={customModalStyles}
       >
         <UserAddressModal
-          onCancel={closeUAModal}
-          onComplete={callbackUAModal}
-          startEnd={modalStartEnd}
-        />
-      </Modal>
-      <Modal
-        isOpen={isSAModalOpen}
-        onRequestClose={closeSAModal}
-        contentLabel="Modal"
-        style={customModalStyles}
-      >
-        <SearchAddressModal
-          onCancel={closeSAModal}
-          onComplete={callbackSAModal}
+          onCancel={closeModal}
+          onComplete={callbackModal}
           startEnd={modalStartEnd}
         />
       </Modal>
@@ -393,23 +412,24 @@ export default function OrderForm({
             <h2 className="text-base font-semibold leading-7">상차지 주소</h2>
             <div className="text-right sm:text-left flex items-center gap-x-5 justify-end">
               <div
-                className="flex text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight"
+                className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight"
                 onClick={(e) => {
-                  handleSearchAddressButton(e, "start");
+                  //handleSearchAddressButton(e, "start");
+                  searchAddress("start");
                 }}
               >
                 <span>주소검색</span>
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns="h  ttp://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth={1.5}
                   stroke="currentColor"
-                  class="w-6 h-6"
+                  className="w-6 h-6"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
                   />
                 </svg>
@@ -418,7 +438,7 @@ export default function OrderForm({
               <button
                 className="min-w-fit rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
                 onClick={(e) => {
-                  handleUserAddressButton(e, "start");
+                  handleAddressButton(e, "start");
                 }}
               >
                 주소록
@@ -533,19 +553,25 @@ export default function OrderForm({
           <div className="mt-10 mb-3 grid grid-cols-2 sm:grid-cols-5 justify-between items-center">
             <h2 className="text-base font-semibold leading-7">하차지 주소</h2>
             <div className="text-right sm:text-left flex items-center gap-x-5 justify-end">
-              <div className="flex text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight">
+              <div
+                className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight"
+                onClick={(e) => {
+                  //handleSearchAddressButton(e, "start");
+                  searchAddress("end");
+                }}
+              >
                 <span>주소검색</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
                   stroke="currentColor"
-                  class="w-6 h-6"
+                  strokeWidth={1.5}
+                  className="w-6 h-6"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
                   />
                 </svg>
@@ -553,7 +579,7 @@ export default function OrderForm({
               <button
                 className="rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
                 onClick={(e) => {
-                  handleUserAddressButton(e, "end");
+                  handleAddressButton(e, "end");
                 }}
               >
                 주소록
