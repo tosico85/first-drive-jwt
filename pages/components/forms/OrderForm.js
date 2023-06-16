@@ -23,6 +23,7 @@ export default function OrderForm({
   const [cargoTonList, setCargoTonList] = useState([]);
   const [truckTypeList, setTruckTypeList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalStartEnd, setModalStartEnd] = useState("");
   const [startAddressData, setStartAddressData] = useState({
     startWide: editData.startWide,
     startSgg: editData.startSgg,
@@ -56,7 +57,7 @@ export default function OrderForm({
     formState: { errors },
   } = methods;
 
-  let modalStartEnd = "";
+  let addressPopupStartEnd = "";
   let startBaseYn = "N";
   let endBaseYn = "N";
 
@@ -292,7 +293,9 @@ export default function OrderForm({
 
   const handleAddressButton = (e, startEnd) => {
     e.preventDefault();
-    modalStartEnd = startEnd;
+    setModalStartEnd(startEnd);
+    console.log("modalStartEnd >> ", modalStartEnd);
+    console.log("startEnd >> ", startEnd);
     openModal();
   };
 
@@ -307,22 +310,24 @@ export default function OrderForm({
   const callbackModal = (retVal) => {
     console.log("retVal >> ", retVal);
     if (retVal) {
-      setAddressInput(retVal);
+      setAddressInput(retVal, modalStartEnd);
     }
 
     closeModal();
   };
 
-  const setAddressInput = (address) => {
-    let addressObj = {};
-    addressObj[`${modalStartEnd}Wide`] = address["wide"];
-    addressObj[`${modalStartEnd}Sgg`] = address["sgg"];
-    addressObj[`${modalStartEnd}Dong`] = address["dong"];
+  const setAddressInput = (address, startEnd) => {
+    console.log("modalStartEnd >> ", startEnd);
 
-    setValue(`${modalStartEnd}Detail`, address["detail"]);
+    let addressObj = {};
+    addressObj[`${startEnd}Wide`] = address["wide"];
+    addressObj[`${startEnd}Sgg`] = address["sgg"];
+    addressObj[`${startEnd}Dong`] = address["dong"];
+
+    setValue(`${startEnd}Detail`, address["detail"]);
 
     console.log("addressObj >> ", addressObj);
-    if (modalStartEnd === "start") {
+    if (startEnd === "start") {
       setStartAddressData(addressObj);
       startBaseYn = address.baseYn;
     } else {
@@ -343,7 +348,7 @@ export default function OrderForm({
   };
 
   function searchAddress(startEnd) {
-    modalStartEnd = startEnd;
+    addressPopupStartEnd = startEnd;
 
     new daum.Postcode({
       oncomplete: function (data) {
@@ -377,13 +382,16 @@ export default function OrderForm({
         console.log("convGugun", convGugun);
         console.log("convDong", convDong);
 
-        setAddressInput({
-          wide: convSido,
-          sgg: convGugun,
-          dong: convDong,
-          detail: buildingName,
-          baseYn: "N",
-        });
+        setAddressInput(
+          {
+            wide: convSido,
+            sgg: convGugun,
+            dong: convDong,
+            detail: buildingName,
+            baseYn: "N",
+          },
+          addressPopupStartEnd
+        );
       },
     }).open();
   }
