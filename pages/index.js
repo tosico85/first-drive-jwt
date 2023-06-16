@@ -107,6 +107,7 @@ const HomePage = () => {
           </div>
         </div>
         <p className="text-right">{`${
+          cargoOrder.length > 0 &&
           cargoOrder.filter((item) => {
             if (searchStatus === "ALL") {
               return true;
