@@ -48,7 +48,7 @@ const HomePage = () => {
       <h3 className="text-base font-semibold leading-7 ">
         현재 등록 중인 화물 건입니다.
       </h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 mt-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 mt-5 gap-y-3">
         <div className="flex justify-between sm:justify-start sm:gap-x-3">
           <div
             className={
@@ -107,16 +107,17 @@ const HomePage = () => {
           </div>
         </div>
         <p className="text-right">{`${
-          cargoOrder.length > 0 &&
-          cargoOrder.filter((item) => {
-            if (searchStatus === "ALL") {
-              return true;
-            } else if (searchStatus === "취소") {
-              return item.delete_yn === "Y";
-            } else {
-              return item.ordStatus === searchStatus;
-            }
-          }).length
+          cargoOrder.length > 0
+            ? cargoOrder.filter((item) => {
+                if (searchStatus === "ALL") {
+                  return true;
+                } else if (searchStatus === "취소") {
+                  return item.delete_yn === "Y";
+                } else {
+                  return item.ordStatus === searchStatus;
+                }
+              }).length
+            : "0"
         } 건`}</p>
       </div>
       <ul className="mt-6 border-y border-gray-200 dark:border-gray-300">

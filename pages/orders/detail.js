@@ -17,6 +17,7 @@ export default function Detail() {
   const { requestServer, userInfo } = useContext(AuthContext);
   const [cargoOrder, setCargoOrder] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  let isAdmin = userInfo.auth_code === "ADMIN";
 
   useEffect(() => {
     (async () => {
@@ -305,17 +306,27 @@ export default function Detail() {
                   화물 선택사항
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                  <div>
-                    {`혼적여부 : ${
-                      cargoOrder.multiCargoGub == "혼적" ? "Y" : "N"
-                    }`}
-                  </div>
-                  <div>
-                    {`긴급여부 : ${cargoOrder.urgent == "긴급" ? "Y" : "N"}`}
-                  </div>
+                  {isAdmin && (
+                    <div>
+                      {`혼적여부 : ${
+                        cargoOrder.multiCargoGub == "혼적" ? "Y" : "N"
+                      }`}
+                    </div>
+                  )}
+
+                  {isAdmin && (
+                    <div>
+                      {`긴급여부 : ${cargoOrder.urgent == "긴급" ? "Y" : "N"}`}
+                    </div>
+                  )}
                   <div>
                     {`왕복여부 : ${
                       cargoOrder.shuttleCargoInfo == "왕복" ? "Y" : "N"
+                    }`}
+                  </div>
+                  <div>
+                    {`착불여부 : ${
+                      cargoOrder.farePaytype == "선착불" ? "Y" : "N"
                     }`}
                   </div>
                 </dd>
@@ -336,94 +347,102 @@ export default function Detail() {
                   {cargoOrder.truckType}
                 </dd>
               </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-                  적재 중량(t)
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                  {cargoOrder.frgton}
-                </dd>
-              </div>
-            </dl>
-          </div>
-
-          <h3 className="mt-10 text-base font-semibold leading-7 ">
-            화주 및 의뢰 정보
-          </h3>
-          <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400">
-            원화주 정보와 운송료 관련 정보
-          </p>
-          <div className="mt-4 border-y border-gray-100 dark:border-gray-300">
-            <dl className="divide-y divide-gray-100 dark:divide-gray-500">
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-                  의뢰자 구분
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                  {cargoOrder.firstType}
-                </dd>
-              </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-                  운송료 지불구분
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                  {cargoOrder.farePaytype}
-                </dd>
-              </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-                  운송료 지급 예정일
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                  {formatDate(cargoOrder.payPlanYmd)}
-                </dd>
-              </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-                  원화주 명
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                  {cargoOrder.firstShipperNm}
-                </dd>
-              </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-                  원화주 전화번호
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                  {formatPhoneNumber(cargoOrder.firstShipperInfo)}
-                </dd>
-              </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-                  원화주 사업자번호
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                  {cargoOrder.firstShipperBizNo}
-                </dd>
-              </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-                  전자세금계산서 발행여부
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                  {cargoOrder.taxbillType}
-                </dd>
-              </div>
-              {cargoOrder.fareView != "0" && (
+              {isAdmin && (
                 <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                   <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
-                    운송료
+                    적재 중량(t)
                   </dt>
                   <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                    {cargoOrder.fareView}
+                    {cargoOrder.frgton}
                   </dd>
                 </div>
               )}
             </dl>
           </div>
-          {userInfo.auth_code === "ADMIN" && (
+
+          {isAdmin && (
+            <div>
+              <h3 className="mt-10 text-base font-semibold leading-7 ">
+                화주 및 의뢰 정보
+              </h3>
+              <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400">
+                원화주 정보와 운송료 관련 정보
+              </p>
+              <div className="mt-4 border-y border-gray-100 dark:border-gray-300">
+                <dl className="divide-y divide-gray-100 dark:divide-gray-500">
+                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                      의뢰자 구분
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                      {cargoOrder.firstType}
+                    </dd>
+                  </div>
+                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                      운송료 지불구분
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                      {cargoOrder.farePaytype}
+                    </dd>
+                  </div>
+                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                      운송료 지급 예정일
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                      {formatDate(cargoOrder.payPlanYmd)}
+                    </dd>
+                  </div>
+                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                      원화주 명
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                      {cargoOrder.firstShipperNm}
+                    </dd>
+                  </div>
+                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                      원화주 전화번호
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                      {formatPhoneNumber(cargoOrder.firstShipperInfo)}
+                    </dd>
+                  </div>
+                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                      원화주 사업자번호
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                      {cargoOrder.firstShipperBizNo}
+                    </dd>
+                  </div>
+                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                      전자세금계산서 발행여부
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                      {isEmpty(cargoOrder.taxbillType)
+                        ? "N"
+                        : cargoOrder.taxbillType}
+                    </dd>
+                  </div>
+                  {cargoOrder.fareView != "0" && (
+                    <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                        운송료
+                      </dt>
+                      <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                        {cargoOrder.fareView}
+                      </dd>
+                    </div>
+                  )}
+                </dl>
+              </div>
+            </div>
+          )}
+          {isAdmin && (
             <>
               <h3 className="mt-10 text-base font-semibold leading-7 ">
                 (관리자)부가정보
@@ -488,7 +507,7 @@ export default function Detail() {
             >
               화물 삭제
             </button>
-            {userInfo.auth_code === "ADMIN" && (
+            {isAdmin && (
               <button
                 type="button"
                 className="rounded-md bg-orange-600 px-2 sm:px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
@@ -500,25 +519,24 @@ export default function Detail() {
           </>
         )}
 
-        {userInfo.auth_code === "ADMIN" &&
-          cargoOrder.ordStatus === "배차신청" && (
-            <>
-              <button
-                type="button"
-                className="rounded-md bg-orange-600 px-2 sm:px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
-                onClick={handleAdminOrderModify}
-              >
-                배차신청 수정
-              </button>
-              <button
-                type="button"
-                className="rounded-md bg-orange-600 px-2 sm:px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
-                onClick={handleAdminOrderDelete}
-              >
-                배차신청 취소
-              </button>
-            </>
-          )}
+        {isAdmin && cargoOrder.ordStatus === "배차신청" && (
+          <>
+            <button
+              type="button"
+              className="rounded-md bg-orange-600 px-2 sm:px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
+              onClick={handleAdminOrderModify}
+            >
+              배차신청 수정
+            </button>
+            <button
+              type="button"
+              className="rounded-md bg-orange-600 px-2 sm:px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
+              onClick={handleAdminOrderDelete}
+            >
+              배차신청 취소
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

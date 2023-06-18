@@ -53,14 +53,20 @@ export default function OrderForm({
     getValues,
     setValue,
     clearErrors,
+    watch,
     control,
     formState: { errors },
   } = methods;
 
+  const watchFarePayType = watch("farePaytype");
   let addressPopupStartEnd = "";
   let startBaseYn = "N";
   let endBaseYn = "N";
+  const isAdmin = auth_code === "ADMIN";
 
+  /**
+   * 화면 로딩 시 event
+   */
   useEffect(() => {
     (async () => {
       const { code, data } = await requestServer(apiPaths.apiOrderCargoTon, {});
@@ -79,7 +85,15 @@ export default function OrderForm({
         prefillBaseAddress();
       }
     })();
-  }, []);
+  }, [auth_code]);
+
+  useEffect(() => {
+    //console.log("changed.!! ", watchFarePayType);
+
+    if (watchFarePayType === "선착불") {
+      setValue("taxbillType", false);
+    }
+  }, [watchFarePayType]);
 
   // TEST DATA 로드
   const loadParamData = async () => {
@@ -107,6 +121,7 @@ export default function OrderForm({
     }
   };
 
+  // 차량톤수 조회(콤보박스 셋팅용)
   const getTruckTypeList = async () => {
     const cargoTon = getValues("cargoTon");
     setTruckTypeList([]);
@@ -148,8 +163,11 @@ export default function OrderForm({
     }
   };
 
+  /**
+   * 체크박스 control을 위한 처리
+   */
   const checkboxValueReset = (object) => {
-    // 체크박스 control을 위한 처리
+    // 체크박스의 true값을 db적재 값으로 변경
     [
       { key: "taxbillType", value: "Y" },
       { key: "multiCargoGub", value: "혼적" },
@@ -158,6 +176,11 @@ export default function OrderForm({
     ].forEach((item) => {
       object[item.key] = object[item.key] ? item.value : "";
     });
+
+    // 운송료지불구분의 경우 화주는 체크박스로 제공
+    if (!isAdmin) {
+      object["farePaytype"] = object["farePaytype"] ? "선착불" : "";
+    }
 
     return object;
   };
@@ -197,6 +220,9 @@ export default function OrderForm({
     await requestServer(apiPaths.userAddressAdd, endAddress);
   };
 
+  /**
+   * 화물 등록(화주가 화물 등록 하는 경우)
+   */
   const createCargoOrder = async () => {
     const cargoOrder = (({ startAddress, endAddress, ...rest }) => rest)(
       getValues()
@@ -220,6 +246,10 @@ export default function OrderForm({
     }
   };
 
+  /**
+   * 화물 정보 update
+   * - 화물 상태에 따른 호출 API를 다르게 하여 호출
+   */
   const updateCargoOrder = async () => {
     const cargoOrder = (({
       ordStatus,
@@ -240,7 +270,7 @@ export default function OrderForm({
      * 3. 관리자가 배차신청 상태의 화물정보 수정
      */
     const url = apiPaths.custReqModCargoOrder;
-    if (auth_code === "ADMIN") {
+    if (isAdmin) {
       if (isDirectApi) {
         url = apiPaths.apiOrderMod;
       } else {
@@ -277,6 +307,10 @@ export default function OrderForm({
     }
   };
 
+  /**
+   * submit invalid event
+   * form 안의 모든 필수항목 입력된 경우 이 이벤트 ..
+   */
   const onValid = () => {
     if (isEdit) {
       updateCargoOrder();
@@ -285,12 +319,21 @@ export default function OrderForm({
     }
   };
 
+  /**
+   * submit invalid event
+   * 누락된 값 있는 경우 이 이벤트..
+   */
   const oninvalid = () => {
     //console.log(getValues("startPlanDt"));
     //console.log(editData);
     console.log(errors);
   };
 
+  /**
+   * 주소록 버튼 event handle
+   * @param {event} e
+   * @param {상하차 구분} startEnd
+   */
   const handleAddressButton = (e, startEnd) => {
     e.preventDefault();
     setModalStartEnd(startEnd);
@@ -299,14 +342,20 @@ export default function OrderForm({
     openModal();
   };
 
+  // Open Modal
   const openModal = () => {
     setIsModalOpen(true);
   };
 
+  // Close Modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
+  /**
+   * 주소록(모달폼) 주소선택 후 callback
+   * @param {주소록 선택 리턴값} retVal
+   */
   const callbackModal = (retVal) => {
     console.log("retVal >> ", retVal);
     if (retVal) {
@@ -316,6 +365,11 @@ export default function OrderForm({
     closeModal();
   };
 
+  /**
+   * 주소검색/주소록에서 선택한 주소 리턴값 세팅
+   * @param {선택 주소 object} address
+   * @param {상하차 구분} startEnd
+   */
   const setAddressInput = (address, startEnd) => {
     console.log("modalStartEnd >> ", startEnd);
 
@@ -336,6 +390,9 @@ export default function OrderForm({
     }
   };
 
+  /**
+   * 모달 폼 디자인
+   */
   const customModalStyles = {
     content: {
       top: "50%",
@@ -347,6 +404,10 @@ export default function OrderForm({
     },
   };
 
+  /**
+   * @title 주소 검색
+   * @param {상하차 구분} startEnd
+   */
   function searchAddress(startEnd) {
     addressPopupStartEnd = startEnd;
 
@@ -485,7 +546,7 @@ export default function OrderForm({
                   />
                 )}
               />
-              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
                 {errors.startAddress?.message}
               </div>
             </div>
@@ -507,47 +568,45 @@ export default function OrderForm({
               </div>
             </div>
           </div>
-          <div>
-            <h2 className="mt-10 mb-3 text-base font-semibold leading-7">
-              기타사항
-            </h2>
-            <div className="grid lg:grid-cols-6 grid-cols-1">
-              <div>
-                <label className="block text-sm font-medium leading-6">
-                  상차일자
-                </label>
-                <Controller
-                  control={control}
-                  name="startPlanDt"
-                  rules={{ required: "상차일자를 입력해주세요." }}
-                  render={({ field: { onChange } }) => (
-                    <DateInput
-                      onDateChange={onChange}
-                      dateValue={getValues("startPlanDt")}
-                    />
-                  )}
-                />
+          <div className="mt-5 grid lg:grid-cols-6 grid-cols-1">
+            <div>
+              <label className="block text-sm font-medium leading-6">
+                상차일자
+              </label>
+              <Controller
+                control={control}
+                name="startPlanDt"
+                rules={{ required: "상차일자를 입력해주세요." }}
+                render={({ field: { onChange } }) => (
+                  <DateInput
+                    onDateChange={onChange}
+                    dateValue={getValues("startPlanDt")}
+                  />
+                )}
+              />
+              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                {errors.startPlanDt?.message}
               </div>
-              <div className="lg:col-span-5">
-                <label className="block text-sm font-medium leading-6">
-                  상차방법
-                </label>
-                <select
-                  {...register("startLoad", {
-                    required: `상차방법을 입력해주세요`,
-                  })}
-                  className="block w-full lg:w-1/4 rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                >
-                  <option value="">상차방법</option>
-                  {LOAD_TYPE_LIST.map((item, i) => (
-                    <option key={i} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-                <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                  {errors.startLoad?.message}
-                </div>
+            </div>
+            <div className="lg:col-span-5">
+              <label className="block text-sm font-medium leading-6">
+                상차방법
+              </label>
+              <select
+                {...register("startLoad", {
+                  required: `상차방법을 입력해주세요`,
+                })}
+                className="block w-full lg:w-1/4 rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+              >
+                <option value="">상차방법</option>
+                {LOAD_TYPE_LIST.map((item, i) => (
+                  <option key={i} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                {errors.startLoad?.message}
               </div>
             </div>
           </div>
@@ -626,7 +685,7 @@ export default function OrderForm({
                   />
                 )}
               />
-              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
                 {errors.endAddress?.message}
               </div>
             </div>
@@ -647,65 +706,62 @@ export default function OrderForm({
               </div>
             </div>
           </div>
-          <div>
-            <h2 className="mt-10 mb-3 text-base font-semibold leading-7">
-              기타사항
-            </h2>
-
-            <div className="grid lg:grid-cols-5 grid-cols-1 lg:gap-x-10 gap-y-3">
-              <div>
-                <label className="block text-sm font-medium leading-6">
-                  하차일자
-                </label>
-                <Controller
-                  control={control}
-                  name="endPlanDt"
-                  rules={{ required: "하차일자를 입력해주세요." }}
-                  render={({ field: { onChange } }) => (
-                    <DateInput
-                      onDateChange={onChange}
-                      dateValue={getValues("endPlanDt")}
-                    />
-                  )}
-                />
+          <div className="mt-5 grid lg:grid-cols-5 grid-cols-1 lg:gap-x-10 gap-y-5">
+            <div>
+              <label className="block text-sm font-medium leading-6">
+                하차일자
+              </label>
+              <Controller
+                control={control}
+                name="endPlanDt"
+                rules={{ required: "하차일자를 입력해주세요." }}
+                render={({ field: { onChange } }) => (
+                  <DateInput
+                    onDateChange={onChange}
+                    dateValue={getValues("endPlanDt")}
+                  />
+                )}
+              />
+              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                {errors.endPlanDt?.message}
               </div>
-              <div className="">
-                <label className="block text-sm font-medium leading-6">
-                  하차방법
-                </label>
-                <select
-                  {...register("endLoad", {
-                    required: `하차방법을 입력해주세요`,
-                  })}
-                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                >
-                  <option value="">하차방법</option>
-                  {LOAD_TYPE_LIST.map((item, i) => (
-                    <option key={i} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-                <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                  {errors.endLoad?.message}
-                </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium leading-6">
+                하차방법
+              </label>
+              <select
+                {...register("endLoad", {
+                  required: `하차방법을 입력해주세요`,
+                })}
+                className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+              >
+                <option value="">하차방법</option>
+                {LOAD_TYPE_LIST.map((item, i) => (
+                  <option key={i} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                {errors.endLoad?.message}
               </div>
-              <div className="">
-                <label className="block text-sm font-medium leading-6">
-                  하차지 전화번호
-                </label>
-                <input
-                  {...register("endAreaPhone", {
-                    required: "하차지 전화번호를 입력해주세요.",
-                  })}
-                  type="tel"
-                  maxLength={11}
-                  placeholder={"'-'없이 입력하세요"}
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                />
-                <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                  {errors.endAreaPhone?.message}
-                </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium leading-6">
+                하차지 전화번호
+              </label>
+              <input
+                {...register("endAreaPhone", {
+                  required: "하차지 전화번호를 입력해주세요.",
+                })}
+                type="tel"
+                maxLength={11}
+                placeholder={"'-'없이 입력하세요"}
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+              />
+              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                {errors.endAreaPhone?.message}
               </div>
             </div>
           </div>
@@ -717,7 +773,7 @@ export default function OrderForm({
           </p>
           <div className="mt-10">
             <label className="block text-sm font-medium leading-6">
-              화물상세내용
+              화물상세내용(메모)
             </label>
             <input
               {...register("cargoDsc", {
@@ -736,40 +792,63 @@ export default function OrderForm({
                 화물 선택사항
               </legend>
               <div className="mt-3 space-y-4 lg:space-y-0 lg:grid lg:grid-cols-4">
-                <div className="relative flex gap-x-3">
-                  <div className="flex h-6 items-center">
-                    <input
-                      {...register("multiCargoGub")}
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
+                {isAdmin && (
+                  <div className="relative flex gap-x-3">
+                    <div className="flex h-6 items-center">
+                      <input
+                        {...register("multiCargoGub")}
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      />
+                    </div>
+                    <div className="text-sm leading-6">
+                      <label htmlFor="comments" className="font-medium">
+                        혼적여부
+                      </label>
+                      <p className="text-gray-500 dark:text-gray-400">
+                        (선택)혼적여부를 체크해주세요.
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-sm leading-6">
-                    <label htmlFor="comments" className="font-medium">
-                      혼적여부
-                    </label>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      (선택)혼적여부를 체크해주세요.
-                    </p>
+                )}
+                {isAdmin && (
+                  <div className="relative flex gap-x-3">
+                    <div className="flex h-6 items-center">
+                      <input
+                        {...register("urgent")}
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      />
+                    </div>
+                    <div className="text-sm leading-6">
+                      <label htmlFor="candidates" className="font-medium">
+                        긴급여부
+                      </label>
+                      <p className="text-gray-500 dark:text-gray-400">
+                        (선택)긴급여부를 체크해주세요.
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="relative flex gap-x-3">
-                  <div className="flex h-6 items-center">
-                    <input
-                      {...register("urgent")}
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    />
+                )}
+                {!isAdmin && (
+                  <div className="relative flex gap-x-3">
+                    <div className="flex h-6 items-center">
+                      <input
+                        {...register("farePaytype")}
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      />
+                    </div>
+                    <div className="text-sm leading-6">
+                      <label htmlFor="candidates" className="font-medium">
+                        착불여부
+                      </label>
+                      <p className="text-gray-500 dark:text-gray-400">
+                        (선택)착불여부를 체크해주세요.
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-sm leading-6">
-                    <label htmlFor="candidates" className="font-medium">
-                      긴급여부
-                    </label>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      (선택)긴급여부를 체크해주세요.
-                    </p>
-                  </div>
-                </div>
+                )}
                 <div className="relative flex gap-x-3">
                   <div className="flex h-6 items-center">
                     <input
@@ -833,179 +912,186 @@ export default function OrderForm({
                     ))}
                 </select>
               </div>
-              <div>
-                <label className="block text-sm font-medium leading-6">
-                  적재중량(t)
-                </label>
-                <input
-                  type="number"
-                  step="any"
-                  placeholder="차량톤수의 110%까지"
-                  {...register("frgton", {
-                    onChange: (e) => {
-                      const cargoTon = Number(getValues("cargoTon"));
-                      const frgTon = Number(e.target.value);
-                      const maxTon = cargoTon * 1.1;
-                      if (frgTon > maxTon) {
-                        e.target.value = maxTon.toString();
-                      }
-                      if (frgTon < 0) {
-                        e.target.value = "0";
-                      }
-                    },
-                  })}
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                />
-              </div>
+              {isAdmin && (
+                <div>
+                  <label className="block text-sm font-medium leading-6">
+                    적재중량(t)
+                  </label>
+                  <input
+                    type="number"
+                    step="any"
+                    placeholder="차량톤수의 110%까지"
+                    {...register("frgton", {
+                      onChange: (e) => {
+                        const cargoTon = Number(getValues("cargoTon"));
+                        const frgTon = Number(e.target.value);
+                        const maxTon = cargoTon * 1.1;
+                        if (frgTon > maxTon) {
+                          e.target.value = maxTon.toString();
+                        }
+                        if (frgTon < 0) {
+                          e.target.value = "0";
+                        }
+                      },
+                    })}
+                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
-        <div className="border-b border-gray-900/10 dark:border-gray-900/40 py-8">
-          <h2 className="text-lg font-semibold leading-7">화주 및 의뢰 정보</h2>
-          <p className="mt-1 text-sm leading-6 mb-10 text-gray-600 dark:text-gray-300">
-            원화주 정보와 운송료 관련 정보를 입력하세요
-          </p>
-          <div>
-            <h2 className="text-base font-semibold leading-7 mb-3">
-              의뢰 정보
+        {isAdmin && (
+          <div className="border-b border-gray-900/10 dark:border-gray-900/40 py-8">
+            <h2 className="text-lg font-semibold leading-7">
+              화주 및 의뢰 정보
             </h2>
-            <div className="grid gap-y-3 lg:grid-cols-4 lg:gap-x-10">
-              <div>
-                <label className="block text-sm font-medium leading-6">
-                  의뢰자 구분
-                </label>
-                <select
-                  {...register("firstType")}
-                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                >
-                  <option value={"01"}>일반화주</option>
-                  <option value={"02"}>주선/운송사</option>
-                </select>
-                <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                  {errors.firstType?.message}
+            <p className="mt-1 text-sm leading-6 mb-10 text-gray-600 dark:text-gray-300">
+              원화주 정보와 운송료 관련 정보를 입력하세요
+            </p>
+            <div>
+              <h2 className="text-base font-semibold leading-7 mb-3">
+                의뢰 정보
+              </h2>
+              <div className="grid gap-y-3 lg:grid-cols-4 lg:gap-x-10">
+                <div>
+                  <label className="block text-sm font-medium leading-6">
+                    의뢰자 구분
+                  </label>
+                  <select
+                    {...register("firstType")}
+                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                  >
+                    <option value={"01"}>일반화주</option>
+                    <option value={"02"}>주선/운송사</option>
+                  </select>
+                  <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                    {errors.firstType?.message}
+                  </div>
                 </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium leading-6">
-                  운송료 지불구분
-                </label>
-                <select
-                  {...register("farePaytype", {
-                    required: `운송료 지불구분을 입력해주세요`,
-                  })}
-                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                >
-                  <option value="">운송료 지불구분</option>
-                  {PAY_TYPE_LIST.map((item, i) => (
-                    <option key={i} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-                <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                  {errors.farePaytype?.message}
+                <div>
+                  <label className="block text-sm font-medium leading-6">
+                    운송료 지불구분
+                  </label>
+                  <select
+                    {...register("farePaytype", {
+                      required: `운송료 지불구분을 입력해주세요`,
+                    })}
+                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                  >
+                    <option value="">운송료 지불구분</option>
+                    {PAY_TYPE_LIST.map((item, i) => (
+                      <option key={i} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                    {errors.farePaytype?.message}
+                  </div>
                 </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium leading-6">
-                  운송료 지급 예정일
-                </label>
-                <Controller
-                  control={control}
-                  name="payPlanYmd"
-                  rules={{ required: "운송료지급예정일을 입력해주세요." }}
-                  render={({ field: { onChange } }) => (
-                    <DateInput
-                      onDateChange={onChange}
-                      dateValue={getValues("payPlanYmd")}
-                    />
-                  )}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="mt-10">
-            <h2 className="text-base font-semibold leading-7 mb-3">
-              원화주 정보
-            </h2>
-            <div className="grid gap-y-3 lg:grid-cols-4 lg:gap-x-10">
-              <div>
-                <label className="block text-sm font-medium leading-6">
-                  원화주 명
-                </label>
-                <input
-                  {...register("firstShipperNm", {
-                    required: "원화주 명을 입력해주세요.",
-                  })}
-                  type="text"
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                />
-                <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                  {errors.firstShipperNm?.message}
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium leading-6">
-                  원화주 전화번호
-                </label>
-                <input
-                  {...register("firstShipperInfo", {
-                    required: "원화주 전화번호를 입력해주세요.",
-                  })}
-                  type="tel"
-                  maxLength={11}
-                  placeholder={"'-'없이 입력하세요"}
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                />
-                <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                  {errors.firstShipperInfo?.message}
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium leading-6">
-                  원화주 사업자번호
-                </label>
-                <input
-                  {...register("firstShipperBizNo", {
-                    required:
-                      getValues("firstType") === "02"
-                        ? "원화주 사업자번호을 입력해주세요."
-                        : false,
-                  })}
-                  type="text"
-                  maxLength={10}
-                  placeholder="의뢰자 주선/운송사인 경우 필수"
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                />
-                <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                  {errors.firstShipperBizNo?.message}
+                <div>
+                  <label className="block text-sm font-medium leading-6">
+                    운송료 지급 예정일
+                  </label>
+                  <Controller
+                    control={control}
+                    name="payPlanYmd"
+                    rules={{ required: "운송료지급예정일을 입력해주세요." }}
+                    render={({ field: { onChange } }) => (
+                      <DateInput
+                        onDateChange={onChange}
+                        dateValue={getValues("payPlanYmd")}
+                      />
+                    )}
+                  />
                 </div>
               </div>
             </div>
-          </div>
-          <div className="mt-10">
-            <div className="relative flex gap-x-3">
-              <div className="flex h-6 items-center">
-                <input
-                  {...register("taxbillType")}
-                  type="checkbox"
-                  value={"Y"}
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                />
+            <div className="mt-10">
+              <h2 className="text-base font-semibold leading-7 mb-3">
+                원화주 정보
+              </h2>
+              <div className="grid gap-y-3 lg:grid-cols-4 lg:gap-x-10">
+                <div>
+                  <label className="block text-sm font-medium leading-6">
+                    원화주 명
+                  </label>
+                  <input
+                    {...register("firstShipperNm", {
+                      required: "원화주 명을 입력해주세요.",
+                    })}
+                    type="text"
+                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                  />
+                  <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                    {errors.firstShipperNm?.message}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium leading-6">
+                    원화주 전화번호
+                  </label>
+                  <input
+                    {...register("firstShipperInfo", {
+                      required: "원화주 전화번호를 입력해주세요.",
+                    })}
+                    type="tel"
+                    maxLength={11}
+                    placeholder={"'-'없이 입력하세요"}
+                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                  />
+                  <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                    {errors.firstShipperInfo?.message}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium leading-6">
+                    원화주 사업자번호
+                  </label>
+                  <input
+                    {...register("firstShipperBizNo", {
+                      required:
+                        getValues("firstType") === "02"
+                          ? "원화주 사업자번호을 입력해주세요."
+                          : false,
+                    })}
+                    type="text"
+                    maxLength={10}
+                    placeholder="의뢰자 주선/운송사인 경우 필수"
+                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                  />
+                  <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                    {errors.firstShipperBizNo?.message}
+                  </div>
+                </div>
               </div>
-              <div className="text-sm leading-6">
-                <label htmlFor="candidates" className="font-medium">
-                  전자세금계산서 발행여부
-                </label>
-                <p className="text-gray-500 dark:text-gray-400">
-                  (선택)전자세금계산서 발행여부를 체크해주세요.
-                </p>
+            </div>
+            <div className="mt-10">
+              <div className="relative flex gap-x-3">
+                <div className="flex h-6 items-center">
+                  <input
+                    {...register("taxbillType")}
+                    disabled={watchFarePayType === "선착불"}
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  />
+                </div>
+                <div className="text-sm leading-6">
+                  <label htmlFor="candidates" className="font-medium">
+                    전자세금계산서 발행여부
+                  </label>
+                  <p className="text-gray-500 dark:text-gray-400">
+                    (선택)전자세금계산서 발행여부를 체크해주세요. (선착불은 선택
+                    불가)
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
 
-        {auth_code === "ADMIN" && (
+        {isAdmin && (
           <div className="border-b border-gray-900/10 dark:border-gray-900/40 py-8">
             <h2 className="text-lg font-semibold leading-7">운송료 정보</h2>
             <p className="mt-1 text-sm leading-6 mb-10 text-gray-600 dark:text-gray-300">
