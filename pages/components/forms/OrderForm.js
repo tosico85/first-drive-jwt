@@ -11,6 +11,7 @@ import UserAddressModal from "../modals/UserAddressModal";
 
 export default function OrderForm({
   isEdit = false,
+  isCopy = false,
   editData = {},
   isDirectApi = false,
 }) {
@@ -79,9 +80,11 @@ export default function OrderForm({
       setValue("endPlanDt", getValues("endPlanDt") || curDt);
       setValue("payPlanYmd", getValues("payPlanYmd") || curDt);
 
-      if (isEdit) {
+      if (isEdit || isCopy) {
+        console.log("EditData >> ", editData);
         await loadParamData();
       } else {
+        console.log("Prefill ..");
         prefillBaseAddress();
       }
     })();
@@ -116,7 +119,7 @@ export default function OrderForm({
         }
       });
 
-      //console.log("editData : ", editData);
+      console.log("editData : ", editData);
       //console.log("cargoOrder : ", getValues());
     }
   };

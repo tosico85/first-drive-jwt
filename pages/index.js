@@ -39,6 +39,24 @@ const HomePage = () => {
     });
   };
 
+  //화물복사
+  const handleCargoCopy = (cargo_seq) => {
+    const copyCargoItem = {
+      ...cargoOrder.find((item) => item.cargo_seq === cargo_seq),
+    };
+
+    //수정 건이므로 cargo_seq 삭제
+    const paramData = (({ cargo_seq, ...rest }) => rest)(copyCargoItem);
+
+    const serializedQuery = encodeURIComponent(
+      JSON.stringify({ cargoOrder: paramData })
+    );
+    router.push({
+      pathname: "/orders/create",
+      query: { serializedQuery },
+    });
+  };
+
   const handleSearchStatus = (status) => {
     setSearchStatus(status);
   };
@@ -158,11 +176,36 @@ const HomePage = () => {
                   onClick={() => handleDetail(cargo_seq)}
                 >
                   <div className="flex flex-col sm:flex-row gap-x-1 w-full justify-between">
-                    <div className="flex flex-col w-fit lg:gap-x-10 lg:flex-row lg:items-start">
+                    <div className="flex flex-col w-full lg:gap-x-10 lg:flex-row lg:items-start">
                       <div className="flex flex-col items-start gap-y-2 lg:w-80 w-full gap-x-5 mb-2">
-                        <p className="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-500 dark:text-gray-300">
-                          {cargoDsc}
-                        </p>
+                        <div className="w-full flex items-center justify-between">
+                          <p className="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-500 dark:text-gray-300">
+                            {cargoDsc}
+                          </p>
+                          <div
+                            className="text-sm font-semibold flex items-center text-slate-500 border border-slate-500 rounded-md py-1 px-2 hover:cursor-pointer hover:shadow-md"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleCargoCopy(cargo_seq);
+                            }}
+                          >
+                            <p>화물복사</p>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="w-6 h-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75"
+                              />
+                            </svg>
+                          </div>
+                        </div>
                         <div className="flex items-center gap-x-3">
                           <p className="px-2 py-0 rounded-md flex items-center h-5 shadow-md bg-gray-500 text-xs text-white dark:border dark:border-gray-700">
                             {truckType}
