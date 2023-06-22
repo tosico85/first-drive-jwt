@@ -375,7 +375,9 @@ export default function Detail() {
                       의뢰자 구분
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
-                      {cargoOrder.firstType}
+                      {cargoOrder.firstType == "01"
+                        ? "일반화주"
+                        : "주선/운송사"}
                     </dd>
                   </div>
                   <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
