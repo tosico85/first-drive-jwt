@@ -41,6 +41,9 @@ const CUST_REQ_ADD_CARGO_ORDER = "/cust/req/add/cargoOrder"; //화물정보 등�
 const CUST_REQ_MOD_CARGO_ORDER = "/cust/req/mod/cargoOrder"; //화물정보 수정(DB)
 const CUST_REQ_CANCEL_CARGO_ORDER = "/cust/req/cancel/cargoOrder"; //화물정보 취소(DB)
 
+//Common
+const COMMON_GET_FARE = "/common/get/fare"; //운행구간 별 요금 조회
+
 const apiPaths = {
   baseUrl: BASE_URL,
 
@@ -84,6 +87,9 @@ const apiPaths = {
 
   // 주소 URL
   apiJusoUrl: JUSO_URL,
+
+  // Common
+  commonGetFare: COMMON_GET_FARE,
 };
 
 export default apiPaths;

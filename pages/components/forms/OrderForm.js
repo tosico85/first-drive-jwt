@@ -8,18 +8,18 @@ import { format } from "date-fns";
 import AuthContext from "../../context/authContext";
 import Modal from "react-modal";
 import UserAddressModal from "../modals/UserAddressModal";
+import { isEmptyObject } from "../../../utils/ObjectUtils";
+import { isEmpty } from "../../../utils/StringUtils";
 
 export default function OrderForm({
   isEdit = false,
   isCopy = false,
   editData = {},
   isDirectApi = false,
+  userInfo,
 }) {
   const router = useRouter();
-  const {
-    requestServer,
-    userInfo: { auth_code },
-  } = useContext(AuthContext);
+  const { requestServer } = useContext(AuthContext);
   //const [paramData, setParamData] = useState(editData || {});
   const [cargoTonList, setCargoTonList] = useState([]);
   const [truckTypeList, setTruckTypeList] = useState([]);
@@ -35,6 +35,7 @@ export default function OrderForm({
     endSgg: editData.endSgg,
     endDong: editData.endDong,
   });
+  const [fareMap, setFareMap] = useState({});
 
   const LOAD_TYPE_LIST = [
     "지게차",
@@ -60,36 +61,46 @@ export default function OrderForm({
   } = methods;
 
   const watchFarePayType = watch("farePaytype");
+  const watchStartSgg = watch("startSgg");
+  const watchEndSgg = watch("endSgg");
+  const watchCargoTon = watch("cargoTon");
   let addressPopupStartEnd = "";
   let startBaseYn = "N";
   let endBaseYn = "N";
-  const isAdmin = auth_code === "ADMIN";
+  //let fareMap = {};
+  const isAdmin = userInfo.auth_code === "ADMIN";
 
   /**
    * 화면 로딩 시 event
    */
   useEffect(() => {
-    (async () => {
-      const { code, data } = await requestServer(apiPaths.apiOrderCargoTon, {});
-      if (code === 1) {
-        setCargoTonList(data);
-      }
+    if (!isEmptyObject(userInfo)) {
+      (async () => {
+        const { code, data } = await requestServer(
+          apiPaths.apiOrderCargoTon,
+          {}
+        );
+        if (code === 1) {
+          setCargoTonList(data);
+        }
 
-      const curDt = format(new Date(), "yyyyMMdd");
-      setValue("startPlanDt", getValues("startPlanDt") || curDt);
-      setValue("endPlanDt", getValues("endPlanDt") || curDt);
-      setValue("payPlanYmd", getValues("payPlanYmd") || curDt);
+        const curDt = format(new Date(), "yyyyMMdd");
+        setValue("startPlanDt", getValues("startPlanDt") || curDt);
+        setValue("endPlanDt", getValues("endPlanDt") || curDt);
+        setValue("payPlanYmd", getValues("payPlanYmd") || curDt);
 
-      if (isEdit || isCopy) {
-        console.log("EditData >> ", editData);
-        await loadParamData();
-      } else {
-        console.log("Prefill ..");
-        prefillBaseAddress();
-      }
-    })();
-  }, [auth_code]);
+        if (isEdit || isCopy) {
+          console.log("EditData >> ", editData);
+          await loadParamData();
+        } else {
+          console.log("Prefill ..");
+          prefillBaseAddress();
+        }
+      })();
+    }
+  }, [userInfo]);
 
+  //운송료 착불인 경우 세금계산서 disable 처리(값 변경 시 이벤트)
   useEffect(() => {
     //console.log("changed.!! ", watchFarePayType);
 
@@ -97,6 +108,102 @@ export default function OrderForm({
       setValue("taxbillType", false);
     }
   }, [watchFarePayType]);
+
+  //시군구 변경 시 운행요금 자동 계산
+  useEffect(() => {
+    if (!isAdmin) {
+      return;
+    }
+
+    const [startWide, startSgg, endWide, endSgg] = getValues([
+      "startWide",
+      "startSgg",
+      "endWide",
+      "endSgg",
+    ]);
+
+    //console.log({ startWide, startSgg, endWide, endSgg });
+    if (
+      isEmpty(startWide) ||
+      isEmpty(startSgg) ||
+      isEmpty(endWide) ||
+      isEmpty(endSgg)
+    ) {
+      return;
+    }
+
+    //...운행요금 계산
+    (async () => {
+      await setFareByDistance({ startWide, startSgg, endWide, endSgg });
+    })();
+  }, [watchStartSgg, watchEndSgg]);
+
+  // 차량 톤수에 따른 운행요금 변경
+  useEffect(() => {
+    console.log(watchCargoTon);
+    console.log(fareMap);
+    if (!isEmptyObject(fareMap)) {
+      setFareByCargoTon(watchCargoTon);
+    }
+  }, [watchCargoTon]);
+
+  // 운행요금 조회 시 차량톤수에 따른 운행료 세팅
+  useEffect(() => {
+    const cargoTon = getValues("cargoTon");
+
+    //차량 톤수가 선택된 경우
+    if (!isEmpty(cargoTon) && !isEmptyObject(fareMap)) {
+      setFareByCargoTon(cargoTon);
+    }
+
+    console.log("result >> ", fareMap);
+  }, [fareMap]);
+
+  //상하차지 변경에 따른 운행요금 조회
+  const setFareByDistance = async (params) => {
+    const result = await requestServer(apiPaths.commonGetFare, params);
+    setFareMap(result);
+  };
+
+  // 차량 톤수에 대한 운행료 계산
+  const setFareByCargoTon = (cargoTon) => {
+    try {
+      const floatCargoTon = Number.parseFloat(cargoTon);
+      const {
+        oneTon,
+        twoHalfTon,
+        threeHalfTon,
+        fiveTon,
+        fiveTonPlus,
+        elevenTon,
+        eighteenTon,
+        twentyfiveTon,
+      } = fareMap;
+
+      if (floatCargoTon <= 1) {
+        setValue("fareView", oneTon);
+      } else if (floatCargoTon <= 2.5) {
+        setValue("fareView", twoHalfTon);
+      } else if (floatCargoTon <= 3.5) {
+        setValue("fareView", threeHalfTon);
+      } else if (floatCargoTon <= 5) {
+        setValue("fareView", fiveTon);
+        // 5톤축? 뭔지 모름
+        //setValue("fareView", fiveTonPlus);
+      } else if (floatCargoTon <= 11) {
+        setValue("fareView", elevenTon);
+      } else if (floatCargoTon <= 18) {
+        setValue("fareView", eighteenTon);
+      } else {
+        setValue("fareView", twentyfiveTon);
+      }
+
+      console.log("fareView", getValues("fareView"));
+    } catch (e) {
+      console.log(e);
+      return;
+    }
+  };
 
   // TEST DATA 로드
   const loadParamData = async () => {
@@ -141,6 +248,8 @@ export default function OrderForm({
 
   // 상하차지 기본주소 프리필
   const prefillBaseAddress = async () => {
+    //console.log(userInfo);
+
     const {
       result: { start, end },
     } = await requestServer(apiPaths.userAddressBase, {});

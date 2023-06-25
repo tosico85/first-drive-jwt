@@ -2,28 +2,22 @@ import Seo from "../components/Seo";
 import { useRouter } from "next/router";
 import OrderForm from "../components/forms/OrderForm";
 import Script from "next/script";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../context/authContext";
 
 export default function OrderCreate() {
   const router = useRouter();
   const { serializedQuery } = router.query;
-  //const [editData, setEditData] = useState({});
-  //const [isCopy, setIsCopy] = useState(false);
+  const { userInfo } = useContext(AuthContext);
+
   let editData = {};
   let isCopy = false;
 
   // 쿼리 문자열을 객체로 변환
-  //console.log(router.query);
-  //useEffect(() => {
   if (serializedQuery) {
-    //setIsCopy(true);
-    //setEditData(JSON.parse(decodeURIComponent(serializedQuery)));
     isCopy = true;
     editData = JSON.parse(decodeURIComponent(serializedQuery));
-
-    //console.log("EditData : ", JSON.parse(decodeURIComponent(serializedQuery)));
   }
-  //}, [serializedQuery]);
 
   return (
     <div className="h-full py-6">
@@ -34,6 +28,7 @@ export default function OrderCreate() {
         editData={editData.cargoOrder}
         isCopy={isCopy}
         isEdit={false}
+        userInfo={userInfo}
       />
     </div>
   );

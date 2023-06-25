@@ -16,13 +16,13 @@ const HomePage = () => {
         ? apiPaths.adminGetCargoOrder
         : apiPaths.custReqGetCargoOrder;
 
-    console.log(userInfo);
-    console.log(url);
+    //console.log(userInfo);
+    //console.log(url);
     const params = {};
 
     const result = await requestServer(url, params);
     setCargoOrder(() => result);
-    console.log("Cargo order >>", cargoOrder);
+    //console.log("Cargo order >>", cargoOrder);
   };
 
   useEffect(() => {
@@ -183,7 +183,7 @@ const HomePage = () => {
                             {cargoDsc}
                           </p>
                           <div
-                            className="text-sm font-semibold flex items-center text-slate-500 border border-slate-500 rounded-md py-1 px-2 hover:cursor-pointer hover:shadow-md"
+                            className="text-sm font-semibold flex items-center text-slate-500 border border-slate-500 dark:text-slate-300 dark:border-slate-300 rounded-md py-1 px-2 hover:cursor-pointer hover:shadow-md"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleCargoCopy(cargo_seq);

@@ -2,10 +2,13 @@ import Seo from "../components/Seo";
 import { useRouter } from "next/router";
 import OrderForm from "../components/forms/OrderForm";
 import Script from "next/script";
+import { useContext } from "react";
+import AuthContext from "../context/authContext";
 
 export default function OrderModify() {
   const router = useRouter();
   const { serializedQuery } = router.query;
+  const { userInfo } = useContext(AuthContext);
 
   // 쿼리 문자열을 객체로 변환
   console.log(router.query);
@@ -20,6 +23,7 @@ export default function OrderModify() {
         isEdit={true}
         editData={queryObject.cargoOrder || {}}
         isDirectApi={queryObject.isDirectApi || false}
+        userInfo={userInfo}
       />
     </div>
   );
