@@ -722,6 +722,41 @@ export default function OrderForm({
               </div>
             </div>
           </div>
+          <div className="mt-5 grid lg:grid-cols-6 grid-cols-1 gap-y-3 gap-x-5">
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium leading-6">
+                상차지 업체명
+              </label>
+              <input
+                {...register("startCompanyName", {
+                  required: "상차지 업체명을 입력해주세요.",
+                })}
+                type="text"
+                placeholder={"업체명을 입력하세요"}
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+              />
+              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                {errors.startCompanyName?.message}
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium leading-6">
+                상차지 전화번호
+              </label>
+              <input
+                {...register("startAreaPhone", {
+                  required: "상차지 전화번호를 입력해주세요.",
+                })}
+                type="tel"
+                maxLength={11}
+                placeholder={"'-'없이 입력하세요"}
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+              />
+              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                {errors.startAreaPhone?.message}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="border-b border-gray-900/10 dark:border-gray-900/40 py-8">
@@ -818,7 +853,7 @@ export default function OrderForm({
               </div>
             </div>
           </div>
-          <div className="mt-5 grid lg:grid-cols-5 grid-cols-1 lg:gap-x-10 gap-y-5">
+          <div className="mt-5 grid lg:grid-cols-6 grid-cols-1">
             <div>
               <label className="block text-sm font-medium leading-6">
                 하차일자
@@ -838,7 +873,7 @@ export default function OrderForm({
                 {errors.endPlanDt?.message}
               </div>
             </div>
-            <div>
+            <div className="lg:col-span-5">
               <label className="block text-sm font-medium leading-6">
                 하차방법
               </label>
@@ -846,7 +881,7 @@ export default function OrderForm({
                 {...register("endLoad", {
                   required: `하차방법을 입력해주세요`,
                 })}
-                className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                className="block w-full lg:w-1/4 rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
               >
                 <option value="">하차방법</option>
                 {LOAD_TYPE_LIST.map((item, i) => (
@@ -857,6 +892,24 @@ export default function OrderForm({
               </select>
               <div className="text-red-500 mx-auto mb-3 font-bold text-center">
                 {errors.endLoad?.message}
+              </div>
+            </div>
+          </div>
+          <div className="mt-5 grid lg:grid-cols-6 grid-cols-1 gap-y-3 gap-x-5">
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium leading-6">
+                하차지 업체명
+              </label>
+              <input
+                {...register("endCompanyName", {
+                  required: "하차지 업체명을 입력해주세요.",
+                })}
+                type="text"
+                placeholder={"업체명을 입력하세요"}
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+              />
+              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                {errors.endCompanyName?.message}
               </div>
             </div>
             <div>
