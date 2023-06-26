@@ -236,6 +236,22 @@ export default function Detail() {
                   {cargoOrder.startLoad}
                 </dd>
               </div>
+              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                  상차지 업체명
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                  {cargoOrder.startCompanyName}
+                </dd>
+              </div>
+              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                  상차지 전화번호
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                  {formatPhoneNumber(cargoOrder.startAreaPhone)}
+                </dd>
+              </div>
             </dl>
           </div>
 
@@ -272,6 +288,14 @@ export default function Detail() {
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
                   {cargoOrder.endLoad}
+                </dd>
+              </div>
+              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-semibold leading-6 text-gray-900 dark:text-white">
+                  하차지 업체명
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 dark:text-gray-300 sm:col-span-2 sm:mt-0">
+                  {cargoOrder.endCompanyName}
                 </dd>
               </div>
               <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
