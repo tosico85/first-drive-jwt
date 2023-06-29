@@ -5,7 +5,8 @@ export const callServer = async (path, params) => {
   const requestUrl = `${apiPaths.baseUrl}${path}`;
   let result = {};
   try {
-    const { data, status, statusText } = await axios.post(requestUrl, params, {
+    const { data, status, statusText } =
+      /* await axios.post(requestUrl, params, {
       //const result = await axios.post(requestUrl, params, {
       method: "POST",
       headers: {
@@ -16,7 +17,19 @@ export const callServer = async (path, params) => {
           "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
       },
       withCredentials: true,
-    });
+    }); */
+      await axios({
+        method: "post",
+        url: requestUrl,
+        data: params,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+        credentials: "include",
+      });
+
     if (status === 200) {
       result = data;
       //console.log(result);
