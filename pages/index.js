@@ -3,6 +3,7 @@ import apiPaths from "../services/apiRoutes";
 import AuthContext from "./context/authContext";
 import { useRouter } from "next/router";
 import { formatDate } from "../utils/StringUtils";
+import { formatPhoneNumber } from "../utils/StringUtils";
 
 const HomePage = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
@@ -169,6 +170,10 @@ const HomePage = () => {
                 endPlanDt, //하차일("YYYYMMDD")
                 cargoDsc, //화물상세내용
                 ordStatus, //화물상태(접수,완료등)
+                startCompanyName,
+                startAreaPhone,
+                endCompanyName,
+                endAreaPhone,
                 create_dtm, //등록일시
               } = item;
               return (
@@ -231,6 +236,11 @@ const HomePage = () => {
                       </div>
                       <div className="flex text-xs lg:text-sm gap-x-4 items-center">
                         <div>
+                          <p className="mt-1 truncate leading-5 font-bold text-gray-500 dark:text-gray-300">
+                            {`${startCompanyName || ""} ${
+                              formatPhoneNumber(startAreaPhone) || ""
+                            }`}
+                          </p>
                           <p className="mt-1 truncate leading-5 text-gray-500 dark:text-gray-300">
                             {`${startWide} ${startSgg} ${startDong}`}
                           </p>
@@ -238,25 +248,28 @@ const HomePage = () => {
                             {formatDate(startPlanDt)}
                           </p>
                         </div>
-                        <div>
+                        <div className="text-gray-500">
                           <svg
-                            width="18"
-                            height="18"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth={1.5}
-                            viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
                           >
                             <path
                               strokeLinecap="round"
                               strokeLinejoin="round"
-                              d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"
+                              d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                             />
                           </svg>
                         </div>
                         <div>
+                          <p className="mt-1 truncate leading-5 font-bold text-gray-500 dark:text-gray-300">
+                            {`${endCompanyName || ""} ${
+                              formatPhoneNumber(endAreaPhone) || ""
+                            }`}
+                          </p>
                           <p className="mt-1 truncate leading-5 text-gray-500 dark:text-gray-300">
                             {`${endWide} ${endSgg} ${endDong}`}
                           </p>
@@ -283,7 +296,7 @@ const HomePage = () => {
                       >
                         <p>{ordStatus}</p>
                       </div>
-                      <div className="hidden sm:block text-sm w-fit h-fit text-gray-500 dark:text-gray-400 px-3 py-1">
+                      <div className="hidden sm:block text-sm w-max text-right h-fit text-gray-500 dark:text-gray-400 py-1">
                         <p>{create_dtm}</p>
                       </div>
                     </div>
