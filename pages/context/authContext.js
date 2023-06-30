@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       setUserInfo(result.userInfo);
 
-      setJwtToken(result.jwtToken);
+      //setJwtToken(result.jwtToken);
       localStorage.setItem("jwtToken", result.jwtToken);
 
       router.push("/");
