@@ -1,4 +1,5 @@
-const BASE_URL = "https://6corps.co.kr"; //화물24 API URL
+//const BASE_URL = "https://6corps.co.kr"; //화물24 API URL
+const BASE_URL = "https://localhost:443"; //화물24 API URL
 const JUSO_URL = process.env.API_JUSO_URL;
 
 //User

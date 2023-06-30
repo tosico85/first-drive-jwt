@@ -8,6 +8,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userInfo, setUserInfo] = useState({});
+  //const [jwtToken, setJwtToken] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -26,24 +27,37 @@ export const AuthProvider = ({ children }) => {
     })();
   }, []);
 
+  // 로컬스토리지에 jwtToken에서 가져오기
+  const tokenLoadFromLocal = () => {
+    return localStorage.getItem("jwtToken") || "";
+  };
+
   const sessionCheck = async () => {
     console.log("isAuthenticated : ", isAuthenticated);
     console.log("pathname : ", router.pathname);
-    const result = await requestServer(apiPaths.userSessionCheck, {});
+    const jwtToken = tokenLoadFromLocal();
 
-    if (result.resultCd === "00" || result.resultCd === "01") {
-      setIsAuthenticated(true);
-      setUserInfo(result.userInfo);
+    if (jwtToken) {
+      const result = await requestServer(apiPaths.userSessionCheck, {});
+
+      if (result.resultCd === "00" || result.resultCd === "01") {
+        setIsAuthenticated(true);
+        setUserInfo(result.userInfo);
+      } else {
+        setIsAuthenticated(false);
+      }
+
+      //alert(JSON.stringify(result));
+      return result.resultCd == "00" || result.resultCd == "01";
     } else {
       setIsAuthenticated(false);
+      return false;
     }
-
-    //alert(JSON.stringify(result));
-    return result.resultCd == "00" || result.resultCd == "01";
   };
 
   const requestServer = async (path, params) => {
-    const result = await callServer(path, params);
+    const jwtToken = tokenLoadFromLocal();
+    const result = await callServer(path, params, jwtToken);
 
     if (result.resultCd === "LN") {
       //Login Need
@@ -65,6 +79,10 @@ export const AuthProvider = ({ children }) => {
     if (result.resultCd === "00" || result.resultCd === "01") {
       setIsAuthenticated(true);
       setUserInfo(result.userInfo);
+
+      setJwtToken(result.jwtToken);
+      localStorage.setItem("jwtToken", result.jwtToken);
+
       router.push("/");
     }
     return result;
@@ -83,12 +101,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    const result = await requestServer(apiPaths.userLogout, {});
-    if (result.resultCd === "00") {
-      setIsAuthenticated(false);
-      router.push("/login");
-    }
-    return result;
+    localStorage.setItem("jwtToken", "");
+    //setJwtToken("");
+    setIsAuthenticated(false);
+    router.push("/login");
   };
 
   return (

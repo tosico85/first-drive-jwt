@@ -1,13 +1,13 @@
 import apiPaths from "./apiRoutes";
 import axios from "axios";
 
-export const callServer = async (path, params) => {
+export const callServer = async (path, params, jwtToken) => {
   const requestUrl = `${apiPaths.baseUrl}${path}`;
   //const requestUrl = path;
   console.log(requestUrl);
   let result = {};
   try {
-    const { data, status, statusText } = await axios.post(requestUrl, params, {
+    /* const { data, status, statusText } = await axios.post(requestUrl, params, {
       //const result = await axios.post(requestUrl, params, {
       method: "POST",
       withCredentials: true,
@@ -17,19 +17,27 @@ export const callServer = async (path, params) => {
       //console.log(result);
     } else {
       result = { result: statusText };
-    }
+    } */
 
-    /* await axios({
-        method: "post",
-        url: requestUrl,
-        data: params,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "applicatin/json",
-        },
-        withCredentials: true,
-        credentials: "include",
-      }); */
+    const { data, status, statusText } = await axios({
+      method: "post",
+      url: requestUrl,
+      data: params,
+      headers: {
+        token: jwtToken,
+        Accept: "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      withCredentials: true,
+      credentials: "include",
+    });
+
+    if (status === 200) {
+      result = data;
+      //console.log(result);
+    } else {
+      result = { result: statusText };
+    }
 
     /* const response = await fetch(requestUrl, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
