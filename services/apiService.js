@@ -3,33 +3,35 @@ import axios from "axios";
 
 export const callServer = async (path, params) => {
   const requestUrl = `${apiPaths.baseUrl}${path}`;
+  //const requestUrl = path;
+  console.log(requestUrl);
   let result = {};
   try {
-    //const { data, status, statusText } =
-    /* await axios.post(requestUrl, params, {
+    const { data, status, statusText } = await axios.post(requestUrl, params, {
       //const result = await axios.post(requestUrl, params, {
       method: "POST",
-      headers: {
-        "Access-Control-Allow-Credentials": "true",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
-        "Access-Control-Allow-Headers":
-          "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
-      },
       withCredentials: true,
-    }); */
+    });
+    if (status === 200) {
+      result = data;
+      //console.log(result);
+    } else {
+      result = { result: statusText };
+    }
+
     /* await axios({
         method: "post",
         url: requestUrl,
         data: params,
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json",
+          "Content-Type": "applicatin/json",
         },
         withCredentials: true,
         credentials: "include",
       }); */
-    const response = await fetch(requestUrl, {
+
+    /* const response = await fetch(requestUrl, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       mode: "cors", // no-cors, *cors, same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -50,7 +52,7 @@ export const callServer = async (path, params) => {
       //console.log(result);
     } else {
       result = { result: response.statusText };
-    }
+    } */
   } catch (error) {
     console.log(error);
   }
