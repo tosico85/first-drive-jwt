@@ -143,13 +143,13 @@ const ManageUser = () => {
       </Modal>
       <h3 className="text-base font-semibold leading-7 ">가입된 사용자 목록</h3>
       <p className="text-right">{`${userList.length} 건`}</p>
-      <ul className="mt-6 border-y border-gray-200 dark:border-gray-300">
+      <ul className="mt-6 border-y border-gray-200">
         {userList.length > 0 &&
           userList.map((item, index) => {
             const { name, email, company_code, auth_code, create_dtm } = item;
             return (
               <li
-                className="border-b border-gray-100 dark:border-gray-200 flex justify-between gap-x-3 py-5 sm:px-5 hover:bg-gray-100"
+                className="border-b border-gray-100 flex justify-between gap-x-3 py-5 sm:px-5 hover:bg-gray-100"
                 key={index}
                 onClick={() => handleItemChange(item.email)}
               >
@@ -162,17 +162,17 @@ const ManageUser = () => {
                   />
                 </div>
                 <div className="grid gap-x-5 w-full grid-cols-6 items-center">
-                  <p className="col-span-3 sm:col-span-1 text-sm font-semibold leading-6 text-gray-500 dark:text-gray-300">
+                  <p className="col-span-3 sm:col-span-1 text-sm font-semibold leading-6 text-gray-500">
                     {email}
                   </p>
-                  <p className="text-center col-span-2 sm:col-span-3 sm:text-left text-sm font-semibold leading-6 text-gray-500 dark:text-gray-300">
+                  <p className="text-center col-span-2 sm:col-span-3 sm:text-left text-sm font-semibold leading-6 text-gray-500">
                     {name}
                   </p>
                   <div className="col-span-1 sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-5 justify-end">
                     <div className="flex justify-end">
                       <p
                         className={
-                          "text-sm w-16 text-center h-fit text-white font-bold dark:text-gray-300 px-2 py-1 rounded-full " +
+                          "text-sm w-16 text-center h-fit text-white font-bold px-2 py-1 rounded-full " +
                           (auth_code == "USER"
                             ? "bg-indigo-400 ring-indigo-400"
                             : auth_code == "ADMIN"
@@ -183,7 +183,7 @@ const ManageUser = () => {
                         {auth_code}
                       </p>
                     </div>
-                    <p className="hidden sm:block text-right text-sm font-semibold leading-6 text-gray-500 dark:text-gray-300">
+                    <p className="hidden sm:block text-right text-sm font-semibold leading-6 text-gray-500">
                       {create_dtm.substring(0, 10)}
                     </p>
                   </div>

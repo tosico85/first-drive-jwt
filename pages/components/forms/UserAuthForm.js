@@ -60,7 +60,7 @@ export default function UserAuthForm({ selectedUser, onCancel, onComplete }) {
 
   return (
     <form onSubmit={handleSubmit(onValid, oninvalid)}>
-      <div className="border-b border-gray-900/10 dark:border-gray-900/40 pb-8">
+      <div className="border-b border-gray-900/10 pb-8">
         <h2 className="text-lg font-semibold leading-7">사용자 권한 변경</h2>
         <p className="mt-1 text-sm leading-6 mb-5 text-gray-600">
           변경할 권한을 선택해주세요.
@@ -75,7 +75,7 @@ export default function UserAuthForm({ selectedUser, onCancel, onComplete }) {
                 {...register("auth_code", {
                   required: `권한을 입력해주세요`,
                 })}
-                className="block w-full lg:w-3/4 rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                className="block w-full lg:w-3/4 rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               >
                 {LOAD_TYPE_LIST.map((item, i) => (
                   <option key={i} value={item.value}>

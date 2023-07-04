@@ -12,9 +12,9 @@ const Layout = ({ children }) => {
     <div className="h-full relative">
       {!isLogin && (
         <>
-          <header className="bg-white absolute shadow-md w-full dark:bg-slate-700 dark:shadow-2xl">
+          <header className="bg-white absolute shadow-md w-full">
             <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900 font-sans mt-16  dark:text-gray-200">
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900 font-sans mt-16">
                 {currentPage?.name}
               </h1>
             </div>
@@ -26,9 +26,7 @@ const Layout = ({ children }) => {
         <div
           className={
             "h-full mx-auto max-w-7xl px-5 lg:px-8 " +
-            (isLogin
-              ? ""
-              : "bg-white text-gray-900 dark:bg-gray-600 dark:text-slate-50 pt-32")
+            (isLogin ? "" : "bg-white text-gray-900 pt-32")
           }
         >
           {/* <div className="h-full mx-auto max-w-7xl px-5 lg:px-8 pt-36"> */}

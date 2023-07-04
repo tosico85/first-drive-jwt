@@ -84,7 +84,7 @@ export default function UserAddressModal({ startEnd, onCancel, onComplete }) {
   return (
     <div className="">
       <h2 className="text-lg font-semibold leading-7">주소록</h2>
-      <p className="mt-1 text-sm leading-6 mb-5 text-gray-600 dark:text-gray-300">
+      <p className="mt-1 text-sm leading-6 mb-5 text-gray-600">
         최근 등록 주소 목록입니다.
       </p>
       <div className="max-h-96 overflow-y-scroll">

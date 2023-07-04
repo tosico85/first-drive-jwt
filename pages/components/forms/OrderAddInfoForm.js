@@ -46,7 +46,7 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
 
   return (
     <form onSubmit={handleSubmit(onValid, oninvalid)}>
-      <div className="border-b border-gray-900/10 dark:border-gray-900/40 pb-8">
+      <div className="border-b border-gray-900/10 pb-8">
         <h2 className="text-lg font-semibold leading-7">운송료 정보</h2>
         <p className="mt-1 text-sm leading-6 mb-5 text-gray-600">
           운송료를 입력해주세요.
@@ -64,7 +64,7 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
                 type="number"
                 maxLength={10}
                 placeholder={"숫자만 입력하세요"}
-                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
               <div className="text-red-500 mx-auto mb-6 font-bold text-center">
                 {errors.fare?.message}
@@ -81,7 +81,7 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
                 type="number"
                 maxLength={10}
                 placeholder={"숫자만 입력하세요"}
-                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
               <div className="text-red-500 mx-auto mb-6 font-bold text-center">
                 {errors.fareView?.message}
@@ -96,7 +96,7 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
                 type="number"
                 maxLength={10}
                 placeholder={"숫자만 입력하세요"}
-                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
               <div className="text-red-500 mx-auto mb-6 font-bold text-center">
                 {errors.fee?.message}

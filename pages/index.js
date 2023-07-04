@@ -141,7 +141,7 @@ const HomePage = () => {
             : "0"
         } 건`}</p>
       </div>
-      <ul className="mt-6 border-y border-gray-200 dark:border-gray-300">
+      <ul className="mt-6 border-y border-gray-200">
         {cargoOrder.length > 0 &&
           cargoOrder
             .filter((item) => {
@@ -178,7 +178,7 @@ const HomePage = () => {
               } = item;
               return (
                 <li
-                  className="border-b border-gray-100 dark:border-gray-200 flex justify-between gap-x-6 py-5 lg:px-5 hover:bg-gray-100"
+                  className="border-b border-gray-100 flex justify-between gap-x-6 py-5 lg:px-5 hover:bg-gray-100"
                   key={cargo_seq}
                   onClick={() => handleDetail(cargo_seq)}
                 >
@@ -186,11 +186,11 @@ const HomePage = () => {
                     <div className="flex flex-col w-full lg:gap-x-10 lg:flex-row lg:items-start">
                       <div className="flex flex-col items-start gap-y-2 lg:w-80 w-full gap-x-5 mb-2">
                         <div className="w-full flex items-center justify-between">
-                          <p className="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-500 dark:text-gray-300">
+                          <p className="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-500">
                             {cargoDsc}
                           </p>
                           <div
-                            className="text-sm font-semibold flex items-center text-slate-500 border border-slate-500 dark:text-slate-300 dark:border-slate-300 rounded-md py-1 px-2 hover:cursor-pointer hover:shadow-md"
+                            className="text-sm font-semibold flex items-center text-slate-500 border border-slate-500 rounded-md py-1 px-2 hover:cursor-pointer hover:shadow-md"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleCargoCopy(cargo_seq);
@@ -214,7 +214,7 @@ const HomePage = () => {
                           </div>
                         </div>
                         <div className="flex items-center gap-x-3">
-                          <p className="px-2 py-0 rounded-md flex items-center h-5 shadow-md bg-gray-500 text-xs text-white dark:border dark:border-gray-700">
+                          <p className="px-2 py-0 rounded-md flex items-center h-5 shadow-md bg-gray-500 text-xs text-white">
                             {truckType}
                           </p>
                           {urgent && (
@@ -236,15 +236,15 @@ const HomePage = () => {
                       </div>
                       <div className="flex text-xs lg:text-sm gap-x-4 items-center">
                         <div>
-                          <p className="mt-1 truncate leading-5 font-bold text-gray-500 dark:text-gray-300">
+                          <p className="mt-1 truncate leading-5 font-bold text-gray-500">
                             {`${startCompanyName || ""} ${
                               formatPhoneNumber(startAreaPhone) || ""
                             }`}
                           </p>
-                          <p className="mt-1 truncate leading-5 text-gray-500 dark:text-gray-300">
+                          <p className="mt-1 truncate leading-5 text-gray-500">
                             {`${startWide} ${startSgg} ${startDong}`}
                           </p>
-                          <p className="mt-1 truncate leading-5 text-gray-500 dark:text-gray-300">
+                          <p className="mt-1 truncate leading-5 text-gray-500">
                             {formatDate(startPlanDt)}
                           </p>
                         </div>
@@ -265,15 +265,15 @@ const HomePage = () => {
                           </svg>
                         </div>
                         <div>
-                          <p className="mt-1 truncate leading-5 font-bold text-gray-500 dark:text-gray-300">
+                          <p className="mt-1 truncate leading-5 font-bold text-gray-500">
                             {`${endCompanyName || ""} ${
                               formatPhoneNumber(endAreaPhone) || ""
                             }`}
                           </p>
-                          <p className="mt-1 truncate leading-5 text-gray-500 dark:text-gray-300">
+                          <p className="mt-1 truncate leading-5 text-gray-500">
                             {`${endWide} ${endSgg} ${endDong}`}
                           </p>
-                          <p className="mt-1 truncate leading-5 text-gray-500 dark:text-gray-300">
+                          <p className="mt-1 truncate leading-5 text-gray-500">
                             {formatDate(endPlanDt)}
                           </p>
                         </div>
@@ -296,7 +296,7 @@ const HomePage = () => {
                       >
                         <p>{ordStatus}</p>
                       </div>
-                      <div className="hidden sm:block text-sm w-max text-right h-fit text-gray-500 dark:text-gray-400 py-1">
+                      <div className="hidden sm:block text-sm w-max text-right h-fit text-gray-500 py-1">
                         <p>{create_dtm}</p>
                       </div>
                     </div>

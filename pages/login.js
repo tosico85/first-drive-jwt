@@ -63,18 +63,18 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="h-full flex items-center bg-white dark:bg-gray-800">
-      <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-6 md:px-8 lg:px-10 mx-auto">
+    <div className="h-full flex items-center bg-white">
+      <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow sm:px-6 md:px-8 lg:px-10 mx-auto">
         {mode === "login" ? (
-          <div className="self-center mb-6 text-xl font-light text-gray-600 sm:text-2xl dark:text-white">
+          <div className="self-center mb-6 text-xl font-light text-gray-600 sm:text-2xl">
             Login To Your Account
           </div>
         ) : (
           <>
-            <div className="self-center mb-2 text-xl font-light text-gray-800 sm:text-2xl dark:text-white">
+            <div className="self-center mb-2 text-xl font-light text-gray-800 sm:text-2xl">
               Create a new account
             </div>
-            <span className="justify-center text-sm text-center text-gray-500 flex-items-center dark:text-gray-400">
+            <span className="justify-center text-sm text-center text-gray-500 flex-items-center">
               Already have an account ?
               <a
                 href="#"
@@ -193,7 +193,7 @@ const LoginPage = () => {
                 <div className="flex ml-auto">
                   <a
                     href="#"
-                    className="inline-flex text-xs font-thin text-gray-500 sm:text-sm dark:text-gray-100 hover:text-gray-700 dark:hover:text-white"
+                    className="inline-flex text-xs font-thin text-gray-500 sm:text-sm hover:text-gray-700"
                   >
                     Forgot Your Password?
                   </a>
@@ -222,7 +222,7 @@ const LoginPage = () => {
               href="#"
               onClick={toggleMode}
               target="_blank"
-              className="inline-flex items-center text-xs font-thin text-center text-gray-500 hover:text-gray-700 dark:text-gray-100 dark:hover:text-white"
+              className="inline-flex items-center text-xs font-thin text-center text-gray-500 hover:text-gray-700"
             >
               <span className="ml-2">You don&#x27;t have an account?</span>
             </a>
