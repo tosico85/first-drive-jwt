@@ -141,7 +141,7 @@ const HomePage = () => {
             : "0"
         } 건`}</p>
       </div>
-      <ul className="mt-6 border-y border-gray-200">
+      <ul className="mt-6 border-y border-gray-200 pb-14">
         {cargoOrder.length > 0 &&
           cargoOrder
             .filter((item) => {
@@ -305,7 +305,7 @@ const HomePage = () => {
               );
             })}
       </ul>
-      <div className="mt-6 flex items-center justify-end gap-x-6">
+      <div className="fixed bottom-0 left-0 p-5 w-full border bg-white mt-6 flex items-center justify-end gap-x-6">
         <button
           type="button"
           className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

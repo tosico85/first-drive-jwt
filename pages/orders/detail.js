@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import apiPaths from "../../services/apiRoutes";
@@ -201,7 +200,7 @@ export default function Detail() {
           onComplete={callbackModal}
         />
       </Modal>
-      <div className="text-gray-900 mt-6">
+      <div className="text-gray-900 mt-6 pb-20">
         <div className="lg:px-4 px-0">
           <h3 className="text-base font-semibold leading-7 ">상차지 정보</h3>
           <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
@@ -381,6 +380,16 @@ export default function Detail() {
                   </dd>
                 </div>
               )}
+              {cargoOrder.fareView != "0" && (
+                <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm font-semibold leading-6 text-gray-900">
+                    운송료
+                  </dt>
+                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    {cargoOrder.fareView}
+                  </dd>
+                </div>
+              )}
             </dl>
           </div>
 
@@ -509,7 +518,7 @@ export default function Detail() {
         </div>
       </div>
 
-      <div className="mt-6 pb-6 flex items-center justify-end lg:gap-x-6 gap-x-3">
+      <div className="fixed bottom-0 left-0 p-5 bg-white w-full border mt-6 pb-6 flex items-center justify-end lg:gap-x-6 gap-x-3">
         <button
           type="button"
           onClick={() => router.push("/")}

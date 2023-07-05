@@ -64,6 +64,7 @@ export default function OrderForm({
   const watchStartSgg = watch("startSgg");
   const watchEndSgg = watch("endSgg");
   const watchCargoTon = watch("cargoTon");
+  const watchShuttleCargoInfo = watch("shuttleCargoInfo");
   let addressPopupStartEnd = "";
   let startBaseYn = "N";
   let endBaseYn = "N";
@@ -111,9 +112,9 @@ export default function OrderForm({
 
   //시군구 변경 시 운행요금 자동 계산
   useEffect(() => {
-    if (!isAdmin) {
+    /*if (!isAdmin) {
       return;
-    }
+    }*/
 
     const [startWide, startSgg, endWide, endSgg] = getValues([
       "startWide",
@@ -143,9 +144,11 @@ export default function OrderForm({
     console.log(watchCargoTon);
     console.log(fareMap);
     if (!isEmptyObject(fareMap)) {
-      setFareByCargoTon(watchCargoTon);
+      if (!isEmpty(watchCargoTon)) {
+        setFareByCargoTon(watchCargoTon);
+      }
     }
-  }, [watchCargoTon]);
+  }, [watchCargoTon, watchShuttleCargoInfo]);
 
   // 운행요금 조회 시 차량톤수에 따른 운행료 세팅
   useEffect(() => {
@@ -169,6 +172,7 @@ export default function OrderForm({
   const setFareByCargoTon = (cargoTon) => {
     try {
       const floatCargoTon = Number.parseFloat(cargoTon);
+      let resultFare = "0";
       const {
         oneTon,
         twoHalfTon,
@@ -181,22 +185,27 @@ export default function OrderForm({
       } = fareMap;
 
       if (floatCargoTon <= 1) {
-        setValue("fareView", oneTon);
+        resultFare = oneTon;
       } else if (floatCargoTon <= 2.5) {
-        setValue("fareView", twoHalfTon);
+        resultFare = twoHalfTon;
       } else if (floatCargoTon <= 3.5) {
-        setValue("fareView", threeHalfTon);
+        resultFare = threeHalfTon;
       } else if (floatCargoTon <= 5) {
-        setValue("fareView", fiveTon);
+        resultFare = fiveTon;
         // 5톤축? 뭔지 모름
         //setValue("fareView", fiveTonPlus);
       } else if (floatCargoTon <= 11) {
-        setValue("fareView", elevenTon);
+        resultFare = elevenTon;
       } else if (floatCargoTon <= 18) {
-        setValue("fareView", eighteenTon);
+        resultFare = eighteenTon;
       } else {
-        setValue("fareView", twentyfiveTon);
+        resultFare = twentyfiveTon;
       }
+
+      if (watchShuttleCargoInfo) {
+        resultFare = Number.parseInt(resultFare) * 1.8 + "";
+      }
+      setValue("fareView", resultFare);
 
       console.log("fareView", getValues("fareView"));
     } catch (e) {
@@ -1274,12 +1283,14 @@ export default function OrderForm({
             </div>
           )}
 
-          {isAdmin && (
-            <div className="py-8">
-              <h2 className="text-lg font-semibold leading-7">운송료 정보</h2>
+          <div className="py-8">
+            <h2 className="text-lg font-semibold leading-7">
+              운송료 정보{watchShuttleCargoInfo ? " (왕복)" : " (편도)"}
+            </h2>
 
-              <div className="mt-5">
-                <div className="grid gap-y-3 lg:grid-cols-5 lg:gap-x-10">
+            <div className="mt-5">
+              <div className="grid gap-y-3 lg:grid-cols-5 lg:gap-x-10">
+                {isAdmin && (
                   <div>
                     <input
                       {...register("fare")}
@@ -1289,31 +1300,19 @@ export default function OrderForm({
                       className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
-                  <div>
-                    <input
-                      {...register("fareView")}
-                      type="number"
-                      maxLength={10}
-                      placeholder={"운송료(화주노출용)"}
-                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                  {/* <div className="hidden">
-                <label className="block text-sm font-medium leading-6">
-                  수수료
-                </label>
-                <input
-                  {...register("fee")}
-                  type="number"
-                  maxLength={10}
-                  placeholder={"수수료눈 운송료의 50% 미만입니다."}
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div> */}
+                )}
+                <div>
+                  <input
+                    {...register("fareView")}
+                    type="number"
+                    maxLength={10}
+                    placeholder={"운송료"}
+                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
 
         <div className="fixed bottom-0 left-0 p-5 w-full bg-white border shadow-md">
