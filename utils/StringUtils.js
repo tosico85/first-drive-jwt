@@ -37,3 +37,10 @@ export const formatPhoneNumber = (inputData) => {
 export const isEmpty = (obj) => {
   return (obj || "") == "";
 };
+
+export function addCommas(number) {
+  if (typeof number === "number") {
+    number = number.toString();
+  }
+  return number.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

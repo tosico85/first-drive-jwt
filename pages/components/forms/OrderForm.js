@@ -9,7 +9,7 @@ import AuthContext from "../../context/authContext";
 import Modal from "react-modal";
 import UserAddressModal from "../modals/UserAddressModal";
 import { isEmptyObject } from "../../../utils/ObjectUtils";
-import { isEmpty } from "../../../utils/StringUtils";
+import { addCommas, isEmpty } from "../../../utils/StringUtils";
 
 export default function OrderForm({
   isEdit = false,
@@ -594,8 +594,12 @@ export default function OrderForm({
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
         <div className="pb-12">
-          <div className="border-b border-gray-900/10 pb-8">
-            <h2 className="text-lg font-semibold leading-7">출발지 정보</h2>
+          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-md pt-16">
+            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+              <h2 className="text-lg font-semibold leading-7 text-white py-3 text-center">
+                출발지 정보
+              </h2>
+            </div>
             <div className="mt-5 mb-3 grid grid-cols-2 sm:grid-cols-5 justify-between items-center gap-y-3">
               <h2 className="text-base font-semibold leading-7">상차지 주소</h2>
               <div className="text-right sm:text-left flex items-center gap-x-5 justify-end">
@@ -739,8 +743,12 @@ export default function OrderForm({
             </div>
           </div>
 
-          <div className="border-b border-gray-900/10 py-8">
-            <h2 className="text-lg font-semibold leading-7">도착지 정보</h2>
+          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-md pt-16">
+            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+              <h2 className="text-lg font-semibold leading-7 text-white py-3 text-center">
+                도착지 정보
+              </h2>
+            </div>
             <div className="mt-5 mb-3 grid grid-cols-2 sm:grid-cols-5 justify-between items-center">
               <h2 className="text-base font-semibold leading-7">하차지 주소</h2>
               <div className="text-right sm:text-left flex items-center gap-x-5 justify-end">
@@ -880,8 +888,12 @@ export default function OrderForm({
               </div>
             </div>
           </div>
-          <div className="border-b border-gray-900/10 py-8">
-            <h2 className="text-lg font-semibold leading-7">상하차 일시</h2>
+          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-md pt-16">
+            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+              <h2 className="text-lg font-semibold leading-7 text-white py-3 text-center">
+                상하차 일시
+              </h2>
+            </div>
             <div className="flex items-center mt-5 gap-x-2">
               <label className="font-medium leading-6 mr-2">상차일시</label>
               <Controller
@@ -973,8 +985,12 @@ export default function OrderForm({
                 "하차일시를 입력해주세요"}
             </div>
           </div>
-          <div className="border-b border-gray-900/10 py-8">
-            <h2 className="text-lg font-semibold leading-7">화물 정보</h2>
+          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-md pt-16">
+            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+              <h2 className="text-lg font-semibold leading-7 text-white py-3 text-center">
+                화물 정보
+              </h2>
+            </div>
             <div className="mt-5">
               <input
                 {...register("cargoDsc", {
@@ -1158,12 +1174,22 @@ export default function OrderForm({
                 )}
               </div>
             </div>
+            {!isAdmin && Number.parseInt(watch("fareView")) > 0 && (
+              <div className="mt-10">
+                <h2 className="font-bold">
+                  예상 운송료{watchShuttleCargoInfo ? " (왕복)" : " (편도)"} :{" "}
+                  {addCommas(watch("fareView")) + "원"}
+                </h2>
+              </div>
+            )}
           </div>
           {isAdmin && (
-            <div className="border-b border-gray-900/10 py-8">
-              <h2 className="text-lg font-semibold leading-7">
-                화주 및 의뢰 정보
-              </h2>
+            <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-md pt-16">
+              <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+                <h2 className="text-lg font-semibold leading-7 text-white py-3 text-center">
+                  화주 및 의뢰 정보
+                </h2>
+              </div>
               <div className="mt-5">
                 <div className="grid gap-y-3 lg:grid-cols-4 lg:gap-x-10">
                   <div>
@@ -1283,14 +1309,16 @@ export default function OrderForm({
             </div>
           )}
 
-          <div className="py-8">
-            <h2 className="text-lg font-semibold leading-7">
-              운송료 정보{watchShuttleCargoInfo ? " (왕복)" : " (편도)"}
-            </h2>
+          {isAdmin && (
+            <div className="relative p-5 mb-5 rounded-md shadow-md pt-16">
+              <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+                <h2 className="text-lg font-semibold leading-7 text-white py-3 text-center">
+                  운송료 정보{watchShuttleCargoInfo ? " (왕복)" : " (편도)"}
+                </h2>
+              </div>
 
-            <div className="mt-5">
-              <div className="grid gap-y-3 lg:grid-cols-5 lg:gap-x-10">
-                {isAdmin && (
+              <div className="mt-5">
+                <div className="grid gap-y-3 lg:grid-cols-5 lg:gap-x-10">
                   <div>
                     <input
                       {...register("fare")}
@@ -1300,19 +1328,19 @@ export default function OrderForm({
                       className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
-                )}
-                <div>
-                  <input
-                    {...register("fareView")}
-                    type="number"
-                    maxLength={10}
-                    placeholder={"운송료"}
-                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
+                  <div>
+                    <input
+                      {...register("fareView")}
+                      type="number"
+                      maxLength={10}
+                      placeholder={"운송료"}
+                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="fixed bottom-0 left-0 p-5 w-full bg-white border shadow-md">
