@@ -610,7 +610,12 @@ export default function OrderForm({
               </div>
             </div>
             <div className="grid grid-cols-1 gap-y-3">
-              <div className="text-right sm:text-left flex items-center gap-x-5">
+              <div
+                onClick={(e) => {
+                  searchAddress("start");
+                }}
+                className="text-right sm:text-left flex items-center gap-x-5"
+              >
                 <input
                   type="text"
                   placeholder="상차지 주소(시군구동)"
@@ -620,12 +625,7 @@ export default function OrderForm({
                   )}
                   className="block sm:w-3 w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                <div
-                  className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight"
-                  onClick={(e) => {
-                    searchAddress("start");
-                  }}
-                >
+                <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight">
                   <span>주소검색</span>
                   <svg
                     xmlns="h  ttp://www.w3.org/2000/svg"
@@ -755,7 +755,12 @@ export default function OrderForm({
               </div>
             </div>
             <div className="grid grid-cols-1 gap-y-3">
-              <div className="text-right sm:text-left flex items-center gap-x-5 justify-end">
+              <div
+                onClick={(e) => {
+                  searchAddress("end");
+                }}
+                className="text-right sm:text-left flex items-center gap-x-5 justify-end"
+              >
                 <input
                   type="text"
                   placeholder="하차지 주소(시군구동)"
@@ -763,12 +768,7 @@ export default function OrderForm({
                   value={getValues(["endWide", "endSgg", "endDong"]).join(" ")}
                   className="block sm:w-3 w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
-                <div
-                  className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight"
-                  onClick={(e) => {
-                    searchAddress("end");
-                  }}
-                >
+                <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight">
                   <span>주소검색</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
