@@ -984,13 +984,13 @@ export default function OrderForm({
                 placeholder="화물상세내용(메모)"
                 className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
-              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+              <div className="text-red-500 mx-auto font-bold text-center">
                 {errors.cargoDsc?.message}
               </div>
             </div>
-            <div className="mt-5">
+            <div className="mt-3">
               <fieldset>
-                <div className="mt-3 grid grid-flow-col justify-stretch gap-x-2">
+                <div className="grid grid-flow-col justify-stretch gap-x-2">
                   {isAdmin && (
                     <div
                       className={
