@@ -594,8 +594,8 @@ export default function OrderForm({
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
         <div className="pb-12 grid sm:grid-cols-2 gap-x-5">
-          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg border border-gray-300">
+            <div className="absolute top-0 left-0 w-full bg-sky-800 hidden rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 출발지 정보
               </h2>
@@ -743,8 +743,8 @@ export default function OrderForm({
             </div>
           </div>
 
-          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg border border-gray-300">
+            <div className="absolute top-0 left-0 w-full bg-sky-800 hidden rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 도착지 정보
               </h2>
@@ -889,7 +889,7 @@ export default function OrderForm({
             </div>
           </div>
           <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-12 border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+            <div className="absolute top-0 left-0 w-full bg-sky-800 hidden rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 상하차 일시
               </h2>
@@ -989,8 +989,8 @@ export default function OrderForm({
                 "하차일시를 입력해주세요"}
             </div>
           </div>
-          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg border border-gray-300">
+            <div className="absolute top-0 left-0 w-full bg-sky-800 hidden rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 화물 정보
               </h2>
@@ -1188,8 +1188,8 @@ export default function OrderForm({
             )}
           </div>
           {isAdmin && (
-            <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
-              <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+            <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg border border-gray-300">
+              <div className="absolute top-0 left-0 w-full bg-sky-800 hidden rounded-t-md">
                 <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                   화주 및 의뢰 정보
                 </h2>
@@ -1315,7 +1315,7 @@ export default function OrderForm({
 
           {isAdmin && (
             <div className="relative p-5 mb-5 rounded-md shadow-lg pt-16 border border-gray-300">
-              <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+              <div className="absolute top-0 left-0 w-full bg-sky-800 hidden rounded-t-md">
                 <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                   운송료 정보{watchShuttleCargoInfo ? " (왕복)" : " (편도)"}
                 </h2>
