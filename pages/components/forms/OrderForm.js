@@ -594,10 +594,10 @@ export default function OrderForm({
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
         <div className="pb-12 grid sm:grid-cols-2 gap-x-5">
-          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-sky-800 hidden rounded-t-md">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
+            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
-                출발지 정보
+                상하차지 정보
               </h2>
             </div>
             <div className="mt-5 mb-3 grid grid-cols-2 justify-between items-center gap-y-2">
@@ -700,7 +700,7 @@ export default function OrderForm({
                   {...register("startLoad", {
                     required: `상차방법을 입력해주세요`,
                   })}
-                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 >
                   <option value="">상차방법</option>
                   {LOAD_TYPE_LIST.map((item, i) => (
@@ -741,14 +741,14 @@ export default function OrderForm({
                 </div>
               </div>
             </div>
-          </div>
+            {/* </div>
 
-          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-sky-800 hidden rounded-t-md">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
+            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 도착지 정보
               </h2>
-            </div>
+            </div> */}
             <div className="mt-5 mb-3 grid grid-cols-2 justify-between items-center">
               <h2 className="text-base font-semibold leading-5">하차지 주소</h2>
               <div className="text-right flex items-center gap-x-5 justify-end">
@@ -846,7 +846,7 @@ export default function OrderForm({
                   {...register("endLoad", {
                     required: `하차방법을 입력해주세요`,
                   })}
-                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 >
                   <option value="">하차방법</option>
                   {LOAD_TYPE_LIST.map((item, i) => (
@@ -888,8 +888,8 @@ export default function OrderForm({
               </div>
             </div>
           </div>
-          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-12 border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-sky-800 hidden rounded-t-md">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg2 pt-12 border border-gray-300">
+            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 상하차 일시
               </h2>
@@ -989,8 +989,8 @@ export default function OrderForm({
                 "하차일시를 입력해주세요"}
             </div>
           </div>
-          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-sky-800 hidden rounded-t-md">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
+            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 화물 정보
               </h2>
@@ -1127,7 +1127,7 @@ export default function OrderForm({
                       required: `차량톤수(t)를 입력해주세요`,
                       onChange: () => getTruckTypeList(),
                     })}
-                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   >
                     <option value="">차량톤수(t)</option>
                     {cargoTonList.map(({ nm }, i) => (
@@ -1142,7 +1142,7 @@ export default function OrderForm({
                     {...register("truckType", {
                       required: `차량종류를 입력해주세요`,
                     })}
-                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   >
                     <option value="">차량종류</option>
                     {truckTypeList &&
@@ -1188,8 +1188,8 @@ export default function OrderForm({
             )}
           </div>
           {isAdmin && (
-            <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg border border-gray-300">
-              <div className="absolute top-0 left-0 w-full bg-sky-800 hidden rounded-t-md">
+            <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
+              <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
                 <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                   화주 및 의뢰 정보
                 </h2>
@@ -1199,7 +1199,7 @@ export default function OrderForm({
                   <div>
                     <select
                       {...register("firstType")}
-                      className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                      className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     >
                       <option value={""}>의뢰자 구분</option>
                       <option value={"01"}>일반화주</option>
@@ -1214,7 +1214,7 @@ export default function OrderForm({
                       {...register("farePaytype", {
                         required: `운송료 지불구분을 입력해주세요`,
                       })}
-                      className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                      className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     >
                       <option value="">운송료 지불구분</option>
                       {PAY_TYPE_LIST.map((item, i) => (
@@ -1314,8 +1314,8 @@ export default function OrderForm({
           )}
 
           {isAdmin && (
-            <div className="relative p-5 mb-5 rounded-md shadow-lg pt-16 border border-gray-300">
-              <div className="absolute top-0 left-0 w-full bg-sky-800 hidden rounded-t-md">
+            <div className="relative p-5 mb-5 rounded-md shadow-lg pt-12 border border-gray-300">
+              <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
                 <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                   운송료 정보{watchShuttleCargoInfo ? " (왕복)" : " (편도)"}
                 </h2>
