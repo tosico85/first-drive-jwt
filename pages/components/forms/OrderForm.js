@@ -600,9 +600,43 @@ export default function OrderForm({
                 상하차지 정보
               </h2>
             </div>
-            <div className="mt-5 mb-3 grid grid-cols-2 justify-between items-center gap-y-2">
-              <h2 className="text-base font-semibold leading-5">상차지 주소</h2>
-              <div className="text-right flex items-center gap-x-5 justify-end">
+            <div className="grid grid-cols-1 gap-y-2 mt-5">
+              <div className="flex gap-x-3">
+                <div
+                  onClick={(e) => {
+                    searchAddress("start");
+                  }}
+                  className="w-full text-right items-center gap-x-5 relative"
+                >
+                  <input
+                    type="text"
+                    placeholder="상차지 주소(시군구동)"
+                    disabled={true}
+                    value={getValues([
+                      "startWide",
+                      "startSgg",
+                      "startDong",
+                    ]).join(" ")}
+                    className="block w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                  <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-500 hover:font-extralight absolute right-2 top-1.5">
+                    <span>주소검색</span>
+                    <svg
+                      xmlns="h  ttp://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                      />
+                    </svg>
+                  </div>
+                </div>
                 <button
                   className="min-w-fit rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
                   onClick={(e) => {
@@ -611,41 +645,6 @@ export default function OrderForm({
                 >
                   주소록
                 </button>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 gap-y-2">
-              <div
-                onClick={(e) => {
-                  searchAddress("start");
-                }}
-                className="text-right flex items-center gap-x-5"
-              >
-                <input
-                  type="text"
-                  placeholder="상차지 주소(시군구동)"
-                  disabled={true}
-                  value={getValues(["startWide", "startSgg", "startDong"]).join(
-                    " "
-                  )}
-                  className="block w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                />
-                <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight">
-                  <span>주소검색</span>
-                  <svg
-                    xmlns="h  ttp://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                    />
-                  </svg>
-                </div>
               </div>
               <div className="my-5 hidden">
                 <Controller
@@ -694,7 +693,7 @@ export default function OrderForm({
                 </div>
               </div>
             </div>
-            <div className="mt-5 grid grid-cols-1 gap-y-2">
+            <div className="mt-2 grid grid-cols-1 gap-y-2">
               <div>
                 <select
                   {...register("startLoad", {
@@ -713,31 +712,33 @@ export default function OrderForm({
                   {errors.startLoad?.message}
                 </div>
               </div>
-              <div>
-                <input
-                  {...register("startCompanyName", {
-                    required: "상차지 업체명을 입력해주세요.",
-                  })}
-                  type="text"
-                  placeholder={"상차지 업체명"}
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                />
-                <div className="text-red-500 mx-auto font-bold text-center">
-                  {errors.startCompanyName?.message}
+              <div className="grid grid-cols-2 gap-x-3 justify-stretch">
+                <div>
+                  <input
+                    {...register("startCompanyName", {
+                      required: "상차지 업체명을 입력해주세요.",
+                    })}
+                    type="text"
+                    placeholder={"상차지 업체명"}
+                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                  <div className="text-red-500 mx-auto font-bold text-center">
+                    {errors.startCompanyName?.message}
+                  </div>
                 </div>
-              </div>
-              <div>
-                <input
-                  {...register("startAreaPhone", {
-                    required: "상차지 전화번호를 입력해주세요.",
-                  })}
-                  type="tel"
-                  maxLength={11}
-                  placeholder={"상차지 전화번호"}
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                />
-                <div className="text-red-500 mx-auto font-bold text-center">
-                  {errors.startAreaPhone?.message}
+                <div>
+                  <input
+                    {...register("startAreaPhone", {
+                      required: "상차지 전화번호를 입력해주세요.",
+                    })}
+                    type="tel"
+                    maxLength={11}
+                    placeholder={"상차지 전화번호"}
+                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                  <div className="text-red-500 mx-auto font-bold text-center">
+                    {errors.startAreaPhone?.message}
+                  </div>
                 </div>
               </div>
             </div>
@@ -749,11 +750,46 @@ export default function OrderForm({
                 도착지 정보
               </h2>
             </div> */}
-            <div className="mt-5 mb-3 grid grid-cols-2 justify-between items-center">
-              <h2 className="text-base font-semibold leading-5">하차지 주소</h2>
-              <div className="text-right flex items-center gap-x-5 justify-end">
+            <div className="mt-5 mb-3 grid grid-cols-1 justify-between items-center">
+              <div className="text-right flex items-center gap-x-5 justify-end"></div>
+            </div>
+            <div className="grid grid-cols-1 gap-y-2">
+              <div className="flex gap-x-3">
+                <div
+                  onClick={(e) => {
+                    searchAddress("end");
+                  }}
+                  className="w-full text-right items-center gap-x-5 relative"
+                >
+                  <input
+                    type="text"
+                    placeholder="하차지 주소(시군구동)"
+                    disabled={true}
+                    value={getValues(["endWide", "endSgg", "endDong"]).join(
+                      " "
+                    )}
+                    className="block w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                  <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-500 hover:font-extralight absolute right-2 top-1.5">
+                    <span>주소검색</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                      />
+                    </svg>
+                  </div>
+                </div>
                 <button
-                  className="rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
+                  className="min-w-fit rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
                   onClick={(e) => {
                     handleAddressButton(e, "end");
                   }}
@@ -761,39 +797,7 @@ export default function OrderForm({
                   주소록
                 </button>
               </div>
-            </div>
-            <div className="grid grid-cols-1 gap-y-2">
-              <div
-                onClick={(e) => {
-                  searchAddress("end");
-                }}
-                className="text-right flex items-center gap-x-5 justify-end"
-              >
-                <input
-                  type="text"
-                  placeholder="하차지 주소(시군구동)"
-                  disabled={true}
-                  value={getValues(["endWide", "endSgg", "endDong"]).join(" ")}
-                  className="block w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                />
-                <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight">
-                  <span>주소검색</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                    />
-                  </svg>
-                </div>
-              </div>
+
               <div className="mb-5 hidden">
                 <Controller
                   control={control}
@@ -840,7 +844,7 @@ export default function OrderForm({
                 </div>
               </div>
             </div>
-            <div className="mt-5 grid grid-cols-1 gap-y-2">
+            <div className="mt-2 grid grid-cols-1 gap-y-2">
               <div>
                 <select
                   {...register("endLoad", {
@@ -859,31 +863,33 @@ export default function OrderForm({
                   {errors.endLoad?.message}
                 </div>
               </div>
-              <div>
-                <input
-                  {...register("endCompanyName", {
-                    required: "하차지 업체명을 입력해주세요.",
-                  })}
-                  type="text"
-                  placeholder={"하차지 업체명"}
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                />
-                <div className="text-red-500 mx-auto font-bold text-center">
-                  {errors.endCompanyName?.message}
+              <div className="grid grid-cols-2 gap-x-3 justify-stretch">
+                <div>
+                  <input
+                    {...register("endCompanyName", {
+                      required: "하차지 업체명을 입력해주세요.",
+                    })}
+                    type="text"
+                    placeholder={"하차지 업체명"}
+                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                  <div className="text-red-500 mx-auto font-bold text-center">
+                    {errors.endCompanyName?.message}
+                  </div>
                 </div>
-              </div>
-              <div>
-                <input
-                  {...register("endAreaPhone", {
-                    required: "하차지 전화번호를 입력해주세요.",
-                  })}
-                  type="tel"
-                  maxLength={11}
-                  placeholder={"하차지 전화번호"}
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                />
-                <div className="text-red-500 mx-auto font-bold text-center">
-                  {errors.endAreaPhone?.message}
+                <div>
+                  <input
+                    {...register("endAreaPhone", {
+                      required: "하차지 전화번호를 입력해주세요.",
+                    })}
+                    type="tel"
+                    maxLength={11}
+                    placeholder={"하차지 전화번호"}
+                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                  <div className="text-red-500 mx-auto font-bold text-center">
+                    {errors.endAreaPhone?.message}
+                  </div>
                 </div>
               </div>
             </div>

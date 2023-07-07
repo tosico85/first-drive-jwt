@@ -159,9 +159,11 @@ const HomePage = () => {
                 startWide, //상차지 시/도
                 startSgg, //상차지 구/군
                 startDong, //상차지 읍/면/동
+                startDetail,
                 endWide, //하차지 시/도
                 endSgg, //하차지 구/군
                 endDong, //하차지 읍/면/동
+                endDetail,
                 multiCargoGub, //혼적여부("혼적")
                 urgent, //긴급여부("긴급")
                 shuttleCargoInfo, //왕복여부("왕복")
@@ -242,7 +244,7 @@ const HomePage = () => {
                             }`}
                           </p>
                           <p className="mt-1 truncate leading-5 text-gray-500">
-                            {`${startWide} ${startSgg} ${startDong}`}
+                            {`${startWide} ${startSgg} ${startDong} ${startDetail}`}
                           </p>
                           <p className="mt-1 truncate leading-5 text-gray-500">
                             {formatDate(startPlanDt)}
