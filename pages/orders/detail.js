@@ -518,7 +518,7 @@ export default function Detail() {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 p-5 bg-white w-full border mt-6 pb-6 flex items-center justify-end lg:gap-x-6 gap-x-3">
+      <div className="fixed bottom-0 left-0 p-5 bg-zinc-50 w-full border mt-6 pb-6 flex items-center justify-end lg:gap-x-6 gap-x-3">
         <button
           type="button"
           onClick={() => router.push("/")}

@@ -593,16 +593,16 @@ export default function OrderForm({
         />
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
-        <div className="pb-12">
-          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-md pt-16">
+        <div className="pb-12 grid sm:grid-cols-2 gap-x-5">
+          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-lg pt-12">
             <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
-              <h2 className="text-lg font-semibold leading-7 text-white py-3 text-center">
+              <h2 className="text-lg font-semibold leading-7 text-white py-2 shadow-md text-center">
                 출발지 정보
               </h2>
             </div>
-            <div className="mt-5 mb-3 grid grid-cols-2 sm:grid-cols-5 justify-between items-center gap-y-3">
+            <div className="mt-5 mb-3 grid grid-cols-2 justify-between items-center gap-y-3">
               <h2 className="text-base font-semibold leading-7">상차지 주소</h2>
-              <div className="text-right sm:text-left flex items-center gap-x-5 justify-end">
+              <div className="text-right flex items-center gap-x-5 justify-end">
                 <button
                   className="min-w-fit rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
                   onClick={(e) => {
@@ -618,7 +618,7 @@ export default function OrderForm({
                 onClick={(e) => {
                   searchAddress("start");
                 }}
-                className="text-right sm:text-left flex items-center gap-x-5"
+                className="text-right flex items-center gap-x-5"
               >
                 <input
                   type="text"
@@ -627,7 +627,7 @@ export default function OrderForm({
                   value={getValues(["startWide", "startSgg", "startDong"]).join(
                     " "
                   )}
-                  className="block sm:w-3 w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
                 <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight">
                   <span>주소검색</span>
@@ -686,7 +686,7 @@ export default function OrderForm({
                   })}
                   type="text"
                   placeholder="상차지 상세주소"
-                  className="block sm:w-3/5 w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
 
                 <div className="text-red-500 mx-auto mb-6 font-bold text-center">
@@ -694,13 +694,13 @@ export default function OrderForm({
                 </div>
               </div>
             </div>
-            <div className="mt-5 grid lg:grid-cols-6 grid-cols-1">
-              <div className="lg:col-span-5">
+            <div className="mt-5 grid grid-cols-1">
+              <div>
                 <select
                   {...register("startLoad", {
                     required: `상차방법을 입력해주세요`,
                   })}
-                  className="block w-full lg:w-1/4 rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 >
                   <option value="">상차방법</option>
                   {LOAD_TYPE_LIST.map((item, i) => (
@@ -713,14 +713,14 @@ export default function OrderForm({
                   {errors.startLoad?.message}
                 </div>
               </div>
-              <div className="lg:col-span-2">
+              <div>
                 <input
                   {...register("startCompanyName", {
                     required: "상차지 업체명을 입력해주세요.",
                   })}
                   type="text"
                   placeholder={"상차지 업체명"}
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
                 <div className="text-red-500 mx-auto mb-3 font-bold text-center">
                   {errors.startCompanyName?.message}
@@ -734,7 +734,7 @@ export default function OrderForm({
                   type="tel"
                   maxLength={11}
                   placeholder={"상차지 전화번호"}
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
                 <div className="text-red-500 mx-auto mb-3 font-bold text-center">
                   {errors.startAreaPhone?.message}
@@ -743,15 +743,15 @@ export default function OrderForm({
             </div>
           </div>
 
-          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-md pt-16">
+          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-lg pt-12">
             <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
-              <h2 className="text-lg font-semibold leading-7 text-white py-3 text-center">
+              <h2 className="text-lg font-semibold leading-7 text-white py-2 shadow-md text-center">
                 도착지 정보
               </h2>
             </div>
-            <div className="mt-5 mb-3 grid grid-cols-2 sm:grid-cols-5 justify-between items-center">
+            <div className="mt-5 mb-3 grid grid-cols-2 justify-between items-center">
               <h2 className="text-base font-semibold leading-7">하차지 주소</h2>
-              <div className="text-right sm:text-left flex items-center gap-x-5 justify-end">
+              <div className="text-right flex items-center gap-x-5 justify-end">
                 <button
                   className="rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
                   onClick={(e) => {
@@ -767,14 +767,14 @@ export default function OrderForm({
                 onClick={(e) => {
                   searchAddress("end");
                 }}
-                className="text-right sm:text-left flex items-center gap-x-5 justify-end"
+                className="text-right flex items-center gap-x-5 justify-end"
               >
                 <input
                   type="text"
                   placeholder="하차지 주소(시군구동)"
                   disabled={true}
                   value={getValues(["endWide", "endSgg", "endDong"]).join(" ")}
-                  className="block sm:w-3 w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
                 <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight">
                   <span>주소검색</span>
@@ -833,20 +833,20 @@ export default function OrderForm({
                   })}
                   type="text"
                   placeholder="하차지 상세주소"
-                  className="block sm:w-3/5 w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
                 <div className="text-red-500 mx-auto mb-6 font-bold text-center">
                   {errors[`endDetail`]?.message}
                 </div>
               </div>
             </div>
-            <div className="mt-5 grid lg:grid-cols-6 grid-cols-1">
-              <div className="lg:col-span-5">
+            <div className="mt-5 grid grid-cols-1">
+              <div>
                 <select
                   {...register("endLoad", {
                     required: `하차방법을 입력해주세요`,
                   })}
-                  className="block w-full lg:w-1/4 rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 >
                   <option value="">하차방법</option>
                   {LOAD_TYPE_LIST.map((item, i) => (
@@ -859,14 +859,14 @@ export default function OrderForm({
                   {errors.endLoad?.message}
                 </div>
               </div>
-              <div className="lg:col-span-2">
+              <div>
                 <input
                   {...register("endCompanyName", {
                     required: "하차지 업체명을 입력해주세요.",
                   })}
                   type="text"
                   placeholder={"하차지 업체명"}
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
                 <div className="text-red-500 mx-auto mb-3 font-bold text-center">
                   {errors.endCompanyName?.message}
@@ -880,7 +880,7 @@ export default function OrderForm({
                   type="tel"
                   maxLength={11}
                   placeholder={"하차지 전화번호"}
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
                 <div className="text-red-500 mx-auto mb-3 font-bold text-center">
                   {errors.endAreaPhone?.message}
@@ -888,50 +888,52 @@ export default function OrderForm({
               </div>
             </div>
           </div>
-          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-md pt-16">
+          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-lg pt-16">
             <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
-              <h2 className="text-lg font-semibold leading-7 text-white py-3 text-center">
+              <h2 className="text-lg font-semibold leading-7 text-white py-2 shadow-md text-center">
                 상하차 일시
               </h2>
             </div>
-            <div className="flex items-center mt-5 gap-x-2">
+            <div>
               <label className="font-medium leading-6 mr-2">상차일시</label>
-              <Controller
-                control={control}
-                name="startPlanDt"
-                rules={{ required: "상차일자를 입력해주세요." }}
-                render={({ field: { onChange } }) => (
-                  <DateInput
-                    onDateChange={onChange}
-                    dateValue={getValues("startPlanDt")}
-                  />
-                )}
-              />
-              <select
-                {...register("startPlanHour", {
-                  required: `상차시간을 입력해주세요`,
-                })}
-                className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              >
-                <option value="">- 시 -</option>
-                {Array.from(Array(24).keys(), (num) =>
-                  num.toString().padStart(2, "0")
-                ).map((nm, i) => (
-                  <option key={i} value={nm}>
-                    {nm}
-                  </option>
-                ))}
-              </select>
-              <select
-                {...register("startPlanMinute", {
-                  required: `상차(분)을 입력해주세요`,
-                })}
-                className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              >
-                <option value="">- 분 -</option>
-                <option value="00">00</option>
-                <option value="30">30</option>
-              </select>
+              <div className="flex items-center mt-1 gap-x-2">
+                <Controller
+                  control={control}
+                  name="startPlanDt"
+                  rules={{ required: "상차일자를 입력해주세요." }}
+                  render={({ field: { onChange } }) => (
+                    <DateInput
+                      onDateChange={onChange}
+                      dateValue={getValues("startPlanDt")}
+                    />
+                  )}
+                />
+                <select
+                  {...register("startPlanHour", {
+                    required: `상차시간을 입력해주세요`,
+                  })}
+                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+                  <option value="">- 시 -</option>
+                  {Array.from(Array(24).keys(), (num) =>
+                    num.toString().padStart(2, "0")
+                  ).map((nm, i) => (
+                    <option key={i} value={nm}>
+                      {nm}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  {...register("startPlanMinute", {
+                    required: `상차(분)을 입력해주세요`,
+                  })}
+                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+                  <option value="">- 분 -</option>
+                  <option value="00">00</option>
+                  <option value="30">30</option>
+                </select>
+              </div>
             </div>
             <div className="text-red-500 mx-auto font-bold text-center">
               {(!isEmpty(errors.startPlanDt) ||
@@ -939,44 +941,46 @@ export default function OrderForm({
                 !isEmpty(errors.startPlanMinute)) &&
                 "상차일시를 입력해주세요"}
             </div>
-            <div className="flex items-center mt-5 gap-x-2">
+            <div className="mt-5">
               <label className="font-medium leading-6 mr-2">하차일시</label>
-              <Controller
-                control={control}
-                name="endPlanDt"
-                rules={{ required: "하차일자를 입력해주세요." }}
-                render={({ field: { onChange } }) => (
-                  <DateInput
-                    onDateChange={onChange}
-                    dateValue={getValues("endPlanDt")}
-                  />
-                )}
-              />
-              <select
-                {...register("endPlanHour", {
-                  required: `하차시간을 입력해주세요`,
-                })}
-                className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              >
-                <option value="">- 시 -</option>
-                {Array.from(Array(24).keys(), (num) =>
-                  num.toString().padStart(2, "0")
-                ).map((nm, i) => (
-                  <option key={i} value={nm}>
-                    {nm}
-                  </option>
-                ))}
-              </select>
-              <select
-                {...register("endPlanMinute", {
-                  required: `하차(분)을 입력해주세요`,
-                })}
-                className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              >
-                <option value="">- 분 -</option>
-                <option value="00">00</option>
-                <option value="30">30</option>
-              </select>
+              <div className="flex items-center mt-1 gap-x-2">
+                <Controller
+                  control={control}
+                  name="endPlanDt"
+                  rules={{ required: "하차일자를 입력해주세요." }}
+                  render={({ field: { onChange } }) => (
+                    <DateInput
+                      onDateChange={onChange}
+                      dateValue={getValues("endPlanDt")}
+                    />
+                  )}
+                />
+                <select
+                  {...register("endPlanHour", {
+                    required: `하차시간을 입력해주세요`,
+                  })}
+                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+                  <option value="">- 시 -</option>
+                  {Array.from(Array(24).keys(), (num) =>
+                    num.toString().padStart(2, "0")
+                  ).map((nm, i) => (
+                    <option key={i} value={nm}>
+                      {nm}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  {...register("endPlanMinute", {
+                    required: `하차(분)을 입력해주세요`,
+                  })}
+                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+                  <option value="">- 분 -</option>
+                  <option value="00">00</option>
+                  <option value="30">30</option>
+                </select>
+              </div>
             </div>
             <div className="text-red-500 mx-auto font-bold text-center">
               {(!isEmpty(errors.endPlanDt) ||
@@ -985,9 +989,9 @@ export default function OrderForm({
                 "하차일시를 입력해주세요"}
             </div>
           </div>
-          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-md pt-16">
+          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-lg pt-12">
             <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
-              <h2 className="text-lg font-semibold leading-7 text-white py-3 text-center">
+              <h2 className="text-lg font-semibold leading-7 text-white py-2 shadow-md text-center">
                 화물 정보
               </h2>
             </div>
@@ -998,7 +1002,7 @@ export default function OrderForm({
                 })}
                 type="text"
                 placeholder="화물상세내용(메모)"
-                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
               />
               <div className="text-red-500 mx-auto font-bold text-center">
                 {errors.cargoDsc?.message}
@@ -1116,14 +1120,14 @@ export default function OrderForm({
               </fieldset>
             </div>
             <div className="mt-10">
-              <div className="grid gap-y-3 lg:grid-cols-4 lg:gap-x-10">
+              <div className="grid gap-y-3">
                 <div>
                   <select
                     {...register("cargoTon", {
                       required: `차량톤수(t)를 입력해주세요`,
                       onChange: () => getTruckTypeList(),
                     })}
-                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   >
                     <option value="">차량톤수(t)</option>
                     {cargoTonList.map(({ nm }, i) => (
@@ -1138,7 +1142,7 @@ export default function OrderForm({
                     {...register("truckType", {
                       required: `차량종류를 입력해주세요`,
                     })}
-                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   >
                     <option value="">차량종류</option>
                     {truckTypeList &&
@@ -1168,7 +1172,7 @@ export default function OrderForm({
                           }
                         },
                       })}
-                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
                   </div>
                 )}
@@ -1184,18 +1188,18 @@ export default function OrderForm({
             )}
           </div>
           {isAdmin && (
-            <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-md pt-16">
+            <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-lg pt-12">
               <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
-                <h2 className="text-lg font-semibold leading-7 text-white py-3 text-center">
+                <h2 className="text-lg font-semibold leading-7 text-white py-2 shadow-md text-center">
                   화주 및 의뢰 정보
                 </h2>
               </div>
               <div className="mt-5">
-                <div className="grid gap-y-3 lg:grid-cols-4 lg:gap-x-10">
+                <div className="grid gap-y-3">
                   <div>
                     <select
                       {...register("firstType")}
-                      className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     >
                       <option value={""}>의뢰자 구분</option>
                       <option value={"01"}>일반화주</option>
@@ -1210,7 +1214,7 @@ export default function OrderForm({
                       {...register("farePaytype", {
                         required: `운송료 지불구분을 입력해주세요`,
                       })}
-                      className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     >
                       <option value="">운송료 지불구분</option>
                       {PAY_TYPE_LIST.map((item, i) => (
@@ -1242,7 +1246,7 @@ export default function OrderForm({
                 </div>
               </div>
               <div className="mt-10">
-                <div className="grid gap-y-3 lg:grid-cols-4 lg:gap-x-10">
+                <div className="grid gap-y-3">
                   <div>
                     <input
                       {...register("firstShipperNm", {
@@ -1250,7 +1254,7 @@ export default function OrderForm({
                       })}
                       type="text"
                       placeholder="원화주 명"
-                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
                     <div className="text-red-500 mx-auto font-bold text-center">
                       {errors.firstShipperNm?.message}
@@ -1264,7 +1268,7 @@ export default function OrderForm({
                       type="tel"
                       maxLength={11}
                       placeholder={"원화주 전화번호('-'없이 입력하세요)"}
-                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
                     <div className="text-red-500 mx-auto font-bold text-center">
                       {errors.firstShipperInfo?.message}
@@ -1281,7 +1285,7 @@ export default function OrderForm({
                       type="text"
                       maxLength={10}
                       placeholder="원화주 사업자번호(의뢰자 주선/운송사인 경우 필수)"
-                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
                     <div className="text-red-500 mx-auto font-bold text-center">
                       {errors.firstShipperBizNo?.message}
@@ -1310,22 +1314,22 @@ export default function OrderForm({
           )}
 
           {isAdmin && (
-            <div className="relative p-5 mb-5 rounded-md shadow-md pt-16">
+            <div className="relative p-5 mb-5 rounded-md shadow-lg pt-16">
               <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
-                <h2 className="text-lg font-semibold leading-7 text-white py-3 text-center">
+                <h2 className="text-lg font-semibold leading-7 text-white py-2 shadow-md text-center">
                   운송료 정보{watchShuttleCargoInfo ? " (왕복)" : " (편도)"}
                 </h2>
               </div>
 
               <div className="mt-5">
-                <div className="grid gap-y-3 lg:grid-cols-5 lg:gap-x-10">
+                <div className="grid gap-y-3">
                   <div>
                     <input
                       {...register("fare")}
                       type="number"
                       maxLength={10}
                       placeholder={"운송료(관리자용)"}
-                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
                   </div>
                   <div>
@@ -1334,7 +1338,7 @@ export default function OrderForm({
                       type="number"
                       maxLength={10}
                       placeholder={"운송료"}
-                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
                   </div>
                 </div>
@@ -1343,7 +1347,7 @@ export default function OrderForm({
           )}
         </div>
 
-        <div className="fixed bottom-0 left-0 p-5 w-full bg-white border shadow-md">
+        <div className="fixed bottom-0 left-0 p-5 w-full bg-zinc-50 border shadow-md">
           <div className="flex items-center justify-end gap-x-6">
             <button
               type="button"
