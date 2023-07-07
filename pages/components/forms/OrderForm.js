@@ -594,14 +594,14 @@ export default function OrderForm({
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
         <div className="pb-12 grid sm:grid-cols-2 gap-x-5">
-          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-lg pt-12">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
             <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
-              <h2 className="text-lg font-semibold leading-7 text-white py-2 shadow-md text-center">
+              <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 출발지 정보
               </h2>
             </div>
-            <div className="mt-5 mb-3 grid grid-cols-2 justify-between items-center gap-y-3">
-              <h2 className="text-base font-semibold leading-7">상차지 주소</h2>
+            <div className="mt-5 mb-3 grid grid-cols-2 justify-between items-center gap-y-2">
+              <h2 className="text-base font-semibold leading-5">상차지 주소</h2>
               <div className="text-right flex items-center gap-x-5 justify-end">
                 <button
                   className="min-w-fit rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
@@ -613,7 +613,7 @@ export default function OrderForm({
                 </button>
               </div>
             </div>
-            <div className="grid grid-cols-1 gap-y-3">
+            <div className="grid grid-cols-1 gap-y-2">
               <div
                 onClick={(e) => {
                   searchAddress("start");
@@ -689,12 +689,12 @@ export default function OrderForm({
                   className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
 
-                <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                <div className="text-red-500 mx-auto font-bold text-center">
                   {errors[`startDetail`]?.message}
                 </div>
               </div>
             </div>
-            <div className="mt-5 grid grid-cols-1">
+            <div className="mt-5 grid grid-cols-1 gap-y-2">
               <div>
                 <select
                   {...register("startLoad", {
@@ -709,7 +709,7 @@ export default function OrderForm({
                     </option>
                   ))}
                 </select>
-                <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                <div className="text-red-500 mx-auto font-bold text-center">
                   {errors.startLoad?.message}
                 </div>
               </div>
@@ -722,7 +722,7 @@ export default function OrderForm({
                   placeholder={"상차지 업체명"}
                   className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
-                <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                <div className="text-red-500 mx-auto font-bold text-center">
                   {errors.startCompanyName?.message}
                 </div>
               </div>
@@ -736,21 +736,21 @@ export default function OrderForm({
                   placeholder={"상차지 전화번호"}
                   className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
-                <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                <div className="text-red-500 mx-auto font-bold text-center">
                   {errors.startAreaPhone?.message}
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-lg pt-12">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
             <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
-              <h2 className="text-lg font-semibold leading-7 text-white py-2 shadow-md text-center">
+              <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 도착지 정보
               </h2>
             </div>
             <div className="mt-5 mb-3 grid grid-cols-2 justify-between items-center">
-              <h2 className="text-base font-semibold leading-7">하차지 주소</h2>
+              <h2 className="text-base font-semibold leading-5">하차지 주소</h2>
               <div className="text-right flex items-center gap-x-5 justify-end">
                 <button
                   className="rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
@@ -762,7 +762,7 @@ export default function OrderForm({
                 </button>
               </div>
             </div>
-            <div className="grid grid-cols-1 gap-y-3">
+            <div className="grid grid-cols-1 gap-y-2">
               <div
                 onClick={(e) => {
                   searchAddress("end");
@@ -822,7 +822,7 @@ export default function OrderForm({
                     />
                   )}
                 />
-                <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                <div className="text-red-500 mx-auto font-bold text-center">
                   {errors.endAddress?.message}
                 </div>
               </div>
@@ -835,12 +835,12 @@ export default function OrderForm({
                   placeholder="하차지 상세주소"
                   className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
-                <div className="text-red-500 mx-auto mb-6 font-bold text-center">
+                <div className="text-red-500 mx-auto font-bold text-center">
                   {errors[`endDetail`]?.message}
                 </div>
               </div>
             </div>
-            <div className="mt-5 grid grid-cols-1">
+            <div className="mt-5 grid grid-cols-1 gap-y-2">
               <div>
                 <select
                   {...register("endLoad", {
@@ -855,7 +855,7 @@ export default function OrderForm({
                     </option>
                   ))}
                 </select>
-                <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                <div className="text-red-500 mx-auto font-bold text-center">
                   {errors.endLoad?.message}
                 </div>
               </div>
@@ -868,7 +868,7 @@ export default function OrderForm({
                   placeholder={"하차지 업체명"}
                   className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
-                <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                <div className="text-red-500 mx-auto font-bold text-center">
                   {errors.endCompanyName?.message}
                 </div>
               </div>
@@ -882,15 +882,15 @@ export default function OrderForm({
                   placeholder={"하차지 전화번호"}
                   className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
-                <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                <div className="text-red-500 mx-auto font-bold text-center">
                   {errors.endAreaPhone?.message}
                 </div>
               </div>
             </div>
           </div>
-          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-lg pt-16">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-12 border border-gray-300">
             <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
-              <h2 className="text-lg font-semibold leading-7 text-white py-2 shadow-md text-center">
+              <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 상하차 일시
               </h2>
             </div>
@@ -989,9 +989,9 @@ export default function OrderForm({
                 "하차일시를 입력해주세요"}
             </div>
           </div>
-          <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-lg pt-12">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
             <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
-              <h2 className="text-lg font-semibold leading-7 text-white py-2 shadow-md text-center">
+              <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 화물 정보
               </h2>
             </div>
@@ -1119,8 +1119,8 @@ export default function OrderForm({
                 </div>
               </fieldset>
             </div>
-            <div className="mt-10">
-              <div className="grid gap-y-3">
+            <div className="mt-5">
+              <div className="grid gap-y-2">
                 <div>
                   <select
                     {...register("cargoTon", {
@@ -1179,7 +1179,7 @@ export default function OrderForm({
               </div>
             </div>
             {!isAdmin && Number.parseInt(watch("fareView")) > 0 && (
-              <div className="mt-10">
+              <div className="mt-5">
                 <h2 className="font-bold">
                   예상 운송료{watchShuttleCargoInfo ? " (왕복)" : " (편도)"} :{" "}
                   {addCommas(watch("fareView")) + "원"}
@@ -1188,14 +1188,14 @@ export default function OrderForm({
             )}
           </div>
           {isAdmin && (
-            <div className="border-b border-gray-900/10 relative p-5 mb-5 rounded-md shadow-lg pt-12">
+            <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
               <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
-                <h2 className="text-lg font-semibold leading-7 text-white py-2 shadow-md text-center">
+                <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                   화주 및 의뢰 정보
                 </h2>
               </div>
               <div className="mt-5">
-                <div className="grid gap-y-3">
+                <div className="grid gap-y-2">
                   <div>
                     <select
                       {...register("firstType")}
@@ -1246,7 +1246,7 @@ export default function OrderForm({
                 </div>
               </div>
               <div className="mt-10">
-                <div className="grid gap-y-3">
+                <div className="grid gap-y-2">
                   <div>
                     <input
                       {...register("firstShipperNm", {
@@ -1314,15 +1314,15 @@ export default function OrderForm({
           )}
 
           {isAdmin && (
-            <div className="relative p-5 mb-5 rounded-md shadow-lg pt-16">
+            <div className="relative p-5 mb-5 rounded-md shadow-lg pt-16 border border-gray-300">
               <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
-                <h2 className="text-lg font-semibold leading-7 text-white py-2 shadow-md text-center">
+                <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                   운송료 정보{watchShuttleCargoInfo ? " (왕복)" : " (편도)"}
                 </h2>
               </div>
 
               <div className="mt-5">
-                <div className="grid gap-y-3">
+                <div className="grid gap-y-2">
                   <div>
                     <input
                       {...register("fare")}
