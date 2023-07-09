@@ -38,9 +38,20 @@ export const isEmpty = (obj) => {
   return (obj || "") == "";
 };
 
-export function addCommas(number) {
+export const addCommas = (number) => {
   if (typeof number === "number") {
     number = number.toString();
   }
   return number.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+};
+
+export const getOneWeekAgoDate = () => {
+  var today = new Date();
+  var oneWeekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+  var year = oneWeekAgo.getFullYear().toString();
+  var month = (oneWeekAgo.getMonth() + 1).toString().padStart(2, "0");
+  var day = oneWeekAgo.getDate().toString().padStart(2, "0");
+
+  return year + month + day;
+};

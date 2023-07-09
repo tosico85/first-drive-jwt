@@ -579,7 +579,7 @@ export default function OrderForm({
   }
 
   return (
-    <div>
+    <div className="p-5">
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}

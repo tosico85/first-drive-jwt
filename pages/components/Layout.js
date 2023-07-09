@@ -12,7 +12,12 @@ const Layout = ({ children }) => {
     <div className="h-full relative">
       {!isLogin && (
         <>
-          <header className="bg-white absolute shadow-md w-full">
+          <header
+            className={
+              "bg-white absolute shadow-md w-full" +
+              (router.pathname == "/" ? " hidden" : "")
+            }
+          >
             <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
               <h1 className="text-2xl font-bold tracking-tight text-richBlack font-sans mt-16">
                 {currentPage?.name}
@@ -25,7 +30,7 @@ const Layout = ({ children }) => {
       <main className={" " + (isLogin ? "h-full" : "h-max")}>
         <div
           className={
-            "h-full mx-auto max-w-7xl px-5 lg:px-8 " +
+            "h-full mx-auto max-w-7xl lg:px-8 " +
             (isLogin ? "" : "bg-white text-richBlack pt-32")
           }
         >

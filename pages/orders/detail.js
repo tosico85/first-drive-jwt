@@ -200,7 +200,7 @@ export default function Detail() {
           onComplete={callbackModal}
         />
       </Modal>
-      <div className="text-richBlack mt-6 pb-20">
+      <div className="text-richBlack mt-6 p-5 pb-20">
         <div className="lg:px-4 px-0">
           <h3 className="text-base font-semibold leading-7 ">상차지 정보</h3>
           <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
