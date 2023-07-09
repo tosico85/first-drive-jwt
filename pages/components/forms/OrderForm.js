@@ -594,8 +594,8 @@ export default function OrderForm({
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
         <div className="pb-12 grid sm:grid-cols-2 gap-x-5">
-          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300 sm:row-span-2">
+            <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 상하차지 정보
               </h2>
@@ -638,7 +638,7 @@ export default function OrderForm({
                   </div>
                 </div>
                 <button
-                  className="min-w-fit rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
+                  className="min-w-fit rounded-md bg-white px-3 py-1 text-base font-semibold text-gray-500 shadow-md border"
                   onClick={(e) => {
                     handleAddressButton(e, "start");
                   }}
@@ -745,13 +745,24 @@ export default function OrderForm({
             {/* </div>
 
           <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+            <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 도착지 정보
               </h2>
             </div> */}
-            <div className="mt-5 mb-3 grid grid-cols-1 justify-between items-center">
-              <div className="text-right flex items-center gap-x-5 justify-end"></div>
+            <div className="text-center py-2 flex justify-center text-gray-400">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M20.03 4.72a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 11.69l6.97-6.97a.75.75 0 011.06 0zm0 6a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 111.06-1.06L12 17.69l6.97-6.97a.75.75 0 011.06 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
             </div>
             <div className="grid grid-cols-1 gap-y-2">
               <div className="flex gap-x-3">
@@ -789,7 +800,7 @@ export default function OrderForm({
                   </div>
                 </div>
                 <button
-                  className="min-w-fit rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
+                  className="min-w-fit rounded-md bg-white px-3 py-1 text-base font-semibold text-gray-500 shadow-md border"
                   onClick={(e) => {
                     handleAddressButton(e, "end");
                   }}
@@ -895,13 +906,13 @@ export default function OrderForm({
             </div>
           </div>
           <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg2 pt-12 border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+            <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 상하차 일시
               </h2>
             </div>
-            <div>
-              <label className="font-medium leading-6 mr-2">상차일시</label>
+            <div className="sm:flex sm:items-center">
+              <label className="font-medium mr-2 sm:pt-2">상차일시</label>
               <div className="flex items-center mt-1 gap-x-2">
                 <Controller
                   control={control}
@@ -947,8 +958,8 @@ export default function OrderForm({
                 !isEmpty(errors.startPlanMinute)) &&
                 "상차일시를 입력해주세요"}
             </div>
-            <div className="mt-5">
-              <label className="font-medium leading-6 mr-2">하차일시</label>
+            <div className="mt-3 sm:flex sm:items-center sm:mt-1">
+              <label className="font-medium mr-2 sm:pt-2">하차일시</label>
               <div className="flex items-center mt-1 gap-x-2">
                 <Controller
                   control={control}
@@ -996,7 +1007,7 @@ export default function OrderForm({
             </div>
           </div>
           <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+            <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 화물 정보
               </h2>
@@ -1195,7 +1206,7 @@ export default function OrderForm({
           </div>
           {isAdmin && (
             <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
-              <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+              <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
                 <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                   화주 및 의뢰 정보
                 </h2>
@@ -1251,7 +1262,7 @@ export default function OrderForm({
                   </div>
                 </div>
               </div>
-              <div className="mt-10">
+              <div className="mt-5">
                 <div className="grid gap-y-2">
                   <div>
                     <input
@@ -1299,7 +1310,7 @@ export default function OrderForm({
                   </div>
                 </div>
               </div>
-              <div className="mt-10">
+              <div className="mt-5">
                 <div className="relative flex gap-x-3">
                   <div className="flex h-6 items-center">
                     <input
@@ -1321,7 +1332,7 @@ export default function OrderForm({
 
           {isAdmin && (
             <div className="relative p-5 mb-5 rounded-md shadow-lg pt-12 border border-gray-300">
-              <div className="absolute top-0 left-0 w-full bg-sky-800 rounded-t-md">
+              <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
                 <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                   운송료 정보{watchShuttleCargoInfo ? " (왕복)" : " (편도)"}
                 </h2>
@@ -1353,7 +1364,7 @@ export default function OrderForm({
           )}
         </div>
 
-        <div className="fixed bottom-0 left-0 p-5 w-full bg-zinc-50 border shadow-md">
+        <div className="fixed bottom-0 left-0 p-5 w-full bg-white border shadow-md">
           <div className="flex items-center justify-end gap-x-6">
             <button
               type="button"
@@ -1365,14 +1376,14 @@ export default function OrderForm({
             {isDirectApi ? (
               <button
                 type="submit"
-                className="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
+                className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"
               >
                 배차신청 수정
               </button>
             ) : (
               <button
                 type="submit"
-                className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-md bg-darkCyan px-3 py-2 text-base font-semibold text-white shadow-sm"
               >
                 {isEdit ? "화물 수정" : "화물 등록"}
               </button>

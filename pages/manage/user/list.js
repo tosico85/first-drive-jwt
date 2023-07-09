@@ -195,14 +195,14 @@ const ManageUser = () => {
       <div className="fixed bottom-0 left-0 p-5 w-full bg-white border mt-6 flex items-center justify-end gap-x-6">
         <button
           type="button"
-          className="rounded-md w-auto bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
+          className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"
           onClick={handleAuthChange}
         >
           권한 수정
         </button>
         <button
           type="button"
-          className="rounded-md w-20 bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
+          className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"
           onClick={handleDelete}
         >
           삭제

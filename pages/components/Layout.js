@@ -14,7 +14,7 @@ const Layout = ({ children }) => {
         <>
           <header className="bg-white absolute shadow-md w-full">
             <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900 font-sans mt-16">
+              <h1 className="text-2xl font-bold tracking-tight text-richBlack font-sans mt-16">
                 {currentPage?.name}
               </h1>
             </div>
@@ -26,7 +26,7 @@ const Layout = ({ children }) => {
         <div
           className={
             "h-full mx-auto max-w-7xl px-5 lg:px-8 " +
-            (isLogin ? "" : "bg-white text-gray-900 pt-32")
+            (isLogin ? "" : "bg-white text-richBlack pt-32")
           }
         >
           {/* <div className="h-full mx-auto max-w-7xl px-5 lg:px-8 pt-36"> */}

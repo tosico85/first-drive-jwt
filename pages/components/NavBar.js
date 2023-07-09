@@ -54,7 +54,7 @@ const Navbar = () => {
 
   return (
     <div className="fixed w-full z-50">
-      <Disclosure as="nav" className="bg-gray-800 w-full">
+      <Disclosure as="nav" className="bg-richBlack w-full">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
@@ -90,7 +90,7 @@ const Navbar = () => {
                       href={item.href}
                       className={classNames(
                         item.current
-                          ? "bg-gray-900 text-white"
+                          ? "bg-richBlack text-white"
                           : "text-gray-300 hover:bg-gray-700 hover:text-white",
                         "rounded-md px-3 py-2 text-sm font-medium"
                       )}
@@ -110,7 +110,7 @@ const Navbar = () => {
                 </div>
                 <button
                   type="button"
-                  className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="rounded-full bg-richBlack p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-richBlack"
                 >
                   {/* <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" /> */}
@@ -119,7 +119,7 @@ const Navbar = () => {
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                    <Menu.Button className="flex max-w-xs items-center rounded-full bg-richBlack text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-richBlack">
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
@@ -162,7 +162,7 @@ const Navbar = () => {
             <div className="-mr-2 flex md:hidden">
               {/* Mobile menu button */}
               <Disclosure.Button
-                className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                className="inline-flex items-center justify-center rounded-md bg-richBlack p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-richBlack"
                 onClick={() => setOpen((open) => !open)}
               >
                 <span className="sr-only">Open main menu</span>
@@ -194,7 +194,7 @@ const Navbar = () => {
                   href={item.href}
                   className={classNames(
                     item.current
-                      ? "bg-gray-900 text-white"
+                      ? "bg-richBlack text-white"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
@@ -224,7 +224,7 @@ const Navbar = () => {
                 </div>
                 {/* <button
                 type="button"
-                className="ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                className="ml-auto flex-shrink-0 rounded-full bg-richBlack p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-richBlack"
               >
                 <span className="sr-only">View notifications</span>
                 <BellIcon className="h-6 w-6" aria-hidden="true" />

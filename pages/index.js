@@ -73,10 +73,10 @@ const HomePage = () => {
         <div className="flex justify-between sm:justify-start sm:gap-x-3">
           <div
             className={
-              "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-slate-400 hover:shadow-md " +
+              "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
               (searchStatus == "ALL"
-                ? "bg-slate-400 text-white"
-                : "text-slate-400")
+                ? "bg-gray-400 text-white"
+                : "text-gray-400")
             }
             onClick={() => handleSearchStatus("ALL")}
           >
@@ -84,10 +84,10 @@ const HomePage = () => {
           </div>
           <div
             className={
-              "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-slate-400 hover:shadow-md " +
+              "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
               (searchStatus == "화물접수"
-                ? "bg-slate-400 text-white"
-                : "text-slate-400")
+                ? "bg-gray-400 text-white"
+                : "text-gray-400")
             }
             onClick={() => handleSearchStatus("화물접수")}
           >
@@ -95,10 +95,10 @@ const HomePage = () => {
           </div>
           <div
             className={
-              "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-slate-400 hover:shadow-md " +
+              "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
               (searchStatus == "배차신청"
-                ? "bg-slate-400 text-white"
-                : "text-slate-400")
+                ? "bg-gray-400 text-white"
+                : "text-gray-400")
             }
             onClick={() => handleSearchStatus("배차신청")}
           >
@@ -106,10 +106,10 @@ const HomePage = () => {
           </div>
           <div
             className={
-              "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-slate-400 hover:shadow-md " +
+              "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
               (searchStatus == "배차완료"
-                ? "bg-slate-400 text-white"
-                : "text-slate-400")
+                ? "bg-gray-400 text-white"
+                : "text-gray-400")
             }
             onClick={() => handleSearchStatus("배차완료")}
           >
@@ -117,10 +117,10 @@ const HomePage = () => {
           </div>
           <div
             className={
-              "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-slate-400 hover:shadow-md " +
+              "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
               (searchStatus == "취소"
-                ? "bg-slate-400 text-white"
-                : "text-slate-400")
+                ? "bg-gray-400 text-white"
+                : "text-gray-400")
             }
             onClick={() => handleSearchStatus("취소")}
           >
@@ -307,10 +307,10 @@ const HomePage = () => {
               );
             })}
       </ul>
-      <div className="fixed bottom-0 left-0 p-5 w-full border bg-zinc-50 mt-6 flex items-center justify-end gap-x-6">
+      <div className="fixed bottom-0 left-0 p-5 w-full border bg-white mt-6 flex items-center justify-end gap-x-6">
         <button
           type="button"
-          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="rounded-md bg-darkCyan px-3 py-2 text-base font-semibold text-white shadow-sm"
           onClick={() => router.push("/orders/create")}
         >
           화물 등록
