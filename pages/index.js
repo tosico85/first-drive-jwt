@@ -66,83 +66,63 @@ const HomePage = () => {
   };
 
   return (
-    <div className="pb-5 bg-gray-300 relative">
-      <div className="bg-white fixed top-16 w-full">
-        <div className="sm:hidden grid grid-cols-1">
-          <div className="grid grid-cols-5 items-center">
-            <div
-              className={
-                "text-white text-center bg-midnightGreen border-b-8" +
-                (searchStatus == "ALL"
-                  ? " border-tiffanyBlue font-bold"
-                  : " border-midnightGreen")
-              }
-              onClick={() => handleSearchStatus("ALL")}
-            >
-              <p className="py-5">전체</p>
-            </div>
-            <div
-              className={
-                "text-white text-center bg-midnightGreen border-b-8" +
-                (searchStatus == "화물접수"
-                  ? " border-tiffanyBlue font-bold"
-                  : " border-midnightGreen")
-              }
-              onClick={() => handleSearchStatus("화물접수")}
-            >
-              <p className="py-5">화물접수</p>
-            </div>
-            <div
-              className={
-                "text-white text-center bg-midnightGreen border-b-8" +
-                (searchStatus == "배차신청"
-                  ? " border-tiffanyBlue font-bold"
-                  : " border-midnightGreen")
-              }
-              onClick={() => handleSearchStatus("배차신청")}
-            >
-              <p className="py-5">배차신청</p>
-            </div>
-            <div
-              className={
-                "text-white text-center bg-midnightGreen border-b-8" +
-                (searchStatus == "배차완료"
-                  ? " border-tiffanyBlue font-bold"
-                  : " border-midnightGreen")
-              }
-              onClick={() => handleSearchStatus("배차완료")}
-            >
-              <p className="py-5">배차완료</p>
-            </div>
-            <div
-              className={
-                "text-white text-center bg-midnightGreen border-b-8" +
-                (searchStatus == "취소"
-                  ? " border-tiffanyBlue font-bold"
-                  : " border-midnightGreen")
-              }
-              onClick={() => handleSearchStatus("취소")}
-            >
-              <p className="py-5">취소</p>
-            </div>
+    <div className="pb-5 bg-white relative">
+      <div className="bg-white fixed top-16 w-full z-50">
+        <div className="grid grid-cols-5 items-center sm:hidden">
+          <div
+            className={
+              "text-white text-center bg-midnightGreen border-b-8 shadow-inner" +
+              (searchStatus == "ALL"
+                ? " border-tiffanyBlue font-extrabold"
+                : " border-midnightGreen")
+            }
+            onClick={() => handleSearchStatus("ALL")}
+          >
+            <p className="py-5">전체</p>
           </div>
-          <div className="bg-gray-50 p-5 flex flex-col gap-y-3">
-            <div className="flex w-full justify-between items-center">
-              <div className="">
-                <DateInput dateValue={getOneWeekAgoDate()} addClass="w-40" />
-              </div>
-              <span>~</span>
-              <div>
-                <DateInput addClass="w-40" />
-              </div>
-            </div>
-            <div className="">
-              <input
-                type="text"
-                placeholder="업체명 검색"
-                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-              />
-            </div>
+          <div
+            className={
+              "text-white text-center bg-midnightGreen border-b-8 shadow-inner" +
+              (searchStatus == "화물접수"
+                ? " border-tiffanyBlue font-extrabold"
+                : " border-midnightGreen")
+            }
+            onClick={() => handleSearchStatus("화물접수")}
+          >
+            <p className="py-5">화물접수</p>
+          </div>
+          <div
+            className={
+              "text-white text-center bg-midnightGreen border-b-8 shadow-inner" +
+              (searchStatus == "배차신청"
+                ? " border-tiffanyBlue font-extrabold"
+                : " border-midnightGreen")
+            }
+            onClick={() => handleSearchStatus("배차신청")}
+          >
+            <p className="py-5">배차신청</p>
+          </div>
+          <div
+            className={
+              "text-white text-center bg-midnightGreen border-b-8 shadow-inner" +
+              (searchStatus == "배차완료"
+                ? " border-tiffanyBlue font-extrabold"
+                : " border-midnightGreen")
+            }
+            onClick={() => handleSearchStatus("배차완료")}
+          >
+            <p className="py-5">배차완료</p>
+          </div>
+          <div
+            className={
+              "text-white text-center bg-midnightGreen border-b-8 shadow-inner" +
+              (searchStatus == "취소"
+                ? " border-tiffanyBlue font-extrabold"
+                : " border-midnightGreen")
+            }
+            onClick={() => handleSearchStatus("취소")}
+          >
+            <p className="py-5">취소</p>
           </div>
         </div>
 
@@ -219,8 +199,26 @@ const HomePage = () => {
           } 건`}</p>
         </div>
       </div>
+      <div className="bg-gray-50 p-5 flex flex-col gap-y-3 border-b-2 sm:hidden">
+        <div className="flex w-full justify-between items-center">
+          <div className="">
+            <DateInput dateValue={getOneWeekAgoDate()} addClass="w-40" />
+          </div>
+          <span>~</span>
+          <div>
+            <DateInput addClass="w-40" />
+          </div>
+        </div>
+        <div className="">
+          <input
+            type="text"
+            placeholder="업체명 검색"
+            className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+          />
+        </div>
+      </div>
 
-      <ul className="mt-36 pt-5 pb-14">
+      <ul className="mt-5 sm:mt-16 pb-14">
         {cargoOrder.length > 0 &&
           cargoOrder
             .filter((item) => {
@@ -269,7 +267,7 @@ const HomePage = () => {
                   key={cargo_seq}
                   onClick={() => handleDetail(cargo_seq)}
                 >
-                  <div className="flex flex-col justify-between bg-white rounded-2xl lg:hidden">
+                  <div className="flex flex-col justify-between bg-white rounded-2xl shadow-md border border-gray-100 sm:hidden">
                     <div className="p-5">
                       <div className="flex flex-col gap-y-3">
                         <div className="flex gap-x-2 items-center">
@@ -444,10 +442,10 @@ const HomePage = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="hidden lg:block">
+                  <div className="hidden sm:block">
                     <div className="flex flex-col sm:flex-row gap-x-1 w-full justify-between">
-                      <div className="flex flex-col w-full lg:gap-x-10 lg:flex-row lg:items-start">
-                        <div className="flex flex-col items-start gap-y-2 lg:w-80 w-full gap-x-5 mb-2">
+                      <div className="flex flex-col w-full sm:gap-x-10 sm:flex-row sm:items-start">
+                        <div className="flex flex-col items-start gap-y-2 sm:w-80 w-full gap-x-5 mb-2">
                           <div className="w-full flex items-center justify-between">
                             <p className="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-500">
                               {cargoDsc}
@@ -497,7 +495,7 @@ const HomePage = () => {
                             )}
                           </div>
                         </div>
-                        <div className="flex text-xs lg:text-sm gap-x-4 items-center">
+                        <div className="flex text-xs sm:text-sm gap-x-4 items-center">
                           <div>
                             <p className="mt-1 truncate leading-5 font-bold text-gray-500">
                               {`${startCompanyName || ""} ${
