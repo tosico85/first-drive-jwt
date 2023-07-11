@@ -4,7 +4,7 @@ const BottomNav = () => {
   const router = useRouter();
 
   return (
-    <div className="fixed bottom-0 w-full bg-white grid grid-cols-5 py-3 border-t border-gray-200 text-gray-500">
+    <div className="fixed bottom-0 w-full bg-white grid grid-cols-5 py-3 border-t border-gray-200 text-gray-500 sm:hidden">
       <div
         className={
           "flex flex-col items-center " +

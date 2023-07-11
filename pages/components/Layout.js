@@ -9,12 +9,17 @@ const Layout = ({ children }) => {
   const isLogin = router.pathname === "/login";
 
   const isShowBottomNav = () => {
-    const exceptPages = ["/orders/create", "/orders/modify", "/orders/detail"];
+    const exceptPages = [
+      "/login",
+      "/orders/create",
+      "/orders/modify",
+      "/orders/detail",
+    ];
     return exceptPages.includes(router.pathname);
   };
 
   return (
-    <div className="relative">
+    <div className="h-full relative">
       <div className="h-full relative">
         {!isLogin && (
           <>
