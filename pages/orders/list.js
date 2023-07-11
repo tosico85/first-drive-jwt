@@ -3,6 +3,7 @@ import apiPaths from "../../services/apiRoutes";
 import AuthContext from "../context/authContext";
 import { useRouter } from "next/router";
 import {
+  addCommas,
   formatDate,
   getOneWeekAgoDate,
   getTodayDate,
@@ -315,18 +316,18 @@ const CargoList = () => {
                     <div className="p-5">
                       <div className="flex flex-col gap-y-3">
                         <div className="flex gap-x-2 items-center">
-                          <p className="bg-gray-400 rounded-lg text-white font-bold p-1 w-fit text-xs">
+                          <p className="bg-gray-400 rounded-lg text-white font-bold p-1 min-w-fit text-xs">
                             출발
                           </p>
-                          <p className="truncate leading-5 text-gray-600">
+                          <p className="truncate leading-5 text-gray-600 whitespace-pre-wrap">
                             {`${startWide} ${startSgg} ${startDong} ${startDetail}`}
                           </p>
                         </div>
                         <div className="flex gap-x-2 items-center">
-                          <p className="bg-gray-400 rounded-lg text-white font-bold p-1 w-fit text-xs">
+                          <p className="bg-gray-400 rounded-lg text-white font-bold p-1 min-w-fit text-xs">
                             도착
                           </p>
-                          <p className="truncate leading-5 text-gray-600">
+                          <p className="truncate leading-5 text-gray-600 whitespace-pre-wrap">
                             {`${endWide} ${endSgg} ${endDong} ${endDetail}`}
                           </p>
                         </div>
@@ -365,7 +366,7 @@ const CargoList = () => {
                             운송비용
                           </span>
                           <span className="text-gray-600">{`${
-                            fareView == "0" ? "-" : fareView
+                            fareView == "0" ? "-" : addCommas(fareView)
                           }`}</span>
                         </div>
                       </div>
