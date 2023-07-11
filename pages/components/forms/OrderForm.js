@@ -361,7 +361,7 @@ export default function OrderForm({
 
     if (resultCd === "00") {
       alert("화물 오더가 등록되었습니다.");
-      router.push("/");
+      router.push("/orders/list");
     } else {
       alert(result);
     }
@@ -1190,9 +1190,13 @@ export default function OrderForm({
                             e.target.value = "0";
                           }
                         },
+                        required: "적재중량을 입력해주세요.",
                       })}
                       className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
+                    <div className="text-red-500 mx-auto font-bold text-center">
+                      {errors.frgton?.message}
+                    </div>
                   </div>
                 )}
               </div>
@@ -1217,7 +1221,9 @@ export default function OrderForm({
                 <div className="grid gap-y-2">
                   <div>
                     <select
-                      {...register("firstType")}
+                      {...register("firstType", {
+                        required: "의뢰자 구분을 입력해주세요",
+                      })}
                       className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     >
                       <option value={""}>의뢰자 구분</option>

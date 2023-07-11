@@ -105,7 +105,7 @@ export default function Detail() {
 
       if (resultCd === "00") {
         alert("화물 접수가 취소되었습니다.");
-        router.push("/");
+        router.push("/orders/list");
       } else {
         alert(result);
       }
@@ -130,7 +130,7 @@ export default function Detail() {
 
       if (code === 1) {
         alert("배차 신청되었습니다.");
-        router.push("/");
+        router.push("/orders/list");
       } else {
         alert(message);
       }
@@ -179,7 +179,7 @@ export default function Detail() {
 
     if (code !== -99) {
       alert("화물 오더가 취소 되었습니다.");
-      router.push("/");
+      router.push("/orders/list");
     } else {
       alert(message);
     }
