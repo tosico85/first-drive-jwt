@@ -45,6 +45,16 @@ export const addCommas = (number) => {
   return number.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
+export const getTodayDate = () => {
+  var today = new Date();
+
+  var year = today.getFullYear().toString();
+  var month = (today.getMonth() + 1).toString().padStart(2, "0");
+  var day = today.getDate().toString().padStart(2, "0");
+
+  return year + month + day;
+};
+
 export const getOneWeekAgoDate = () => {
   var today = new Date();
   var oneWeekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);

@@ -2,7 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import apiPaths from "../services/apiRoutes";
 import AuthContext from "./context/authContext";
 import { useRouter } from "next/router";
-import { formatDate, getOneWeekAgoDate } from "../utils/StringUtils";
+import {
+  formatDate,
+  getOneWeekAgoDate,
+  getTodayDate,
+} from "../utils/StringUtils";
 import { formatPhoneNumber } from "../utils/StringUtils";
 import DateInput from "./components/custom/DateInput";
 
@@ -10,6 +14,9 @@ const HomePage = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
   const [cargoOrder, setCargoOrder] = useState([]);
   const [searchStatus, setSearchStatus] = useState("ALL");
+  const [startSearchDt, setStartSearchDt] = useState(getOneWeekAgoDate());
+  const [endSearchDt, setEndSearchDt] = useState(getTodayDate());
+  const [companySearch, setCompanySearch] = useState("");
   const router = useRouter();
 
   const getOrderList = async () => {
@@ -20,7 +27,11 @@ const HomePage = () => {
 
     //console.log(userInfo);
     //console.log(url);
-    const params = {};
+    const params = {
+      start_dt: startSearchDt,
+      end_dt: endSearchDt,
+      company_nm: companySearch,
+    };
 
     const result = await requestServer(url, params);
     setCargoOrder(() => result);
@@ -31,7 +42,18 @@ const HomePage = () => {
     (async () => {
       await getOrderList();
     })();
-  }, [userInfo]);
+  }, [userInfo, startSearchDt, endSearchDt, companySearch]);
+
+  const handleCompanySearch = (e) => {
+    const {
+      key,
+      target: { value },
+    } = e;
+
+    if (key == "Enter") {
+      setCompanySearch(value);
+    }
+  };
 
   //상세보기
   const handleDetail = (cargo_seq) => {
@@ -67,7 +89,7 @@ const HomePage = () => {
 
   return (
     <div className="pb-5 bg-white relative">
-      <div className="bg-white fixed top-16 w-full z-50">
+      <div className="bg-white fixed top-16 w-full z-40">
         <div className="grid grid-cols-5 items-center sm:hidden">
           <div
             className={
@@ -201,21 +223,43 @@ const HomePage = () => {
       </div>
       <div className="bg-gray-50 p-5 flex flex-col gap-y-3 border-b-2 sm:hidden">
         <div className="flex w-full justify-between items-center">
-          <div className="">
-            <DateInput dateValue={getOneWeekAgoDate()} addClass="w-40" />
+          <div className="z-0">
+            <DateInput
+              dateValue={startSearchDt}
+              onDateChange={setStartSearchDt}
+              addClass="w-40"
+            />
           </div>
           <span>~</span>
-          <div>
-            <DateInput addClass="w-40" />
+          <div className="z-0">
+            <DateInput
+              dateValue={endSearchDt}
+              onDateChange={setEndSearchDt}
+              addClass="w-40"
+            />
           </div>
         </div>
         <div className="">
           <input
             type="text"
             placeholder="업체명 검색"
+            onKeyDown={handleCompanySearch}
             className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
           />
         </div>
+        <p className="text-right">{`${
+          cargoOrder.length > 0
+            ? cargoOrder.filter((item) => {
+                if (searchStatus === "ALL") {
+                  return true;
+                } else if (searchStatus === "취소") {
+                  return item.delete_yn === "Y";
+                } else {
+                  return item.ordStatus === searchStatus;
+                }
+              }).length
+            : "0"
+        } 건`}</p>
       </div>
 
       <ul className="mt-5 sm:mt-16 pb-14">
@@ -311,7 +355,9 @@ const HomePage = () => {
                           </span>
                           <span className="text-gray-600">
                             {formatDate(startPlanDt)}
-                            {` (${startPlanHour}:${startPlanMinute})`}
+                            {` (${startPlanHour || "00"}:${
+                              startPlanMinute || "00"
+                            })`}
                           </span>
                         </div>
                         <div className="flex flex-col items-start gap-y-1">
