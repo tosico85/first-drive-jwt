@@ -521,7 +521,7 @@ export default function Detail() {
       <div className="fixed bottom-0 left-0 p-5 bg-white w-full border mt-6 pb-6 flex items-center justify-end lg:gap-x-6 gap-x-3">
         <button
           type="button"
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/orders/list")}
           className="text-sm font-semibold leading-6"
         >
           목록으로

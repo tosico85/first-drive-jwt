@@ -1370,7 +1370,7 @@ export default function OrderForm({
           <div className="flex items-center justify-end gap-x-6">
             <button
               type="button"
-              onClick={() => router.push("/")}
+              onClick={() => router.back()}
               className="text-sm font-semibold leading-6"
             >
               Cancel
