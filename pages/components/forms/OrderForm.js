@@ -9,7 +9,7 @@ import AuthContext from "../../context/authContext";
 import Modal from "react-modal";
 import UserAddressModal from "../modals/UserAddressModal";
 import { isEmptyObject } from "../../../utils/ObjectUtils";
-import { isEmpty } from "../../../utils/StringUtils";
+import { addCommas, isEmpty } from "../../../utils/StringUtils";
 
 export default function OrderForm({
   isEdit = false,
@@ -64,6 +64,7 @@ export default function OrderForm({
   const watchStartSgg = watch("startSgg");
   const watchEndSgg = watch("endSgg");
   const watchCargoTon = watch("cargoTon");
+  const watchShuttleCargoInfo = watch("shuttleCargoInfo");
   let addressPopupStartEnd = "";
   let startBaseYn = "N";
   let endBaseYn = "N";
@@ -111,9 +112,9 @@ export default function OrderForm({
 
   //시군구 변경 시 운행요금 자동 계산
   useEffect(() => {
-    if (!isAdmin) {
+    /*if (!isAdmin) {
       return;
-    }
+    }*/
 
     const [startWide, startSgg, endWide, endSgg] = getValues([
       "startWide",
@@ -143,9 +144,11 @@ export default function OrderForm({
     console.log(watchCargoTon);
     console.log(fareMap);
     if (!isEmptyObject(fareMap)) {
-      setFareByCargoTon(watchCargoTon);
+      if (!isEmpty(watchCargoTon)) {
+        setFareByCargoTon(watchCargoTon);
+      }
     }
-  }, [watchCargoTon]);
+  }, [watchCargoTon, watchShuttleCargoInfo]);
 
   // 운행요금 조회 시 차량톤수에 따른 운행료 세팅
   useEffect(() => {
@@ -169,6 +172,7 @@ export default function OrderForm({
   const setFareByCargoTon = (cargoTon) => {
     try {
       const floatCargoTon = Number.parseFloat(cargoTon);
+      let resultFare = "0";
       const {
         oneTon,
         twoHalfTon,
@@ -181,22 +185,27 @@ export default function OrderForm({
       } = fareMap;
 
       if (floatCargoTon <= 1) {
-        setValue("fareView", oneTon);
+        resultFare = oneTon;
       } else if (floatCargoTon <= 2.5) {
-        setValue("fareView", twoHalfTon);
+        resultFare = twoHalfTon;
       } else if (floatCargoTon <= 3.5) {
-        setValue("fareView", threeHalfTon);
+        resultFare = threeHalfTon;
       } else if (floatCargoTon <= 5) {
-        setValue("fareView", fiveTon);
+        resultFare = fiveTon;
         // 5톤축? 뭔지 모름
         //setValue("fareView", fiveTonPlus);
       } else if (floatCargoTon <= 11) {
-        setValue("fareView", elevenTon);
+        resultFare = elevenTon;
       } else if (floatCargoTon <= 18) {
-        setValue("fareView", eighteenTon);
+        resultFare = eighteenTon;
       } else {
-        setValue("fareView", twentyfiveTon);
+        resultFare = twentyfiveTon;
       }
+
+      if (watchShuttleCargoInfo) {
+        resultFare = Number.parseInt(resultFare) * 1.8 + "";
+      }
+      setValue("fareView", resultFare);
 
       console.log("fareView", getValues("fareView"));
     } catch (e) {
@@ -570,7 +579,7 @@ export default function OrderForm({
   }
 
   return (
-    <div>
+    <div className="p-5">
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -584,751 +593,804 @@ export default function OrderForm({
         />
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
-        <div className="border-b border-gray-900/10 dark:border-gray-900/40 pb-8">
-          <h2 className="text-lg font-semibold leading-7">상차지 정보</h2>
-          <p className="mt-1 text-sm leading-6 mb-5 text-gray-600 dark:text-gray-300">
-            상차지 주소 및 상차방법, 상차일자를 입력해주세요.
-          </p>
-          <div className="mt-10 mb-3 grid grid-cols-2 sm:grid-cols-5 justify-between items-center">
-            <h2 className="text-base font-semibold leading-7">상차지 주소</h2>
-            <div className="text-right sm:text-left flex items-center gap-x-5 justify-end">
-              <div
-                className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight"
-                onClick={(e) => {
-                  //handleSearchAddressButton(e, "start");
-                  searchAddress("start");
-                }}
-              >
-                <span>주소검색</span>
-                <svg
-                  xmlns="h  ttp://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
+        <div className="pb-12 grid sm:grid-cols-2 gap-x-5">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300 sm:row-span-2">
+            <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
+              <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
+                상하차지 정보
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 gap-y-2 mt-5">
+              <div className="flex gap-x-3">
+                <div
+                  onClick={(e) => {
+                    searchAddress("start");
+                  }}
+                  className="w-full text-right items-center gap-x-5 relative"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                  <input
+                    type="text"
+                    placeholder="상차지 주소(시군구동)"
+                    disabled={true}
+                    value={getValues([
+                      "startWide",
+                      "startSgg",
+                      "startDong",
+                    ]).join(" ")}
+                    className="block w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   />
-                </svg>
-              </div>
-
-              <button
-                className="min-w-fit rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
-                onClick={(e) => {
-                  handleAddressButton(e, "start");
-                }}
-              >
-                주소록
-              </button>
-            </div>
-          </div>
-          <div className="grid grid-cols-1">
-            <div className="mb-5">
-              <label className="block text-sm font-medium leading-6">
-                지역 선택(시/군/구, 동)
-              </label>
-              <Controller
-                control={control}
-                name="startAddress"
-                rules={{ required: "상차지 주소를 입력해주세요." }}
-                render={() => (
-                  <AddressForm
-                    addressChange={(returnValue) => {
-                      const { startWide, startSgg, startDong } = returnValue;
-                      setValue("startWide", startWide);
-                      setValue("startSgg", startSgg);
-                      setValue("startDong", startDong);
-
-                      if (
-                        (startWide || "" != "") &&
-                        (startSgg || "" != "") &&
-                        (startDong || "" != "")
-                      ) {
-                        setValue("startAddress", returnValue);
-                      }
-                      clearErrors();
-                      //console.log(returnValue);
-                    }}
-                    addressValue={startAddressData}
-                    clsf="start"
-                  />
-                )}
-              />
-              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
-                {errors.startAddress?.message}
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium leading-6">
-                상세주소
-              </label>
-              <input
-                {...register(`startDetail`, {
-                  required: "상세주소를 입력해주세요.",
-                })}
-                type="text"
-                placeholder="상차지 상세주소"
-                className="block sm:w-3/5 w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-              />
-
-              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                {errors[`startDetail`]?.message}
-              </div>
-            </div>
-          </div>
-          <div className="mt-5 grid lg:grid-cols-6 grid-cols-1">
-            <div>
-              <label className="block text-sm font-medium leading-6">
-                상차일자
-              </label>
-              <Controller
-                control={control}
-                name="startPlanDt"
-                rules={{ required: "상차일자를 입력해주세요." }}
-                render={({ field: { onChange } }) => (
-                  <DateInput
-                    onDateChange={onChange}
-                    dateValue={getValues("startPlanDt")}
-                  />
-                )}
-              />
-              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                {errors.startPlanDt?.message}
-              </div>
-            </div>
-            <div className="lg:col-span-5">
-              <label className="block text-sm font-medium leading-6">
-                상차방법
-              </label>
-              <select
-                {...register("startLoad", {
-                  required: `상차방법을 입력해주세요`,
-                })}
-                className="block w-full lg:w-1/4 rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-              >
-                <option value="">상차방법</option>
-                {LOAD_TYPE_LIST.map((item, i) => (
-                  <option key={i} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                {errors.startLoad?.message}
-              </div>
-            </div>
-          </div>
-          <div className="mt-5 grid lg:grid-cols-6 grid-cols-1 gap-y-3 gap-x-5">
-            <div className="lg:col-span-2">
-              <label className="block text-sm font-medium leading-6">
-                상차지 업체명
-              </label>
-              <input
-                {...register("startCompanyName", {
-                  required: "상차지 업체명을 입력해주세요.",
-                })}
-                type="text"
-                placeholder={"업체명을 입력하세요"}
-                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-              />
-              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
-                {errors.startCompanyName?.message}
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium leading-6">
-                상차지 전화번호
-              </label>
-              <input
-                {...register("startAreaPhone", {
-                  required: "상차지 전화번호를 입력해주세요.",
-                })}
-                type="tel"
-                maxLength={11}
-                placeholder={"'-'없이 입력하세요"}
-                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-              />
-              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
-                {errors.startAreaPhone?.message}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-b border-gray-900/10 dark:border-gray-900/40 py-8">
-          <h2 className="text-lg font-semibold leading-7">하차지 정보</h2>
-          <p className="mt-1 text-sm leading-6 mb-5 text-gray-600 dark:text-gray-300">
-            하차지 주소 및 하차방법, 하차일자, 연락처 정보를 입력해주세요.
-          </p>
-          <div className="mt-10 mb-3 grid grid-cols-2 sm:grid-cols-5 justify-between items-center">
-            <h2 className="text-base font-semibold leading-7">하차지 주소</h2>
-            <div className="text-right sm:text-left flex items-center gap-x-5 justify-end">
-              <div
-                className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold hover:font-extralight"
-                onClick={(e) => {
-                  //handleSearchAddressButton(e, "start");
-                  searchAddress("end");
-                }}
-              >
-                <span>주소검색</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                  className="w-6 h-6"
+                  <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-500 hover:font-extralight absolute right-2 top-1.5">
+                    <span>주소검색</span>
+                    <svg
+                      xmlns="h  ttp://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <button
+                  className="min-w-fit rounded-md bg-white px-3 py-1 text-sm font-semibold text-gray-500 shadow-md border"
+                  onClick={(e) => {
+                    handleAddressButton(e, "start");
+                  }}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                  />
-                </svg>
+                  주소록
+                </button>
               </div>
-              <button
-                className="rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-amber-600"
-                onClick={(e) => {
-                  handleAddressButton(e, "end");
-                }}
-              >
-                주소록
-              </button>
-            </div>
-          </div>
-          <div className="grid grid-cols-1">
-            <div className="mb-5">
-              <label className="block text-sm font-medium leading-6">
-                지역 선택(시/군/구, 동)
-              </label>
-              <Controller
-                control={control}
-                name="endAddress"
-                rules={{ required: "하차지 주소를 입력해주세요." }}
-                render={() => (
-                  <AddressForm
-                    addressChange={(returnValue) => {
-                      const { endWide, endSgg, endDong } = returnValue;
-                      setValue("endWide", endWide);
-                      setValue("endSgg", endSgg);
-                      setValue("endDong", endDong);
+              <div className="my-5 hidden">
+                <Controller
+                  control={control}
+                  name="startAddress"
+                  rules={{ required: "상차지 주소를 입력해주세요." }}
+                  render={() => (
+                    <AddressForm
+                      addressChange={(returnValue) => {
+                        const { startWide, startSgg, startDong } = returnValue;
+                        setValue("startWide", startWide);
+                        setValue("startSgg", startSgg);
+                        setValue("startDong", startDong);
 
-                      if (
-                        (endWide || "" != "") &&
-                        (endSgg || "" != "") &&
-                        (endDong || "" != "")
-                      ) {
-                        setValue("endAddress", returnValue);
-                      }
-                      //console.log(returnValue);
-                      clearErrors();
-                    }}
-                    addressValue={endAddressData}
-                    clsf="end"
-                  />
-                )}
-              />
-              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
-                {errors.endAddress?.message}
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium leading-6">
-                상세주소
-              </label>
-              <input
-                {...register(`endDetail`, {
-                  required: "상세주소를 입력해주세요.",
-                })}
-                type="text"
-                placeholder="하차지 상세주소"
-                className="block sm:w-3/5 w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-              />
-              <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                {errors[`endDetail`]?.message}
-              </div>
-            </div>
-          </div>
-          <div className="mt-5 grid lg:grid-cols-6 grid-cols-1">
-            <div>
-              <label className="block text-sm font-medium leading-6">
-                하차일자
-              </label>
-              <Controller
-                control={control}
-                name="endPlanDt"
-                rules={{ required: "하차일자를 입력해주세요." }}
-                render={({ field: { onChange } }) => (
-                  <DateInput
-                    onDateChange={onChange}
-                    dateValue={getValues("endPlanDt")}
-                  />
-                )}
-              />
-              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
-                {errors.endPlanDt?.message}
-              </div>
-            </div>
-            <div className="lg:col-span-5">
-              <label className="block text-sm font-medium leading-6">
-                하차방법
-              </label>
-              <select
-                {...register("endLoad", {
-                  required: `하차방법을 입력해주세요`,
-                })}
-                className="block w-full lg:w-1/4 rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-              >
-                <option value="">하차방법</option>
-                {LOAD_TYPE_LIST.map((item, i) => (
-                  <option key={i} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
-                {errors.endLoad?.message}
-              </div>
-            </div>
-          </div>
-          <div className="mt-5 grid lg:grid-cols-6 grid-cols-1 gap-y-3 gap-x-5">
-            <div className="lg:col-span-2">
-              <label className="block text-sm font-medium leading-6">
-                하차지 업체명
-              </label>
-              <input
-                {...register("endCompanyName", {
-                  required: "하차지 업체명을 입력해주세요.",
-                })}
-                type="text"
-                placeholder={"업체명을 입력하세요"}
-                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-              />
-              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
-                {errors.endCompanyName?.message}
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium leading-6">
-                하차지 전화번호
-              </label>
-              <input
-                {...register("endAreaPhone", {
-                  required: "하차지 전화번호를 입력해주세요.",
-                })}
-                type="tel"
-                maxLength={11}
-                placeholder={"'-'없이 입력하세요"}
-                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-              />
-              <div className="text-red-500 mx-auto mb-3 font-bold text-center">
-                {errors.endAreaPhone?.message}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="border-b border-gray-900/10 dark:border-gray-900/40 py-8">
-          <h2 className="text-lg font-semibold leading-7">화물 정보</h2>
-          <p className="mt-1 text-sm leading-6 mb-5 text-gray-600 dark:text-gray-300">
-            화물 내용과 차량정보를 입력해주세요.
-          </p>
-          <div className="mt-10">
-            <label className="block text-sm font-medium leading-6">
-              화물상세내용(메모)
-            </label>
-            <input
-              {...register("cargoDsc", {
-                required: "화물상세내용을 입력해주세요.",
-              })}
-              type="text"
-              className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-            />
-            <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-              {errors.cargoDsc?.message}
-            </div>
-          </div>
-          <div className="mt-10">
-            <fieldset>
-              <legend className="text-base font-semibold leading-6">
-                화물 선택사항
-              </legend>
-              <div className="mt-3 space-y-4 lg:space-y-0 lg:grid lg:grid-cols-4">
-                {isAdmin && (
-                  <div className="relative flex gap-x-3">
-                    <div className="flex h-6 items-center">
-                      <input
-                        {...register("multiCargoGub")}
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                    </div>
-                    <div className="text-sm leading-6">
-                      <label htmlFor="comments" className="font-medium">
-                        혼적여부
-                      </label>
-                      <p className="text-gray-500 dark:text-gray-400">
-                        (선택)혼적여부를 체크해주세요.
-                      </p>
-                    </div>
-                  </div>
-                )}
-                {isAdmin && (
-                  <div className="relative flex gap-x-3">
-                    <div className="flex h-6 items-center">
-                      <input
-                        {...register("urgent")}
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                    </div>
-                    <div className="text-sm leading-6">
-                      <label htmlFor="candidates" className="font-medium">
-                        긴급여부
-                      </label>
-                      <p className="text-gray-500 dark:text-gray-400">
-                        (선택)긴급여부를 체크해주세요.
-                      </p>
-                    </div>
-                  </div>
-                )}
-                {!isAdmin && (
-                  <div className="relative flex gap-x-3">
-                    <div className="flex h-6 items-center">
-                      <input
-                        {...register("farePaytype")}
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                      />
-                    </div>
-                    <div className="text-sm leading-6">
-                      <label htmlFor="candidates" className="font-medium">
-                        착불여부
-                      </label>
-                      <p className="text-gray-500 dark:text-gray-400">
-                        (선택)착불여부를 체크해주세요.
-                      </p>
-                    </div>
-                  </div>
-                )}
-                <div className="relative flex gap-x-3">
-                  <div className="flex h-6 items-center">
-                    <input
-                      {...register("shuttleCargoInfo")}
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        if (
+                          (startWide || "" != "") &&
+                          (startSgg || "" != "") &&
+                          (startDong || "" != "")
+                        ) {
+                          setValue("startAddress", returnValue);
+                        }
+                        clearErrors();
+                        //console.log(returnValue);
+                      }}
+                      addressValue={startAddressData}
+                      clsf="start"
                     />
+                  )}
+                />
+                <div className="text-red-500 mx-auto mb-3 font-bold text-center">
+                  {errors.startAddress?.message}
+                </div>
+              </div>
+              <div>
+                <input
+                  {...register(`startDetail`, {
+                    required: "상세주소를 입력해주세요.",
+                  })}
+                  type="text"
+                  placeholder="상차지 상세주소"
+                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                />
+
+                <div className="text-red-500 mx-auto font-bold text-center">
+                  {errors[`startDetail`]?.message}
+                </div>
+              </div>
+            </div>
+            <div className="mt-2 grid grid-cols-1 gap-y-2">
+              <div>
+                <select
+                  {...register("startLoad", {
+                    required: `상차방법을 입력해주세요`,
+                  })}
+                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+                  <option value="">상차방법</option>
+                  {LOAD_TYPE_LIST.map((item, i) => (
+                    <option key={i} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+                <div className="text-red-500 mx-auto font-bold text-center">
+                  {errors.startLoad?.message}
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-x-3 justify-stretch">
+                <div>
+                  <input
+                    {...register("startCompanyName", {
+                      required: "상차지 업체명을 입력해주세요.",
+                    })}
+                    type="text"
+                    placeholder={"상차지 업체명"}
+                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                  <div className="text-red-500 mx-auto font-bold text-center">
+                    {errors.startCompanyName?.message}
                   </div>
-                  <div className="text-sm leading-6">
-                    <label htmlFor="offers" className="font-medium">
-                      왕복여부
-                    </label>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      (선택)왕복여부를 체크해주세요.
-                    </p>
+                </div>
+                <div>
+                  <input
+                    {...register("startAreaPhone", {
+                      required: "상차지 전화번호를 입력해주세요.",
+                    })}
+                    type="tel"
+                    maxLength={11}
+                    placeholder={"상차지 전화번호"}
+                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                  <div className="text-red-500 mx-auto font-bold text-center">
+                    {errors.startAreaPhone?.message}
                   </div>
                 </div>
               </div>
-            </fieldset>
-          </div>
-          <div className="mt-10">
-            <h2 className="text-base font-semibold leading-7 mb-3">
-              차량 정보
-            </h2>
-            <div className="grid gap-y-3 lg:grid-cols-4 lg:gap-x-10">
-              <div>
-                <label className="block text-sm font-medium leading-6">
-                  차량톤수
-                </label>
-                <select
-                  {...register("cargoTon", {
-                    required: `차량톤수(t)를 입력해주세요`,
-                    onChange: () => getTruckTypeList(),
-                  })}
-                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+            </div>
+            {/* </div>
+
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
+            <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
+              <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
+                도착지 정보
+              </h2>
+            </div> */}
+            <div className="text-center py-2 flex justify-center text-gray-400">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M20.03 4.72a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 11.69l6.97-6.97a.75.75 0 011.06 0zm0 6a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 111.06-1.06L12 17.69l6.97-6.97a.75.75 0 011.06 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <div className="grid grid-cols-1 gap-y-2">
+              <div className="flex gap-x-3">
+                <div
+                  onClick={(e) => {
+                    searchAddress("end");
+                  }}
+                  className="w-full text-right items-center gap-x-5 relative"
                 >
-                  <option value="">차량톤수(t)</option>
-                  {cargoTonList.map(({ nm }, i) => (
+                  <input
+                    type="text"
+                    placeholder="하차지 주소(시군구동)"
+                    disabled={true}
+                    value={getValues(["endWide", "endSgg", "endDong"]).join(
+                      " "
+                    )}
+                    className="block w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                  <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-500 hover:font-extralight absolute right-2 top-1.5">
+                    <span>주소검색</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <button
+                  className="min-w-fit rounded-md bg-white px-3 py-1 text-sm font-semibold text-gray-500 shadow-md border"
+                  onClick={(e) => {
+                    handleAddressButton(e, "end");
+                  }}
+                >
+                  주소록
+                </button>
+              </div>
+
+              <div className="mb-5 hidden">
+                <Controller
+                  control={control}
+                  name="endAddress"
+                  rules={{ required: "하차지 주소를 입력해주세요." }}
+                  render={() => (
+                    <AddressForm
+                      addressChange={(returnValue) => {
+                        const { endWide, endSgg, endDong } = returnValue;
+                        setValue("endWide", endWide);
+                        setValue("endSgg", endSgg);
+                        setValue("endDong", endDong);
+
+                        if (
+                          (endWide || "" != "") &&
+                          (endSgg || "" != "") &&
+                          (endDong || "" != "")
+                        ) {
+                          setValue("endAddress", returnValue);
+                        }
+                        //console.log(returnValue);
+                        clearErrors();
+                      }}
+                      addressValue={endAddressData}
+                      clsf="end"
+                    />
+                  )}
+                />
+                <div className="text-red-500 mx-auto font-bold text-center">
+                  {errors.endAddress?.message}
+                </div>
+              </div>
+              <div>
+                <input
+                  {...register(`endDetail`, {
+                    required: "상세주소를 입력해주세요.",
+                  })}
+                  type="text"
+                  placeholder="하차지 상세주소"
+                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                />
+                <div className="text-red-500 mx-auto font-bold text-center">
+                  {errors[`endDetail`]?.message}
+                </div>
+              </div>
+            </div>
+            <div className="mt-2 grid grid-cols-1 gap-y-2">
+              <div>
+                <select
+                  {...register("endLoad", {
+                    required: `하차방법을 입력해주세요`,
+                  })}
+                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+                  <option value="">하차방법</option>
+                  {LOAD_TYPE_LIST.map((item, i) => (
+                    <option key={i} value={item}>
+                      {item}
+                    </option>
+                  ))}
+                </select>
+                <div className="text-red-500 mx-auto font-bold text-center">
+                  {errors.endLoad?.message}
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-x-3 justify-stretch">
+                <div>
+                  <input
+                    {...register("endCompanyName", {
+                      required: "하차지 업체명을 입력해주세요.",
+                    })}
+                    type="text"
+                    placeholder={"하차지 업체명"}
+                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                  <div className="text-red-500 mx-auto font-bold text-center">
+                    {errors.endCompanyName?.message}
+                  </div>
+                </div>
+                <div>
+                  <input
+                    {...register("endAreaPhone", {
+                      required: "하차지 전화번호를 입력해주세요.",
+                    })}
+                    type="tel"
+                    maxLength={11}
+                    placeholder={"하차지 전화번호"}
+                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                  <div className="text-red-500 mx-auto font-bold text-center">
+                    {errors.endAreaPhone?.message}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg2 pt-12 border border-gray-300">
+            <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
+              <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
+                상하차 일시
+              </h2>
+            </div>
+            <div className="sm:flex sm:items-center">
+              <label className="font-medium mr-2 sm:pt-2">상차일시</label>
+              <div className="flex items-center mt-1 gap-x-2">
+                <Controller
+                  control={control}
+                  name="startPlanDt"
+                  rules={{ required: "상차일자를 입력해주세요." }}
+                  render={({ field: { onChange } }) => (
+                    <DateInput
+                      onDateChange={onChange}
+                      dateValue={getValues("startPlanDt")}
+                      addClass="w-36"
+                    />
+                  )}
+                />
+                <select
+                  {...register("startPlanHour", {
+                    required: `상차시간을 입력해주세요`,
+                  })}
+                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+                  <option value="">- 시 -</option>
+                  {Array.from(Array(24).keys(), (num) =>
+                    num.toString().padStart(2, "0")
+                  ).map((nm, i) => (
                     <option key={i} value={nm}>
                       {nm}
                     </option>
                   ))}
                 </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium leading-6">
-                  차량종류
-                </label>
                 <select
-                  {...register("truckType", {
-                    required: `차량종류를 입력해주세요`,
+                  {...register("startPlanMinute", {
+                    required: `상차(분)을 입력해주세요`,
                   })}
-                  className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 >
-                  <option value="">차량종류</option>
-                  {truckTypeList &&
-                    truckTypeList.map(({ nm }, i) => (
-                      <option key={i} value={nm}>
-                        {nm}
-                      </option>
-                    ))}
+                  <option value="">- 분 -</option>
+                  <option value="00">00</option>
+                  <option value="30">30</option>
                 </select>
               </div>
-              {isAdmin && (
-                <div>
-                  <label className="block text-sm font-medium leading-6">
-                    적재중량(t)
-                  </label>
-                  <input
-                    type="number"
-                    step="any"
-                    placeholder="차량톤수의 110%까지"
-                    {...register("frgton", {
-                      onChange: (e) => {
-                        const cargoTon = Number(getValues("cargoTon"));
-                        const frgTon = Number(e.target.value);
-                        const maxTon = cargoTon * 1.1;
-                        if (frgTon > maxTon) {
-                          e.target.value = maxTon.toString();
-                        }
-                        if (frgTon < 0) {
-                          e.target.value = "0";
-                        }
-                      },
-                    })}
-                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                  />
-                </div>
-              )}
+            </div>
+            <div className="text-red-500 mx-auto font-bold text-center">
+              {(!isEmpty(errors.startPlanDt) ||
+                !isEmpty(errors.startPlanHour) ||
+                !isEmpty(errors.startPlanMinute)) &&
+                "상차일시를 입력해주세요"}
+            </div>
+            <div className="mt-3 sm:flex sm:items-center sm:mt-1">
+              <label className="font-medium mr-2 sm:pt-2">하차일시</label>
+              <div className="flex items-center mt-1 gap-x-2">
+                <Controller
+                  control={control}
+                  name="endPlanDt"
+                  rules={{ required: "하차일자를 입력해주세요." }}
+                  render={({ field: { onChange } }) => (
+                    <DateInput
+                      onDateChange={onChange}
+                      dateValue={getValues("endPlanDt")}
+                      addClass="w-36"
+                    />
+                  )}
+                />
+                <select
+                  {...register("endPlanHour", {
+                    required: `하차시간을 입력해주세요`,
+                  })}
+                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+                  <option value="">- 시 -</option>
+                  {Array.from(Array(24).keys(), (num) =>
+                    num.toString().padStart(2, "0")
+                  ).map((nm, i) => (
+                    <option key={i} value={nm}>
+                      {nm}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  {...register("endPlanMinute", {
+                    required: `하차(분)을 입력해주세요`,
+                  })}
+                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                >
+                  <option value="">- 분 -</option>
+                  <option value="00">00</option>
+                  <option value="30">30</option>
+                </select>
+              </div>
+            </div>
+            <div className="text-red-500 mx-auto font-bold text-center">
+              {(!isEmpty(errors.endPlanDt) ||
+                !isEmpty(errors.endPlanHour) ||
+                !isEmpty(errors.endPlanMinute)) &&
+                "하차일시를 입력해주세요"}
             </div>
           </div>
-        </div>
-        {isAdmin && (
-          <div className="border-b border-gray-900/10 dark:border-gray-900/40 py-8">
-            <h2 className="text-lg font-semibold leading-7">
-              화주 및 의뢰 정보
-            </h2>
-            <p className="mt-1 text-sm leading-6 mb-10 text-gray-600 dark:text-gray-300">
-              원화주 정보와 운송료 관련 정보를 입력하세요
-            </p>
-            <div>
-              <h2 className="text-base font-semibold leading-7 mb-3">
-                의뢰 정보
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
+            <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
+              <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
+                화물 정보
               </h2>
-              <div className="grid gap-y-3 lg:grid-cols-4 lg:gap-x-10">
-                <div>
-                  <label className="block text-sm font-medium leading-6">
-                    의뢰자 구분
-                  </label>
-                  <select
-                    {...register("firstType")}
-                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+            </div>
+            <div className="mt-5">
+              <input
+                {...register("cargoDsc", {
+                  required: "화물상세내용을 입력해주세요.",
+                })}
+                type="text"
+                placeholder="화물상세내용(메모)"
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+              />
+              <div className="text-red-500 mx-auto font-bold text-center">
+                {errors.cargoDsc?.message}
+              </div>
+            </div>
+            <div className="mt-3">
+              <fieldset>
+                <div className="grid grid-flow-col justify-stretch gap-x-2">
+                  {isAdmin && (
+                    <div
+                      className={
+                        "flex gap-x-3 ring-1 rounded-md px-4 py-2 w-full " +
+                        (watch("multiCargoGub")
+                          ? "ring-2 ring-blue-600"
+                          : "ring-gray-300")
+                      }
+                      onClick={() => {
+                        setValue("multiCargoGub", !getValues("multiCargoGub"));
+                      }}
+                    >
+                      <div className="flex h-6 items-center">
+                        <input
+                          {...register("multiCargoGub")}
+                          type="checkbox"
+                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        />
+                      </div>
+                      <div className="text-sm leading-6">
+                        <label htmlFor="comments" className="font-medium">
+                          혼적
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                  {isAdmin && (
+                    <div
+                      className={
+                        "flex gap-x-3 ring-1 rounded-md px-4 py-2 w-full " +
+                        (watch("urgent")
+                          ? "ring-2 ring-blue-600"
+                          : "ring-gray-300")
+                      }
+                      onClick={() => {
+                        setValue("urgent", !getValues("urgent"));
+                      }}
+                    >
+                      <div className="flex h-6 items-center">
+                        <input
+                          {...register("urgent")}
+                          type="checkbox"
+                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        />
+                      </div>
+                      <div className="text-sm leading-6">
+                        <label htmlFor="candidates" className="font-medium">
+                          긴급
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                  {!isAdmin && (
+                    <div
+                      className={
+                        "flex gap-x-3 ring-1 rounded-md px-4 py-2 w-full " +
+                        (watch("farePaytype")
+                          ? "ring-2 ring-blue-600"
+                          : "ring-gray-300")
+                      }
+                      onClick={() => {
+                        setValue("farePaytype", !getValues("farePaytype"));
+                      }}
+                    >
+                      <div className="flex h-6 items-center">
+                        <input
+                          {...register("farePaytype")}
+                          type="checkbox"
+                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        />
+                      </div>
+                      <div className="text-sm leading-6">
+                        <label htmlFor="candidates" className="font-medium">
+                          착불
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                  <div
+                    className={
+                      "flex gap-x-3 ring-1 rounded-md px-4 py-2 w-full " +
+                      (watch("shuttleCargoInfo")
+                        ? "ring-2 ring-blue-600"
+                        : "ring-gray-300")
+                    }
+                    onClick={() => {
+                      setValue(
+                        "shuttleCargoInfo",
+                        !getValues("shuttleCargoInfo")
+                      );
+                    }}
                   >
-                    <option value={"01"}>일반화주</option>
-                    <option value={"02"}>주선/운송사</option>
-                  </select>
-                  <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                    {errors.firstType?.message}
+                    <div className="flex h-6 items-center">
+                      <input
+                        {...register("shuttleCargoInfo")}
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                      />
+                    </div>
+                    <div className="text-sm leading-6">
+                      <label htmlFor="offers" className="font-medium">
+                        왕복
+                      </label>
+                    </div>
                   </div>
                 </div>
+              </fieldset>
+            </div>
+            <div className="mt-5">
+              <div className="grid gap-y-2">
                 <div>
-                  <label className="block text-sm font-medium leading-6">
-                    운송료 지불구분
-                  </label>
                   <select
-                    {...register("farePaytype", {
-                      required: `운송료 지불구분을 입력해주세요`,
+                    {...register("cargoTon", {
+                      required: `차량톤수(t)를 입력해주세요`,
+                      onChange: () => getTruckTypeList(),
                     })}
-                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
+                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   >
-                    <option value="">운송료 지불구분</option>
-                    {PAY_TYPE_LIST.map((item, i) => (
-                      <option key={i} value={item}>
-                        {item}
+                    <option value="">차량톤수(t)</option>
+                    {cargoTonList.map(({ nm }, i) => (
+                      <option key={i} value={nm}>
+                        {nm} 톤
                       </option>
                     ))}
                   </select>
-                  <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                    {errors.farePaytype?.message}
-                  </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium leading-6">
-                    운송료 지급 예정일
-                  </label>
-                  <Controller
-                    control={control}
-                    name="payPlanYmd"
-                    rules={{ required: "운송료지급예정일을 입력해주세요." }}
-                    render={({ field: { onChange } }) => (
-                      <DateInput
-                        onDateChange={onChange}
-                        dateValue={getValues("payPlanYmd")}
-                      />
-                    )}
-                  />
+                  <select
+                    {...register("truckType", {
+                      required: `차량종류를 입력해주세요`,
+                    })}
+                    className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  >
+                    <option value="">차량종류</option>
+                    {truckTypeList &&
+                      truckTypeList.map(({ nm }, i) => (
+                        <option key={i} value={nm}>
+                          {nm}
+                        </option>
+                      ))}
+                  </select>
                 </div>
+                {isAdmin && (
+                  <div>
+                    <input
+                      type="number"
+                      step="any"
+                      placeholder="적재중량(차량톤수의 110%까지)"
+                      {...register("frgton", {
+                        onChange: (e) => {
+                          const cargoTon = Number(getValues("cargoTon"));
+                          const frgTon = Number(e.target.value);
+                          const maxTon = cargoTon * 1.1;
+                          if (frgTon > maxTon) {
+                            e.target.value = maxTon.toString();
+                          }
+                          if (frgTon < 0) {
+                            e.target.value = "0";
+                          }
+                        },
+                      })}
+                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    />
+                  </div>
+                )}
               </div>
             </div>
-            <div className="mt-10">
-              <h2 className="text-base font-semibold leading-7 mb-3">
-                원화주 정보
-              </h2>
-              <div className="grid gap-y-3 lg:grid-cols-4 lg:gap-x-10">
-                <div>
-                  <label className="block text-sm font-medium leading-6">
-                    원화주 명
-                  </label>
-                  <input
-                    {...register("firstShipperNm", {
-                      required: "원화주 명을 입력해주세요.",
-                    })}
-                    type="text"
-                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                  />
-                  <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                    {errors.firstShipperNm?.message}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium leading-6">
-                    원화주 전화번호
-                  </label>
-                  <input
-                    {...register("firstShipperInfo", {
-                      required: "원화주 전화번호를 입력해주세요.",
-                    })}
-                    type="tel"
-                    maxLength={11}
-                    placeholder={"'-'없이 입력하세요"}
-                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                  />
-                  <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                    {errors.firstShipperInfo?.message}
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium leading-6">
-                    원화주 사업자번호
-                  </label>
-                  <input
-                    {...register("firstShipperBizNo", {
-                      required:
-                        getValues("firstType") === "02"
-                          ? "원화주 사업자번호을 입력해주세요."
-                          : false,
-                    })}
-                    type="text"
-                    maxLength={10}
-                    placeholder="의뢰자 주선/운송사인 경우 필수"
-                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                  />
-                  <div className="text-red-500 mx-auto mb-6 font-bold text-center">
-                    {errors.firstShipperBizNo?.message}
-                  </div>
-                </div>
+            {!isAdmin && Number.parseInt(watch("fareView")) > 0 && (
+              <div className="mt-5">
+                <h2 className="font-bold">
+                  예상 운송료{watchShuttleCargoInfo ? " (왕복)" : " (편도)"} :{" "}
+                  {addCommas(watch("fareView")) + "원"}
+                </h2>
               </div>
-            </div>
-            <div className="mt-10">
-              <div className="relative flex gap-x-3">
-                <div className="flex h-6 items-center">
-                  <input
-                    {...register("taxbillType")}
-                    disabled={watchFarePayType === "선착불"}
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                </div>
-                <div className="text-sm leading-6">
-                  <label htmlFor="candidates" className="font-medium">
-                    전자세금계산서 발행여부
-                  </label>
-                  <p className="text-gray-500 dark:text-gray-400">
-                    (선택)전자세금계산서 발행여부를 체크해주세요. (선착불은 선택
-                    불가)
-                  </p>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
-        )}
-
-        {isAdmin && (
-          <div className="border-b border-gray-900/10 dark:border-gray-900/40 py-8">
-            <h2 className="text-lg font-semibold leading-7">운송료 정보</h2>
-            <p className="mt-1 text-sm leading-6 mb-10 text-gray-600 dark:text-gray-300">
-              운송료를 입력해주세요.(최소 20,000)
-            </p>
-
-            <div className="mt-10">
-              <div className="grid gap-y-3 lg:grid-cols-5 lg:gap-x-10">
-                <div>
-                  <label className="block text-sm font-medium leading-6">
-                    운송료
-                  </label>
-                  <input
-                    {...register("fare")}
-                    type="number"
-                    maxLength={10}
-                    placeholder={"최소 운송료 20,000"}
-                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                  />
+          {isAdmin && (
+            <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
+              <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
+                <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
+                  화주 및 의뢰 정보
+                </h2>
+              </div>
+              <div className="mt-5">
+                <div className="grid gap-y-2">
+                  <div>
+                    <select
+                      {...register("firstType")}
+                      className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    >
+                      <option value={""}>의뢰자 구분</option>
+                      <option value={"01"}>일반화주</option>
+                      <option value={"02"}>주선/운송사</option>
+                    </select>
+                    <div className="text-red-500 mx-auto font-bold text-center">
+                      {errors.firstType?.message}
+                    </div>
+                  </div>
+                  <div>
+                    <select
+                      {...register("farePaytype", {
+                        required: `운송료 지불구분을 입력해주세요`,
+                      })}
+                      className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    >
+                      <option value="">운송료 지불구분</option>
+                      {PAY_TYPE_LIST.map((item, i) => (
+                        <option key={i} value={item}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="text-red-500 mx-auto font-bold text-center">
+                      {errors.farePaytype?.message}
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <label className="font-medium leading-6 mr-2">
+                      운송료 지급 예정일
+                    </label>
+                    <Controller
+                      control={control}
+                      name="payPlanYmd"
+                      rules={{ required: "운송료지급예정일을 입력해주세요." }}
+                      render={({ field: { onChange } }) => (
+                        <DateInput
+                          onDateChange={onChange}
+                          dateValue={getValues("payPlanYmd")}
+                        />
+                      )}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium leading-6">
-                    운송료(화주노출용)
-                  </label>
-                  <input
-                    {...register("fareView")}
-                    type="number"
-                    maxLength={10}
-                    placeholder={"최소 운송료 20,000"}
-                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                  />
+              </div>
+              <div className="mt-5">
+                <div className="grid gap-y-2">
+                  <div>
+                    <input
+                      {...register("firstShipperNm", {
+                        required: "원화주 명을 입력해주세요.",
+                      })}
+                      type="text"
+                      placeholder="원화주 명"
+                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    />
+                    <div className="text-red-500 mx-auto font-bold text-center">
+                      {errors.firstShipperNm?.message}
+                    </div>
+                  </div>
+                  <div>
+                    <input
+                      {...register("firstShipperInfo", {
+                        required: "원화주 전화번호를 입력해주세요.",
+                      })}
+                      type="tel"
+                      maxLength={11}
+                      placeholder={"원화주 전화번호('-'없이 입력하세요)"}
+                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    />
+                    <div className="text-red-500 mx-auto font-bold text-center">
+                      {errors.firstShipperInfo?.message}
+                    </div>
+                  </div>
+                  <div>
+                    <input
+                      {...register("firstShipperBizNo", {
+                        required:
+                          getValues("firstType") === "02"
+                            ? "원화주 사업자번호을 입력해주세요."
+                            : false,
+                      })}
+                      type="text"
+                      maxLength={10}
+                      placeholder="원화주 사업자번호(의뢰자 주선/운송사인 경우 필수)"
+                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    />
+                    <div className="text-red-500 mx-auto font-bold text-center">
+                      {errors.firstShipperBizNo?.message}
+                    </div>
+                  </div>
                 </div>
-                {/* <div className="hidden">
-                <label className="block text-sm font-medium leading-6">
-                  수수료
-                </label>
-                <input
-                  {...register("fee")}
-                  type="number"
-                  maxLength={10}
-                  placeholder={"수수료눈 운송료의 50% 미만입니다."}
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-slate-100 dark:text-gray-500"
-                />
-              </div> */}
+              </div>
+              <div className="mt-5">
+                <div className="relative flex gap-x-3">
+                  <div className="flex h-6 items-center">
+                    <input
+                      {...register("taxbillType")}
+                      disabled={watchFarePayType === "선착불"}
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    />
+                  </div>
+                  <div className="text-sm leading-6">
+                    <label htmlFor="candidates" className="font-medium">
+                      전자세금계산서 발행여부 (선착불은 선택불가)
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-
-        <div className="mt-6 flex items-center justify-end gap-x-6">
-          <button
-            type="button"
-            onClick={() => router.push("/")}
-            className="text-sm font-semibold leading-6"
-          >
-            Cancel
-          </button>
-          {isDirectApi ? (
-            <button
-              type="submit"
-              className="rounded-md bg-orange-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
-            >
-              배차신청 수정
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              {isEdit ? "화물 수정" : "화물 등록"}
-            </button>
           )}
+
+          {isAdmin && (
+            <div className="relative p-5 mb-5 rounded-md shadow-lg pt-12 border border-gray-300">
+              <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
+                <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
+                  운송료 정보{watchShuttleCargoInfo ? " (왕복)" : " (편도)"}
+                </h2>
+              </div>
+
+              <div className="mt-5">
+                <div className="grid gap-y-2">
+                  <div>
+                    <input
+                      {...register("fare")}
+                      type="number"
+                      maxLength={10}
+                      placeholder={"운송료(관리자용)"}
+                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    />
+                  </div>
+                  <div>
+                    <input
+                      {...register("fareView")}
+                      type="number"
+                      maxLength={10}
+                      placeholder={"운송료"}
+                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="fixed bottom-0 left-0 p-5 w-full bg-white border shadow-md">
+          <div className="flex items-center justify-end gap-x-6">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="text-sm font-semibold leading-6"
+            >
+              Cancel
+            </button>
+            {isDirectApi ? (
+              <button
+                type="submit"
+                className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"
+              >
+                배차신청 수정
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="rounded-md bg-darkCyan px-3 py-2 text-base font-semibold text-white shadow-sm"
+              >
+                {isEdit ? "화물 수정" : "화물 등록"}
+              </button>
+            )}
+          </div>
         </div>
       </form>
     </div>
