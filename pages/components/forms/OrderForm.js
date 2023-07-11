@@ -638,7 +638,7 @@ export default function OrderForm({
                   </div>
                 </div>
                 <button
-                  className="min-w-fit rounded-md bg-white px-3 py-1 text-base font-semibold text-gray-500 shadow-md border"
+                  className="min-w-fit rounded-md bg-white px-3 py-1 text-sm font-semibold text-gray-500 shadow-md border"
                   onClick={(e) => {
                     handleAddressButton(e, "start");
                   }}
@@ -800,7 +800,7 @@ export default function OrderForm({
                   </div>
                 </div>
                 <button
-                  className="min-w-fit rounded-md bg-white px-3 py-1 text-base font-semibold text-gray-500 shadow-md border"
+                  className="min-w-fit rounded-md bg-white px-3 py-1 text-sm font-semibold text-gray-500 shadow-md border"
                   onClick={(e) => {
                     handleAddressButton(e, "end");
                   }}
@@ -922,6 +922,7 @@ export default function OrderForm({
                     <DateInput
                       onDateChange={onChange}
                       dateValue={getValues("startPlanDt")}
+                      addClass="w-36"
                     />
                   )}
                 />
@@ -969,6 +970,7 @@ export default function OrderForm({
                     <DateInput
                       onDateChange={onChange}
                       dateValue={getValues("endPlanDt")}
+                      addClass="w-36"
                     />
                   )}
                 />
@@ -1049,7 +1051,7 @@ export default function OrderForm({
                       </div>
                       <div className="text-sm leading-6">
                         <label htmlFor="comments" className="font-medium">
-                          혼적여부
+                          혼적
                         </label>
                       </div>
                     </div>
@@ -1075,7 +1077,7 @@ export default function OrderForm({
                       </div>
                       <div className="text-sm leading-6">
                         <label htmlFor="candidates" className="font-medium">
-                          긴급여부
+                          긴급
                         </label>
                       </div>
                     </div>
@@ -1101,7 +1103,7 @@ export default function OrderForm({
                       </div>
                       <div className="text-sm leading-6">
                         <label htmlFor="candidates" className="font-medium">
-                          착불여부
+                          착불
                         </label>
                       </div>
                     </div>
@@ -1129,7 +1131,7 @@ export default function OrderForm({
                     </div>
                     <div className="text-sm leading-6">
                       <label htmlFor="offers" className="font-medium">
-                        왕복여부
+                        왕복
                       </label>
                     </div>
                   </div>
