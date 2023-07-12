@@ -518,11 +518,11 @@ export default function Detail() {
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 p-5 bg-white w-full border mt-6 pb-6 flex items-center justify-end lg:gap-x-6 gap-x-3">
+      <div className="fixed bottom-0 left-0 p-3 bg-white w-full border mt-6 pb-6 flex items-center justify-end lg:gap-x-6 gap-x-3">
         <button
           type="button"
           onClick={() => router.push("/orders/list")}
-          className="rounded-md bg-gray-400 px-3 py-2 text-base font-semibold text-white shadow-sm"
+          className="rounded-md bg-gray-400 px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
         >
           목록으로
         </button>
@@ -530,14 +530,14 @@ export default function Detail() {
           <>
             <button
               type="button"
-              className="rounded-md bg-darkCyan px-3 py-2 text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-darkCyan px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
               onClick={handleModify}
             >
               화물 수정
             </button>
             <button
               type="button"
-              className="rounded-md bg-darkCyan px-3 py-2 text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-darkCyan px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
               onClick={handleDelete}
             >
               화물 삭제
@@ -545,7 +545,7 @@ export default function Detail() {
             {isAdmin && (
               <button
                 type="button"
-                className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"
+                className="rounded-md bg-alloyOrange px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
                 onClick={handleAdminOrderAdd}
               >
                 배차 신청
@@ -558,14 +558,14 @@ export default function Detail() {
           <>
             <button
               type="button"
-              className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-alloyOrange px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
               onClick={handleAdminOrderModify}
             >
               배차 수정
             </button>
             <button
               type="button"
-              className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-alloyOrange px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
               onClick={handleAdminOrderDelete}
             >
               배차 취소

@@ -1373,26 +1373,26 @@ export default function OrderForm({
           )}
         </div>
 
-        <div className="fixed bottom-0 left-0 p-5 w-full bg-white border shadow-md">
+        <div className="fixed bottom-0 left-0 p-3 w-full bg-white border shadow-md">
           <div className="flex items-center justify-end lg:gap-x-6 gap-x-3">
             <button
               type="button"
               onClick={() => router.back()}
-              className="rounded-md bg-gray-400 px-3 py-2 text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-gray-400 px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
             >
               Cancel
             </button>
             {isDirectApi ? (
               <button
                 type="submit"
-                className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"
+                className="rounded-md bg-alloyOrange px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
               >
                 배차신청 수정
               </button>
             ) : (
               <button
                 type="submit"
-                className="rounded-md bg-darkCyan px-3 py-2 text-base font-semibold text-white shadow-sm"
+                className="rounded-md bg-darkCyan px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
               >
                 {isEdit ? "화물 수정" : "화물 등록"}
               </button>
