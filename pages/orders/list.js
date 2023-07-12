@@ -71,9 +71,14 @@ const CargoList = () => {
     };
 
     //수정 건이므로 cargo_seq 삭제
-    const paramData = (({ cargo_seq, create_dtm, ...rest }) => rest)(
-      copyCargoItem
-    );
+    const paramData = (({
+      cargo_seq,
+      ordNo,
+      startPlanDt,
+      endPlanDt,
+      create_dtm,
+      ...rest
+    }) => rest)(copyCargoItem);
 
     const serializedQuery = encodeURIComponent(
       JSON.stringify({ cargoOrder: paramData })

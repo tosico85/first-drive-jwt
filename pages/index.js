@@ -23,35 +23,37 @@ const HomePage = () => {
     console.log(currentMonth);
     console.log(yesterDay);
 
-    const filteredResult = result
-      .filter(({ createDt }) => {
-        return [lastMonth, currentMonth, yesterDay].includes(createDt);
-      })
-      .map(({ createDt, statusReqShip, statusComplete }) => {
-        let count = "0";
-        try {
-          count = (
-            Number.parseInt(statusReqShip) + Number.parseInt(statusComplete)
-          ).toString();
-        } catch (error) {
-          console.log(error);
-        }
+    if (result?.length > 0) {
+      const filteredResult = result
+        .filter(({ createDt }) => {
+          return [lastMonth, currentMonth, yesterDay].includes(createDt);
+        })
+        .map(({ createDt, statusReqShip, statusComplete }) => {
+          let count = "0";
+          try {
+            count = (
+              Number.parseInt(statusReqShip) + Number.parseInt(statusComplete)
+            ).toString();
+          } catch (error) {
+            console.log(error);
+          }
 
-        if (createDt === lastMonth) {
-          return { lastMonth: count };
-        } else if (createDt === currentMonth) {
-          return { currentMonth: count };
-        } else {
-          return { yesterDay: count };
-        }
-      });
+          if (createDt === lastMonth) {
+            return { lastMonth: count };
+          } else if (createDt === currentMonth) {
+            return { currentMonth: count };
+          } else {
+            return { yesterDay: count };
+          }
+        });
 
-    const mergeData = Object.assign(
-      { lastMonth: "0", currentMonth: "0", yesterDay: "0" },
-      ...filteredResult
-    );
-    //console.log(mergeData);
-    setStatistics(mergeData);
+      const mergeData = Object.assign(
+        { lastMonth: "0", currentMonth: "0", yesterDay: "0" },
+        ...filteredResult
+      );
+      //console.log(mergeData);
+      setStatistics(mergeData);
+    }
   };
 
   return (
