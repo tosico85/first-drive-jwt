@@ -76,7 +76,9 @@ const CargoList = () => {
       ordNo,
       startPlanDt,
       endPlanDt,
+      payPlanYmd,
       create_dtm,
+      delete_yn,
       ...rest
     }) => rest)(copyCargoItem);
 
@@ -95,7 +97,7 @@ const CargoList = () => {
 
   return (
     <div className="pb-5 bg-white relative">
-      <div className="bg-white fixed top-16 w-full z-40">
+      <div className="bg-white fixed sm:static top-16 w-full z-40">
         <div className="grid grid-cols-5 items-center sm:hidden">
           <div
             className={
@@ -154,7 +156,7 @@ const CargoList = () => {
           </div>
         </div>
 
-        <div className="hidden sm:grid grid-cols-2 mt-5 gap-y-3 py-5">
+        <div className="hidden sm:flex items-center justify-between mt-5 gap-x-20 w-full pb-5">
           <div className="flex justify-start gap-x-3">
             <div
               className={
@@ -210,6 +212,33 @@ const CargoList = () => {
               onClick={() => handleSearchStatus("취소")}
             >
               취소
+            </div>
+          </div>
+          <div className="gap-x-3 hidden sm:flex">
+            <div className="flex justify-between gap-x-2 items-center">
+              <div className="z-0">
+                <DateInput
+                  dateValue={startSearchDt}
+                  onDateChange={setStartSearchDt}
+                  addClass="w-40"
+                />
+              </div>
+              <span>~</span>
+              <div className="z-0">
+                <DateInput
+                  dateValue={endSearchDt}
+                  onDateChange={setEndSearchDt}
+                  addClass="w-40"
+                />
+              </div>
+            </div>
+            <div className="">
+              <input
+                type="text"
+                placeholder="업체명 검색"
+                onKeyDown={handleCompanySearch}
+                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+              />
             </div>
           </div>
           <p className="text-right">{`${
@@ -268,7 +297,30 @@ const CargoList = () => {
         } 건`}</p>
       </div>
 
-      <ul className="mt-5 sm:mt-16 pb-14">
+      <ul className="mt-5 pb-14">
+        <li className="hidden sm:block border-y border-gray-200 py-3 bg-darkCyan gap-x-1">
+          <div className="grid grid-cols-9 items-center text-center text-white">
+            <div className="col-span-2 border-r border-white">
+              <span>화물내용</span>
+            </div>
+            <div className="col-span-2 border-r border-white">
+              <span>상차정보</span>
+            </div>
+            <div className="col-span-2 border-r border-white">
+              <span>하차정보</span>
+            </div>
+            <div className="border-r border-white">
+              <span>상태</span>
+            </div>
+            <div className="border-r border-white">
+              <span>화물복사</span>
+            </div>
+            <div className="">
+              <span>등록일자</span>
+            </div>
+          </div>
+        </li>
+
         {cargoOrder.length > 0 &&
           cargoOrder
             .filter((item) => {
@@ -313,7 +365,7 @@ const CargoList = () => {
               } = item;
               return (
                 <li
-                  className="flex flex-col px-5 mb-5"
+                  className="flex flex-col px-5 mb-5 sm:px-0 sm:mb-0 sm:border-x sm:border-gray-200 sm:hover:bg-gray-100"
                   key={cargo_seq}
                   onClick={() => handleDetail(cargo_seq)}
                 >
@@ -405,227 +457,66 @@ const CargoList = () => {
                           }`}</span>
                         </div>
                       </div>
-                      <div></div>
-                    </div>
-                    <div className="flex flex-col gap-x-1 w-full justify-between hidden">
-                      <div className="flex flex-col w-full">
-                        <div className="flex flex-col items-start gap-y-2 w-full gap-x-5 mb-2">
-                          <div className="w-full flex items-center justify-between">
-                            <p className="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-500">
-                              {cargoDsc}
-                            </p>
-                            <div
-                              className="text-sm font-semibold flex items-center text-slate-500 border border-slate-500 rounded-md py-1 px-2 hover:cursor-pointer hover:shadow-md"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleCargoCopy(cargo_seq);
-                              }}
-                            >
-                              <p>화물복사</p>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="w-6 h-6"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75"
-                                />
-                              </svg>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-x-3">
-                            <p className="px-2 py-0 rounded-md flex items-center h-5 shadow-md bg-gray-500 text-xs text-white">
-                              {truckType}
-                            </p>
-                            {urgent && (
-                              <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-red-400 text-xs text-white">
-                                {urgent}
-                              </p>
-                            )}
-                            {multiCargoGub && (
-                              <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-indigo-400 text-xs text-white">
-                                {multiCargoGub}
-                              </p>
-                            )}
-                            {shuttleCargoInfo && (
-                              <p className="px-1 py-0 rounded-md flex items-center h-5 bg-yellow-400 text-xs text-white">
-                                {shuttleCargoInfo}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex text-xs gap-x-4 items-center">
-                          <div>
-                            <p className="mt-1 truncate leading-5 font-bold text-gray-500">
-                              {`${startCompanyName || ""} ${
-                                formatPhoneNumber(startAreaPhone) || ""
-                              }`}
-                            </p>
-                            <p className="mt-1 truncate leading-5 text-gray-500">
-                              {`${startWide} ${startSgg} ${startDong} ${startDetail}`}
-                            </p>
-                            <p className="mt-1 truncate leading-5 text-gray-500">
-                              {formatDate(startPlanDt)}
-                            </p>
-                          </div>
-                          <div className="text-gray-500">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-6 h-6"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
-                          </div>
-                          <div>
-                            <p className="mt-1 truncate leading-5 font-bold text-gray-500">
-                              {`${endCompanyName || ""} ${
-                                formatPhoneNumber(endAreaPhone) || ""
-                              }`}
-                            </p>
-                            <p className="mt-1 truncate leading-5 text-gray-500">
-                              {`${endWide} ${endSgg} ${endDong}`}
-                            </p>
-                            <p className="mt-1 truncate leading-5 text-gray-500">
-                              {formatDate(endPlanDt)}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col justify-center items-end gap-y-2">
-                        <div
-                          className={
-                            "text-sm w-fit h-fit text-white font-bold px-2 py-1 rounded-full " +
-                            (ordStatus == "화물접수"
-                              ? "bg-indigo-400 ring-indigo-400"
-                              : ordStatus == "배차신청"
-                              ? "bg-orange-400 ring-orange-400"
-                              : ordStatus == "배차완료"
-                              ? "bg-purple-400 ring-bg-purple-400"
-                              : ordStatus == "배차취소"
-                              ? "bg-slate-400 ring-bg-slate-400"
-                              : "bg-zinc-400 ring-zinc-400")
-                          }
-                        >
-                          <p>{ordStatus}</p>
-                        </div>
-                      </div>
                     </div>
                   </div>
-                  <div className="hidden sm:block">
-                    <div className="flex flex-col sm:flex-row gap-x-1 w-full justify-between">
-                      <div className="flex flex-col w-full sm:gap-x-10 sm:flex-row sm:items-start">
-                        <div className="flex flex-col items-start gap-y-2 sm:w-80 w-full gap-x-5 mb-2">
-                          <div className="w-full flex items-center justify-between">
-                            <p className="flex items-center gap-x-3 text-sm font-semibold leading-6 text-gray-500">
-                              {cargoDsc}
+
+                  <div className="hidden sm:block border-b border-gray-200 py-3">
+                    <div className="grid grid-cols-9 items-center">
+                      <div className="flex flex-col col-span-2 px-5">
+                        <p className="text-sm font-semibold leading-6 text-gray-500">
+                          {cargoDsc}
+                        </p>
+                        <div className="flex items-center gap-x-3">
+                          <p className="px-2 py-0 rounded-md flex items-center h-5 shadow-md bg-gray-500 text-xs text-white">
+                            {truckType}
+                          </p>
+                          {urgent && (
+                            <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-red-400 text-xs text-white">
+                              {urgent}
                             </p>
-                            <div
-                              className="text-sm font-semibold flex items-center text-slate-500 border border-slate-500 rounded-md py-1 px-2 hover:cursor-pointer hover:shadow-md"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleCargoCopy(cargo_seq);
-                              }}
-                            >
-                              <p>화물복사</p>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="w-6 h-6"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75"
-                                />
-                              </svg>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-x-3">
-                            <p className="px-2 py-0 rounded-md flex items-center h-5 shadow-md bg-gray-500 text-xs text-white">
-                              {truckType}
+                          )}
+                          {multiCargoGub && (
+                            <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-indigo-400 text-xs text-white">
+                              {multiCargoGub}
                             </p>
-                            {urgent && (
-                              <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-red-400 text-xs text-white">
-                                {urgent}
-                              </p>
-                            )}
-                            {multiCargoGub && (
-                              <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-indigo-400 text-xs text-white">
-                                {multiCargoGub}
-                              </p>
-                            )}
-                            {shuttleCargoInfo && (
-                              <p className="px-1 py-0 rounded-md flex items-center h-5 bg-yellow-400 text-xs text-white">
-                                {shuttleCargoInfo}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex text-xs sm:text-sm gap-x-4 items-center">
-                          <div>
-                            <p className="mt-1 truncate leading-5 font-bold text-gray-500">
-                              {`${startCompanyName || ""} ${
-                                formatPhoneNumber(startAreaPhone) || ""
-                              }`}
+                          )}
+                          {shuttleCargoInfo && (
+                            <p className="px-1 py-0 rounded-md flex items-center h-5 bg-yellow-400 text-xs text-white">
+                              {shuttleCargoInfo}
                             </p>
-                            <p className="mt-1 truncate leading-5 text-gray-500">
-                              {`${startWide} ${startSgg} ${startDong} ${startDetail}`}
-                            </p>
-                            <p className="mt-1 truncate leading-5 text-gray-500">
-                              {formatDate(startPlanDt)}
-                            </p>
-                          </div>
-                          <div className="text-gray-500">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-6 h-6"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
-                          </div>
-                          <div>
-                            <p className="mt-1 truncate leading-5 font-bold text-gray-500">
-                              {`${endCompanyName || ""} ${
-                                formatPhoneNumber(endAreaPhone) || ""
-                              }`}
-                            </p>
-                            <p className="mt-1 truncate leading-5 text-gray-500">
-                              {`${endWide} ${endSgg} ${endDong}`}
-                            </p>
-                            <p className="mt-1 truncate leading-5 text-gray-500">
-                              {formatDate(endPlanDt)}
-                            </p>
-                          </div>
+                          )}
                         </div>
                       </div>
-                      <div className="flex flex-col justify-center items-end gap-y-2">
-                        <div
+                      <div className="col-span-2 px-5">
+                        <p className="mt-1 truncate leading-5 font-bold text-gray-500">
+                          {`${startCompanyName || ""} ${
+                            formatPhoneNumber(startAreaPhone) || ""
+                          }`}
+                        </p>
+                        <p className="mt-1 truncate leading-5 text-gray-500 whitespace-pre-wrap">
+                          {`${startWide} ${startSgg} ${startDong} ${startDetail}`}
+                        </p>
+                        <p className="mt-1 truncate leading-5 text-gray-500">
+                          {formatDate(startPlanDt)}
+                        </p>
+                      </div>
+                      <div className="col-span-2 px-5">
+                        <p className="mt-1 truncate leading-5 font-bold text-gray-500">
+                          {`${endCompanyName || ""} ${
+                            formatPhoneNumber(endAreaPhone) || ""
+                          }`}
+                        </p>
+                        <p className="mt-1 truncate leading-5 text-gray-500 whitespace-pre-wrap">
+                          {`${endWide} ${endSgg} ${endDong} ${endDetail}`}
+                        </p>
+                        <p className="mt-1 truncate leading-5 text-gray-500">
+                          {formatDate(endPlanDt)}
+                        </p>
+                      </div>
+                      <div className="text-center px-5">
+                        <span
                           className={
-                            "text-sm w-fit h-fit text-white font-bold px-2 py-1 rounded-full " +
+                            "text-sm text-white font-bold px-3 py-2 rounded-full " +
                             (ordStatus == "화물접수"
                               ? "bg-indigo-400 ring-indigo-400"
                               : ordStatus == "배차신청"
@@ -637,11 +528,36 @@ const CargoList = () => {
                               : "bg-zinc-400 ring-zinc-400")
                           }
                         >
-                          <p>{ordStatus}</p>
+                          {ordStatus}
+                        </span>
+                      </div>
+                      <div className="flex justify-center px-5">
+                        <div
+                          className="text-sm font-semibold flex items-center w-fit text-slate-500 border border-slate-500 rounded-md py-1 px-2 hover:cursor-pointer hover:shadow-md"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCargoCopy(cargo_seq);
+                          }}
+                        >
+                          <p>화물복사</p>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75"
+                            />
+                          </svg>
                         </div>
-                        <div className="hidden sm:block text-sm w-max text-right h-fit text-gray-500 py-1">
-                          <p>{create_dtm}</p>
-                        </div>
+                      </div>
+                      <div className="text-right text-sm text-gray-500 px-5">
+                        <p>{create_dtm}</p>
                       </div>
                     </div>
                   </div>
@@ -649,15 +565,6 @@ const CargoList = () => {
               );
             })}
       </ul>
-      {/* <div className="fixed bottom-0 left-0 p-5 w-full border bg-white mt-6 flex items-center justify-end gap-x-6">
-        <button
-          type="button"
-          className="rounded-md bg-darkCyan px-3 py-2 text-base font-semibold text-white shadow-sm"
-          onClick={() => router.push("/orders/create")}
-        >
-          화물 등록
-        </button>
-      </div> */}
     </div>
   );
 };

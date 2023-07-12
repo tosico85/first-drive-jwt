@@ -94,9 +94,9 @@ export default function UserAddressModal({ startEnd, onCancel, onComplete }) {
               ({ baseYn, wide, sgg, dong, detail, checked, key }, index) => (
                 <li
                   key={index}
-                  className="grid grid-cols-10 justify-between items-center border-b border-slate-200 px-3 py-1 hover:bg-gray-100"
+                  className="flex items-center border-b border-slate-200 py-1 hover:bg-gray-100"
                 >
-                  <div>
+                  <div className="flex flex-col items-center gap-y-3 min-w-fit">
                     <input
                       type="checkbox"
                       className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
@@ -104,35 +104,30 @@ export default function UserAddressModal({ startEnd, onCancel, onComplete }) {
                       onClick={() => handleChecked(key)}
                       onChange={() => {}}
                     />
-                  </div>
-                  <div
-                    className="flex flex-col p-5 text-sm col-span-7 hover:cursor-pointer"
-                    onClick={() => handleChecked(key)}
-                  >
-                    <h2 className="font-semibold mb-2">
-                      {`${wide} ${sgg} ${dong}`}
-                    </h2>
-                    <span>{detail}</span>
-                  </div>
-                  <div
-                    className={
-                      "col-span-2 text-xs flex flex-col items-end justify-end"
-                    }
-                  >
                     <p
                       className={
-                        "font-bold w-fit h-fit px-1 py-1 rounded-full ring-2 " +
-                        (baseYn == "Y"
-                          ? "ring-indigo-400 text-indigo-400"
-                          : "ring-gray-400 text-gray-400")
+                        "font-bold text-xs min-w-fit h-fit px-1 py-1 rounded-md " +
+                        (baseYn == "Y" ? " text-indigo-400" : " text-gray-400")
                       }
                     >
-                      {baseYn == "Y" ? "기본주소" : "최근주소"}
+                      {baseYn == "Y" ? "기본" : "최근"}
                     </p>
+                  </div>
+                  <div className="flex flex-col items-start w-full">
+                    <div
+                      className="flex flex-col p-3 text-sm col-span-7 hover:cursor-pointer"
+                      onClick={() => handleChecked(key)}
+                    >
+                      <h2 className="font-semibold mb-2">
+                        {`${wide} ${sgg} ${dong}`}
+                      </h2>
+                      <span>{detail}</span>
+                    </div>
+
                     {baseYn != "Y" && (
-                      <div className="flex justify-end mt-5 font-semibold text-gray-400 w-full hover:cursor-pointer">
+                      <div className="flex justify-end text-xs font-semibold text-gray-400 w-full hover:cursor-pointer">
                         <span
-                          className="mr-2"
+                          className="mr-3"
                           onClick={() =>
                             handleDelete({ wide, sgg, dong, detail })
                           }
@@ -164,7 +159,7 @@ export default function UserAddressModal({ startEnd, onCancel, onComplete }) {
         </button>
         <button
           type="button"
-          className="ml-5 rounded-md bg-gray-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
+          className="ml-3 rounded-md bg-gray-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
           onClick={onCancel}
         >
           닫기

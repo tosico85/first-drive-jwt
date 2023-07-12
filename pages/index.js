@@ -51,7 +51,7 @@ const HomePage = () => {
         { lastMonth: "0", currentMonth: "0", yesterDay: "0" },
         ...filteredResult
       );
-      //console.log(mergeData);
+      //console.log(result);
       setStatistics(mergeData);
     }
   };

@@ -26,7 +26,7 @@ const Layout = ({ children }) => {
             <header
               className={
                 "bg-white absolute shadow-md w-full" +
-                (router.pathname == "/orders/list" ? " hidden" : "")
+                (router.pathname == "/orders/list" ? " hidden sm:block" : "")
               }
             >
               <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">

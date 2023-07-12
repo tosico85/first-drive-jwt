@@ -26,6 +26,11 @@ const Navbar = () => {
   let navigation = [
     { name: "Home", href: "/", current: "/" === router.pathname },
     {
+      name: "화물목록",
+      href: "/orders/list",
+      current: "/orders/list" === router.pathname,
+    },
+    {
       name: "화물등록",
       href: "/orders/create",
       current: "/orders/create" === router.pathname,
