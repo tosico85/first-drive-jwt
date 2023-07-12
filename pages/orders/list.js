@@ -313,7 +313,7 @@ const CargoList = () => {
                   onClick={() => handleDetail(cargo_seq)}
                 >
                   <div className="flex flex-col justify-between bg-white rounded-2xl shadow-md border border-gray-100 sm:hidden">
-                    <div className="p-5">
+                    <div className="p-5 flex justify-between">
                       <div className="flex flex-col gap-y-3">
                         <div className="flex gap-x-2 items-center">
                           <p className="bg-gray-400 rounded-lg text-white font-bold p-1 min-w-fit text-xs">
@@ -334,7 +334,37 @@ const CargoList = () => {
                       </div>
                     </div>
                     <div className="p-5 bg-gray-100 rounded-b-xl flex flex-col gap-y-4">
-                      <div>{ordNo}</div>
+                      <div className="grid grid-cols-2 items-center">
+                        <div className="flex flex-col items-start gap-y-1">
+                          <span className="text-sm text-gray-400">
+                            오더번호
+                          </span>
+                          <span className="text-gray-600">{ordNo || "-"}</span>
+                        </div>
+                        <div
+                          className="text-sm font-semibold w-fit flex items-center text-slate-500 border border-slate-500 rounded-md py-1 px-2 hover:cursor-pointer hover:shadow-md"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleCargoCopy(cargo_seq);
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75"
+                            />
+                          </svg>
+                          <p>복사</p>
+                        </div>
+                      </div>
                       <div className="grid grid-cols-2">
                         <div className="flex flex-col items-start gap-y-1">
                           <span className="text-sm text-gray-400">

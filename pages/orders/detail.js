@@ -522,7 +522,7 @@ export default function Detail() {
         <button
           type="button"
           onClick={() => router.push("/orders/list")}
-          className="text-sm font-semibold leading-6"
+          className="rounded-md bg-gray-400 px-3 py-2 text-base font-semibold text-white shadow-sm"
         >
           목록으로
         </button>
@@ -561,14 +561,14 @@ export default function Detail() {
               className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"
               onClick={handleAdminOrderModify}
             >
-              배차신청 수정
+              배차 수정
             </button>
             <button
               type="button"
               className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"
               onClick={handleAdminOrderDelete}
             >
-              배차신청 취소
+              배차 취소
             </button>
           </>
         )}

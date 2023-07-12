@@ -65,3 +65,36 @@ export const getOneWeekAgoDate = () => {
 
   return year + month + day;
 };
+
+// 달 'yyyyMM' 반환
+export const getMonthYYYYMM = (addMonth = 0) => {
+  var currentDate = new Date();
+  currentDate.setMonth(currentDate.getMonth() + addMonth);
+  var year = currentDate.getFullYear();
+  var month = currentDate.getMonth() + 1;
+
+  if (month < 10) {
+    month = "0" + month;
+  }
+
+  return year.toString() + month.toString();
+};
+
+// 날짜 'yyyyMMdd' 반환
+export const getDayYYYYMMDD = (addDay = 0) => {
+  var currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() + addDay);
+  var year = currentDate.getFullYear();
+  var month = currentDate.getMonth() + 1;
+  var day = currentDate.getDate();
+
+  if (month < 10) {
+    month = "0" + month;
+  }
+
+  if (day < 10) {
+    day = "0" + day;
+  }
+
+  return year.toString() + month.toString() + day.toString();
+};

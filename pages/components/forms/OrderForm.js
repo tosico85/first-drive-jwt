@@ -1373,11 +1373,11 @@ export default function OrderForm({
         </div>
 
         <div className="fixed bottom-0 left-0 p-5 w-full bg-white border shadow-md">
-          <div className="flex items-center justify-end gap-x-6">
+          <div className="flex items-center justify-end lg:gap-x-6 gap-x-3">
             <button
               type="button"
               onClick={() => router.back()}
-              className="text-sm font-semibold leading-6"
+              className="rounded-md bg-gray-400 px-3 py-2 text-base font-semibold text-white shadow-sm"
             >
               Cancel
             </button>
