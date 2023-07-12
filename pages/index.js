@@ -27,13 +27,22 @@ const HomePage = () => {
       .filter(({ createDt }) => {
         return [lastMonth, currentMonth, yesterDay].includes(createDt);
       })
-      .map(({ createDt, statusReqShip }) => {
+      .map(({ createDt, statusReqShip, statusComplete }) => {
+        let count = "0";
+        try {
+          count = (
+            Number.parseInt(statusReqShip) + Number.parseInt(statusComplete)
+          ).toString();
+        } catch (error) {
+          console.log(error);
+        }
+
         if (createDt === lastMonth) {
-          return { lastMonth: statusReqShip };
+          return { lastMonth: count };
         } else if (createDt === currentMonth) {
-          return { currentMonth: statusReqShip };
+          return { currentMonth: count };
         } else {
-          return { yesterDay: statusReqShip };
+          return { yesterDay: count };
         }
       });
 
@@ -46,12 +55,12 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-10 gap-y-10">
+    <div className="flex flex-col items-center justify-center p-8 gap-y-8">
       <div className="relative flex flex-col w-full bg-white border border-gray-200 shadow-md rounded-xl">
         <div className="absolute top-0 left-0 w-full bg-darkCyan rounded-t-xl">
           <p className="text-white font-bold text-base px-5 py-2">전월 배차</p>
         </div>
-        <div className="flex flex-col items-center justify-center mt-10 p-10">
+        <div className="flex flex-col items-center justify-center mt-8 p-8">
           <p className="text-richBlack font-extrabold text-4xl">
             {statistics.lastMonth}건
           </p>
@@ -61,7 +70,7 @@ const HomePage = () => {
         <div className="absolute top-0 left-0 w-full bg-darkCyan rounded-t-xl">
           <p className="text-white font-bold text-base px-5 py-2">이달 배차</p>
         </div>
-        <div className="flex flex-col items-center justify-center mt-10 p-10">
+        <div className="flex flex-col items-center justify-center mt-8 p-8">
           <p className="text-richBlack font-extrabold text-4xl">
             {statistics.currentMonth}건
           </p>
@@ -71,7 +80,7 @@ const HomePage = () => {
         <div className="absolute top-0 left-0 w-full bg-darkCyan rounded-t-xl">
           <p className="text-white font-bold text-base px-5 py-2">전일 배차</p>
         </div>
-        <div className="flex flex-col items-center justify-center mt-10 p-10">
+        <div className="flex flex-col items-center justify-center mt-8 p-8">
           <p className="text-richBlack font-extrabold text-4xl">
             {statistics.yesterDay}건
           </p>

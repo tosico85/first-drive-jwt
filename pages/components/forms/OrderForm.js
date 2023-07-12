@@ -1264,6 +1264,7 @@ export default function OrderForm({
                         <DateInput
                           onDateChange={onChange}
                           dateValue={getValues("payPlanYmd")}
+                          addClass="w-36"
                         />
                       )}
                     />
