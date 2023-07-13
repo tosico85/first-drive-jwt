@@ -38,7 +38,7 @@ const Layout = ({ children }) => {
             <Navbar />
           </>
         )}
-        <main className={" " + (isLogin ? "h-full" : "h-max")}>
+        <main className={"h-full"}>
           <div
             className={
               "h-full mx-auto max-w-7xl lg:px-8 " +

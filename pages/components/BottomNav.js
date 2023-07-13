@@ -53,7 +53,13 @@ const BottomNav = () => {
       </div>
       <div
         className={"flex flex-col items-center "}
-        onClick={() => (window.location.href = "tel:01012341234")}
+        onClick={() => {
+          window.open(
+            "https://4z7k9.channel.io/",
+            "_blank",
+            "width=500, height=500"
+          );
+        }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

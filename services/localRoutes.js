@@ -1,7 +1,7 @@
 const localRoutes = [
   { path: "/", name: "DashBoard" },
   { path: "/login", name: "로그인" },
-  { path: "/user/profile", name: "User Profile" },
+  { path: "/user/profile", name: "Profile" },
   { path: "/orders/list", name: "화물 목록" },
   { path: "/orders/create", name: "화물 등록" },
   { path: "/orders/modify", name: "화물 수정" },
