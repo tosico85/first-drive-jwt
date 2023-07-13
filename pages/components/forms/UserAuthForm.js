@@ -68,9 +68,6 @@ export default function UserAuthForm({ selectedUser, onCancel, onComplete }) {
         <div>
           <div className="grid grid-cols-1">
             <div>
-              <label className="block text-sm font-medium leading-6">
-                권한
-              </label>
               <select
                 {...register("auth_code", {
                   required: `권한을 입력해주세요`,

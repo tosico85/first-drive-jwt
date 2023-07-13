@@ -619,7 +619,7 @@ export default function OrderForm({
                     ]).join(" ")}
                     className="block w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   />
-                  <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-500 hover:font-extralight absolute right-2 top-1.5">
+                  <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-1.5">
                     <span>주소검색</span>
                     <svg
                       xmlns="h  ttp://www.w3.org/2000/svg"
@@ -781,7 +781,7 @@ export default function OrderForm({
                     )}
                     className="block w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   />
-                  <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-500 hover:font-extralight absolute right-2 top-1.5">
+                  <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-1.5">
                     <span>주소검색</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

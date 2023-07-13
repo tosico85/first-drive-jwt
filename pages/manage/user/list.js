@@ -128,7 +128,7 @@ const ManageUser = () => {
   };
 
   return (
-    <div className="py-6">
+    <div className="py-6 px-5">
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -143,7 +143,7 @@ const ManageUser = () => {
       </Modal>
       <h3 className="text-base font-semibold leading-7 ">가입된 사용자 목록</h3>
       <p className="text-right">{`${userList.length} 건`}</p>
-      <ul className="mt-6 pb-14 border-y border-gray-200">
+      <ul className="mt-6 mb-14 border-y border-gray-200">
         {userList.length > 0 &&
           userList.map((item, index) => {
             const { name, email, company_code, auth_code, create_dtm } = item;
@@ -192,7 +192,7 @@ const ManageUser = () => {
             );
           })}
       </ul>
-      <div className="fixed bottom-0 left-0 p-5 w-full bg-white border mt-6 flex items-center justify-end gap-x-6">
+      <div className="fixed bottom-0 left-0 p-3 w-full bg-white border mt-6 flex items-center justify-end gap-x-6">
         <button
           type="button"
           className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"

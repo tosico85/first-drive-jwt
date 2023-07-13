@@ -539,7 +539,7 @@ const CargoList = () => {
                             handleCargoCopy(cargo_seq);
                           }}
                         >
-                          <p>화물복사</p>
+                          <p>복사</p>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
