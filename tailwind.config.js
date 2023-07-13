@@ -8,7 +8,7 @@ module.exports = {
       },
       colors: {
         rectangleHeader: "#89C0F8",
-        layoutHeader: "#1C449C",
+        layoutHeader: "#0C399C",
         richBlack: "#001219",
         midnightGreen: "#005F73",
         darkCyan: "#0A9396",
