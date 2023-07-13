@@ -59,8 +59,8 @@ const HomePage = () => {
   return (
     <div className="flex flex-col items-center justify-center p-8 gap-y-8">
       <div className="relative flex flex-col w-full bg-white border border-gray-200 shadow-md rounded-xl">
-        <div className="absolute top-0 left-0 w-full bg-rectangleHeader rounded-t-xl">
-          <p className="text-black font-bold text-base px-5 py-2">전월 배차</p>
+        <div className="absolute top-0 left-0 w-full bg-darkCyan rounded-t-xl">
+          <p className="text-white font-bold text-base px-5 py-2">전월 배차</p>
         </div>
         <div className="flex flex-col items-center justify-center mt-8 p-8">
           <p className="text-richBlack font-extrabold text-4xl">
