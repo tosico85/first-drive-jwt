@@ -7,7 +7,7 @@ module.exports = {
         sans: ["Noto Sans KR", "sans-serif"],
       },
       colors: {
-        custom-rectangle-header: "#001219",
+        custom-rectangle-header: "#BAD9F8",
         richBlack: "#001219",
         midnightGreen: "#005F73",
         darkCyan: "#0A9396",
