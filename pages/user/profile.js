@@ -22,7 +22,7 @@ const UserProfile = () => {
           />
         </svg>
       </div>
-      <div className="flex flex-col bg-gray-200 w-full h-full py-10 px-5">
+      <div className="flex flex-col bg-gray-200 w-full h-full py-10 px-5 bg-white">
         <div className="bg-white flex flex-col p-5 gap-y-5">
           <div className="flex px-5 gap-x-5">
             <div className="flex items-end pb-1">
