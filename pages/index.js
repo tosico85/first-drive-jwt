@@ -57,36 +57,55 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-8 gap-y-8">
-      <div className="relative flex flex-col w-full bg-white border border-gray-200 shadow-md rounded-xl">
-        <div className="absolute top-0 left-0 w-full bg-darkCyan rounded-t-xl">
-          <p className="text-white font-bold text-base px-5 py-2">전월 배차</p>
+    <div className="flex flex-col">
+      <div className="flex items-center justify-center px-5 py-10 gap-x-2 border-b border-gray-300">
+        <div className="relative flex flex-col w-full bg-white border border-gray-200 shadow-md rounded-xl">
+          <div className="absolute top-0 left-0 w-full bg-darkCyan rounded-t-xl">
+            <p className="text-white font-bold text-base text-center py-2">
+              전월 배차
+            </p>
+          </div>
+          <div className="flex flex-col items-center justify-center mt-8 p-8">
+            <p className="text-richBlack font-extrabold text-3xl">
+              {statistics.lastMonth}
+            </p>
+          </div>
         </div>
-        <div className="flex flex-col items-center justify-center mt-8 p-8">
-          <p className="text-richBlack font-extrabold text-4xl">
-            {statistics.lastMonth}건
-          </p>
+        <div className="relative flex flex-col w-full bg-white border border-gray-200 shadow-md rounded-xl">
+          <div className="absolute top-0 left-0 w-full bg-darkCyan rounded-t-xl">
+            <p className="text-white font-bold text-base text-center py-2">
+              이달 배차
+            </p>
+          </div>
+          <div className="flex flex-col items-center justify-center mt-8 p-8">
+            <p className="text-richBlack font-extrabold text-3xl">
+              {statistics.currentMonth}
+            </p>
+          </div>
+        </div>
+        <div className="relative flex flex-col w-full bg-white border border-gray-200 shadow-md rounded-xl">
+          <div className="absolute top-0 left-0 w-full bg-darkCyan rounded-t-xl">
+            <p className="text-white font-bold text-base text-center py-2">
+              전일 배차
+            </p>
+          </div>
+          <div className="flex flex-col items-center justify-center mt-8 p-8">
+            <p className="text-richBlack font-extrabold text-3xl">
+              {statistics.yesterDay}
+            </p>
+          </div>
         </div>
       </div>
-      <div className="relative flex flex-col w-full bg-white border border-gray-200 shadow-md rounded-xl">
-        <div className="absolute top-0 left-0 w-full bg-darkCyan rounded-t-xl">
-          <p className="text-white font-bold text-base px-5 py-2">이달 배차</p>
-        </div>
-        <div className="flex flex-col items-center justify-center mt-8 p-8">
-          <p className="text-richBlack font-extrabold text-4xl">
-            {statistics.currentMonth}건
-          </p>
-        </div>
-      </div>
-      <div className="relative flex flex-col w-full bg-white border border-gray-200 shadow-md rounded-xl">
-        <div className="absolute top-0 left-0 w-full bg-darkCyan rounded-t-xl">
-          <p className="text-white font-bold text-base px-5 py-2">전일 배차</p>
-        </div>
-        <div className="flex flex-col items-center justify-center mt-8 p-8">
-          <p className="text-richBlack font-extrabold text-4xl">
-            {statistics.yesterDay}건
-          </p>
-        </div>
+      <div className="flex flex-col mt-5 p-5">
+        <p className="text-xl text-gray-600 font-bold">{"< 공지사항 >"}</p>
+        <ul className="flex flex-col p-5 gap-y-3">
+          <li>
+            <span>- 안녕하세요. 공지사항입니다.</span>
+          </li>
+          <li>
+            <span>- 테스트 공지사항</span>
+          </li>
+        </ul>
       </div>
     </div>
   );

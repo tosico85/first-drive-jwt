@@ -96,7 +96,7 @@ const CargoList = () => {
   };
 
   return (
-    <div className="pb-5 bg-white relative">
+    <div className="pt-16 pb-5 bg-white relative">
       <div className="bg-white fixed sm:static top-16 w-full z-40">
         <div className="grid grid-cols-5 items-center sm:hidden">
           <div

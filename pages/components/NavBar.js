@@ -16,6 +16,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { userInfo, logout } = useContext(AuthContext);
   const router = useRouter();
+  const currentPage = localRoutes.find((item) => item.path === router.pathname);
 
   const user = {
     name: userInfo.name,
@@ -58,8 +59,8 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="fixed w-full z-50">
-      <Disclosure as="nav" className="bg-richBlack w-full">
+    <div className="fixed w-full z-50 shadow-md">
+      <Disclosure as="nav" className="bg-white w-full">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
@@ -73,7 +74,7 @@ const Navbar = () => {
                   }}
                 />
               </div> */}
-              <div
+              {/* <div
                 className="flex flex-col flex-shrink-0"
                 onClick={() => {
                   router.push("/");
@@ -86,6 +87,9 @@ const Navbar = () => {
                 <div className="flex justify-center">
                   <div className="triangle"></div>
                 </div>
+              </div> */}
+              <div className="text-2xl font-extrabold">
+                <span>{currentPage.name}</span>
               </div>
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline space-x-4">
@@ -167,7 +171,7 @@ const Navbar = () => {
             <div className="-mr-2 flex md:hidden">
               {/* Mobile menu button */}
               <Disclosure.Button
-                className="inline-flex items-center justify-center rounded-md bg-richBlack p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-richBlack"
+                className="inline-flex items-center justify-center rounded-md bg-white p-2 text-richBlack focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 focus:ring-offset-gray-300"
                 onClick={() => setOpen((open) => !open)}
               >
                 <span className="sr-only">Open main menu</span>

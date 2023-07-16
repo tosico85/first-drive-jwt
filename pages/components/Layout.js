@@ -5,7 +5,7 @@ import BottomNav from "./BottomNav";
 
 const Layout = ({ children }) => {
   const router = useRouter();
-  const currentPage = localRoutes.find((item) => item.path === router.pathname);
+  //const currentPage = localRoutes.find((item) => item.path === router.pathname);
   const isLogin = router.pathname === "/login";
 
   const isShowBottomNav = () => {
@@ -23,7 +23,7 @@ const Layout = ({ children }) => {
       <div className="h-full relative">
         {!isLogin && (
           <>
-            <header
+            {/* <header
               className={
                 "bg-white absolute shadow-md w-full" +
                 (router.pathname == "/orders/list" ? " hidden sm:block" : "")
@@ -34,7 +34,7 @@ const Layout = ({ children }) => {
                   {currentPage?.name}
                 </h1>
               </div>
-            </header>
+            </header> */}
             <Navbar />
           </>
         )}
@@ -42,7 +42,7 @@ const Layout = ({ children }) => {
           <div
             className={
               "h-full mx-auto max-w-7xl lg:px-8 " +
-              (isLogin ? "" : "bg-white text-richBlack pt-32")
+              (isLogin ? "" : "bg-white text-richBlack pt-14")
             }
           >
             {/* <div className="h-full mx-auto max-w-7xl px-5 lg:px-8 pt-36"> */}
