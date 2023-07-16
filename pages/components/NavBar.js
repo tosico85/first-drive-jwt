@@ -62,8 +62,8 @@ const Navbar = () => {
     <div className="fixed w-full z-50 shadow-md">
       <Disclosure as="nav" className="bg-white w-full">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center">
+          <div className="flex h-16 items-center justify-between gap-10">
+            <div className="flex items-center justify-between w-full">
               {/* <div className="flex-shrink-0">
                 <img
                   className="h-8 w-8"
@@ -99,8 +99,8 @@ const Navbar = () => {
                       href={item.href}
                       className={classNames(
                         item.current
-                          ? "bg-richBlack text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          ? "font-bold text-xl"
+                          : "hover:text-xl transition-all",
                         "rounded-md px-3 py-2 text-sm font-medium"
                       )}
                       aria-current={item.current ? "page" : undefined}
@@ -111,24 +111,17 @@ const Navbar = () => {
                 </div>
               </div>
             </div>
-            <div className="hidden md:block">
+            <div className="hidden md:block min-w-fit">
               <div className="ml-4 flex items-center md:ml-6">
                 <div className="flex flex-col items-end">
-                  <p className="text-sm text-gray-300">{user.name}</p>
-                  <p className="text-xs text-gray-400">{user.email}</p>
+                  <p className="text-sm text-gray-700">{user.name}</p>
+                  <p className="text-xs text-gray-500">{user.email}</p>
                 </div>
-                <button
-                  type="button"
-                  className="rounded-full bg-richBlack p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-richBlack"
-                >
-                  {/* <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" /> */}
-                </button>
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    <Menu.Button className="flex max-w-xs items-center rounded-full bg-richBlack text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-richBlack">
+                    <Menu.Button className="flex max-w-xs items-center rounded-full bg-mainColor1 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-mainColor1">
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
@@ -171,7 +164,7 @@ const Navbar = () => {
             <div className="-mr-2 flex md:hidden">
               {/* Mobile menu button */}
               <Disclosure.Button
-                className="inline-flex items-center justify-center rounded-md bg-white p-2 text-richBlack focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 focus:ring-offset-gray-300"
+                className="inline-flex items-center justify-center rounded-md bg-white p-2 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 focus:ring-offset-gray-300"
                 onClick={() => setOpen((open) => !open)}
               >
                 <span className="sr-only">Open main menu</span>
@@ -203,8 +196,8 @@ const Navbar = () => {
                   href={item.href}
                   className={classNames(
                     item.current
-                      ? "bg-richBlack text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                      ? "bg-normalGray text-white"
+                      : "hover:bg-gray-200 text-gray-600",
                     "block rounded-md px-3 py-2 text-base font-medium"
                   )}
                   aria-current={item.current ? "page" : undefined}
@@ -224,7 +217,7 @@ const Navbar = () => {
                   />
                 </div>
                 <div className="ml-3">
-                  <div className="text-base font-medium leading-none text-white">
+                  <div className="text-base font-medium leading-none text-gray-600">
                     {user.name}
                   </div>
                   <div className="text-sm font-medium leading-none text-gray-400">
@@ -233,7 +226,7 @@ const Navbar = () => {
                 </div>
                 {/* <button
                 type="button"
-                className="ml-auto flex-shrink-0 rounded-full bg-richBlack p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-richBlack"
+                className="ml-auto flex-shrink-0 rounded-full bg-mainColor1 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-mainColor1"
               >
                 <span className="sr-only">View notifications</span>
                 <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -249,7 +242,7 @@ const Navbar = () => {
                       if (item.onclick) item.onclick();
                       setOpen(false);
                     }}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-600 hover:bg-gray-200"
                   >
                     {item.name}
                   </Disclosure.Button>

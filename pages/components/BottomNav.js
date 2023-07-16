@@ -8,7 +8,7 @@ const BottomNav = () => {
       <div
         className={
           "flex flex-col items-center " +
-          (router.pathname == "/" ? "text-rust" : "")
+          (router.pathname == "/" ? "text-mainColor2" : "")
         }
         onClick={() => router.push("/")}
       >
@@ -31,7 +31,7 @@ const BottomNav = () => {
       <div
         className={
           "flex flex-col items-center " +
-          (router.pathname == "/orders/list" ? "text-rust" : "")
+          (router.pathname == "/orders/list" ? "text-mainColor2" : "")
         }
         onClick={() => router.push("/orders/list")}
       >
@@ -80,7 +80,7 @@ const BottomNav = () => {
       <div
         className={
           "flex flex-col items-center " +
-          (router.pathname == "/orders/create" ? "text-rust" : "")
+          (router.pathname == "/orders/create" ? "text-mainColor2" : "")
         }
         onClick={() => router.push("/orders/create")}
       >
@@ -103,7 +103,7 @@ const BottomNav = () => {
       <div
         className={
           "flex flex-col items-center " +
-          (router.pathname == "/user/profile" ? "text-rust" : "")
+          (router.pathname == "/user/profile" ? "text-mainColor2" : "")
         }
         onClick={() => router.push("/user/profile")}
       >

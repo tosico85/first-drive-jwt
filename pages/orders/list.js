@@ -101,10 +101,10 @@ const CargoList = () => {
         <div className="grid grid-cols-5 items-center sm:hidden">
           <div
             className={
-              "text-white text-center bg-midnightGreen border-b-8 shadow-inner" +
+              "text-white text-center bg-mainColor2 border-b-8 shadow-inner" +
               (searchStatus == "ALL"
-                ? " border-tiffanyBlue font-extrabold"
-                : " border-midnightGreen")
+                ? " border-mainColor4 font-extrabold"
+                : " border-mainColor2")
             }
             onClick={() => handleSearchStatus("ALL")}
           >
@@ -112,10 +112,10 @@ const CargoList = () => {
           </div>
           <div
             className={
-              "text-white text-center bg-midnightGreen border-b-8 shadow-inner" +
+              "text-white text-center bg-mainColor2 border-b-8 shadow-inner" +
               (searchStatus == "화물접수"
-                ? " border-tiffanyBlue font-extrabold"
-                : " border-midnightGreen")
+                ? " border-mainColor4 font-extrabold"
+                : " border-mainColor2")
             }
             onClick={() => handleSearchStatus("화물접수")}
           >
@@ -123,10 +123,10 @@ const CargoList = () => {
           </div>
           <div
             className={
-              "text-white text-center bg-midnightGreen border-b-8 shadow-inner" +
+              "text-white text-center bg-mainColor2 border-b-8 shadow-inner" +
               (searchStatus == "배차신청"
-                ? " border-tiffanyBlue font-extrabold"
-                : " border-midnightGreen")
+                ? " border-mainColor4 font-extrabold"
+                : " border-mainColor2")
             }
             onClick={() => handleSearchStatus("배차신청")}
           >
@@ -134,10 +134,10 @@ const CargoList = () => {
           </div>
           <div
             className={
-              "text-white text-center bg-midnightGreen border-b-8 shadow-inner" +
+              "text-white text-center bg-mainColor2 border-b-8 shadow-inner" +
               (searchStatus == "배차완료"
-                ? " border-tiffanyBlue font-extrabold"
-                : " border-midnightGreen")
+                ? " border-mainColor4 font-extrabold"
+                : " border-mainColor2")
             }
             onClick={() => handleSearchStatus("배차완료")}
           >
@@ -145,10 +145,10 @@ const CargoList = () => {
           </div>
           <div
             className={
-              "text-white text-center bg-midnightGreen border-b-8 shadow-inner" +
+              "text-white text-center bg-mainColor2 border-b-8 shadow-inner" +
               (searchStatus == "취소"
-                ? " border-tiffanyBlue font-extrabold"
-                : " border-midnightGreen")
+                ? " border-mainColor4 font-extrabold"
+                : " border-mainColor2")
             }
             onClick={() => handleSearchStatus("취소")}
           >
@@ -162,7 +162,7 @@ const CargoList = () => {
               className={
                 "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
                 (searchStatus == "ALL"
-                  ? "bg-gray-400 text-white"
+                  ? "bg-normalGray text-white"
                   : "text-gray-400")
               }
               onClick={() => handleSearchStatus("ALL")}
@@ -173,7 +173,7 @@ const CargoList = () => {
               className={
                 "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
                 (searchStatus == "화물접수"
-                  ? "bg-gray-400 text-white"
+                  ? "bg-normalGray text-white"
                   : "text-gray-400")
               }
               onClick={() => handleSearchStatus("화물접수")}
@@ -184,7 +184,7 @@ const CargoList = () => {
               className={
                 "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
                 (searchStatus == "배차신청"
-                  ? "bg-gray-400 text-white"
+                  ? "bg-normalGray text-white"
                   : "text-gray-400")
               }
               onClick={() => handleSearchStatus("배차신청")}
@@ -195,7 +195,7 @@ const CargoList = () => {
               className={
                 "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
                 (searchStatus == "배차완료"
-                  ? "bg-gray-400 text-white"
+                  ? "bg-normalGray text-white"
                   : "text-gray-400")
               }
               onClick={() => handleSearchStatus("배차완료")}
@@ -206,7 +206,7 @@ const CargoList = () => {
               className={
                 "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
                 (searchStatus == "취소"
-                  ? "bg-gray-400 text-white"
+                  ? "bg-normalGray text-white"
                   : "text-gray-400")
               }
               onClick={() => handleSearchStatus("취소")}
@@ -298,7 +298,7 @@ const CargoList = () => {
       </div>
 
       <ul className="mt-5 pb-14">
-        <li className="hidden sm:block border-y border-gray-200 py-3 bg-darkCyan gap-x-1">
+        <li className="hidden sm:block border-y border-gray-200 py-3 bg-mainColor2 gap-x-1">
           <div className="grid grid-cols-9 items-center text-center text-white">
             <div className="col-span-2 border-r border-white">
               <span>화물내용</span>
@@ -365,7 +365,7 @@ const CargoList = () => {
               } = item;
               return (
                 <li
-                  className="flex flex-col px-5 mb-5 sm:px-0 sm:mb-0 sm:border-x sm:border-gray-200 sm:hover:bg-gray-100"
+                  className="flex flex-col px-5 mb-5 sm:px-0 sm:hover:bg-gray-100"
                   key={cargo_seq}
                   onClick={() => handleDetail(cargo_seq)}
                 >
@@ -373,7 +373,7 @@ const CargoList = () => {
                     <div className="p-5 flex justify-between">
                       <div className="flex flex-col gap-y-3">
                         <div className="flex gap-x-2 items-center">
-                          <p className="bg-gray-400 rounded-lg text-white font-bold p-1 min-w-fit text-xs">
+                          <p className="bg-buttonPink rounded-lg text-white font-bold p-1 min-w-fit text-xs">
                             출발
                           </p>
                           <p className="truncate leading-5 text-gray-600 whitespace-pre-wrap">
@@ -381,7 +381,7 @@ const CargoList = () => {
                           </p>
                         </div>
                         <div className="flex gap-x-2 items-center">
-                          <p className="bg-gray-400 rounded-lg text-white font-bold p-1 min-w-fit text-xs">
+                          <p className="bg-mainColor3 rounded-lg text-white font-bold p-1 min-w-fit text-xs">
                             도착
                           </p>
                           <p className="truncate leading-5 text-gray-600 whitespace-pre-wrap">
@@ -390,7 +390,7 @@ const CargoList = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="p-5 bg-gray-100 rounded-b-xl flex flex-col gap-y-4">
+                    <div className="p-5 bg-gray-50 rounded-b-xl flex flex-col gap-y-4">
                       <div className="grid grid-cols-2 items-center">
                         <div className="flex flex-col items-start gap-y-1">
                           <span className="text-sm text-gray-400">
@@ -399,7 +399,7 @@ const CargoList = () => {
                           <span className="text-gray-600">{ordNo || "-"}</span>
                         </div>
                         <div
-                          className="text-sm font-semibold w-fit flex items-center text-slate-500 border border-slate-500 rounded-md py-1 px-2 hover:cursor-pointer hover:shadow-md"
+                          className="text-sm font-semibold w-fit flex items-center text-white bg-buttonSilver rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleCargoCopy(cargo_seq);

@@ -595,7 +595,7 @@ export default function OrderForm({
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
         <div className="pb-12 grid sm:grid-cols-2 gap-x-5">
           <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300 sm:row-span-2">
-            <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
+            <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 상하차지 정보
               </h2>
@@ -745,7 +745,7 @@ export default function OrderForm({
             {/* </div>
 
           <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
+            <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 도착지 정보
               </h2>
@@ -906,7 +906,7 @@ export default function OrderForm({
             </div>
           </div>
           <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg2 pt-12 border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
+            <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 상하차 일시
               </h2>
@@ -1009,7 +1009,7 @@ export default function OrderForm({
             </div>
           </div>
           <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
-            <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
+            <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 화물 정보
               </h2>
@@ -1212,7 +1212,7 @@ export default function OrderForm({
           </div>
           {isAdmin && (
             <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
-              <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
+              <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-md">
                 <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                   화주 및 의뢰 정보
                 </h2>
@@ -1341,7 +1341,7 @@ export default function OrderForm({
 
           {isAdmin && (
             <div className="relative p-5 mb-5 rounded-md shadow-lg pt-12 border border-gray-300">
-              <div className="absolute top-0 left-0 w-full bg-midnightGreen rounded-t-md">
+              <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-md">
                 <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                   운송료 정보{watchShuttleCargoInfo ? " (왕복)" : " (편도)"}
                 </h2>
@@ -1378,21 +1378,21 @@ export default function OrderForm({
             <button
               type="button"
               onClick={() => router.back()}
-              className="rounded-md bg-gray-400 px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-normalGray px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
             >
               Cancel
             </button>
             {isDirectApi ? (
               <button
                 type="submit"
-                className="rounded-md bg-alloyOrange px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+                className="rounded-md bg-buttonZamboa px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
               >
                 배차신청 수정
               </button>
             ) : (
               <button
                 type="submit"
-                className="rounded-md bg-darkCyan px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+                className="rounded-md bg-mainColor3 px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
               >
                 {isEdit ? "화물 수정" : "화물 등록"}
               </button>

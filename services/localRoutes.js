@@ -1,5 +1,5 @@
 const localRoutes = [
-  { path: "/", name: "DashBoard" },
+  { path: "/", name: "배차관리 시스템" },
   { path: "/login", name: "로그인" },
   { path: "/user/profile", name: "Profile" },
   { path: "/orders/list", name: "화물 목록" },

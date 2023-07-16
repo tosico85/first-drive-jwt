@@ -128,7 +128,7 @@ const ManageUser = () => {
   };
 
   return (
-    <div className="py-6 px-5">
+    <div className="py-10 px-5">
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -141,8 +141,10 @@ const ManageUser = () => {
           onComplete={callbackModal}
         />
       </Modal>
-      <h3 className="text-base font-semibold leading-7 ">가입된 사용자 목록</h3>
-      <p className="text-right">{`${userList.length} 건`}</p>
+      <div className="flex justify-between">
+        <h3 className="text-base font-semibold ">가입된 사용자 목록</h3>
+        <p className="text-right">{`${userList.length} 건`}</p>
+      </div>
       <ul className="mt-6 mb-14 border-y border-gray-200">
         {userList.length > 0 &&
           userList.map((item, index) => {
@@ -192,17 +194,24 @@ const ManageUser = () => {
             );
           })}
       </ul>
-      <div className="fixed bottom-0 left-0 p-3 w-full bg-white border mt-6 flex items-center justify-end gap-x-6">
+      <div className="fixed bottom-0 left-0 p-3 w-full bg-white border mt-6 flex items-center justify-end gap-x-3">
         <button
           type="button"
-          className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"
+          onClick={() => router.push("/orders/list")}
+          className="rounded-md bg-normalGray px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+        >
+          목록으로
+        </button>
+        <button
+          type="button"
+          className="rounded-md bg-buttonZamboa px-2 py-2 text-base font-semibold text-white shadow-sm"
           onClick={handleAuthChange}
         >
           권한 수정
         </button>
         <button
           type="button"
-          className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"
+          className="rounded-md bg-buttonZamboa px-2 py-2 text-base font-semibold text-white shadow-sm"
           onClick={handleDelete}
         >
           삭제

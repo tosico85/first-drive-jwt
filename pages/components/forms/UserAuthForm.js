@@ -98,7 +98,7 @@ export default function UserAuthForm({ selectedUser, onCancel, onComplete }) {
         </button>
         <button
           type="submit"
-          className="rounded-md bg-alloyOrange px-3 py-2 text-base font-semibold text-white shadow-sm"
+          className="rounded-md bg-buttonZamboa px-3 py-2 text-base font-semibold text-white shadow-sm"
         >
           권한 수정
         </button>

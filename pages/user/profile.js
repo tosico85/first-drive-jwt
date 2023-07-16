@@ -22,7 +22,7 @@ const UserProfile = () => {
           />
         </svg>
       </div>
-      <div className="flex flex-col bg-gray-200 w-full h-full py-10 px-5 bg-white">
+      <div className="flex flex-col w-full h-full py-10 px-5 bg-white sm:items-center">
         <div className="bg-white flex flex-col p-5 gap-y-5">
           <div className="flex px-5 gap-x-5">
             <div className="flex items-end pb-1">
@@ -43,9 +43,7 @@ const UserProfile = () => {
             </div>
             <div className="flex flex-col">
               <span className="text-gray-400 text-lg font-bold">Name</span>
-              <span className="text-richBlack text-xl font-extrabold">
-                {userInfo.name}
-              </span>
+              <span className=" text-xl font-extrabold">{userInfo.name}</span>
             </div>
           </div>
           <div className="flex px-5 gap-x-5">
@@ -67,9 +65,7 @@ const UserProfile = () => {
             </div>
             <div className="flex flex-col">
               <span className="text-gray-400 text-lg font-bold">email</span>
-              <span className="text-richBlack text-xl font-extrabold">
-                {userInfo.email}
-              </span>
+              <span className=" text-xl font-extrabold">{userInfo.email}</span>
             </div>
           </div>
         </div>
@@ -77,7 +73,7 @@ const UserProfile = () => {
           <button
             type="button"
             onClick={logout}
-            className="inline rounded-sm bg-midnightGreen px-10 py-2 text-xl font-semibold text-white hover.shadow-sm"
+            className="inline rounded-sm bg-mainColor2 px-10 py-2 text-xl font-semibold text-white hover.shadow-sm"
           >
             Sign out
           </button>

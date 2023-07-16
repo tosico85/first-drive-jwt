@@ -71,7 +71,7 @@ const LoginPage = () => {
           </div>
         ) : (
           <>
-            <div className="self-center mb-2 text-xl font-light text-richBlack sm:text-2xl">
+            <div className="self-center mb-2 text-xl font-light text-mainColor1 sm:text-2xl">
               Create a new account
             </div>
             <span className="justify-center text-sm text-center text-gray-500 flex-items-center">

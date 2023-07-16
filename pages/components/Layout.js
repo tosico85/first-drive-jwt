@@ -14,6 +14,7 @@ const Layout = ({ children }) => {
       "/orders/create",
       "/orders/modify",
       "/orders/detail",
+      "/manage/user/list",
     ];
     return exceptPages.includes(router.pathname);
   };
@@ -30,7 +31,7 @@ const Layout = ({ children }) => {
               }
             >
               <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-                <h1 className="text-2xl font-bold tracking-tight text-richBlack font-sans mt-16">
+                <h1 className="text-2xl font-bold tracking-tight text-mainColor1 font-sans mt-16">
                   {currentPage?.name}
                 </h1>
               </div>
@@ -42,7 +43,7 @@ const Layout = ({ children }) => {
           <div
             className={
               "h-full mx-auto max-w-7xl lg:px-8 " +
-              (isLogin ? "" : "bg-white text-richBlack pt-14")
+              (isLogin ? "" : "bg-white pt-14")
             }
           >
             {/* <div className="h-full mx-auto max-w-7xl px-5 lg:px-8 pt-36"> */}
