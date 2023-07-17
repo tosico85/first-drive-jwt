@@ -101,7 +101,7 @@ const CargoList = () => {
         <div className="grid grid-cols-5 items-center sm:hidden">
           <div
             className={
-              "text-white text-center bg-mainColor2 border-b-8 shadow-inner" +
+              "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all" +
               (searchStatus == "ALL"
                 ? " border-mainColor4 font-extrabold"
                 : " border-mainColor2")
@@ -112,7 +112,7 @@ const CargoList = () => {
           </div>
           <div
             className={
-              "text-white text-center bg-mainColor2 border-b-8 shadow-inner" +
+              "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all" +
               (searchStatus == "화물접수"
                 ? " border-mainColor4 font-extrabold"
                 : " border-mainColor2")
@@ -123,7 +123,7 @@ const CargoList = () => {
           </div>
           <div
             className={
-              "text-white text-center bg-mainColor2 border-b-8 shadow-inner" +
+              "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all" +
               (searchStatus == "배차신청"
                 ? " border-mainColor4 font-extrabold"
                 : " border-mainColor2")
@@ -134,7 +134,7 @@ const CargoList = () => {
           </div>
           <div
             className={
-              "text-white text-center bg-mainColor2 border-b-8 shadow-inner" +
+              "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all" +
               (searchStatus == "배차완료"
                 ? " border-mainColor4 font-extrabold"
                 : " border-mainColor2")
@@ -145,7 +145,7 @@ const CargoList = () => {
           </div>
           <div
             className={
-              "text-white text-center bg-mainColor2 border-b-8 shadow-inner" +
+              "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all" +
               (searchStatus == "취소"
                 ? " border-mainColor4 font-extrabold"
                 : " border-mainColor2")

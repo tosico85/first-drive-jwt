@@ -7,7 +7,7 @@ const BottomNav = () => {
     <div className="fixed bottom-0 w-full bg-white grid grid-cols-5 py-3 border-t border-gray-200 text-gray-500 sm:hidden">
       <div
         className={
-          "flex flex-col items-center " +
+          "flex flex-col items-center transition-color " +
           (router.pathname == "/" ? "text-mainColor2" : "")
         }
         onClick={() => router.push("/")}
@@ -30,7 +30,7 @@ const BottomNav = () => {
       </div>
       <div
         className={
-          "flex flex-col items-center " +
+          "flex flex-col items-center transition-color " +
           (router.pathname == "/orders/list" ? "text-mainColor2" : "")
         }
         onClick={() => router.push("/orders/list")}
@@ -52,7 +52,7 @@ const BottomNav = () => {
         <p className="text-xs">주문내역</p>
       </div>
       <div
-        className={"flex flex-col items-center "}
+        className={"flex flex-col items-center transition-color "}
         onClick={() => {
           window.open(
             "https://4z7k9.channel.io/",
@@ -79,7 +79,7 @@ const BottomNav = () => {
       </div>
       <div
         className={
-          "flex flex-col items-center " +
+          "flex flex-col items-center transition-color " +
           (router.pathname == "/orders/create" ? "text-mainColor2" : "")
         }
         onClick={() => router.push("/orders/create")}
@@ -102,7 +102,7 @@ const BottomNav = () => {
       </div>
       <div
         className={
-          "flex flex-col items-center " +
+          "flex flex-col items-center transition-color " +
           (router.pathname == "/user/profile" ? "text-mainColor2" : "")
         }
         onClick={() => router.push("/user/profile")}
