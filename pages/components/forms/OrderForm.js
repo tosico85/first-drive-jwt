@@ -555,8 +555,8 @@ export default function OrderForm({
     content: {
       top: "50%",
       left: "50%",
-      width: "80%",
-      height: "80%",
+      width: "90%",
+      height: "70%",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
     },
