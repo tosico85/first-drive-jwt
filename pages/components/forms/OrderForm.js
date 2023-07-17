@@ -10,6 +10,7 @@ import Modal from "react-modal";
 import UserAddressModal from "../modals/UserAddressModal";
 import { isEmptyObject } from "../../../utils/ObjectUtils";
 import { addCommas, isEmpty } from "../../../utils/StringUtils";
+import SearchAddressModal from "../modals/SearchAddressModal";
 
 export default function OrderForm({
   isEdit = false,
@@ -24,6 +25,7 @@ export default function OrderForm({
   const [cargoTonList, setCargoTonList] = useState([]);
   const [truckTypeList, setTruckTypeList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [modalStartEnd, setModalStartEnd] = useState("");
   const [startAddressData, setStartAddressData] = useState({
     startWide: editData.startWide,
@@ -463,6 +465,18 @@ export default function OrderForm({
     openModal();
   };
 
+  /**
+   * 주소찾기 버튼 event handle
+   * @param {event} e
+   * @param {상하차 구분} startEnd
+   */
+  const handleAddressSearchButton = (e, startEnd) => {
+    e.preventDefault();
+    setModalStartEnd(startEnd);
+    console.log("startEnd >> ", startEnd);
+    openAddressModal();
+  };
+
   // Open Modal
   const openModal = () => {
     setIsModalOpen(true);
@@ -471,6 +485,16 @@ export default function OrderForm({
   // Close Modal
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  // Open Modal
+  const openAddressModal = () => {
+    setIsAddressModalOpen(true);
+  };
+
+  // Close Modal
+  const closeAddressModal = () => {
+    setIsAddressModalOpen(false);
   };
 
   /**
@@ -484,6 +508,19 @@ export default function OrderForm({
     }
 
     closeModal();
+  };
+
+  /**
+   * 주소 검색(모달폼) 주소선택 후 callback
+   * @param {주소록 선택 리턴값} retVal
+   */
+  const callbackAddressModal = (retVal) => {
+    console.log("retVal >> ", retVal);
+    if (retVal) {
+      setAddressInput(retVal, modalStartEnd);
+    }
+
+    closeAddressModal();
   };
 
   /**
@@ -526,7 +563,7 @@ export default function OrderForm({
   };
 
   /**
-   * @title 주소 검색
+   * @title 주소 검색(팝업창 방식)
    * @param {상하차 구분} startEnd
    */
   function searchAddress(startEnd) {
@@ -592,6 +629,17 @@ export default function OrderForm({
           startEnd={modalStartEnd}
         />
       </Modal>
+      <Modal
+        isOpen={isAddressModalOpen}
+        onRequestClose={closeAddressModal}
+        contentLabel="Modal"
+        style={customModalStyles}
+      >
+        <SearchAddressModal
+          onCancel={closeAddressModal}
+          onComplete={callbackAddressModal}
+        />
+      </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
         <div className="pb-12 grid sm:grid-cols-2 gap-x-5">
           <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300 sm:row-span-2">
@@ -604,7 +652,8 @@ export default function OrderForm({
               <div className="flex gap-x-3">
                 <div
                   onClick={(e) => {
-                    searchAddress("start");
+                    //searchAddress("start"); //팝업방식
+                    handleAddressSearchButton(e, "start"); //레이어 모달 방식
                   }}
                   className="w-full text-right items-center gap-x-5 relative"
                 >
@@ -768,7 +817,8 @@ export default function OrderForm({
               <div className="flex gap-x-3">
                 <div
                   onClick={(e) => {
-                    searchAddress("end");
+                    //searchAddress("end"); //팝업방식
+                    handleAddressSearchButton(e, "end"); //레이어 모달 방식
                   }}
                   className="w-full text-right items-center gap-x-5 relative"
                 >
@@ -1155,6 +1205,9 @@ export default function OrderForm({
                       </option>
                     ))}
                   </select>
+                  <div className="text-red-500 mx-auto font-bold text-center">
+                    {errors.cargoTon?.message}
+                  </div>
                 </div>
                 <div>
                   <select
@@ -1171,6 +1224,9 @@ export default function OrderForm({
                         </option>
                       ))}
                   </select>
+                  <div className="text-red-500 mx-auto font-bold text-center">
+                    {errors.truckType?.message}
+                  </div>
                 </div>
                 {isAdmin && (
                   <div>
