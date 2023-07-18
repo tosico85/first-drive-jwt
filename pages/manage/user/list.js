@@ -52,6 +52,7 @@ const ManageUser = () => {
       height: "auto",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
+      boxShadow: "0px 0px 10px #e2e2e2",
     },
   };
 

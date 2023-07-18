@@ -11,6 +11,7 @@ import UserAddressModal from "../modals/UserAddressModal";
 import { isEmptyObject } from "../../../utils/ObjectUtils";
 import { addCommas, isEmpty } from "../../../utils/StringUtils";
 import SearchAddressModal from "../modals/SearchAddressModal";
+import DateTimeSelectModal from "../modals/DateTimeSelectModal";
 
 export default function OrderForm({
   isEdit = false,
@@ -24,8 +25,12 @@ export default function OrderForm({
   //const [paramData, setParamData] = useState(editData || {});
   const [cargoTonList, setCargoTonList] = useState([]);
   const [truckTypeList, setTruckTypeList] = useState([]);
+
+  //Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [isSelectTimeModalOpen, setIsSelectTimeModalOpen] = useState(false);
+
   const [modalStartEnd, setModalStartEnd] = useState("");
   const [startAddressData, setStartAddressData] = useState({
     startWide: editData.startWide,
@@ -452,6 +457,8 @@ export default function OrderForm({
     console.log(errors);
   };
 
+  /********************************** Modal Control ***********************************/
+
   /**
    * 주소록 버튼 event handle
    * @param {event} e
@@ -477,24 +484,34 @@ export default function OrderForm({
     openAddressModal();
   };
 
-  // Open Modal
+  // Open 주소록 Modal
   const openModal = () => {
     setIsModalOpen(true);
   };
 
-  // Close Modal
+  // Close 주소록 Modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  // Open Modal
+  // Open 주소검색 Modal
   const openAddressModal = () => {
     setIsAddressModalOpen(true);
   };
 
-  // Close Modal
+  // Close 주소검색 Modal
   const closeAddressModal = () => {
     setIsAddressModalOpen(false);
+  };
+
+  // Open 날짜 시간 선택 Modal
+  const openSelectTimeModal = () => {
+    setIsSelectTimeModalOpen(true);
+  };
+
+  // Close 날짜 시간 선택 Modal
+  const closeSelectTimesModal = () => {
+    setIsSelectTimeModalOpen(false);
   };
 
   /**
@@ -521,6 +538,14 @@ export default function OrderForm({
     }
 
     closeAddressModal();
+  };
+
+  /**
+   * 상하차일시 선택(모달폼) 일시 선택 후 callback
+   * @param {주소록 선택 리턴값} retVal
+   */
+  const callbackSelectTimeModal = (retVal) => {
+    console.log("retVal >> ", retVal);
   };
 
   /**
@@ -559,6 +584,7 @@ export default function OrderForm({
       height: "70%",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
+      boxShadow: "0px 0px 10px #e2e2e2",
     },
   };
 
@@ -566,7 +592,7 @@ export default function OrderForm({
    * @title 주소 검색(팝업창 방식)
    * @param {상하차 구분} startEnd
    */
-  function searchAddress(startEnd) {
+  /* function searchAddress(startEnd) {
     addressPopupStartEnd = startEnd;
 
     new daum.Postcode({
@@ -613,7 +639,7 @@ export default function OrderForm({
         );
       },
     }).open();
-  }
+  } */
 
   return (
     <div className="p-5">
@@ -639,6 +665,14 @@ export default function OrderForm({
           onCancel={closeAddressModal}
           onComplete={callbackAddressModal}
         />
+      </Modal>
+      <Modal
+        isOpen={isSelectTimeModalOpen}
+        onRequestClose={closeSelectTimesModal}
+        contentLabel="Modal"
+        style={customModalStyles}
+      >
+        <DateTimeSelectModal />
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
         <div className="pb-12 grid sm:grid-cols-2 gap-x-5">
@@ -1002,6 +1036,14 @@ export default function OrderForm({
                   <option value="30">30</option>
                 </select>
               </div>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  openSelectTimeModal();
+                }}
+              >
+                모달팝업
+              </button>
             </div>
             <div className="text-red-500 mx-auto font-bold text-center">
               {(!isEmpty(errors.startPlanDt) ||
