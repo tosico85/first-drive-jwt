@@ -78,6 +78,8 @@ export default function OrderForm({
   //let fareMap = {};
   const isAdmin = userInfo.auth_code === "ADMIN";
 
+  const [isMobile, setIsMobile] = useState(false);
+
   /**
    * 화면 로딩 시 event
    */
@@ -106,6 +108,7 @@ export default function OrderForm({
         }
       })();
     }
+    setIsMobile(window.innerWidth <= 768);
   }, [userInfo]);
 
   //운송료 착불인 경우 세금계산서 disable 처리(값 변경 시 이벤트)
@@ -580,11 +583,27 @@ export default function OrderForm({
     content: {
       top: "50%",
       left: "50%",
-      width: "90%",
       height: "70%",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
       boxShadow: "0px 0px 10px #e2e2e2",
+    },
+  };
+
+  const MobileStyles = {
+    // 모바일 스타일
+    content: {
+      ...customModalStyles.content,
+      width: "90%",
+    },
+  };
+
+  const DesktopStyles = {
+    // 데스크탑 스타일
+    content: {
+      ...customModalStyles.content,
+      width: "40%",
+      minWidth: "fit-content",
     },
   };
 
@@ -647,7 +666,7 @@ export default function OrderForm({
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         contentLabel="Modal"
-        style={customModalStyles}
+        style={isMobile ? MobileStyles : DesktopStyles}
       >
         <UserAddressModal
           onCancel={closeModal}
@@ -659,7 +678,7 @@ export default function OrderForm({
         isOpen={isAddressModalOpen}
         onRequestClose={closeAddressModal}
         contentLabel="Modal"
-        style={customModalStyles}
+        style={isMobile ? MobileStyles : DesktopStyles}
       >
         <SearchAddressModal
           onCancel={closeAddressModal}
@@ -670,13 +689,13 @@ export default function OrderForm({
         isOpen={isSelectTimeModalOpen}
         onRequestClose={closeSelectTimesModal}
         contentLabel="Modal"
-        style={customModalStyles}
+        style={isMobile ? MobileStyles : DesktopStyles}
       >
         <DateTimeSelectModal />
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
-        <div className="pb-12 grid sm:grid-cols-2 gap-x-5">
-          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300 sm:row-span-2">
+        <div className="pb-12 grid lg:grid-cols-2 gap-x-5">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300 lg:row-span-2">
             <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 상하차지 정보
@@ -995,8 +1014,8 @@ export default function OrderForm({
                 상하차 일시
               </h2>
             </div>
-            <div className="sm:flex sm:items-center">
-              <label className="font-medium mr-2 sm:pt-2">상차일시</label>
+            <div className="lg:flex lg:items-center">
+              <label className="font-medium mr-2 lg:pt-2">상차일시</label>
               <div className="flex items-center mt-1 gap-x-2">
                 <Controller
                   control={control}
@@ -1051,8 +1070,8 @@ export default function OrderForm({
                 !isEmpty(errors.startPlanMinute)) &&
                 "상차일시를 입력해주세요"}
             </div>
-            <div className="mt-3 sm:flex sm:items-center sm:mt-1">
-              <label className="font-medium mr-2 sm:pt-2">하차일시</label>
+            <div className="mt-3 lg:flex lg:items-center lg:mt-1">
+              <label className="font-medium mr-2 lg:pt-2">하차일시</label>
               <div className="flex items-center mt-1 gap-x-2">
                 <Controller
                   control={control}
@@ -1476,21 +1495,21 @@ export default function OrderForm({
             <button
               type="button"
               onClick={() => router.back()}
-              className="rounded-md bg-normalGray px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-normalGray px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
             >
               Cancel
             </button>
             {isDirectApi ? (
               <button
                 type="submit"
-                className="rounded-md bg-buttonZamboa px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+                className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               >
                 배차신청 수정
               </button>
             ) : (
               <button
                 type="submit"
-                className="rounded-md bg-mainColor3 px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+                className="rounded-md bg-mainColor3 px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               >
                 {isEdit ? "화물 수정" : "화물 등록"}
               </button>

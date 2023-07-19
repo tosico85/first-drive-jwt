@@ -97,8 +97,8 @@ const CargoList = () => {
 
   return (
     <div className="pt-16 pb-5 bg-white relative">
-      <div className="bg-white fixed sm:static top-16 w-full z-40">
-        <div className="grid grid-cols-5 items-center sm:hidden">
+      <div className="bg-white fixed lg:static top-16 w-full z-40">
+        <div className="grid grid-cols-5 items-center lg:hidden">
           <div
             className={
               "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all duration-500" +
@@ -156,7 +156,7 @@ const CargoList = () => {
           </div>
         </div>
 
-        <div className="hidden sm:flex items-center justify-between mt-5 gap-x-20 w-full pb-5">
+        <div className="hidden lg:flex items-center justify-between mt-5 gap-x-20 w-full pb-5">
           <div className="flex justify-start gap-x-3">
             <div
               className={
@@ -214,7 +214,7 @@ const CargoList = () => {
               취소
             </div>
           </div>
-          <div className="gap-x-3 hidden sm:flex">
+          <div className="gap-x-3 hidden lg:flex">
             <div className="flex justify-between gap-x-2 items-center">
               <div className="z-0">
                 <DateInput
@@ -256,7 +256,7 @@ const CargoList = () => {
           } 건`}</p>
         </div>
       </div>
-      <div className="bg-gray-50 p-5 flex flex-col gap-y-3 border-b-2 sm:hidden">
+      <div className="bg-gray-50 p-5 flex flex-col gap-y-3 border-b-2 lg:hidden">
         <div className="flex w-full justify-between items-center">
           <div className="z-0">
             <DateInput
@@ -298,7 +298,7 @@ const CargoList = () => {
       </div>
 
       <ul className="mt-5 pb-14">
-        <li className="hidden sm:block border-y border-gray-200 py-3 bg-mainColor2 gap-x-1">
+        <li className="hidden lg:block border-y border-gray-200 py-3 bg-mainColor2 gap-x-1">
           <div className="grid grid-cols-9 items-center text-center text-white">
             <div className="col-span-2 border-r border-white">
               <span>화물내용</span>
@@ -365,11 +365,11 @@ const CargoList = () => {
               } = item;
               return (
                 <li
-                  className="flex flex-col px-5 mb-5 sm:px-0 sm:hover:bg-gray-100"
+                  className="flex flex-col px-5 mb-5 lg:px-0 lg:hover:bg-gray-100"
                   key={cargo_seq}
                   onClick={() => handleDetail(cargo_seq)}
                 >
-                  <div className="flex flex-col justify-between bg-white rounded-2xl shadow-md border border-gray-100 sm:hidden">
+                  <div className="flex flex-col justify-between bg-white rounded-2xl shadow-md border border-gray-100 lg:hidden">
                     <div className="p-5 flex justify-between">
                       <div className="flex flex-col gap-y-3">
                         <div className="flex gap-x-2 items-center">
@@ -460,7 +460,7 @@ const CargoList = () => {
                     </div>
                   </div>
 
-                  <div className="hidden sm:block border-b border-gray-200 py-3">
+                  <div className="hidden lg:block border-b border-gray-200 py-3">
                     <div className="grid grid-cols-9 items-center">
                       <div className="flex flex-col col-span-2 px-5">
                         <p className="text-sm font-semibold leading-6 text-gray-500">

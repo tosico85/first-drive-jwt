@@ -15,7 +15,7 @@ const cargoTestData = {
   firstType: "01",
   frgton: "1.54",
   multiCargoGub: "혼적",
-  payPlanYmd: "20230518",
+  payPlanYlg: "20230518",
   shuttleCargoInfo: "왕복",
   startDetail: "1번지",
   startDong: "강동면",

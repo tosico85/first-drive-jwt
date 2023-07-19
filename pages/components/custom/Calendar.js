@@ -5,7 +5,7 @@ import "react-calendar/dist/Calendar.css"; // css import
 
 const CustomCalendar = (prop) => {
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col items-center">
       <Calendar
         formatDay={(locale, date) => moment(date).format("D")}
         minDate={new Date()}
@@ -13,8 +13,8 @@ const CustomCalendar = (prop) => {
       />
       <style jsx global>{`
         .react-calendar {
-          width: 400px;
-          max-width: 100%;
+          width: 100%;
+          max-width: 500px;
           background-color: #fff;
           color: #222;
           border: none;

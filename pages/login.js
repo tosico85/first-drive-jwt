@@ -64,14 +64,14 @@ const LoginPage = () => {
 
   return (
     <div className="h-full flex items-center bg-white">
-      <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow sm:px-6 md:px-8 lg:px-10 mx-auto">
+      <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow lg:px-6 lg:px-8 lg:px-10 mx-auto">
         {mode === "login" ? (
-          <div className="self-center mb-6 text-xl font-light text-gray-600 sm:text-2xl">
+          <div className="self-center mb-6 text-xl font-light text-gray-600 lg:text-2xl">
             Login To Your Account
           </div>
         ) : (
           <>
-            <div className="self-center mb-2 text-xl font-light text-mainColor1 sm:text-2xl">
+            <div className="self-center mb-2 text-xl font-light text-mainColor1 lg:text-2xl">
               Create a new account
             </div>
             <span className="justify-center text-sm text-center text-gray-500 flex-items-center">
@@ -193,7 +193,7 @@ const LoginPage = () => {
                 <div className="flex ml-auto">
                   <a
                     href="#"
-                    className="inline-flex text-xs font-thin text-gray-500 sm:text-sm hover:text-gray-700"
+                    className="inline-flex text-xs font-thin text-gray-500 lg:text-sm hover:text-gray-700"
                   >
                     Forgot Your Password?
                   </a>
