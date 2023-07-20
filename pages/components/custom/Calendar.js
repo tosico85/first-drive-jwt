@@ -16,8 +16,8 @@ const CustomCalendar = (prop) => {
           width: 100%;
           max-width: 500px;
           background-color: #fff;
-          color: #222;
           border: none;
+          color: #222;
           font-family: Arial, Helvetica, sans-serif;
           line-height: 1.125em;
         }
@@ -38,6 +38,11 @@ const CustomCalendar = (prop) => {
         abbr[title] {
           text-decoration: none;
         }
+        /*
+        .react-calendar__month-view__days button {
+          border: 1px solid #dadada;
+          border-radius: 6px;
+        }*/
         .react-calendar__tile:disabled {
           color: #c0c0c0;
         }

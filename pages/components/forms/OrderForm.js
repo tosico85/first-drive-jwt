@@ -487,6 +487,18 @@ export default function OrderForm({
     openAddressModal();
   };
 
+  /**
+   * 상하차일시 버튼 event handle
+   * @param {event} e
+   * @param {상하차 구분} startEnd
+   */
+  const handleSelectTimeButton = (e, startEnd) => {
+    e.preventDefault();
+    setModalStartEnd(startEnd);
+    console.log("startEnd >> ", startEnd);
+    openSelectTimeModal();
+  };
+
   // Open 주소록 Modal
   const openModal = () => {
     setIsModalOpen(true);
@@ -549,6 +561,13 @@ export default function OrderForm({
    */
   const callbackSelectTimeModal = (retVal) => {
     console.log("retVal >> ", retVal);
+    if (retVal) {
+      Object.keys(retVal).forEach((key) => {
+        setValue(key, retVal[key]);
+      });
+    }
+
+    closeSelectTimesModal();
   };
 
   /**
@@ -691,7 +710,11 @@ export default function OrderForm({
         contentLabel="Modal"
         style={isMobile ? MobileStyles : DesktopStyles}
       >
-        <DateTimeSelectModal />
+        <DateTimeSelectModal
+          onCancel={closeSelectTimesModal}
+          onComplete={callbackSelectTimeModal}
+          startEnd={modalStartEnd}
+        />
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
         <div className="pb-12 grid lg:grid-cols-2 gap-x-5">
@@ -1055,12 +1078,7 @@ export default function OrderForm({
                   <option value="30">30</option>
                 </select>
               </div>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  openSelectTimeModal();
-                }}
-              >
+              <button onClick={(e) => handleSelectTimeButton(e, "start")}>
                 모달팝업
               </button>
             </div>

@@ -1,22 +1,114 @@
-import moment from "moment";
 import React, { useEffect, useState } from "react";
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // css import
 import CustomCalendar from "../custom/Calendar";
-import DateInput from "../custom/DateInput";
+import moment from "moment";
 
-const DateTimeSelectModal = () => {
+const DateTimeSelectModal = ({ onCancel, onComplete, startEnd }) => {
   const [dateValue, setDateValue] = useState(new Date());
+  const [amPmValue, setAmPmValue] = useState("");
+  const [hourValue, setHourValue] = useState("");
+  const [minuteValue, setMinuteValue] = useState("");
 
-  useEffect(() => {
+  /* useEffect(() => {
     //setDateValue(dateValue.setMonth(dateValue.getMonth() + 1));
     console.log(dateValue);
-  }, [dateValue]);
+  }, [dateValue]); */
+
+  const handleAmPm = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setAmPmValue(value);
+  };
+
+  const handleHour = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setHourValue(value);
+
+    if (value != "") {
+      if (minuteValue == "") {
+        setMinuteValue("00");
+      }
+    }
+  };
+
+  const handleMinute = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setMinuteValue(value);
+  };
+
+  const handleSelect = () => {
+    let retVal = {};
+    retVal[`${startEnd}PlanDt`] = moment(dateValue).format("YYYYMMDD");
+    retVal[`${startEnd}PlanHour`] = hourValue;
+    retVal[`${startEnd}PlanMinute`] = minuteValue;
+
+    onComplete(retVal);
+  };
+
+  console.log(amPmValue);
 
   return (
     <div className="flex flex-col items-center">
       <CustomCalendar value={dateValue} onChange={setDateValue} />
-      <input type="text" />
+      <div className="w-full border-b border-gray-100 my-5"></div>
+      <div className="grid grid-cols-3 items-center justify-between w-full p-3 gap-x-3">
+        <select
+          className="rounded-md text-center text-lgz border-0 p-5 bg-slate-100"
+          value={amPmValue}
+          onChange={handleAmPm}
+        >
+          <option value="">오전 / 오후</option>
+          <option value="0">오전</option>
+          <option value="12">오후</option>
+        </select>
+        <select
+          className="rounded-md text-center text-lgz border-0 p-5 bg-slate-100"
+          value={hourValue}
+          onChange={handleHour}
+        >
+          <option value="">- 시 -</option>
+          {amPmValue != "" &&
+            Array.from(Array(12).keys()).map((val) => {
+              const convVal = val + Number.parseInt(amPmValue);
+              const nm = convVal.toString().padStart(2, "0");
+              return (
+                <option key={val} value={nm}>
+                  {nm}
+                </option>
+              );
+            })}
+        </select>
+        <select
+          className="rounded-md text-center text-lgz border-0 p-5 bg-slate-100"
+          value={minuteValue}
+          onChange={handleMinute}
+        >
+          <option value="">- 분 -</option>
+          <option value="00">00</option>
+          <option value="30">30</option>
+        </select>
+      </div>
+      <div className="text-center pt-16">
+        <button
+          type="button"
+          className="rounded-md bg-mainColor3 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mainColor2"
+          onClick={handleSelect}
+        >
+          선택
+        </button>
+        <button
+          type="button"
+          className="ml-3 rounded-md bg-normalGray px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
+          onClick={onCancel}
+        >
+          취소
+        </button>
+      </div>
     </div>
   );
 };
