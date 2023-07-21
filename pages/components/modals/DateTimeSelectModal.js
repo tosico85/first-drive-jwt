@@ -2,17 +2,35 @@ import React, { useEffect, useState } from "react";
 import "react-calendar/dist/Calendar.css"; // css import
 import CustomCalendar from "../custom/Calendar";
 import moment from "moment";
+import { isEmptyObject } from "../../../utils/ObjectUtils";
 
-const DateTimeSelectModal = ({ onCancel, onComplete, startEnd }) => {
+const DateTimeSelectModal = ({ onCancel, onComplete, startEnd, paramObj }) => {
   const [dateValue, setDateValue] = useState(new Date());
   const [amPmValue, setAmPmValue] = useState("");
   const [hourValue, setHourValue] = useState("");
   const [minuteValue, setMinuteValue] = useState("");
 
-  /* useEffect(() => {
-    //setDateValue(dateValue.setMonth(dateValue.getMonth() + 1));
-    console.log(dateValue);
-  }, [dateValue]); */
+  useEffect(() => {
+    console.log("paramObj", paramObj);
+    if (!isEmptyObject(paramObj)) {
+      const planDt = paramObj["PlanDt"];
+      const planHour = paramObj["PlanHour"];
+      const planMinute = paramObj["PlanMinute"];
+
+      if (planDt != "") {
+        try {
+          const dateObject = moment(planDt, "YYYYMMDD").toDate();
+          setDateValue(dateObject);
+
+          if (planHour != "") {
+            setAmPmValue(Number.parseInt(planHour) > 11 ? "12" : "0");
+            setHourValue(planHour); //시
+            setMinuteValue(planMinute); //분
+          }
+        } catch (e) {}
+      }
+    }
+  }, []);
 
   const handleAmPm = (e) => {
     const {
@@ -42,15 +60,17 @@ const DateTimeSelectModal = ({ onCancel, onComplete, startEnd }) => {
   };
 
   const handleSelect = () => {
-    let retVal = {};
-    retVal[`${startEnd}PlanDt`] = moment(dateValue).format("YYYYMMDD");
-    retVal[`${startEnd}PlanHour`] = hourValue;
-    retVal[`${startEnd}PlanMinute`] = minuteValue;
+    if (hourValue != "" && minuteValue != "") {
+      let retVal = {};
+      retVal[`${startEnd}PlanDt`] = moment(dateValue).format("YYYYMMDD");
+      retVal[`${startEnd}PlanHour`] = hourValue;
+      retVal[`${startEnd}PlanMinute`] = minuteValue;
 
-    onComplete(retVal);
+      onComplete(retVal);
+    } else {
+      alert("시/분을 입력해주세요.");
+    }
   };
-
-  console.log(amPmValue);
 
   return (
     <div className="flex flex-col items-center">

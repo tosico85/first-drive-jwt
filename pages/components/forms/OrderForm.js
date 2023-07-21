@@ -9,7 +9,7 @@ import AuthContext from "../../context/authContext";
 import Modal from "react-modal";
 import UserAddressModal from "../modals/UserAddressModal";
 import { isEmptyObject } from "../../../utils/ObjectUtils";
-import { addCommas, isEmpty } from "../../../utils/StringUtils";
+import { addCommas, formatDate, isEmpty } from "../../../utils/StringUtils";
 import SearchAddressModal from "../modals/SearchAddressModal";
 import DateTimeSelectModal from "../modals/DateTimeSelectModal";
 
@@ -30,8 +30,10 @@ export default function OrderForm({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [isSelectTimeModalOpen, setIsSelectTimeModalOpen] = useState(false);
-
   const [modalStartEnd, setModalStartEnd] = useState("");
+  const [modalDateTime, setModalDateTime] = useState({});
+
+  //prefill data
   const [startAddressData, setStartAddressData] = useState({
     startWide: editData.startWide,
     startSgg: editData.startSgg,
@@ -42,8 +44,11 @@ export default function OrderForm({
     endSgg: editData.endSgg,
     endDong: editData.endDong,
   });
+
+  //운송료 map
   const [fareMap, setFareMap] = useState({});
 
+  //base data
   const LOAD_TYPE_LIST = [
     "지게차",
     "수작업",
@@ -54,8 +59,8 @@ export default function OrderForm({
   ];
   const PAY_TYPE_LIST = ["선착불", "인수증", "카드"];
 
+  //react-form 관련
   const methods = useForm({ mode: "onSubmit" });
-
   const {
     register,
     handleSubmit,
@@ -67,6 +72,7 @@ export default function OrderForm({
     formState: { errors },
   } = methods;
 
+  //watch datas
   const watchFarePayType = watch("farePaytype");
   const watchStartSgg = watch("startSgg");
   const watchEndSgg = watch("endSgg");
@@ -443,11 +449,36 @@ export default function OrderForm({
    * form 안의 모든 필수항목 입력된 경우 이 이벤트 ..
    */
   const onValid = () => {
+    if (!checkValidate()) {
+      return;
+    }
+
     if (isEdit) {
       updateCargoOrder();
     } else {
       createCargoOrder();
     }
+  };
+
+  const checkValidate = () => {
+    let result = true;
+    let returnMsg = "";
+
+    ["start", "end"].forEach((startEnd) => {
+      ["PlanDt", "PlanHour", "PlanMinute"].forEach((time) => {
+        console.log(getValues(`${startEnd}${time}`));
+        if (isEmpty(getValues(`${startEnd}${time}`))) {
+          result = false;
+          returnMsg = "상/하차 일시를 입력해주세요.";
+        }
+      });
+    });
+
+    if (!result) {
+      alert(returnMsg);
+    }
+
+    return result;
   };
 
   /**
@@ -496,6 +527,14 @@ export default function OrderForm({
     e.preventDefault();
     setModalStartEnd(startEnd);
     console.log("startEnd >> ", startEnd);
+
+    let paramObj = {};
+    paramObj["PlanDt"] = getValues(`${startEnd}PlanDt`) || "";
+    paramObj["PlanHour"] = getValues(`${startEnd}PlanHour`) || "";
+    paramObj["PlanMinute"] = getValues(`${startEnd}PlanMinute`) || "";
+    setModalDateTime(paramObj);
+    console.log("paramObj >> ", paramObj);
+
     openSelectTimeModal();
   };
 
@@ -714,6 +753,7 @@ export default function OrderForm({
           onCancel={closeSelectTimesModal}
           onComplete={callbackSelectTimeModal}
           startEnd={modalStartEnd}
+          paramObj={modalDateTime}
         />
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
@@ -1037,104 +1077,79 @@ export default function OrderForm({
                 상하차 일시
               </h2>
             </div>
-            <div className="lg:flex lg:items-center">
-              <label className="font-medium mr-2 lg:pt-2">상차일시</label>
-              <div className="flex items-center mt-1 gap-x-2">
-                <Controller
-                  control={control}
-                  name="startPlanDt"
-                  rules={{ required: "상차일자를 입력해주세요." }}
-                  render={({ field: { onChange } }) => (
-                    <DateInput
-                      onDateChange={onChange}
-                      dateValue={getValues("startPlanDt")}
-                      addClass="w-36"
-                    />
-                  )}
-                />
-                <select
-                  {...register("startPlanHour", {
-                    required: `상차시간을 입력해주세요`,
-                  })}
-                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+            <div className="flex flex-col">
+              <button
+                className="rounded-full py-2 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
+                onClick={(e) => handleSelectTimeButton(e, "start")}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6 top-1.5 right-2 text-gray-400"
                 >
-                  <option value="">- 시 -</option>
-                  {Array.from(Array(24).keys(), (num) =>
-                    num.toString().padStart(2, "0")
-                  ).map((nm, i) => (
-                    <option key={i} value={nm}>
-                      {nm}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  {...register("startPlanMinute", {
-                    required: `상차(분)을 입력해주세요`,
-                  })}
-                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                >
-                  <option value="">- 분 -</option>
-                  <option value="00">00</option>
-                  <option value="30">30</option>
-                </select>
-              </div>
-              <button onClick={(e) => handleSelectTimeButton(e, "start")}>
-                모달팝업
+                  <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                  <path
+                    fillRule="evenodd"
+                    d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span>상차 일시</span>
+                <span>
+                  {getValues([
+                    "startPlanDt",
+                    "startPlanHour",
+                    "startPlanMinute",
+                  ]).join("").length == 12 &&
+                    ` : ${formatDate(getValues("startPlanDt"))}일 ${getValues(
+                      "startPlanHour"
+                    )}시 ${getValues("startPlanMinute")}분`}
+                </span>
               </button>
-            </div>
-            <div className="text-red-500 mx-auto font-bold text-center">
-              {(!isEmpty(errors.startPlanDt) ||
-                !isEmpty(errors.startPlanHour) ||
-                !isEmpty(errors.startPlanMinute)) &&
-                "상차일시를 입력해주세요"}
-            </div>
-            <div className="mt-3 lg:flex lg:items-center lg:mt-1">
-              <label className="font-medium mr-2 lg:pt-2">하차일시</label>
-              <div className="flex items-center mt-1 gap-x-2">
-                <Controller
-                  control={control}
-                  name="endPlanDt"
-                  rules={{ required: "하차일자를 입력해주세요." }}
-                  render={({ field: { onChange } }) => (
-                    <DateInput
-                      onDateChange={onChange}
-                      dateValue={getValues("endPlanDt")}
-                      addClass="w-36"
-                    />
-                  )}
-                />
-                <select
-                  {...register("endPlanHour", {
-                    required: `하차시간을 입력해주세요`,
-                  })}
-                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                >
-                  <option value="">- 시 -</option>
-                  {Array.from(Array(24).keys(), (num) =>
-                    num.toString().padStart(2, "0")
-                  ).map((nm, i) => (
-                    <option key={i} value={nm}>
-                      {nm}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  {...register("endPlanMinute", {
-                    required: `하차(분)을 입력해주세요`,
-                  })}
-                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                >
-                  <option value="">- 분 -</option>
-                  <option value="00">00</option>
-                  <option value="30">30</option>
-                </select>
+              <div className="text-red-500 mx-auto font-bold text-center">
+                {(!isEmpty(errors.startPlanDt) ||
+                  !isEmpty(errors.startPlanHour) ||
+                  !isEmpty(errors.startPlanMinute)) &&
+                  "상차일시를 입력해주세요"}
               </div>
             </div>
-            <div className="text-red-500 mx-auto font-bold text-center">
-              {(!isEmpty(errors.endPlanDt) ||
-                !isEmpty(errors.endPlanHour) ||
-                !isEmpty(errors.endPlanMinute)) &&
-                "하차일시를 입력해주세요"}
+            <div className="mt-3 flex flex-col">
+              <button
+                className="rounded-full py-2 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
+                onClick={(e) => handleSelectTimeButton(e, "end")}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6 top-1.5 right-2 text-gray-400"
+                >
+                  <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                  <path
+                    fillRule="evenodd"
+                    d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span>하차 일시</span>
+                <span>
+                  {getValues([
+                    "endPlanDt",
+                    "endPlanHour",
+                    "endPlanMinute",
+                  ]).join("").length == 12 &&
+                    ` : ${formatDate(getValues("endPlanDt"))}일 ${getValues(
+                      "endPlanHour"
+                    )}시 ${getValues("startPlanMinute")}분`}
+                </span>
+              </button>
+              <div className="text-red-500 mx-auto font-bold text-center">
+                {(!isEmpty(errors.endPlanDt) ||
+                  !isEmpty(errors.endPlanHour) ||
+                  !isEmpty(errors.endPlanMinute)) &&
+                  "하차일시를 입력해주세요"}
+              </div>
             </div>
           </div>
           <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
