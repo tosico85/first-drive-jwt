@@ -27,10 +27,10 @@ const Layout = ({ children }) => {
             {/* <header
               className={
                 "bg-white absolute shadow-md w-full" +
-                (router.pathname == "/orders/list" ? " hidden sm:block" : "")
+                (router.pathname == "/orders/list" ? " hidden lg:block" : "")
               }
             >
-              <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+              <div className="mx-auto max-w-7xl px-4 py-4 lg:px-6 lg:px-8">
                 <h1 className="text-2xl font-bold tracking-tight text-mainColor1 font-sans mt-16">
                   {currentPage?.name}
                 </h1>

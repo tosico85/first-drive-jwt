@@ -16,6 +16,7 @@ module.exports = {
         mainColor4: "#90e0ef",
         mainColor5: "#ade8f4",
         mainColor6: "#caf0f8",
+        mainBlue: "#2E58EB",
         darkGray: "#4A4453",
         normalGray: "#7B7485",
         buttonRed: "#82102D",

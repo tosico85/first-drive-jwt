@@ -72,7 +72,7 @@ export default function UserAuthForm({ selectedUser, onCancel, onComplete }) {
                 {...register("auth_code", {
                   required: `권한을 입력해주세요`,
                 })}
-                className="block w-full lg:w-3/4 rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full lg:w-3/4 rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 lg:text-sm lg:leading-6"
               >
                 {LOAD_TYPE_LIST.map((item, i) => (
                   <option key={i} value={item.value}>

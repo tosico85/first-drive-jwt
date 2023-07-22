@@ -52,6 +52,7 @@ const ManageUser = () => {
       height: "auto",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
+      boxShadow: "0px 0px 10px #e2e2e2",
     },
   };
 
@@ -151,7 +152,7 @@ const ManageUser = () => {
             const { name, email, company_code, auth_code, create_dtm } = item;
             return (
               <li
-                className="border-b border-gray-100 flex justify-between gap-x-3 py-5 sm:px-5 hover:bg-gray-100"
+                className="border-b border-gray-100 flex justify-between gap-x-3 py-5 lg:px-5 hover:bg-gray-100"
                 key={index}
                 onClick={() => handleItemChange(item.email)}
               >
@@ -164,13 +165,13 @@ const ManageUser = () => {
                   />
                 </div>
                 <div className="grid gap-x-5 w-full grid-cols-6 items-center">
-                  <p className="col-span-3 sm:col-span-1 text-sm font-semibold leading-6 text-gray-500">
+                  <p className="col-span-3 lg:col-span-1 text-sm font-semibold leading-6 text-gray-500">
                     {email}
                   </p>
-                  <p className="text-center col-span-2 sm:col-span-3 sm:text-left text-sm font-semibold leading-6 text-gray-500">
+                  <p className="text-center col-span-2 lg:col-span-3 lg:text-left text-sm font-semibold leading-6 text-gray-500">
                     {name}
                   </p>
-                  <div className="col-span-1 sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-5 justify-end">
+                  <div className="col-span-1 lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-y-3 gap-x-5 justify-end">
                     <div className="flex justify-end">
                       <p
                         className={
@@ -185,7 +186,7 @@ const ManageUser = () => {
                         {auth_code}
                       </p>
                     </div>
-                    <p className="hidden sm:block text-right text-sm font-semibold leading-6 text-gray-500">
+                    <p className="hidden lg:block text-right text-sm font-semibold leading-6 text-gray-500">
                       {create_dtm.substring(0, 10)}
                     </p>
                   </div>
@@ -198,7 +199,7 @@ const ManageUser = () => {
         <button
           type="button"
           onClick={() => router.push("/orders/list")}
-          className="rounded-md bg-normalGray px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+          className="rounded-md bg-normalGray px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
         >
           목록으로
         </button>

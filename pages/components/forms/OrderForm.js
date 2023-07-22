@@ -9,8 +9,9 @@ import AuthContext from "../../context/authContext";
 import Modal from "react-modal";
 import UserAddressModal from "../modals/UserAddressModal";
 import { isEmptyObject } from "../../../utils/ObjectUtils";
-import { addCommas, isEmpty } from "../../../utils/StringUtils";
+import { addCommas, formatDate, isEmpty } from "../../../utils/StringUtils";
 import SearchAddressModal from "../modals/SearchAddressModal";
+import DateTimeSelectModal from "../modals/DateTimeSelectModal";
 
 export default function OrderForm({
   isEdit = false,
@@ -24,9 +25,15 @@ export default function OrderForm({
   //const [paramData, setParamData] = useState(editData || {});
   const [cargoTonList, setCargoTonList] = useState([]);
   const [truckTypeList, setTruckTypeList] = useState([]);
+
+  //Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [isSelectTimeModalOpen, setIsSelectTimeModalOpen] = useState(false);
   const [modalStartEnd, setModalStartEnd] = useState("");
+  const [modalDateTime, setModalDateTime] = useState({});
+
+  //prefill data
   const [startAddressData, setStartAddressData] = useState({
     startWide: editData.startWide,
     startSgg: editData.startSgg,
@@ -37,8 +44,11 @@ export default function OrderForm({
     endSgg: editData.endSgg,
     endDong: editData.endDong,
   });
+
+  //운송료 map
   const [fareMap, setFareMap] = useState({});
 
+  //base data
   const LOAD_TYPE_LIST = [
     "지게차",
     "수작업",
@@ -49,8 +59,8 @@ export default function OrderForm({
   ];
   const PAY_TYPE_LIST = ["선착불", "인수증", "카드"];
 
+  //react-form 관련
   const methods = useForm({ mode: "onSubmit" });
-
   const {
     register,
     handleSubmit,
@@ -62,6 +72,7 @@ export default function OrderForm({
     formState: { errors },
   } = methods;
 
+  //watch datas
   const watchFarePayType = watch("farePaytype");
   const watchStartSgg = watch("startSgg");
   const watchEndSgg = watch("endSgg");
@@ -72,6 +83,8 @@ export default function OrderForm({
   let endBaseYn = "N";
   //let fareMap = {};
   const isAdmin = userInfo.auth_code === "ADMIN";
+
+  const [isMobile, setIsMobile] = useState(false);
 
   /**
    * 화면 로딩 시 event
@@ -101,6 +114,7 @@ export default function OrderForm({
         }
       })();
     }
+    setIsMobile(window.innerWidth <= 768);
   }, [userInfo]);
 
   //운송료 착불인 경우 세금계산서 disable 처리(값 변경 시 이벤트)
@@ -435,11 +449,36 @@ export default function OrderForm({
    * form 안의 모든 필수항목 입력된 경우 이 이벤트 ..
    */
   const onValid = () => {
+    if (!checkValidate()) {
+      return;
+    }
+
     if (isEdit) {
       updateCargoOrder();
     } else {
       createCargoOrder();
     }
+  };
+
+  const checkValidate = () => {
+    let result = true;
+    let returnMsg = "";
+
+    ["start", "end"].forEach((startEnd) => {
+      ["PlanDt", "PlanHour", "PlanMinute"].forEach((time) => {
+        console.log(getValues(`${startEnd}${time}`));
+        if (isEmpty(getValues(`${startEnd}${time}`))) {
+          result = false;
+          returnMsg = "상/하차 일시를 입력해주세요.";
+        }
+      });
+    });
+
+    if (!result) {
+      alert(returnMsg);
+    }
+
+    return result;
   };
 
   /**
@@ -451,6 +490,8 @@ export default function OrderForm({
     //console.log(editData);
     console.log(errors);
   };
+
+  /********************************** Modal Control ***********************************/
 
   /**
    * 주소록 버튼 event handle
@@ -477,24 +518,54 @@ export default function OrderForm({
     openAddressModal();
   };
 
-  // Open Modal
+  /**
+   * 상하차일시 버튼 event handle
+   * @param {event} e
+   * @param {상하차 구분} startEnd
+   */
+  const handleSelectTimeButton = (e, startEnd) => {
+    e.preventDefault();
+    setModalStartEnd(startEnd);
+    console.log("startEnd >> ", startEnd);
+
+    let paramObj = {};
+    paramObj["PlanDt"] = getValues(`${startEnd}PlanDt`) || "";
+    paramObj["PlanHour"] = getValues(`${startEnd}PlanHour`) || "";
+    paramObj["PlanMinute"] = getValues(`${startEnd}PlanMinute`) || "";
+    setModalDateTime(paramObj);
+    console.log("paramObj >> ", paramObj);
+
+    openSelectTimeModal();
+  };
+
+  // Open 주소록 Modal
   const openModal = () => {
     setIsModalOpen(true);
   };
 
-  // Close Modal
+  // Close 주소록 Modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  // Open Modal
+  // Open 주소검색 Modal
   const openAddressModal = () => {
     setIsAddressModalOpen(true);
   };
 
-  // Close Modal
+  // Close 주소검색 Modal
   const closeAddressModal = () => {
     setIsAddressModalOpen(false);
+  };
+
+  // Open 날짜 시간 선택 Modal
+  const openSelectTimeModal = () => {
+    setIsSelectTimeModalOpen(true);
+  };
+
+  // Close 날짜 시간 선택 Modal
+  const closeSelectTimesModal = () => {
+    setIsSelectTimeModalOpen(false);
   };
 
   /**
@@ -521,6 +592,21 @@ export default function OrderForm({
     }
 
     closeAddressModal();
+  };
+
+  /**
+   * 상하차일시 선택(모달폼) 일시 선택 후 callback
+   * @param {주소록 선택 리턴값} retVal
+   */
+  const callbackSelectTimeModal = (retVal) => {
+    console.log("retVal >> ", retVal);
+    if (retVal) {
+      Object.keys(retVal).forEach((key) => {
+        setValue(key, retVal[key]);
+      });
+    }
+
+    closeSelectTimesModal();
   };
 
   /**
@@ -555,10 +641,27 @@ export default function OrderForm({
     content: {
       top: "50%",
       left: "50%",
-      width: "90%",
       height: "70%",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
+      boxShadow: "0px 0px 10px #e2e2e2",
+    },
+  };
+
+  const MobileStyles = {
+    // 모바일 스타일
+    content: {
+      ...customModalStyles.content,
+      width: "90%",
+    },
+  };
+
+  const DesktopStyles = {
+    // 데스크탑 스타일
+    content: {
+      ...customModalStyles.content,
+      width: "40%",
+      minWidth: "fit-content",
     },
   };
 
@@ -566,7 +669,7 @@ export default function OrderForm({
    * @title 주소 검색(팝업창 방식)
    * @param {상하차 구분} startEnd
    */
-  function searchAddress(startEnd) {
+  /* function searchAddress(startEnd) {
     addressPopupStartEnd = startEnd;
 
     new daum.Postcode({
@@ -613,7 +716,7 @@ export default function OrderForm({
         );
       },
     }).open();
-  }
+  } */
 
   return (
     <div className="p-5">
@@ -621,7 +724,7 @@ export default function OrderForm({
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         contentLabel="Modal"
-        style={customModalStyles}
+        style={isMobile ? MobileStyles : DesktopStyles}
       >
         <UserAddressModal
           onCancel={closeModal}
@@ -633,16 +736,29 @@ export default function OrderForm({
         isOpen={isAddressModalOpen}
         onRequestClose={closeAddressModal}
         contentLabel="Modal"
-        style={customModalStyles}
+        style={isMobile ? MobileStyles : DesktopStyles}
       >
         <SearchAddressModal
           onCancel={closeAddressModal}
           onComplete={callbackAddressModal}
         />
       </Modal>
+      <Modal
+        isOpen={isSelectTimeModalOpen}
+        onRequestClose={closeSelectTimesModal}
+        contentLabel="Modal"
+        style={isMobile ? MobileStyles : DesktopStyles}
+      >
+        <DateTimeSelectModal
+          onCancel={closeSelectTimesModal}
+          onComplete={callbackSelectTimeModal}
+          startEnd={modalStartEnd}
+          paramObj={modalDateTime}
+        />
+      </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
-        <div className="pb-12 grid sm:grid-cols-2 gap-x-5">
-          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300 sm:row-span-2">
+        <div className="pb-12 grid lg:grid-cols-2 gap-x-5">
+          <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300 lg:row-span-2">
             <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-md">
               <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                 상하차지 정보
@@ -961,101 +1077,79 @@ export default function OrderForm({
                 상하차 일시
               </h2>
             </div>
-            <div className="sm:flex sm:items-center">
-              <label className="font-medium mr-2 sm:pt-2">상차일시</label>
-              <div className="flex items-center mt-1 gap-x-2">
-                <Controller
-                  control={control}
-                  name="startPlanDt"
-                  rules={{ required: "상차일자를 입력해주세요." }}
-                  render={({ field: { onChange } }) => (
-                    <DateInput
-                      onDateChange={onChange}
-                      dateValue={getValues("startPlanDt")}
-                      addClass="w-36"
-                    />
-                  )}
-                />
-                <select
-                  {...register("startPlanHour", {
-                    required: `상차시간을 입력해주세요`,
-                  })}
-                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+            <div className="flex flex-col">
+              <button
+                className="rounded-full py-2 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
+                onClick={(e) => handleSelectTimeButton(e, "start")}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6 top-1.5 right-2 text-gray-400"
                 >
-                  <option value="">- 시 -</option>
-                  {Array.from(Array(24).keys(), (num) =>
-                    num.toString().padStart(2, "0")
-                  ).map((nm, i) => (
-                    <option key={i} value={nm}>
-                      {nm}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  {...register("startPlanMinute", {
-                    required: `상차(분)을 입력해주세요`,
-                  })}
-                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                >
-                  <option value="">- 분 -</option>
-                  <option value="00">00</option>
-                  <option value="30">30</option>
-                </select>
+                  <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                  <path
+                    fillRule="evenodd"
+                    d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span>상차 일시</span>
+                <span>
+                  {getValues([
+                    "startPlanDt",
+                    "startPlanHour",
+                    "startPlanMinute",
+                  ]).join("").length == 12 &&
+                    ` ${formatDate(getValues("startPlanDt"))} ${getValues(
+                      "startPlanHour"
+                    )}:${getValues("startPlanMinute")}`}
+                </span>
+              </button>
+              <div className="text-red-500 mx-auto font-bold text-center">
+                {(!isEmpty(errors.startPlanDt) ||
+                  !isEmpty(errors.startPlanHour) ||
+                  !isEmpty(errors.startPlanMinute)) &&
+                  "상차일시를 입력해주세요"}
               </div>
             </div>
-            <div className="text-red-500 mx-auto font-bold text-center">
-              {(!isEmpty(errors.startPlanDt) ||
-                !isEmpty(errors.startPlanHour) ||
-                !isEmpty(errors.startPlanMinute)) &&
-                "상차일시를 입력해주세요"}
-            </div>
-            <div className="mt-3 sm:flex sm:items-center sm:mt-1">
-              <label className="font-medium mr-2 sm:pt-2">하차일시</label>
-              <div className="flex items-center mt-1 gap-x-2">
-                <Controller
-                  control={control}
-                  name="endPlanDt"
-                  rules={{ required: "하차일자를 입력해주세요." }}
-                  render={({ field: { onChange } }) => (
-                    <DateInput
-                      onDateChange={onChange}
-                      dateValue={getValues("endPlanDt")}
-                      addClass="w-36"
-                    />
-                  )}
-                />
-                <select
-                  {...register("endPlanHour", {
-                    required: `하차시간을 입력해주세요`,
-                  })}
-                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+            <div className="mt-3 flex flex-col">
+              <button
+                className="rounded-full py-2 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
+                onClick={(e) => handleSelectTimeButton(e, "end")}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6 top-1.5 right-2 text-gray-400"
                 >
-                  <option value="">- 시 -</option>
-                  {Array.from(Array(24).keys(), (num) =>
-                    num.toString().padStart(2, "0")
-                  ).map((nm, i) => (
-                    <option key={i} value={nm}>
-                      {nm}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  {...register("endPlanMinute", {
-                    required: `하차(분)을 입력해주세요`,
-                  })}
-                  className="rounded-md text-center border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                >
-                  <option value="">- 분 -</option>
-                  <option value="00">00</option>
-                  <option value="30">30</option>
-                </select>
+                  <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                  <path
+                    fillRule="evenodd"
+                    d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span>하차 일시</span>
+                <span>
+                  {getValues([
+                    "endPlanDt",
+                    "endPlanHour",
+                    "endPlanMinute",
+                  ]).join("").length == 12 &&
+                    ` ${formatDate(getValues("endPlanDt"))} ${getValues(
+                      "endPlanHour"
+                    )}:${getValues("startPlanMinute")}`}
+                </span>
+              </button>
+              <div className="text-red-500 mx-auto font-bold text-center">
+                {(!isEmpty(errors.endPlanDt) ||
+                  !isEmpty(errors.endPlanHour) ||
+                  !isEmpty(errors.endPlanMinute)) &&
+                  "하차일시를 입력해주세요"}
               </div>
-            </div>
-            <div className="text-red-500 mx-auto font-bold text-center">
-              {(!isEmpty(errors.endPlanDt) ||
-                !isEmpty(errors.endPlanHour) ||
-                !isEmpty(errors.endPlanMinute)) &&
-                "하차일시를 입력해주세요"}
             </div>
           </div>
           <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
@@ -1434,21 +1528,21 @@ export default function OrderForm({
             <button
               type="button"
               onClick={() => router.back()}
-              className="rounded-md bg-normalGray px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-normalGray px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
             >
               Cancel
             </button>
             {isDirectApi ? (
               <button
                 type="submit"
-                className="rounded-md bg-buttonZamboa px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+                className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               >
                 배차신청 수정
               </button>
             ) : (
               <button
                 type="submit"
-                className="rounded-md bg-mainColor3 px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+                className="rounded-md bg-mainColor3 px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               >
                 {isEdit ? "화물 수정" : "화물 등록"}
               </button>

@@ -63,6 +63,7 @@ export default function Detail() {
       height: "80%",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
+      boxShadow: "0px 0px 10px #e2e2e2",
     },
   };
 
@@ -208,42 +209,42 @@ export default function Detail() {
           </p>
           <div className="mt-4 border-y border-gray-100">
             <dl className="divide-y divide-gray-100">
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">
                   상차지 주소
                 </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   <div>
                     {`${cargoOrder.startWide} ${cargoOrder.startSgg} ${cargoOrder.startDong}`}
                   </div>
                   <div>{`${cargoOrder.startDetail}`}</div>
                 </dd>
               </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">상차일자</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   {formatDate(cargoOrder.startPlanDt)}
                 </dd>
               </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">상차방법</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   {cargoOrder.startLoad}
                 </dd>
               </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">
                   상차지 업체명
                 </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   {cargoOrder.startCompanyName}
                 </dd>
               </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">
                   상차지 전화번호
                 </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   {formatPhoneNumber(cargoOrder.startAreaPhone)}
                 </dd>
               </div>
@@ -258,42 +259,42 @@ export default function Detail() {
           </p>
           <div className="mt-4 border-y border-gray-100">
             <dl className="divide-y divide-gray-100">
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">
                   하차지 주소
                 </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   <div>
                     {`${cargoOrder.endWide} ${cargoOrder.endSgg} ${cargoOrder.endDong}`}
                   </div>
                   <div>{`${cargoOrder.endDetail}`}</div>
                 </dd>
               </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">하차일자</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   {formatDate(cargoOrder.endPlanDt)}
                 </dd>
               </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">하차방법</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   {cargoOrder.endLoad}
                 </dd>
               </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">
                   하차지 업체명
                 </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   {cargoOrder.endCompanyName}
                 </dd>
               </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">
                   하차지 전화번호
                 </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   {formatPhoneNumber(cargoOrder.endAreaPhone)}
                 </dd>
               </div>
@@ -308,19 +309,19 @@ export default function Detail() {
           </p>
           <div className="mt-4 border-y border-gray-100">
             <dl className="divide-y divide-gray-100">
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">
                   화물상세내용
                 </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   {cargoOrder.cargoDsc}
                 </dd>
               </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">
                   화물 선택사항
                 </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   {isAdmin && (
                     <div>
                       {`혼적여부 : ${
@@ -346,34 +347,34 @@ export default function Detail() {
                   </div>
                 </dd>
               </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">
                   차량 톤수(t)
                 </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   {cargoOrder.cargoTon}
                 </dd>
               </div>
-              <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">차량 종류</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   {cargoOrder.truckType}
                 </dd>
               </div>
               {isAdmin && (
-                <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                   <dt className="text-sm font-semibold leading-6 ">
                     적재 중량(t)
                   </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                     {cargoOrder.frgton}
                   </dd>
                 </div>
               )}
               {cargoOrder.fareView != "0" && (
-                <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                   <dt className="text-sm font-semibold leading-6 ">운송료</dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                     {cargoOrder.fareView}
                   </dd>
                 </div>
@@ -391,72 +392,72 @@ export default function Detail() {
               </p>
               <div className="mt-4 border-y border-gray-100">
                 <dl className="divide-y divide-gray-100">
-                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                     <dt className="text-sm font-semibold leading-6 ">
                       의뢰자 구분
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                       {cargoOrder.firstType == "01"
                         ? "일반화주"
                         : "주선/운송사"}
                     </dd>
                   </div>
-                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                     <dt className="text-sm font-semibold leading-6 ">
                       운송료 지불구분
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                       {cargoOrder.farePaytype}
                     </dd>
                   </div>
-                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                     <dt className="text-sm font-semibold leading-6 ">
                       운송료 지급 예정일
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                       {formatDate(cargoOrder.payPlanYmd)}
                     </dd>
                   </div>
-                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                     <dt className="text-sm font-semibold leading-6 ">
                       원화주 명
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                       {cargoOrder.firstShipperNm}
                     </dd>
                   </div>
-                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                     <dt className="text-sm font-semibold leading-6 ">
                       원화주 전화번호
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                       {formatPhoneNumber(cargoOrder.firstShipperInfo)}
                     </dd>
                   </div>
-                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                     <dt className="text-sm font-semibold leading-6 ">
                       원화주 사업자번호
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                       {cargoOrder.firstShipperBizNo}
                     </dd>
                   </div>
-                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                     <dt className="text-sm font-semibold leading-6 ">
                       전자세금계산서 발행여부
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                       {isEmpty(cargoOrder.taxbillType)
                         ? "N"
                         : cargoOrder.taxbillType}
                     </dd>
                   </div>
                   {cargoOrder.fareView != "0" && (
-                    <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                       <dt className="text-sm font-semibold leading-6 ">
                         운송료
                       </dt>
-                      <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                      <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                         {cargoOrder.fareView}
                       </dd>
                     </div>
@@ -475,23 +476,23 @@ export default function Detail() {
               </p>
               <div className="mt-4 border-y border-gray-100">
                 <dl className="divide-y divide-gray-100">
-                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                     <dt className="text-sm font-semibold leading-6 ">운송료</dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                       {cargoOrder.fare}
                     </dd>
                   </div>
-                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                     <dt className="text-sm font-semibold leading-6 ">수수료</dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                       {cargoOrder.fee}
                     </dd>
                   </div>
-                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                     <dt className="text-sm font-semibold leading-6 ">
                       배차신청일
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                       {formatDate(cargoOrder.allocReqDt) || "-"}
                     </dd>
                   </div>
@@ -506,7 +507,7 @@ export default function Detail() {
         <button
           type="button"
           onClick={() => router.push("/orders/list")}
-          className="rounded-md bg-normalGray px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+          className="rounded-md bg-normalGray px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
         >
           목록으로
         </button>
@@ -514,14 +515,14 @@ export default function Detail() {
           <>
             <button
               type="button"
-              className="rounded-md bg-mainColor3 px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-mainColor3 px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               onClick={handleModify}
             >
               화물 수정
             </button>
             <button
               type="button"
-              className="rounded-md bg-mainColor3 px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-mainColor3 px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               onClick={handleDelete}
             >
               화물 삭제
@@ -529,7 +530,7 @@ export default function Detail() {
             {isAdmin && (
               <button
                 type="button"
-                className="rounded-md bg-buttonZamboa px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+                className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
                 onClick={handleAdminOrderAdd}
               >
                 배차 신청
@@ -542,14 +543,14 @@ export default function Detail() {
           <>
             <button
               type="button"
-              className="rounded-md bg-buttonZamboa px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               onClick={handleAdminOrderModify}
             >
               배차 수정
             </button>
             <button
               type="button"
-              className="rounded-md bg-buttonZamboa px-2 py-2 text-sm sm:text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               onClick={handleAdminOrderDelete}
             >
               배차 취소

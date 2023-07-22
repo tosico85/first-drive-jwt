@@ -131,7 +131,7 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
         <select
           value={sido}
           onChange={handleSelectSido}
-          className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+          className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 lg:max-w-xs lg:text-sm lg:leading-6"
         >
           <option value="">주소(시/도)</option>
           {sidoList.map(({ nm }, i) => (
@@ -145,7 +145,7 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
         <select
           value={gugun}
           onChange={handleSelectGugun}
-          className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+          className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 lg:max-w-xs lg:text-sm lg:leading-6"
         >
           <option value="">주소(구/군)</option>
           {gugunList.map(({ nm }, i) => (
@@ -159,7 +159,7 @@ const AddressForm = ({ addressChange, addressValue, clsf }) => {
         <select
           value={dong}
           onChange={handleInputAddress}
-          className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+          className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 lg:max-w-xs lg:text-sm lg:leading-6"
         >
           <option value="">주소(읍/면/동)</option>
           {dongList.map(({ nm }, i) => (
