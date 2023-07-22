@@ -1102,9 +1102,9 @@ export default function OrderForm({
                     "startPlanHour",
                     "startPlanMinute",
                   ]).join("").length == 12 &&
-                    ` : ${formatDate(getValues("startPlanDt"))}일 ${getValues(
+                    ` ${formatDate(getValues("startPlanDt"))} ${getValues(
                       "startPlanHour"
-                    )}시 ${getValues("startPlanMinute")}분`}
+                    )}:${getValues("startPlanMinute")}`}
                 </span>
               </button>
               <div className="text-red-500 mx-auto font-bold text-center">
@@ -1139,9 +1139,9 @@ export default function OrderForm({
                     "endPlanHour",
                     "endPlanMinute",
                   ]).join("").length == 12 &&
-                    ` : ${formatDate(getValues("endPlanDt"))}일 ${getValues(
+                    ` ${formatDate(getValues("endPlanDt"))} ${getValues(
                       "endPlanHour"
-                    )}시 ${getValues("startPlanMinute")}분`}
+                    )}:${getValues("startPlanMinute")}`}
                 </span>
               </button>
               <div className="text-red-500 mx-auto font-bold text-center">

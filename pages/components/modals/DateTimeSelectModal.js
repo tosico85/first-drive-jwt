@@ -113,7 +113,7 @@ const DateTimeSelectModal = ({ onCancel, onComplete, startEnd, paramObj }) => {
           <option value="30">30</option>
         </select>
       </div>
-      <div className="text-center pt-16">
+      <div className="text-center pt-10">
         <button
           type="button"
           className="rounded-md bg-mainColor3 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mainColor2"

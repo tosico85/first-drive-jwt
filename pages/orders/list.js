@@ -119,7 +119,7 @@ const CargoList = () => {
             }
             onClick={() => handleSearchStatus("화물접수")}
           >
-            <p className="py-3">화물접수</p>
+            <p className="py-3">접수중</p>
           </div>
           <div
             className={
@@ -130,7 +130,7 @@ const CargoList = () => {
             }
             onClick={() => handleSearchStatus("배차신청")}
           >
-            <p className="py-3">배차신청</p>
+            <p className="py-3">배차중</p>
           </div>
           <div
             className={
@@ -178,7 +178,7 @@ const CargoList = () => {
               }
               onClick={() => handleSearchStatus("화물접수")}
             >
-              화물접수
+              접수중
             </div>
             <div
               className={
@@ -189,7 +189,7 @@ const CargoList = () => {
               }
               onClick={() => handleSearchStatus("배차신청")}
             >
-              배차신청
+              배차중
             </div>
             <div
               className={
@@ -348,6 +348,7 @@ const CargoList = () => {
                 urgent, //긴급여부("긴급")
                 shuttleCargoInfo, //왕복여부("왕복")
                 truckType, //차량종류
+                cargoTon,
                 startPlanDt, //상차일("YYYYMMDD")
                 startPlanHour,
                 startPlanMinute,
@@ -362,6 +363,8 @@ const CargoList = () => {
                 endAreaPhone,
                 fareView,
                 create_dtm, //등록일시
+                cjName, //차주명
+                cjPhone, //차주연락처
               } = item;
               return (
                 <li
@@ -433,7 +436,13 @@ const CargoList = () => {
                           <span className="text-sm text-gray-400">
                             운송상태
                           </span>
-                          <span className="text-gray-600">{ordStatus}</span>
+                          <span className="text-gray-600">
+                            {ordStatus == "화물접수"
+                              ? "접수중"
+                              : ordStatus == "배차신청"
+                              ? "배차중"
+                              : ordStatus}
+                          </span>
                         </div>
                       </div>
                       <div className="grid grid-cols-2">
@@ -457,6 +466,34 @@ const CargoList = () => {
                           }`}</span>
                         </div>
                       </div>
+                      <div className="grid grid-cols-2">
+                        <div className="flex flex-col items-start gap-y-1">
+                          <span className="text-sm text-gray-400">
+                            차량종류
+                          </span>
+                          <span className="text-gray-600">{truckType}</span>
+                        </div>
+                        <div className="flex flex-col items-start gap-y-1">
+                          <span className="text-sm text-gray-400">
+                            차량톤수
+                          </span>
+                          <span className="text-gray-600">{cargoTon}</span>
+                        </div>
+                      </div>
+                      {ordStatus == "배차완료" && (
+                        <div className="grid grid-cols-2">
+                          <div className="flex flex-col items-start gap-y-1">
+                            <span className="text-sm text-gray-400">차주</span>
+                            <span className="text-gray-600">{cjName}</span>
+                          </div>
+                          <div className="flex flex-col items-start gap-y-1">
+                            <span className="text-sm text-gray-400">
+                              연락처
+                            </span>
+                            <span className="text-gray-600">{cjPhone}</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -468,7 +505,7 @@ const CargoList = () => {
                         </p>
                         <div className="flex items-center gap-x-3">
                           <p className="px-2 py-0 rounded-md flex items-center h-5 shadow-md bg-gray-500 text-xs text-white">
-                            {truckType}
+                            {`${truckType} ${cargoTon}t`}
                           </p>
                           {urgent && (
                             <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-red-400 text-xs text-white">
@@ -513,7 +550,7 @@ const CargoList = () => {
                           {formatDate(endPlanDt)}
                         </p>
                       </div>
-                      <div className="text-center px-5">
+                      <div className="text-center flex flex-col items-center">
                         <span
                           className={
                             "text-sm text-white font-bold px-3 py-2 rounded-full " +
@@ -528,8 +565,18 @@ const CargoList = () => {
                               : "bg-zinc-400 ring-zinc-400")
                           }
                         >
-                          {ordStatus}
+                          {ordStatus == "화물접수"
+                            ? "접수중"
+                            : ordStatus == "배차신청"
+                            ? "배차중"
+                            : ordStatus}
                         </span>
+                        {ordStatus == "배차완료" && (
+                          <div className="w-full mt-2 px-5 flex flex-col items-baseline text-sm text-slate-500">
+                            <span className="text-left">{`(차주) ${cjName}`}</span>
+                            <span className="text-left">{`${cjPhone}`}</span>
+                          </div>
+                        )}
                       </div>
                       <div className="flex justify-center px-5">
                         <div
