@@ -368,7 +368,7 @@ const CargoList = () => {
               } = item;
               return (
                 <li
-                  className="flex flex-col px-5 mb-5 lg:px-0 lg:hover:bg-gray-100"
+                  className="flex flex-col px-5 mb-5 lg:px-0 lg:mb-0 lg:hover:bg-gray-100"
                   key={cargo_seq}
                   onClick={() => handleDetail(cargo_seq)}
                 >
