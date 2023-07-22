@@ -61,7 +61,7 @@ const Navbar = () => {
   return (
     <div className="fixed w-full z-50 shadow-md">
       <Disclosure as="nav" className="bg-white w-full">
-        <div className="mx-auto max-w-7xl px-4 lg:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="flex h-16 items-center justify-between gap-10">
             <div className="flex items-center justify-between w-full">
               {/* <div className="flex-shrink-0">
