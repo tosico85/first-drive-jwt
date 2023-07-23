@@ -31,7 +31,7 @@ function DateInput({ onDateChange, dateValue, title, addClass = "" }) {
   };
 
   return (
-    <div className="relative">
+    <div className={"relative " + addClass}>
       <span>{title}</span>
       <DatePicker
         ref={datePickerRef}
@@ -39,7 +39,7 @@ function DateInput({ onDateChange, dateValue, title, addClass = "" }) {
         onChange={handleDateChange}
         dateFormat="yyyy-MM-dd"
         className={
-          "rounded-md border-0 py-1.5 px-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-mainColor2 lg:text-sm lg:leading-6 " +
+          "rounded-md lg:rounded-sm border-0 py-1.5 px-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 lg:ring-0 lg:focus:ring-0 lg:focus:bg-mainInputFocusColor lg:bg-mainInputColor lg:outline-none focus:ring-mainColor2 lg:text-sm lg:leading-6 " +
           addClass
         }
       />
@@ -57,6 +57,13 @@ function DateInput({ onDateChange, dateValue, title, addClass = "" }) {
           clipRule="evenodd"
         />
       </svg>
+      <style jsx global>
+        {`
+          .react-datepicker-wrapper {
+            width: 100%;
+          }
+        `}
+      </style>
     </div>
   );
 }

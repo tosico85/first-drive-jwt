@@ -1741,7 +1741,7 @@ export default function OrderForm({
                           </div>
                         </div>
                         <button
-                          className="min-w-fit rounded-sm bg-white px-3 py-1 text-sm font-semibold text-gray-500 shadow-sm hover:bg-gray-50 border"
+                          className="min-w-fit rounded-md bg-white px-3 py-1 text-sm font-semibold text-gray-500 shadow-sm hover:bg-gray-50 border"
                           onClick={(e) => {
                             handleAddressButton(e, "end");
                           }}
@@ -1990,7 +1990,7 @@ export default function OrderForm({
                     </fieldset>
                   </div>
                   <div className="">
-                    <div className="grid gap-y-3">
+                    <div className="grid grid-cols-2 gap-x-2 gap-y-3">
                       <div>
                         <select
                           {...register("cargoTon", {
@@ -2030,27 +2030,32 @@ export default function OrderForm({
                         </div>
                       </div>
                       {isAdmin && (
-                        <div>
-                          <input
-                            type="number"
-                            step="any"
-                            placeholder="적재중량(차량톤수의 110%까지)"
-                            {...register("frgton", {
-                              onChange: (e) => {
-                                const cargoTon = Number(getValues("cargoTon"));
-                                const frgTon = Number(e.target.value);
-                                const maxTon = cargoTon * 1.1;
-                                if (frgTon > maxTon) {
-                                  e.target.value = maxTon.toString();
-                                }
-                                if (frgTon < 0) {
-                                  e.target.value = "0";
-                                }
-                              },
-                              required: "적재중량을 입력해주세요.",
-                            })}
-                            className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-                          />
+                        <div className="col-span-2">
+                          <div className="flex gap-x-2">
+                            <Label title={"적재중량"} />
+                            <input
+                              type="number"
+                              step="any"
+                              placeholder="차량톤수의 110%까지"
+                              {...register("frgton", {
+                                onChange: (e) => {
+                                  const cargoTon = Number(
+                                    getValues("cargoTon")
+                                  );
+                                  const frgTon = Number(e.target.value);
+                                  const maxTon = cargoTon * 1.1;
+                                  if (frgTon > maxTon) {
+                                    e.target.value = maxTon.toString();
+                                  }
+                                  if (frgTon < 0) {
+                                    e.target.value = "0";
+                                  }
+                                },
+                                required: "적재중량을 입력해주세요.",
+                              })}
+                              className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                            />
+                          </div>
                           <div className="text-red-500 mx-auto font-bold text-center">
                             {errors.frgton?.message}
                           </div>
@@ -2174,21 +2179,21 @@ export default function OrderForm({
 
                   <div className="mt-3">
                     <div className="grid gap-y-2">
-                      <div>
-                        <input
-                          {...register("fare")}
-                          type="number"
-                          maxLength={10}
-                          placeholder={"운송료(관리자용)"}
-                          className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-                        />
-                      </div>
-                      <div>
+                      <div className="flex gap-x-2">
+                        <Label title={"운송료"} />
                         <input
                           {...register("fareView")}
                           type="number"
                           maxLength={10}
-                          placeholder={"운송료"}
+                          className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                        />
+                      </div>
+                      <div className="flex gap-x-2">
+                        <Label title={"관리자용"} />
+                        <input
+                          {...register("fare")}
+                          type="number"
+                          maxLength={10}
                           className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                         />
                       </div>
@@ -2204,42 +2209,47 @@ export default function OrderForm({
                   <div className="">
                     <div className="grid gap-y-3">
                       <div>
-                        <select
-                          {...register("firstType", {
-                            required: "의뢰자 구분을 입력해주세요",
-                          })}
-                          className="block w-full rounded-sm border-0 p-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-                        >
-                          <option value={""}>의뢰자 구분</option>
-                          <option value={"01"}>일반화주</option>
-                          <option value={"02"}>주선/운송사</option>
-                        </select>
+                        <div className="flex gap-x-2">
+                          <Label title={"의뢰자구분"} required={true} />
+                          <select
+                            {...register("firstType", {
+                              required: "의뢰자 구분을 입력해주세요",
+                            })}
+                            className="block w-full rounded-sm border-0 p-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                          >
+                            <option value={""}>의뢰자 구분</option>
+                            <option value={"01"}>일반화주</option>
+                            <option value={"02"}>주선/운송사</option>
+                          </select>
+                        </div>
                         <div className="text-red-500 mx-auto font-bold text-center">
                           {errors.firstType?.message}
                         </div>
                       </div>
                       <div>
-                        <select
-                          {...register("farePaytype", {
-                            required: `운송료 지불구분을 입력해주세요`,
-                          })}
-                          className="block w-full rounded-sm border-0 p-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-                        >
-                          <option value="">운송료 지불구분</option>
-                          {PAY_TYPE_LIST.map((item, i) => (
-                            <option key={i} value={item}>
-                              {item}
-                            </option>
-                          ))}
-                        </select>
+                        <div className="flex gap-x-2">
+                          <Label title={"지불구분"} required={true} />
+                          <select
+                            {...register("farePaytype", {
+                              required: `운송료 지불구분을 입력해주세요`,
+                            })}
+                            className="block w-full rounded-sm border-0 p-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                          >
+                            <option value="">운송료 지불구분</option>
+                            {PAY_TYPE_LIST.map((item, i) => (
+                              <option key={i} value={item}>
+                                {item}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                         <div className="text-red-500 mx-auto font-bold text-center">
                           {errors.farePaytype?.message}
                         </div>
                       </div>
-                      <div className="flex items-center">
-                        <label className="font-medium leading-6 mr-2">
-                          운송료 지급 예정일
-                        </label>
+                      <div className="flex gap-x-2">
+                        <Label title={"지급예정일"} required={true} />
+
                         <Controller
                           control={control}
                           name="payPlanYmd"
@@ -2250,7 +2260,7 @@ export default function OrderForm({
                             <DateInput
                               onDateChange={onChange}
                               dateValue={getValues("payPlanYmd")}
-                              addClass="w-36"
+                              addClass="w-full"
                             />
                           )}
                         />
@@ -2260,45 +2270,54 @@ export default function OrderForm({
                   <div className="mt-5">
                     <div className="grid gap-y-3">
                       <div>
-                        <input
-                          {...register("firstShipperNm", {
-                            required: "원화주 명을 입력해주세요.",
-                          })}
-                          type="text"
-                          placeholder="원화주 명"
-                          className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-                        />
+                        <div className="flex gap-x-2">
+                          <Label title={"원화주명"} required={true} />
+                          <input
+                            {...register("firstShipperNm", {
+                              required: "원화주 명을 입력해주세요.",
+                            })}
+                            type="text"
+                            placeholder="원화주 명"
+                            className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                          />
+                        </div>
                         <div className="text-red-500 mx-auto font-bold text-center">
                           {errors.firstShipperNm?.message}
                         </div>
                       </div>
                       <div>
-                        <input
-                          {...register("firstShipperInfo", {
-                            required: "원화주 전화번호를 입력해주세요.",
-                          })}
-                          type="tel"
-                          maxLength={11}
-                          placeholder={"원화주 전화번호('-'없이 입력하세요)"}
-                          className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-                        />
+                        <div className="flex gap-x-2">
+                          <Label title={"전화번호"} required={true} />
+                          <input
+                            {...register("firstShipperInfo", {
+                              required: "원화주 전화번호를 입력해주세요.",
+                            })}
+                            type="tel"
+                            maxLength={11}
+                            placeholder={"원화주 전화번호('-'없이)"}
+                            className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                          />
+                        </div>
                         <div className="text-red-500 mx-auto font-bold text-center">
                           {errors.firstShipperInfo?.message}
                         </div>
                       </div>
                       <div>
-                        <input
-                          {...register("firstShipperBizNo", {
-                            required:
-                              getValues("firstType") === "02"
-                                ? "원화주 사업자번호을 입력해주세요."
-                                : false,
-                          })}
-                          type="text"
-                          maxLength={10}
-                          placeholder="원화주 사업자번호(의뢰자 주선/운송사인 경우 필수)"
-                          className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-                        />
+                        <div className="flex gap-x-2">
+                          <Label title={"사업자번호"} required={true} />
+                          <input
+                            {...register("firstShipperBizNo", {
+                              required:
+                                getValues("firstType") === "02"
+                                  ? "원화주 사업자번호을 입력해주세요."
+                                  : false,
+                            })}
+                            type="text"
+                            maxLength={10}
+                            placeholder="원화주 사업자번호"
+                            className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                          />
+                        </div>
                         <div className="text-red-500 mx-auto font-bold text-center">
                           {errors.firstShipperBizNo?.message}
                         </div>
@@ -2306,7 +2325,18 @@ export default function OrderForm({
                     </div>
                   </div>
                   <div className="mt-5">
-                    <div className="relative flex gap-x-3">
+                    <div
+                      className={
+                        "flex gap-x-3 ring-1 rounded-sm px-4 py-2 w-full " +
+                        (watch("taxbillType")
+                          ? "ring-2 ring-blue-600"
+                          : "ring-gray-300")
+                      }
+                      onClick={() => {
+                        if (watchFarePayType == "선착불") return;
+                        setValue("taxbillType", !getValues("taxbillType"));
+                      }}
+                    >
                       <div className="flex h-6 items-center">
                         <input
                           {...register("taxbillType")}
