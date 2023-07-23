@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import localRoutes from "../../services/localRoutes";
 import Navbar from "./NavBar";
 import BottomNav from "./BottomNav";
+import SideNav from "./SideNav";
 
 const Layout = ({ children }) => {
   const router = useRouter();
@@ -39,19 +40,19 @@ const Layout = ({ children }) => {
             <Navbar />
           </>
         )}
-        <main className={"h-full"}>
-          <div
-            className={
-              "h-full mx-auto max-w-7xl lg:px-8 " +
-              (isLogin ? "" : "bg-white pt-14")
-            }
-          >
+        <main className={"h-full lg:ml-24"}>
+          <div className={"h-full " + (isLogin ? "" : "bg-white pt-14")}>
             {/* <div className="h-full mx-auto max-w-7xl px-5 lg:px-8 pt-36"> */}
             {children}
           </div>
         </main>
       </div>
-      {!isShowBottomNav() && <BottomNav />}
+      <div>
+        <div className="hidden lg:block">
+          <SideNav />
+        </div>
+        <div className="lg:hidden">{!isShowBottomNav() && <BottomNav />}</div>
+      </div>
     </div>
   );
 };
