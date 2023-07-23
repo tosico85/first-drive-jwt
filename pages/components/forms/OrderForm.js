@@ -1527,13 +1527,13 @@ export default function OrderForm({
         ) : (
           <div
             className={
-              "pb-12 gap-x-5 hidden md:grid text-sm" +
+              "hidden md:grid text-sm rounded-sm shadow-lg mb-16 p-5 border border-gray-300" +
               (isAdmin
                 ? " lg:grid-cols-4 grid-cols-3"
                 : " lg:grid-cols-3 grid-cols-2")
             }
           >
-            <div className="lg:col-span-3 md:col-span-2 border-b border-gray-900/10 p-5 mb-5 rounded-md shadow-lg border border-gray-300">
+            <div className="lg:col-span-3 md:col-span-2 mb-5">
               <div className="flex flex-col lg:flex-row justify-between gap-x-5 gap-y-5">
                 <div className="w-full flex flex-col gap-y-3">
                   <div className="grid grid-cols-1 gap-y-3">
@@ -1866,7 +1866,48 @@ export default function OrderForm({
                     차량선택
                   </p>
 
-                  <div className="">
+                  <div className="grid grid-cols-4 gap-x-3">
+                    <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col">
+                      <img src={"/cars/트럭.png"} className="h-16" />
+                      <div className="w-5/6 mx-auto text-center relative">
+                        <p className="w-full py-1 px-3 bg-mainBlue rounded-full text-white absolute -bottom-10">
+                          트럭
+                        </p>
+                      </div>
+                    </div>
+                    <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col">
+                      <img src={"/cars/라보.png"} className="h-16 opacity-40" />
+                      <div className="w-5/6 mx-auto text-center relative">
+                        <p className="w-full py-1 px-3 bg-gray-200 rounded-full text-gray-400 absolute -bottom-10">
+                          라보
+                        </p>
+                      </div>
+                    </div>
+                    <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col">
+                      <img
+                        src={"/cars/다마스.png"}
+                        className="h-16 opacity-40"
+                      />
+                      <div className="w-5/6 mx-auto text-center relative">
+                        <p className="w-full py-1 px-3 bg-gray-200 rounded-full text-gray-400 absolute -bottom-10">
+                          다바스
+                        </p>
+                      </div>
+                    </div>
+                    <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col">
+                      <img
+                        src={"/cars/오토바이 퀵.png"}
+                        className="h-16 opacity-40"
+                      />
+                      <div className="w-5/6 mx-auto text-center relative">
+                        <p className="w-full py-1 px-3 bg-gray-200 rounded-full text-gray-400 absolute -bottom-10">
+                          오토바이
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-3">
                     <fieldset>
                       <div className="grid grid-flow-col justify-stretch gap-x-2">
                         {isAdmin && (
@@ -2169,7 +2210,7 @@ export default function OrderForm({
             </div>
 
             {isAdmin && (
-              <div className="border-b border-gray-900/10 p-5 mb-5 rounded-md shadow-lg border border-gray-200">
+              <div className="ml-5 pl-5 pb-5 mb-5 border-l border-dashed border-gray-200">
                 <div className="">
                   <div className="w-full border-b border-gray-200 mb-5">
                     <h2 className="text-base font-semibold py-1">
