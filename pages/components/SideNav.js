@@ -4,7 +4,7 @@ const SideNav = () => {
   const router = useRouter();
 
   return (
-    <div className="fixed left-0 top-0 h-full bg-mainBlue flex flex-col items-center gap-y-5 w-24 pt-5 px-3 text-white text-base z-50">
+    <div className="fixed left-0 top-0 h-full bg-mainBlue flex flex-col items-center gap-y-5 w-24 pt-5 px-3 text-white text-sm z-50">
       <div
         className={
           "flex flex-col items-center transition-color border-b border-mainColor3 gap-y-2 pb-5 w-full hover:cursor-pointer " +

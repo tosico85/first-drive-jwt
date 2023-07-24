@@ -64,7 +64,7 @@ const Navbar = () => {
         <div className="mx-auto px-5">
           <div className="flex h-16 items-center justify-between gap-10">
             <div className="flex items-center justify-between w-full">
-              <div className="text-2xl font-extrabold lg:pl-24">
+              <div className="text-xl lg:pl-24">
                 <span>{currentPage.name}</span>
               </div>
               {/* <div className="hidden lg:block">
