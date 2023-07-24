@@ -268,7 +268,7 @@ const CargoList = () => {
           </div>
         </div>
 
-        <ul className="mt-5 pb-14 lg:pb-0 lg:mt-0 lg:h-rate5 lg:overflow-auto">
+        <ul className="mt-5 pb-14 lg:pb-0 lg:mt-0 lg:h-rate5 lg:overflow-auto lg:border-b lg:border-gray-50">
           {filteredCargoList().length > 0 ? (
             filteredCargoList().map((item) => {
               const {
