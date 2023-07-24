@@ -1890,7 +1890,7 @@ export default function OrderForm({
                       />
                       <div className="w-5/6 mx-auto text-center relative">
                         <p className="w-full py-1 px-3 bg-gray-200 rounded-full text-gray-400 absolute -bottom-10">
-                          다바스
+                          다마스
                         </p>
                       </div>
                     </div>

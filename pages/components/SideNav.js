@@ -82,7 +82,7 @@ const SideNav = () => {
       </div>
       <div
         className={
-          "flex flex-col items-center transition-color border-b border-mainColor3 gap-y-2 pb-5 w-full hover:cursor-pointer " +
+          "flex flex-col items-center transition-color gap-y-2 pb-5 w-full hover:cursor-pointer " +
           (router.pathname == "/orders/list" ? "font-bold" : "")
         }
         onClick={() => router.push("/orders/list")}
@@ -104,7 +104,7 @@ const SideNav = () => {
         <p>주문내역</p>
       </div>
 
-      <div
+      {/* <div
         className={
           "flex flex-col items-center transition-color gap-y-2 pb-5 w-full hover:cursor-pointer " +
           (router.pathname == "/user/profile" ? "font-bold" : "")
@@ -127,7 +127,7 @@ const SideNav = () => {
         </svg>
 
         <p>콜센터</p>
-      </div>
+      </div> */}
     </div>
   );
 };

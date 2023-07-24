@@ -40,7 +40,7 @@ const Layout = ({ children }) => {
             <Navbar />
           </>
         )}
-        <main className={"h-full lg:ml-24"}>
+        <main className={"h-full " + (!isLogin && "lg:ml-24")}>
           <div className={"h-full " + (isLogin ? "" : "bg-white pt-14")}>
             {/* <div className="h-full mx-auto max-w-7xl px-5 lg:px-8 pt-36"> */}
             {children}

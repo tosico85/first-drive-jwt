@@ -31,6 +31,11 @@ module.exports = {
         mainInputColor: "#F3F6F9",
         mainInputFocusColor: "#EAEDF2",
       },
+      height: {
+        rate5: "50vh",
+        rate6: "60vh",
+        rate7: "70vh",
+      },
     },
   },
   plugins: [],
