@@ -1860,7 +1860,7 @@ export default function OrderForm({
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 justify-between gap-x-5 gap-y-5 mt-10 pt-10 border-t border-dashed border-gray-200 ">
+              <div className="grid grid-cols-1 lg:grid-cols-2 justify-between gap-x-5 gap-y-5 mt-16 pt-16 border-t border-dashed border-gray-200 ">
                 <div className="flex flex-col gap-y-3">
                   <p className="px-3 py-1 rounded-full bg-zinc-400 text-white w-fit">
                     차량선택
