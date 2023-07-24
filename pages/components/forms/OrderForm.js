@@ -1867,26 +1867,29 @@ export default function OrderForm({
                   </p>
 
                   <div className="grid grid-cols-4 gap-x-3">
-                    <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col">
-                      <img src={"/cars/트럭.png"} className="h-16" />
+                    <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col items-center">
+                      <img src={"/cars/트럭.png"} className="h-16 w-16" />
                       <div className="w-5/6 mx-auto text-center relative">
                         <p className="w-full py-1 px-3 bg-mainBlue rounded-full text-white absolute -bottom-10">
                           트럭
                         </p>
                       </div>
                     </div>
-                    <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col">
-                      <img src={"/cars/라보.png"} className="h-16 opacity-40" />
+                    <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col items-center">
+                      <img
+                        src={"/cars/라보.png"}
+                        className="h-16 w-16 opacity-40"
+                      />
                       <div className="w-5/6 mx-auto text-center relative">
                         <p className="w-full py-1 px-3 bg-gray-200 rounded-full text-gray-400 absolute -bottom-10">
                           라보
                         </p>
                       </div>
                     </div>
-                    <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col">
+                    <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col items-center">
                       <img
                         src={"/cars/다마스.png"}
-                        className="h-16 opacity-40"
+                        className="h-16 w-16 opacity-40"
                       />
                       <div className="w-5/6 mx-auto text-center relative">
                         <p className="w-full py-1 px-3 bg-gray-200 rounded-full text-gray-400 absolute -bottom-10">
@@ -1894,10 +1897,10 @@ export default function OrderForm({
                         </p>
                       </div>
                     </div>
-                    <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col">
+                    <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col items-center">
                       <img
                         src={"/cars/오토바이 퀵.png"}
-                        className="h-16 opacity-40"
+                        className="h-16 w-16 opacity-40"
                       />
                       <div className="w-5/6 mx-auto text-center relative">
                         <p className="w-full py-1 px-3 bg-gray-200 rounded-full text-gray-400 absolute -bottom-10">
