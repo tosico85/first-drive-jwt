@@ -91,130 +91,103 @@ const CargoList = () => {
     });
   };
 
+  const filteredCargoList = () => {
+    return cargoOrder
+      ? cargoOrder.filter((item) => {
+          if (searchStatus === "ALL") {
+            return true;
+          } else if (searchStatus === "취소") {
+            return item.delete_yn === "Y";
+          } else {
+            return item.ordStatus === searchStatus;
+          }
+        })
+      : [];
+  };
+
+  const getCountByStatus = (status) => {
+    return cargoOrder
+      ? cargoOrder
+          .filter((item) => {
+            if (status === "ALL") {
+              return true;
+            } else if (status === "취소") {
+              return item.delete_yn === "Y";
+            } else {
+              return item.ordStatus === status;
+            }
+          })
+          .length.toString()
+      : "0";
+  };
+
   const handleSearchStatus = (status) => {
     setSearchStatus(status);
   };
 
   return (
-    <div className="pt-16 pb-5 bg-white relative">
-      <div className="bg-white fixed lg:static top-16 w-full z-40">
-        <div className="grid grid-cols-5 items-center lg:hidden">
-          <div
-            className={
-              "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all duration-500" +
-              (searchStatus == "ALL"
-                ? " border-mainColor4 font-extrabold"
-                : " border-mainColor2")
-            }
-            onClick={() => handleSearchStatus("ALL")}
-          >
-            <p className="py-3">전체</p>
-          </div>
-          <div
-            className={
-              "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all duration-500" +
-              (searchStatus == "화물접수"
-                ? " border-mainColor4 font-extrabold"
-                : " border-mainColor2")
-            }
-            onClick={() => handleSearchStatus("화물접수")}
-          >
-            <p className="py-3">접수중</p>
-          </div>
-          <div
-            className={
-              "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all duration-500" +
-              (searchStatus == "배차신청"
-                ? " border-mainColor4 font-extrabold"
-                : " border-mainColor2")
-            }
-            onClick={() => handleSearchStatus("배차신청")}
-          >
-            <p className="py-3">배차중</p>
-          </div>
-          <div
-            className={
-              "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all duration-500" +
-              (searchStatus == "배차완료"
-                ? " border-mainColor4 font-extrabold"
-                : " border-mainColor2")
-            }
-            onClick={() => handleSearchStatus("배차완료")}
-          >
-            <p className="py-3">배차완료</p>
-          </div>
-          <div
-            className={
-              "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all duration-500" +
-              (searchStatus == "취소"
-                ? " border-mainColor4 font-extrabold"
-                : " border-mainColor2")
-            }
-            onClick={() => handleSearchStatus("취소")}
-          >
-            <p className="py-3">취소</p>
-          </div>
-        </div>
-
-        <div className="hidden lg:flex items-center justify-between mt-5 gap-x-20 w-full pb-5">
-          <div className="flex justify-start gap-x-3">
+    <div className="pt-16 pb-5 lg:p-3 bg-white relative">
+      <div className="lg:border lg:border-gray-200 lg:shadow-lg lg:p-5 lg:mt-2">
+        <div className="bg-white fixed lg:static top-16 w-full z-40">
+          <div className="grid grid-cols-5 items-center lg:hidden">
             <div
               className={
-                "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
+                "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all duration-500" +
                 (searchStatus == "ALL"
-                  ? "bg-normalGray text-white"
-                  : "text-gray-400")
+                  ? " border-mainColor4 font-extrabold"
+                  : " border-mainColor2")
               }
               onClick={() => handleSearchStatus("ALL")}
             >
-              전체
+              <p className="py-3">전체</p>
             </div>
             <div
               className={
-                "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
+                "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all duration-500" +
                 (searchStatus == "화물접수"
-                  ? "bg-normalGray text-white"
-                  : "text-gray-400")
+                  ? " border-mainColor4 font-extrabold"
+                  : " border-mainColor2")
               }
               onClick={() => handleSearchStatus("화물접수")}
             >
-              접수중
+              <p className="py-3">접수중</p>
             </div>
             <div
               className={
-                "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
+                "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all duration-500" +
                 (searchStatus == "배차신청"
-                  ? "bg-normalGray text-white"
-                  : "text-gray-400")
+                  ? " border-mainColor4 font-extrabold"
+                  : " border-mainColor2")
               }
               onClick={() => handleSearchStatus("배차신청")}
             >
-              배차중
+              <p className="py-3">배차중</p>
             </div>
             <div
               className={
-                "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
+                "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all duration-500" +
                 (searchStatus == "배차완료"
-                  ? "bg-normalGray text-white"
-                  : "text-gray-400")
+                  ? " border-mainColor4 font-extrabold"
+                  : " border-mainColor2")
               }
               onClick={() => handleSearchStatus("배차완료")}
             >
-              배차완료
+              <p className="py-3">배차완료</p>
             </div>
             <div
               className={
-                "text-sm w-fit h-fit font-bold px-2 py-1 rounded-full border border-gray-400 hover:shadow-md " +
+                "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all duration-500" +
                 (searchStatus == "취소"
-                  ? "bg-normalGray text-white"
-                  : "text-gray-400")
+                  ? " border-mainColor4 font-extrabold"
+                  : " border-mainColor2")
               }
               onClick={() => handleSearchStatus("취소")}
             >
-              취소
+              <p className="py-3">취소</p>
             </div>
           </div>
-          <div className="gap-x-3 hidden lg:flex">
+
+          <div className="hidden lg:flex items-center w-full pb-5 border-b border-gray-200">
             <div className="flex justify-between gap-x-2 items-center">
               <div className="z-0">
                 <DateInput
@@ -237,102 +210,67 @@ const CargoList = () => {
                 type="text"
                 placeholder="업체명 검색"
                 onKeyDown={handleCompanySearch}
-                className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
               />
             </div>
           </div>
-          <p className="text-right">{`${
-            cargoOrder.length > 0
-              ? cargoOrder.filter((item) => {
-                  if (searchStatus === "ALL") {
-                    return true;
-                  } else if (searchStatus === "취소") {
-                    return item.delete_yn === "Y";
-                  } else {
-                    return item.ordStatus === searchStatus;
-                  }
-                }).length
-              : "0"
-          } 건`}</p>
         </div>
-      </div>
-      <div className="bg-gray-50 p-5 flex flex-col gap-y-3 border-b-2 lg:hidden">
-        <div className="flex w-full justify-between items-center">
-          <div className="z-0">
-            <DateInput
-              dateValue={startSearchDt}
-              onDateChange={setStartSearchDt}
-              addClass="w-40"
+        <div className="bg-gray-50 p-5 flex flex-col gap-y-3 border-b-2 lg:hidden">
+          <div className="flex w-full justify-between items-center">
+            <div className="z-0">
+              <DateInput
+                dateValue={startSearchDt}
+                onDateChange={setStartSearchDt}
+                addClass="w-40"
+              />
+            </div>
+            <span>~</span>
+            <div className="z-0">
+              <DateInput
+                dateValue={endSearchDt}
+                onDateChange={setEndSearchDt}
+                addClass="w-40"
+              />
+            </div>
+          </div>
+          <div className="">
+            <input
+              type="text"
+              placeholder="업체명 검색"
+              onKeyDown={handleCompanySearch}
+              className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
             />
           </div>
-          <span>~</span>
-          <div className="z-0">
-            <DateInput
-              dateValue={endSearchDt}
-              onDateChange={setEndSearchDt}
-              addClass="w-40"
-            />
-          </div>
+          <p className="text-right">{`${filteredCargoList().length} 건`}</p>
         </div>
-        <div className="">
-          <input
-            type="text"
-            placeholder="업체명 검색"
-            onKeyDown={handleCompanySearch}
-            className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-          />
-        </div>
-        <p className="text-right">{`${
-          cargoOrder.length > 0
-            ? cargoOrder.filter((item) => {
-                if (searchStatus === "ALL") {
-                  return true;
-                } else if (searchStatus === "취소") {
-                  return item.delete_yn === "Y";
-                } else {
-                  return item.ordStatus === searchStatus;
-                }
-              }).length
-            : "0"
-        } 건`}</p>
-      </div>
 
-      <ul className="mt-5 pb-14">
-        <li className="hidden lg:block border-y border-gray-200 py-3 bg-mainColor2 gap-x-1">
-          <div className="grid grid-cols-9 items-center text-center text-white">
-            <div className="col-span-2 border-r border-white">
+        {/* Grid header(PC) */}
+        <div className="hidden lg:block mt-5 border-y border-gray-200 py-3 bg-black gap-x-1">
+          <div className="grid grid-cols-9 items-center text-center text-gray-200">
+            <div className="col-span-2 border-r border-gray-700">
               <span>화물내용</span>
             </div>
-            <div className="col-span-2 border-r border-white">
+            <div className="col-span-2 border-r border-gray-700">
               <span>상차정보</span>
             </div>
-            <div className="col-span-2 border-r border-white">
+            <div className="col-span-2 border-r border-gray-700">
               <span>하차정보</span>
             </div>
-            <div className="border-r border-white">
+            <div className="border-r border-gray-700">
               <span>상태</span>
             </div>
-            <div className="border-r border-white">
+            <div className="border-r border-gray-700">
               <span>화물복사</span>
             </div>
             <div className="">
               <span>등록일자</span>
             </div>
           </div>
-        </li>
+        </div>
 
-        {cargoOrder.length > 0 &&
-          cargoOrder
-            .filter((item) => {
-              if (searchStatus === "ALL") {
-                return true;
-              } else if (searchStatus === "취소") {
-                return item.delete_yn === "Y";
-              } else {
-                return item.ordStatus === searchStatus;
-              }
-            })
-            .map((item) => {
+        <ul className="mt-5 pb-14 lg:pb-0 lg:mt-0 lg:h-rate5 lg:overflow-auto">
+          {filteredCargoList().length > 0 ? (
+            filteredCargoList().map((item) => {
               const {
                 cargo_seq,
                 ordNo,
@@ -610,8 +548,97 @@ const CargoList = () => {
                   </div>
                 </li>
               );
-            })}
-      </ul>
+            })
+          ) : (
+            <div className="bg-gray-100 p-24 w-full h-full my-auto text-center text-gray-400 flex items-center justify-center">
+              <p>배차 내역이 없습니다.</p>
+            </div>
+          )}
+        </ul>
+
+        <div className="hidden lg:flex flex-col mt-5 border border-gray-200 bg-gray-50">
+          <div className="p-5 border border-gray-200 flex items-center justify-between">
+            <p className="rounded-full bg-white border border-gray-200 w-fit py-1 px-3">
+              총 오더 수
+            </p>
+            <p className="text-right font-extrabold text-4xl">{`${getCountByStatus(
+              "ALL"
+            )}`}</p>
+          </div>
+          <div className="grid grid-cols-5 p-5">
+            <div
+              className={
+                "text-sm w-full flex flex-col gap-y-2 p-5 bg-white font-bold border hover:shadow-md " +
+                (searchStatus == "ALL"
+                  ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
+                  : "text-gray-500 border-gray-200")
+              }
+              onClick={() => handleSearchStatus("ALL")}
+            >
+              <p className="text-base">전체</p>
+              <p className="text-right font-extrabold text-3xl">
+                {getCountByStatus("ALL")}
+              </p>
+            </div>
+            <div
+              className={
+                "text-sm w-full flex flex-col gap-y-2 p-5 bg-white font-bold border hover:shadow-md " +
+                (searchStatus == "화물접수"
+                  ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
+                  : "text-gray-500 border-gray-200")
+              }
+              onClick={() => handleSearchStatus("화물접수")}
+            >
+              <p className="text-base">접수중</p>
+              <p className="text-right font-extrabold text-3xl">
+                {getCountByStatus("화물접수")}
+              </p>
+            </div>
+            <div
+              className={
+                "text-sm w-full flex flex-col gap-y-2 p-5 bg-white font-bold border hover:shadow-md " +
+                (searchStatus == "배차신청"
+                  ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
+                  : "text-gray-500 border-gray-200")
+              }
+              onClick={() => handleSearchStatus("배차신청")}
+            >
+              <p className="text-base">배차중</p>
+              <p className="text-right font-extrabold text-3xl">
+                {getCountByStatus("배차신청")}
+              </p>
+            </div>
+            <div
+              className={
+                "text-sm w-full flex flex-col gap-y-2 p-5 bg-white font-bold border hover:shadow-md " +
+                (searchStatus == "배차완료"
+                  ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
+                  : "text-gray-500 border-gray-200")
+              }
+              onClick={() => handleSearchStatus("배차완료")}
+            >
+              <p className="text-base">배차완료</p>
+              <p className="text-right font-extrabold text-3xl">
+                {getCountByStatus("배차완료")}
+              </p>
+            </div>
+            <div
+              className={
+                "text-sm w-full flex flex-col gap-y-2 p-5 bg-white font-bold border hover:shadow-md " +
+                (searchStatus == "취소"
+                  ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
+                  : "text-gray-500 border-gray-200")
+              }
+              onClick={() => handleSearchStatus("취소")}
+            >
+              <p className="text-base">취소</p>
+              <p className="text-right font-extrabold text-3xl">
+                {getCountByStatus("취소s")}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

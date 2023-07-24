@@ -78,7 +78,7 @@ const DateTimeSelectModal = ({ onCancel, onComplete, startEnd, paramObj }) => {
       <div className="w-full border-b border-gray-100 my-5"></div>
       <div className="grid grid-cols-3 items-center justify-between w-full p-3 gap-x-3">
         <select
-          className="rounded-md text-center text-lgz border-0 p-5 bg-slate-100"
+          className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
           value={amPmValue}
           onChange={handleAmPm}
         >
@@ -87,7 +87,7 @@ const DateTimeSelectModal = ({ onCancel, onComplete, startEnd, paramObj }) => {
           <option value="12">오후</option>
         </select>
         <select
-          className="rounded-md text-center text-lgz border-0 p-5 bg-slate-100"
+          className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
           value={hourValue}
           onChange={handleHour}
         >
@@ -104,7 +104,7 @@ const DateTimeSelectModal = ({ onCancel, onComplete, startEnd, paramObj }) => {
             })}
         </select>
         <select
-          className="rounded-md text-center text-lgz border-0 p-5 bg-slate-100"
+          className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
           value={minuteValue}
           onChange={handleMinute}
         >
@@ -116,7 +116,7 @@ const DateTimeSelectModal = ({ onCancel, onComplete, startEnd, paramObj }) => {
       <div className="text-center pt-10">
         <button
           type="button"
-          className="rounded-md bg-mainColor3 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mainColor2"
+          className="rounded-md bg-mainBlue px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mainColor2"
           onClick={handleSelect}
         >
           선택

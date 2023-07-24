@@ -61,37 +61,13 @@ const Navbar = () => {
   return (
     <div className="fixed w-full z-50 shadow-md">
       <Disclosure as="nav" className="bg-white w-full">
-        <div className="mx-auto max-w-7xl px-4 lg:px-8">
+        <div className="mx-auto px-5">
           <div className="flex h-16 items-center justify-between gap-10">
             <div className="flex items-center justify-between w-full">
-              {/* <div className="flex-shrink-0">
-                <img
-                  className="h-8 w-8"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                  alt="Go home"
-                  onClick={() => {
-                    router.push("/");
-                  }}
-                />
-              </div> */}
-              {/* <div
-                className="flex flex-col flex-shrink-0"
-                onClick={() => {
-                  router.push("/");
-                }}
-              >
-                <div className="flex">
-                  <div className="triangle"></div>
-                  <div className="triangle"></div>
-                </div>
-                <div className="flex justify-center">
-                  <div className="triangle"></div>
-                </div>
-              </div> */}
-              <div className="text-2xl font-extrabold">
+              <div className="text-2xl font-extrabold lg:pl-24">
                 <span>{currentPage.name}</span>
               </div>
-              <div className="hidden lg:block">
+              {/* <div className="hidden lg:block">
                 <div className="ml-10 flex items-baseline space-x-4">
                   {navigation.map((item) => (
                     <a
@@ -109,7 +85,7 @@ const Navbar = () => {
                     </a>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="hidden lg:block min-w-fit">
               <div className="ml-4 flex items-center lg:ml-6">

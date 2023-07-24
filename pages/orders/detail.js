@@ -515,14 +515,14 @@ export default function Detail() {
           <>
             <button
               type="button"
-              className="rounded-md bg-mainColor3 px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-mainBlue px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               onClick={handleModify}
             >
               화물 수정
             </button>
             <button
               type="button"
-              className="rounded-md bg-mainColor3 px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-mainBlue px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               onClick={handleDelete}
             >
               화물 삭제
