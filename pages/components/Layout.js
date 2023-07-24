@@ -48,9 +48,7 @@ const Layout = ({ children }) => {
         </main>
       </div>
       <div>
-        <div className="hidden lg:block">
-          <SideNav />
-        </div>
+        <div className="hidden lg:block">{!isLogin && <SideNav />}</div>
         <div className="lg:hidden">{!isShowBottomNav() && <BottomNav />}</div>
       </div>
     </div>

@@ -1,7 +1,7 @@
-function Label({ title, required = false, width = "20" }) {
+function Label({ title, required = false }) {
   return (
     <div
-      className={`rounded-sm border shrink-0 border-gray-200 text-gray-500 h-9 py-2 pl-2 relative w-${width}`}
+      className={`rounded-sm border shrink-0 border-gray-200 text-gray-500 h-9 py-2 pl-2 relative w-20`}
     >
       <span>{title}</span>
       {required && (
