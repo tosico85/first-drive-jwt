@@ -70,6 +70,7 @@ export default function OrderForm({
   //react-form 관련
   const methods = useForm({ mode: "onSubmit" });
   const {
+    reset,
     register,
     handleSubmit,
     getValues,
@@ -294,7 +295,36 @@ export default function OrderForm({
   // 배차목록 선택 시 화물오더 load
   const selectCargoOrder = async (index) => {
     if (confirm("해당 오더를 불러오시겠습니까?")) {
-      editData = { ...recentCargoList[index] };
+      reset();
+      let targetOrder = { ...recentCargoList[index] };
+      setStartAddressData({
+        startWide: targetOrder.startWide,
+        startSgg: targetOrder.startSgg,
+        startDong: targetOrder.startDong,
+      });
+      setEndAddressData({
+        endWide: targetOrder.endWide,
+        endSgg: targetOrder.endSgg,
+        endDong: targetOrder.endDong,
+      });
+
+      // Copy 제외항목 필터링
+      const paramData = (({
+        cargo_seq,
+        ordNo,
+        startPlanDt,
+        startPlanHour,
+        startPlanMinute,
+        endPlanDt,
+        endPlanHour,
+        endPlanMinute,
+        payPlanYmd,
+        create_dtm,
+        delete_yn,
+        ...rest
+      }) => rest)(targetOrder);
+
+      editData = { ...paramData };
       await loadParamData();
     }
   };
@@ -530,7 +560,8 @@ export default function OrderForm({
    */
   const oninvalid = () => {
     //console.log(getValues("startPlanDt"));
-    //console.log(editData);
+    console.log(getValues());
+
     console.log(errors);
   };
 
