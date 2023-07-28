@@ -793,7 +793,7 @@ export default function OrderForm({
   } */
 
   return (
-    <div className="p-5 lg:p-3">
+    <div className="p-5 lg:pt-0 lg:p-3">
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -1598,7 +1598,7 @@ export default function OrderForm({
         ) : (
           <div
             className={
-              "hidden md:grid text-sm " +
+              "hidden md:grid h-full text-sm " +
               (isAdmin
                 ? " lg:grid-cols-4 2xl:grid-cols-5 grid-cols-3"
                 : " lg:grid-cols-4 grid-cols-2")
@@ -1606,7 +1606,7 @@ export default function OrderForm({
           >
             <div
               className={
-                "grid rounded-sm shadow-lg mb-16 p-5 border border-gray-300" +
+                "grid h-full rounded-sm mb-16 p-5 bg-white border border-gray-300" +
                 (isAdmin
                   ? " lg:grid-cols-4 grid-cols-3 col-span-4"
                   : " lg:grid-cols-3 grid-cols-2 col-span-3")
@@ -2495,7 +2495,7 @@ export default function OrderForm({
             </div>
             <div
               className={
-                "hidden flex-col p-5 border border-gray-200 rounded-sm ml-5 row-span-2 shadow-lg" +
+                "hidden flex-col p-5 bg-white border border-gray-200 rounded-sm ml-5 row-span-2" +
                 (isAdmin ? " 2xl:flex" : " lg:flex")
               }
             >

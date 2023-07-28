@@ -59,7 +59,7 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="fixed w-full z-50 shadow-md">
+    <div className="fixed w-full z-50 border-b border-gray-200">
       <Disclosure as="nav" className="bg-white w-full">
         <div className="mx-auto px-5">
           <div className="flex h-16 items-center justify-between gap-10">

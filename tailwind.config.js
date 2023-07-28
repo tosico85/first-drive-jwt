@@ -28,6 +28,7 @@ module.exports = {
         buttonZamboa: "#ED6A4A",
 
         mainBlue: "#2E58EB",
+        mainBgColor: "#F7F7F7",
         mainInputColor: "#F3F6F9",
         mainInputFocusColor: "#EAEDF2",
       },
