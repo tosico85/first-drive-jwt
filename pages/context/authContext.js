@@ -11,22 +11,6 @@ export const AuthProvider = ({ children }) => {
   //const [jwtToken, setJwtToken] = useState("");
   const router = useRouter();
 
-  useEffect(() => {
-    (async () => {
-      const isLoggedIn = await sessionCheck();
-      console.log("isAuthenticated : ", isLoggedIn);
-      console.log("pathname : ", router.pathname);
-      //alert(isLoggedIn);
-      if (isLoggedIn) {
-        if (router.pathname == "/login") {
-          router.push("/");
-        }
-      } else {
-        router.push("/login");
-      }
-    })();
-  }, []);
-
   // 로컬스토리지에 jwtToken에서 가져오기
   const tokenLoadFromLocal = () => {
     return localStorage.getItem("jwtToken") || "";
@@ -62,7 +46,10 @@ export const AuthProvider = ({ children }) => {
     if (result.resultCd === "LN") {
       //Login Need
       setIsAuthenticated(false);
-      router.push("/");
+      if (router.pathname != "/login") {
+        console.log("Login need : move to login page");
+        router.push("/login");
+      }
     }
 
     return result;

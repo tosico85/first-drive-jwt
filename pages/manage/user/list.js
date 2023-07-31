@@ -61,8 +61,10 @@ const ManageUser = () => {
     const params = {};
 
     const result = await requestServer(url, params);
-    result = result.map((item) => ({ ...item, checked: false }));
-    setUserList(() => result);
+    if (result?.length > 0) {
+      result = result.map((item) => ({ ...item, checked: false }));
+      setUserList(() => result);
+    }
     console.log("User list >> ", userList);
   };
 
@@ -129,7 +131,7 @@ const ManageUser = () => {
   };
 
   return (
-    <div className="py-10 px-5">
+    <div className="pt-10 pb-24 px-5 h-full bg-white">
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -146,60 +148,63 @@ const ManageUser = () => {
         <h3 className="text-base font-semibold ">가입된 사용자 목록</h3>
         <p className="text-right">{`${userList.length} 건`}</p>
       </div>
-      <ul className="mt-6 mb-14 border-y border-gray-200">
-        {userList.length > 0 &&
-          userList.map((item, index) => {
-            const { name, email, company_code, auth_code, create_dtm } = item;
-            return (
-              <li
-                className="border-b border-gray-100 flex justify-between gap-x-3 py-5 lg:px-5 hover:bg-gray-100"
-                key={index}
-                onClick={() => handleItemChange(item.email)}
-              >
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={item.checked}
-                    onChange={() => {}}
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                </div>
-                <div className="grid gap-x-5 w-full grid-cols-6 items-center">
-                  <p className="col-span-3 lg:col-span-1 text-sm font-semibold leading-6 text-gray-500">
-                    {email}
-                  </p>
-                  <p className="text-center col-span-2 lg:col-span-3 lg:text-left text-sm font-semibold leading-6 text-gray-500">
-                    {name}
-                  </p>
-                  <div className="col-span-1 lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-y-3 gap-x-5 justify-end">
-                    <div className="flex justify-end">
-                      <p
-                        className={
-                          "text-sm w-16 text-center h-fit text-white font-bold px-2 py-1 rounded-full " +
-                          (auth_code == "USER"
-                            ? "bg-indigo-400 ring-indigo-400"
-                            : auth_code == "ADMIN"
-                            ? "bg-orange-400 ring-orange-400"
-                            : "bg-slate-400 ring-slate-400")
-                        }
-                      >
-                        {auth_code}
+      <div className="mt-6 pb-24 h-rate8">
+        <ul className="border-y border-gray-200 h-full overflow-auto">
+          {userList.length > 0 &&
+            userList.map((item, index) => {
+              const { name, email, company_code, auth_code, create_dtm } = item;
+              return (
+                <li
+                  className="border-b border-gray-100 flex justify-between gap-x-3 py-5 lg:px-5 hover:bg-gray-100"
+                  key={index}
+                  onClick={() => handleItemChange(item.email)}
+                >
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={item.checked}
+                      onChange={() => {}}
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    />
+                  </div>
+                  <div className="grid gap-x-5 w-full grid-cols-6 items-center">
+                    <p className="col-span-3 lg:col-span-1 text-sm font-semibold leading-6 text-gray-500">
+                      {email}
+                    </p>
+                    <p className="text-center col-span-2 lg:col-span-3 lg:text-left text-sm font-semibold leading-6 text-gray-500">
+                      {name}
+                    </p>
+                    <div className="col-span-1 lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-y-3 gap-x-5 justify-end">
+                      <div className="flex justify-end">
+                        <p
+                          className={
+                            "text-sm w-16 text-center h-fit text-white font-bold px-2 py-1 rounded-full " +
+                            (auth_code == "USER"
+                              ? "bg-indigo-400 ring-indigo-400"
+                              : auth_code == "ADMIN"
+                              ? "bg-orange-400 ring-orange-400"
+                              : "bg-slate-400 ring-slate-400")
+                          }
+                        >
+                          {auth_code}
+                        </p>
+                      </div>
+                      <p className="hidden lg:block text-right text-sm font-semibold leading-6 text-gray-500">
+                        {create_dtm.substring(0, 10)}
                       </p>
                     </div>
-                    <p className="hidden lg:block text-right text-sm font-semibold leading-6 text-gray-500">
-                      {create_dtm.substring(0, 10)}
-                    </p>
                   </div>
-                </div>
-              </li>
-            );
-          })}
-      </ul>
+                </li>
+              );
+            })}
+        </ul>
+      </div>
+
       <div className="fixed bottom-0 left-0 p-3 w-full bg-white border mt-6 flex items-center justify-end gap-x-3">
         <button
           type="button"
           onClick={() => router.push("/orders/list")}
-          className="rounded-md bg-normalGray px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+          className="rounded-md bg-normalGray px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm lg:hidden"
         >
           목록으로
         </button>

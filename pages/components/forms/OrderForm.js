@@ -352,7 +352,7 @@ export default function OrderForm({
       result: { start, end },
     } = await requestServer(apiPaths.userAddressBase, {});
 
-    if (Object.keys(start).length > 0) {
+    if (Object.keys(start || {}).length > 0) {
       setStartAddressData({
         startWide: start.wide,
         startSgg: start.sgg,
@@ -362,7 +362,7 @@ export default function OrderForm({
       startBaseYn = start.baseYn;
     }
 
-    if (Object.keys(end).length > 0) {
+    if (Object.keys(end || {}).length > 0) {
       setEndAddressData({
         endWide: end.wide,
         endSgg: end.sgg,

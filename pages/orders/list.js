@@ -96,7 +96,7 @@ const CargoList = () => {
   };
 
   const filteredCargoList = () => {
-    return cargoOrder
+    return (cargoOrder || []).length > 0
       ? cargoOrder.filter((item) => {
           if (searchStatus === "ALL") {
             return true;
@@ -110,7 +110,7 @@ const CargoList = () => {
   };
 
   const getCountByStatus = (status) => {
-    return cargoOrder
+    return (cargoOrder || []).length > 0
       ? cargoOrder
           .filter((item) => {
             if (status === "ALL") {
@@ -130,8 +130,8 @@ const CargoList = () => {
   };
 
   return (
-    <div className="pt-16 pb-5 lg:p-3 bg-white relative">
-      <div className="lg:border lg:border-gray-200 lg:shadow-lg lg:p-5 lg:mt-2">
+    <div className="pt-16 pb-5 lg:p-3 relative">
+      <div className="lg:border lg:border-gray-200 bg-white lg:p-5 lg:mt-2">
         <div className="bg-white fixed lg:static top-16 w-full z-40">
           <div className="grid grid-cols-5 items-center lg:hidden">
             <div
@@ -209,7 +209,7 @@ const CargoList = () => {
                 />
               </div>
             </div>
-            <div className="">
+            <div className="ml-3">
               <input
                 type="text"
                 placeholder="업체명 검색"
@@ -560,7 +560,7 @@ const CargoList = () => {
           )}
         </ul>
 
-        <div className="hidden lg:flex flex-col mt-5 border border-gray-200 bg-gray-50">
+        <div className="hidden lg:flex flex-col mt-5 border border-gray-200 bg-slate-50">
           <div className="p-5 border border-gray-200 flex items-center justify-between">
             <p className="rounded-full bg-white border border-gray-200 w-fit py-1 px-3">
               총 오더 수
@@ -637,7 +637,7 @@ const CargoList = () => {
             >
               <p className="text-base">취소</p>
               <p className="text-right font-extrabold text-3xl">
-                {getCountByStatus("취소s")}
+                {getCountByStatus("취소")}
               </p>
             </div>
           </div>

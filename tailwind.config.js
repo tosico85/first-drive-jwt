@@ -36,6 +36,7 @@ module.exports = {
         rate5: "50vh",
         rate6: "60vh",
         rate7: "70vh",
+        rate8: "80vh",
       },
     },
   },

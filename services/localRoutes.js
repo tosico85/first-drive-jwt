@@ -8,6 +8,7 @@ const localRoutes = [
   { path: "/orders/detail", name: "화물 상세" },
 
   { path: "/manage/user/list", name: "사용자 관리" },
+  { path: "/manage/fareTable/list", name: "운행요금 관리" },
 ];
 
 export default localRoutes;
