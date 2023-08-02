@@ -50,7 +50,7 @@ const Navbar = () => {
   }
 
   const userNavigation = [
-    { name: "Your Profile", href: "#" },
+    { name: "Your Profile", href: "/user/profile" },
     {
       name: "Sign out",
       href: "#",
@@ -67,25 +67,6 @@ const Navbar = () => {
               <div className="text-xl lg:pl-24">
                 <span>{currentPage.name}</span>
               </div>
-              {/* <div className="hidden lg:block">
-                <div className="ml-10 flex items-baseline space-x-4">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className={classNames(
-                        item.current
-                          ? "font-bold text-xl"
-                          : "hover:text-xl transition-all",
-                        "rounded-md px-3 py-2 text-sm font-medium"
-                      )}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
-              </div> */}
             </div>
             <div className="hidden lg:block min-w-fit">
               <div className="ml-4 flex items-center lg:ml-6">

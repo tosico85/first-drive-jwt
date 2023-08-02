@@ -4,15 +4,16 @@ import Modal from "react-modal";
 import apiPaths from "../../../services/apiRoutes";
 import AuthContext from "../../context/authContext";
 import { addCommas } from "../../../utils/StringUtils";
+import FareInputModal from "../../components/modals/fareInputModal";
 
 const ManageFareTable = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
   const [fareList, setFareList] = useState([]);
   const [selectedFare, setSelectedFare] = useState({});
-  //const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   //const router = useRouter();
 
-  /* const openModal = () => {
+  const openModal = () => {
     setIsModalOpen(true);
   };
 
@@ -23,19 +24,18 @@ const ManageFareTable = () => {
   const callbackModal = (retVal) => {
     closeModal();
 
-    const user = { ...selectedFare };
-    user = { ...user, auth_code: retVal.auth_code };
-    console.log("user > ", user);
-    setSelectedFare(() => user);
+    const fare = { ...selectedFare };
+    //fare = { ...fare, auth_code: retVal.auth_code };
+    //console.log("fare > ", fare);
+    setSelectedFare(() => fare);
+    updatefareList(fare);
+  };
 
-    updatefareList(user);
-  }; 
-  
   const customModalStyles = {
     content: {
       top: "50%",
       left: "50%",
-      width: "320px",
+      width: "60%",
       height: "auto",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
@@ -43,19 +43,18 @@ const ManageFareTable = () => {
     },
   };
 
-  const updatefareList = (user) => {
-    console.log("selectedFare > ", user);
-    const prevfareList = [...fareList];
+  const updatefareList = (fare) => {
+    console.log("selectedFare > ", fare);
+    /* const prevfareList = [...fareList];
     prevfareList.forEach((item) => {
-      if (item.email === user.email) {
-        item.auth_code = user.auth_code;
+      if (item.email === fare.email) {
+        item.auth_code = fare.auth_code;
       }
-    });
+    }); */
     //console.log("fareList >> ", fareList);
     //console.log("prevfareList >> ", prevfareList);
-    setFareList(() => prevfareList);
+    //setFareList(() => prevfareList);
   };
-  */
 
   const getFareList = async () => {
     const url = apiPaths.adminGetFare;
@@ -70,7 +69,7 @@ const ManageFareTable = () => {
   };
 
   const handleItemChange = (selectedIndex) => {
-    //console.log(fareList);
+    console.log(fareList);
     let fare = {};
     const updatedList = fareList.map((item, index) => {
       if (index === selectedIndex) {
@@ -124,7 +123,7 @@ const ManageFareTable = () => {
   const isSelected = () => {
     //console.log("selectedFare > ", selectedFare);
     if (Object.keys(selectedFare).length == 0) {
-      alert("사용자를 선택해 주세요.");
+      alert("수정할 항목을 선택해 주세요.");
       return false;
     } else {
       return true;
@@ -133,18 +132,18 @@ const ManageFareTable = () => {
 
   return (
     <div className="pt-10 pb-24 px-5 h-full bg-white">
-      {/* <Modal
+      <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         contentLabel="Modal"
         style={customModalStyles}
       >
-        <UserAuthForm
+        <FareInputModal
           selectedFare={selectedFare}
           onCancel={closeModal}
           onComplete={callbackModal}
         />
-      </Modal> */}
+      </Modal>
       <div className="flex justify-between">
         <h3 className="text-base font-semibold ">거리별 운행 요금표</h3>
         <p className="text-right">{`${fareList.length} 건`}</p>
@@ -198,8 +197,8 @@ const ManageFareTable = () => {
                     />
                   </div>
                   <div className="grid grid-cols-12 w-full">
-                    <div className="col-span-2 py-5">{`${startWide} ${startSgg}`}</div>
-                    <div className="col-span-2 py-5">{`${endWide} ${endSgg}`}</div>
+                    <div className="col-span-2 px-3 py-5">{`${startWide} ${startSgg}`}</div>
+                    <div className="col-span-2 px-3 py-5">{`${endWide} ${endSgg}`}</div>
                     <div className="text-right px-3 py-5 bg-slate-100">
                       {addCommas(oneTon)}
                     </div>

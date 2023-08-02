@@ -1,4 +1,5 @@
 const localRoutes = [
+  { path: "/404", name: "Page Not Found." },
   { path: "/", name: "배차관리 시스템" },
   { path: "/login", name: "로그인" },
   { path: "/user/profile", name: "Profile" },

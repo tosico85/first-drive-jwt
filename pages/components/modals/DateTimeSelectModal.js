@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "react-calendar/dist/Calendar.css"; // css import
 import CustomCalendar from "../custom/Calendar";
-import moment from "moment";
 import { isEmptyObject } from "../../../utils/ObjectUtils";
+import moment from "moment/moment";
 
 const DateTimeSelectModal = ({ onCancel, onComplete, startEnd, paramObj }) => {
   const [dateValue, setDateValue] = useState(new Date());
