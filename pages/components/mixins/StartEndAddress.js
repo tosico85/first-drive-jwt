@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import apiPaths from "../../../services/apiRoutes";
 import { isEmpty } from "../../../utils/StringUtils";
 
-const StartEndAddress = ({ paramValue, setValue }) => {
+const StartEndAddress = ({ paramValue, setValue, isReadOnly = false }) => {
   const [sidoList, setSidoList] = useState([]);
   const [gugunList, setGugunList] = useState([]);
   const [sido, setSido] = useState(paramValue?.wide || "");
@@ -25,7 +25,7 @@ const StartEndAddress = ({ paramValue, setValue }) => {
   }, []);
 
   useEffect(() => {
-    setValue({ sido, gugun });
+    setValue({ wide: sido, sgg: gugun });
   }, [sido, gugun]);
 
   // 시/도 리스트 조회
@@ -77,11 +77,12 @@ const StartEndAddress = ({ paramValue, setValue }) => {
   };
 
   return (
-    <div className="flex items-center gap-x-3">
-      <div>
+    <div className="flex items-center gap-x-3 w-full">
+      <div className="w-full">
         <select
           value={sido}
           onChange={handleSelectSido}
+          disabled={isReadOnly}
           className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
         >
           <option value="">주소(시/도)</option>
@@ -92,10 +93,11 @@ const StartEndAddress = ({ paramValue, setValue }) => {
           ))}
         </select>
       </div>
-      <div>
+      <div className="w-full">
         <select
           value={gugun}
           onChange={handleSelectGugun}
+          disabled={isReadOnly}
           className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
         >
           <option value="">주소(구/군)</option>
