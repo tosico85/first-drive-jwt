@@ -11,6 +11,7 @@ const ManageFareTable = () => {
   const [fareList, setFareList] = useState([]);
   const [selectedFare, setSelectedFare] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [requestType, setRequestTyoe] = useState("");
   //const router = useRouter();
 
   const openModal = () => {
@@ -27,33 +28,20 @@ const ManageFareTable = () => {
     const fare = { ...selectedFare };
     //fare = { ...fare, auth_code: retVal.auth_code };
     //console.log("fare > ", fare);
-    setSelectedFare(() => fare);
-    updatefareList(fare);
+    setSelectedFare({});
+    getFareList();
   };
 
   const customModalStyles = {
     content: {
       top: "50%",
       left: "50%",
-      width: "60%",
-      height: "auto",
+      width: "400px",
+      height: "620px",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
       boxShadow: "0px 0px 10px #e2e2e2",
     },
-  };
-
-  const updatefareList = (fare) => {
-    console.log("selectedFare > ", fare);
-    /* const prevfareList = [...fareList];
-    prevfareList.forEach((item) => {
-      if (item.email === fare.email) {
-        item.auth_code = fare.auth_code;
-      }
-    }); */
-    //console.log("fareList >> ", fareList);
-    //console.log("prevfareList >> ", prevfareList);
-    //setFareList(() => prevfareList);
   };
 
   const getFareList = async () => {
@@ -65,7 +53,7 @@ const ManageFareTable = () => {
       result = result.map((item) => ({ ...item, checked: false }));
       setFareList(() => result);
     }
-    console.log("Fare list >> ", fareList);
+    //console.log("Fare list >> ", fareList);
   };
 
   const handleItemChange = (selectedIndex) => {
@@ -94,8 +82,15 @@ const ManageFareTable = () => {
   }, [userInfo]);
 
   //권한 선택 모달창 open
-  const handleAuthChange = () => {
+  const handleFareInsert = () => {
+    setRequestTyoe("I");
+    openModal();
+  };
+
+  //권한 선택 모달창 open
+  const handleFareUpdate = () => {
     if (isSelected()) {
+      setRequestTyoe("U");
       openModal();
     }
   };
@@ -139,7 +134,7 @@ const ManageFareTable = () => {
         style={customModalStyles}
       >
         <FareInputModal
-          selectedFare={selectedFare}
+          selectedFare={requestType == "U" ? selectedFare : {}}
           onCancel={closeModal}
           onComplete={callbackModal}
         />
@@ -234,7 +229,14 @@ const ManageFareTable = () => {
         <button
           type="button"
           className="rounded-md bg-buttonZamboa px-2 py-2 text-base font-semibold text-white shadow-sm"
-          onClick={handleAuthChange}
+          onClick={handleFareInsert}
+        >
+          추가
+        </button>
+        <button
+          type="button"
+          className="rounded-md bg-buttonZamboa px-2 py-2 text-base font-semibold text-white shadow-sm"
+          onClick={handleFareUpdate}
         >
           수정
         </button>
