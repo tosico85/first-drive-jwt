@@ -88,11 +88,60 @@ const FareInputModal = ({ selectedFare = {}, onCancel, onComplete }) => {
     return isValidate;
   };
 
+  const getRequestData = () => {
+    return {
+      startWide: startAddr.wide,
+      startSgg: startAddr.sgg,
+      endWide: endAddr.wide,
+      endSgg: endAddr.sgg,
+      oneTon: fareMap.oneTon.value,
+      twoHalfTon: fareMap.twoHalfTon.value,
+      threeHalfTon: fareMap.threeHalfTon.value,
+      fiveTon: fareMap.fiveTon.value,
+      fiveTonPlus: fareMap.fiveTonPlus.value,
+      elevenTon: fareMap.elevenTon.value,
+      eighteenTon: fareMap.eighteenTon.value,
+      twentyfiveTon: fareMap.twentyfiveTon.value,
+    };
+  };
+
   //요금 등록
-  const insertFare = async () => {};
+  const insertFare = async () => {
+    const paramData = getRequestData();
+    const { result, resultCd } = await requestServer(
+      apiPaths.adminAddFare,
+      paramData
+    );
+
+    if (resultCd == "00") {
+      alert("요금이 등록되었습니다.");
+      onComplete();
+    } else if (resultCd == "88") {
+      if (
+        confirm("이미 요금표에 등록된 상하차 지역입니다.\n수정하시겠습니까?")
+      ) {
+        updateFare();
+      }
+    } else {
+      alert("요금 등록에 실패하였습니다.");
+    }
+  };
 
   //요금 수정
-  const updateFare = async () => {};
+  const updateFare = async () => {
+    const paramData = getRequestData();
+    const { result, resultCd } = await requestServer(
+      apiPaths.adminModFare,
+      paramData
+    );
+
+    if (resultCd == "00") {
+      alert("요금이 수정되었습니다.");
+      onComplete();
+    } else {
+      alert("요금 수정에 실패하였습니다.");
+    }
+  };
 
   //등록/수정
   const handleSelect = async () => {
@@ -103,8 +152,6 @@ const FareInputModal = ({ selectedFare = {}, onCancel, onComplete }) => {
       } else {
         await insertFare();
       }
-
-      onComplete();
     }
   };
 
@@ -136,6 +183,7 @@ const FareInputModal = ({ selectedFare = {}, onCancel, onComplete }) => {
               <Label title={fare.korName} required={true} />
               <input
                 {...fareMap[fare.varName]}
+                placeholder={`${fare.korName} 요금 입력`}
                 type="text"
                 className="w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
               />

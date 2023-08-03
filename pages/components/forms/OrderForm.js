@@ -2270,7 +2270,7 @@ export default function OrderForm({
                           ]).join("").length == 12 &&
                             ` ${formatDate(getValues("endPlanDt"))} ${getValues(
                               "endPlanHour"
-                            )}:${getValues("startPlanMinute")}`}
+                            )}:${getValues("endPlanMinute")}`}
                         </span>
                       </button>
                       <div className="text-red-500 mx-auto font-bold text-center">

@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import Modal from "react-modal";
 import apiPaths from "../../../services/apiRoutes";
 import AuthContext from "../../context/authContext";
 import { addCommas } from "../../../utils/StringUtils";
-import FareInputModal from "../../components/modals/fareInputModal";
+import FareInputModal from "../../components/modals/FareInputModal";
 
 const ManageFareTable = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
@@ -26,8 +25,6 @@ const ManageFareTable = () => {
     closeModal();
 
     const fare = { ...selectedFare };
-    //fare = { ...fare, auth_code: retVal.auth_code };
-    //console.log("fare > ", fare);
     setSelectedFare({});
     getFareList();
   };
@@ -98,11 +95,17 @@ const ManageFareTable = () => {
   //권한 선택 모달창 open
   const handleDelete = async () => {
     if (isSelected()) {
-      const user = { email: selectedFare.email, delete_yn: "Y" };
+      const paramData = (({
+        startWide,
+        startSgg,
+        endWide,
+        endSgg,
+        ...rest
+      }) => ({ startWide, startSgg, endWide, endSgg }))(selectedFare);
 
       const { result, resultCd } = await requestServer(
-        apiPaths.adminChangeUser,
-        user
+        apiPaths.adminDelFare,
+        paramData
       );
 
       if (resultCd === "00") {
@@ -110,7 +113,7 @@ const ManageFareTable = () => {
         setSelectedFare({});
         await getFareList();
       } else {
-        alert(result);
+        alert("삭제에 실패했습니다.");
       }
     }
   };
