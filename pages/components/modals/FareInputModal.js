@@ -2,10 +2,10 @@ import { useContext, useEffect, useState } from "react";
 import Label from "../custom/Label";
 import AuthContext from "../../context/authContext";
 import apiPaths from "../../../services/apiRoutes";
-import StartEndAddress from "../mixins/startEndAddress";
 import { useInput } from "../../hooks/useInput";
 import { isEmptyObject } from "../../../utils/ObjectUtils";
 import { isEmpty } from "../../../utils/StringUtils";
+import StartEndAddress from "../mixins/StartEndAddress";
 
 const FareInputModal = ({ selectedFare = {}, onCancel, onComplete }) => {
   const { requestServer } = useContext(AuthContext);
