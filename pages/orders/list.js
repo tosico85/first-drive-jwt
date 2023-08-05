@@ -249,7 +249,7 @@ const CargoList = () => {
         </div>
 
         {/* Grid header(PC) */}
-        <div className="hidden lg:block mt-5 border-y border-gray-200 py-3 bg-black gap-x-1">
+        <div className="hidden lg:block mt-5 border-y border-gray-200 py-3 bg-headerColor2 gap-x-1">
           <div className="grid grid-cols-9 items-center text-center text-gray-200">
             <div className="col-span-2 border-r border-gray-700">
               <span>화물내용</span>

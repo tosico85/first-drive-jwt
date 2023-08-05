@@ -29,6 +29,13 @@ module.exports = {
 
         mainBlue: "#2E58EB",
         mainBgColor: "#F7F7F7",
+        subBgColor1: "#5F7F96",
+        subBgColor2: "#CCCCCC",
+        subBgColor3: "#7d98ab",
+        headerColor1: "#336699",
+        headerColor2: "#003366",
+        maroonColor: "#6e323b",
+        titleButtonColor: "#999999",
         mainInputColor: "#F3F6F9",
         mainInputFocusColor: "#EAEDF2",
       },
@@ -37,6 +44,9 @@ module.exports = {
         rate6: "60vh",
         rate7: "70vh",
         rate8: "80vh",
+      },
+      spacing: {
+        26: "108px",
       },
     },
   },

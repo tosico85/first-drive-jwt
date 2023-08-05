@@ -284,8 +284,8 @@ export default function OrderForm({
 
     let result = await requestServer(url, params);
     if (result) {
-      if (result.length > 10) {
-        result = result.slice(0, 10);
+      if (result.length > 8) {
+        result = result.slice(0, 8);
       }
       setRecentCargoList(() => result);
       console.log("Cargo order >>", result);
@@ -1616,7 +1616,7 @@ export default function OrderForm({
                 <div className="flex flex-col lg:flex-row justify-between gap-x-5 gap-y-5">
                   <div className="w-full flex flex-col gap-y-3">
                     <div className="grid grid-cols-1 gap-y-3">
-                      <p className="px-3 py-1 rounded-full bg-zinc-400 text-white w-fit">
+                      <p className="px-3 py-1 rounded-full bg-zinc-500 text-white w-fit">
                         출발지
                       </p>
                       <div className="flex gap-x-2">
@@ -1777,7 +1777,7 @@ export default function OrderForm({
 
                   <div className="w-full flex flex-col gap-y-3">
                     <div className="grid grid-cols-1 gap-y-3">
-                      <p className="px-3 py-1 rounded-full bg-zinc-400 text-sm text-white w-fit">
+                      <p className="px-3 py-1 rounded-full bg-zinc-500 text-sm text-white w-fit">
                         도착지
                       </p>
                       <div className="flex gap-x-2">
@@ -1942,7 +1942,7 @@ export default function OrderForm({
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 justify-between gap-x-5 gap-y-5 mt-16 pt-12 border-t border-dashed border-gray-200 ">
                   <div className="flex flex-col gap-y-3">
-                    <p className="px-3 py-1 rounded-full bg-zinc-400 text-white w-fit">
+                    <p className="px-3 py-1 rounded-full bg-zinc-500 text-white w-fit">
                       차량선택
                     </p>
 
@@ -2201,7 +2201,7 @@ export default function OrderForm({
                     )}
                   </div>
                   <div className="flex flex-col gap-y-3">
-                    <p className="px-3 py-1 rounded-full bg-zinc-400 text-white w-fit">
+                    <p className="px-3 py-1 rounded-full bg-zinc-500 text-white w-fit">
                       상하차일시 / 메모
                     </p>
                     <div className="flex flex-col">
@@ -2286,8 +2286,8 @@ export default function OrderForm({
                           required: "화물상세내용을 입력해주세요.",
                         })}
                         placeholder="화물상세내용(메모)"
-                        rows="5"
-                        className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none resize-none"
+                        rows="7"
+                        className="block w-full rounded-sm border-0 px-2 py-2.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none resize-none"
                       />
                       <div className="text-red-500 mx-auto font-bold text-center">
                         {errors.cargoDsc?.message}
@@ -2330,7 +2330,7 @@ export default function OrderForm({
                       </div>
                     </div>
                   </div>
-                  <div className="mt-5 pt-5 border-t border-dashed border-gray-200">
+                  <div className="mt-12 pt-12 border-t border-dashed border-gray-200">
                     <div className="w-full border-b border-gray-200 mb-5">
                       <h2 className="text-base font-semibold py-1">
                         화주 및 의뢰 정보
@@ -2475,7 +2475,7 @@ export default function OrderForm({
                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                           />
                         </div>
-                        <div className="text-sm leading-6">
+                        <div className="text-sm leading-6 text-blue-600">
                           <label htmlFor="candidates" className="font-medium">
                             <p>전자세금계산서 발행여부</p>
                             <p
@@ -2495,7 +2495,7 @@ export default function OrderForm({
             </div>
             <div
               className={
-                "hidden flex-col p-5 bg-white border border-gray-200 rounded-sm ml-5 row-span-2" +
+                "hidden flex-col p-5 bg-subBgColor3 text-white border border-gray-200 rounded-sm ml-5 row-span-2" +
                 (isAdmin ? " 2xl:flex" : " lg:flex")
               }
             >

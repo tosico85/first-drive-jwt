@@ -144,7 +144,7 @@ const ManageFareTable = () => {
         <p className="text-right">{`${fareList.length} 건`}</p>
       </div>
       <div className="mt-6 pb-24 h-rate8">
-        <div className="flex justify-between border-y border-gray-200 py-3 px-5 pr-9 bg-black gap-x-3 text-gray-200 text-center">
+        <div className="flex justify-between border-y border-gray-200 py-3 px-5 pr-9 bg-headerColor2 gap-x-3 text-gray-200 text-center">
           <div className="w-10 shrink-0"></div>
           <div className="grid grid-cols-12 w-full">
             <div className="col-span-2 border-r border-gray-700">상차지</div>
