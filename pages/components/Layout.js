@@ -59,7 +59,7 @@ const Layout = ({ children }) => {
                 </h1>
               </div>
             </header> */}
-            <Navbar className="h-16 pl-4" />
+            <Navbar className="h-16 pl-40" />
           </>
         )}
         <main className={"h-full " + (!isLoginPage && "lg:ml-24")}>
