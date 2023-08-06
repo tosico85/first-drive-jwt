@@ -2499,14 +2499,14 @@ export default function OrderForm({
                 (isAdmin ? " 2xl:flex" : " lg:flex")
               }
             >
-              <div className="w-full border-b border-gray-500">
+              <div className="w-full border-b border-gray-300">
                 <h2 className="text-base font-semibold py-1">배차 목록</h2>
               </div>
               <ul>
                 {recentCargoList &&
                   recentCargoList.map(({ startPlanDt, cargoDsc }, i) => (
                     <li
-                      className="py-5 border-b border-gray-200 flex gap-x-5 cursor-pointer"
+                      className="py-5 border-b border-gray-500 flex gap-x-5 cursor-pointer"
                       onClick={() => selectCargoOrder(i)}
                     >
                       <span>{formatDate(startPlanDt)}</span>
