@@ -2495,7 +2495,7 @@ export default function OrderForm({
             </div>
             <div
               className={
-                "hidden flex-col p-5 bg-subBgColor3 text-black border border-gray-500 rounded-sm ml-5 row-span-2" +
+                "hidden flex-col p-5 bg-subBgColor3 text-black border border-gray-300 rounded-sm ml-5 row-span-2" +
                 (isAdmin ? " 2xl:flex" : " lg:flex")
               }
             >
