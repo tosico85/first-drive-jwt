@@ -107,7 +107,7 @@ const SideNav = () => {
       <div
         className={
           "flex flex-col items-center transition-color border-b border-mainColor3 gap-y-2 pb-5 w-full hover:cursor-pointer " +
-          (router.pathname == "/user/profile" ? "font-bold" : "")
+          (router.pathname == "/manage/user/list" ? "font-bold" : "")
         }
         onClick={() => router.push("/manage/user/list")}
       >
@@ -131,7 +131,7 @@ const SideNav = () => {
       <div
         className={
           "flex flex-col items-center transition-color gap-y-2 pb-5 w-full hover:cursor-pointer " +
-          (router.pathname == "/user/profile" ? "font-bold" : "")
+          (router.pathname == "/manage/fareTable/list" ? "font-bold" : "")
         }
         onClick={() => router.push("/manage/fareTable/list")}
       >
