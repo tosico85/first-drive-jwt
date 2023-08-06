@@ -32,7 +32,7 @@ module.exports = {
         subBgColor1: "#5F7F96",
         subBgColor2: "#CCCCCC",
         //        subBgColor3: "#f4f7f9",
-        subBgColor3: "#f3f6fa",
+        subBgColor3: "#f4f6fb",
         headerColor1: "#336699",
         headerColor2: "#003366",
         maroonColor: "#6e323b",
