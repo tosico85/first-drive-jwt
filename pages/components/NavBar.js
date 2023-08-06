@@ -59,8 +59,6 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="mt-4"></div> {/* 여백을 추가하는 새로운 div */}
-    
     <div className="fixed w-full z-50 border-b border-gray-200">
       <Disclosure as="nav" className="bg-white w-full">
         <div className="mx-auto px-5">
