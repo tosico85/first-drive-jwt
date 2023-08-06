@@ -2495,7 +2495,7 @@ export default function OrderForm({
             </div>
             <div
               className={
-                "hidden flex-col p-5 bg-subBgColor3 text-black border border-gray-300 rounded-sm ml-5 row-span-2" +
+                "hidden flex-col p-5 bg-subBgColor3 text-black border border-black rounded-sm ml-5 row-span-2" +
                 (isAdmin ? " 2xl:flex" : " lg:flex")
               }
             >
@@ -2506,7 +2506,7 @@ export default function OrderForm({
                 {recentCargoList &&
                   recentCargoList.map(({ startPlanDt, cargoDsc }, i) => (
                     <li
-                      className="py-5 border-b border-gray-400 flex gap-x-5 cursor-pointer"
+                      className="py-5 border-b border-gray-300 flex gap-x-5 cursor-pointer"
                       onClick={() => selectCargoOrder(i)}
                     >
                       <span>{formatDate(startPlanDt)}</span>
