@@ -2495,18 +2495,18 @@ export default function OrderForm({
             </div>
             <div
               className={
-                "hidden flex-col p-5 bg-subBgColor3 text-black border border-black rounded-sm ml-5 row-span-2" +
+                "hidden flex-col p-5 bg-subBgColor3 text-black border border-gray-300 rounded-sm ml-5 row-span-2" +
                 (isAdmin ? " 2xl:flex" : " lg:flex")
               }
             >
-              <div className="w-full border-b border-gray-300">
+              <div className="w-full border-b border-black">
                 <h2 className="text-base font-semibold py-1">배차 목록</h2>
               </div>
               <ul>
                 {recentCargoList &&
                   recentCargoList.map(({ startPlanDt, cargoDsc }, i) => (
                     <li
-                      className="py-5 border-b border-gray-300 flex gap-x-5 cursor-pointer"
+                      className="py-5 border-b border-gray-400 flex gap-x-5 cursor-pointer"
                       onClick={() => selectCargoOrder(i)}
                     >
                       <span>{formatDate(startPlanDt)}</span>
