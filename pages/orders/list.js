@@ -10,6 +10,7 @@ import {
 } from "../../utils/StringUtils";
 import { formatPhoneNumber } from "../../utils/StringUtils";
 import DateInput from "../components/custom/DateInput";
+import { useInput } from "../../hooks/useInput";
 
 const CargoList = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
@@ -17,7 +18,8 @@ const CargoList = () => {
   const [searchStatus, setSearchStatus] = useState("ALL");
   const [startSearchDt, setStartSearchDt] = useState(getOneWeekAgoDate());
   const [endSearchDt, setEndSearchDt] = useState(getTodayDate());
-  const [companySearch, setCompanySearch] = useState("");
+  //const [companySearch, setCompanySearch] = useState("");
+  const companySearch = useInput("");
   const router = useRouter();
 
   const getOrderList = async () => {
@@ -31,7 +33,7 @@ const CargoList = () => {
     const params = {
       start_dt: startSearchDt,
       end_dt: endSearchDt,
-      company_nm: companySearch,
+      company_nm: companySearch.value,
     };
 
     const result = await requestServer(url, params);
@@ -43,16 +45,16 @@ const CargoList = () => {
     (async () => {
       await getOrderList();
     })();
-  }, [userInfo, startSearchDt, endSearchDt, companySearch]);
+  }, [userInfo, startSearchDt, endSearchDt]);
 
-  const handleCompanySearch = (e) => {
+  const handleCompanySearch = async (e) => {
     const {
       key,
       target: { value },
     } = e;
 
     if (key == "Enter") {
-      setCompanySearch(value);
+      await getOrderList();
     }
   };
 
@@ -191,31 +193,119 @@ const CargoList = () => {
             </div>
           </div>
 
-          <div className="hidden lg:flex items-center w-full pb-5 border-b border-gray-200">
-            <div className="flex justify-between gap-x-2 items-center">
-              <div className="z-0">
-                <DateInput
-                  dateValue={startSearchDt}
-                  onDateChange={setStartSearchDt}
-                  addClass="w-40"
+          <div className="hidden lg:flex items-center justify-between w-full pb-5 border-b border-gray-200">
+            <div className="flex items-center">
+              <div className="flex justify-between gap-x-2 items-center">
+                <div className="z-0">
+                  <DateInput
+                    dateValue={startSearchDt}
+                    onDateChange={setStartSearchDt}
+                    addClass="w-40"
+                  />
+                </div>
+                <span>~</span>
+                <div className="z-0">
+                  <DateInput
+                    dateValue={endSearchDt}
+                    onDateChange={setEndSearchDt}
+                    addClass="w-40"
+                  />
+                </div>
+              </div>
+              <div className="ml-3">
+                <input
+                  type="text"
+                  placeholder="업체명 검색"
+                  onKeyDown={handleCompanySearch}
+                  {...companySearch}
+                  className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
               </div>
-              <span>~</span>
-              <div className="z-0">
-                <DateInput
-                  dateValue={endSearchDt}
-                  onDateChange={setEndSearchDt}
-                  addClass="w-40"
-                />
+              <div className="ml-1">
+                <button
+                  type="button"
+                  onClick={() =>
+                    (async () => {
+                      await getOrderList();
+                    })()
+                  }
+                  className="rounded-md bg-mainBlue px-3 py-1.5 text-sm lg:text-base font-semibold text-white shadow-sm"
+                >
+                  검색
+                </button>
               </div>
             </div>
-            <div className="ml-3">
-              <input
-                type="text"
-                placeholder="업체명 검색"
-                onKeyDown={handleCompanySearch}
-                className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-              />
+            <div className="grid grid-cols-5">
+              <div
+                className={
+                  "text-sm w-full flex justify-between gap-x-3 px-5 py-1 bg-white border hover:shadow-md " +
+                  (searchStatus == "ALL"
+                    ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
+                    : "text-gray-500 border-gray-200")
+                }
+                onClick={() => handleSearchStatus("ALL")}
+              >
+                <p className="text-sm">전체</p>
+                <p className="text-right font-extrabold text-lg">
+                  {getCountByStatus("ALL")}
+                </p>
+              </div>
+              <div
+                className={
+                  "text-sm w-full flex justify-between gap-x-3 px-5 py-1 bg-white border hover:shadow-md " +
+                  (searchStatus == "화물접수"
+                    ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
+                    : "text-gray-500 border-gray-200")
+                }
+                onClick={() => handleSearchStatus("화물접수")}
+              >
+                <p className="text-sm">접수중</p>
+                <p className="text-right font-extrabold text-lg">
+                  {getCountByStatus("화물접수")}
+                </p>
+              </div>
+              <div
+                className={
+                  "text-sm w-full flex justify-between gap-x-3 px-5 py-1 bg-white border hover:shadow-md " +
+                  (searchStatus == "배차신청"
+                    ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
+                    : "text-gray-500 border-gray-200")
+                }
+                onClick={() => handleSearchStatus("배차신청")}
+              >
+                <p className="text-sm">배차중</p>
+                <p className="text-right font-extrabold text-lg">
+                  {getCountByStatus("배차신청")}
+                </p>
+              </div>
+              <div
+                className={
+                  "text-sm w-full flex justify-between gap-x-3 px-5 py-1 bg-white border hover:shadow-md " +
+                  (searchStatus == "배차완료"
+                    ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
+                    : "text-gray-500 border-gray-200")
+                }
+                onClick={() => handleSearchStatus("배차완료")}
+              >
+                <p className="text-sm">배차완료</p>
+                <p className="text-right font-extrabold text-lg">
+                  {getCountByStatus("배차완료")}
+                </p>
+              </div>
+              <div
+                className={
+                  "text-sm w-full flex justify-between gap-x-3 px-5 py-1 bg-white border hover:shadow-md " +
+                  (searchStatus == "취소"
+                    ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
+                    : "text-gray-500 border-gray-200")
+                }
+                onClick={() => handleSearchStatus("취소")}
+              >
+                <p className="text-sm">취소</p>
+                <p className="text-right font-extrabold text-lg">
+                  {getCountByStatus("취소")}
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -242,6 +332,7 @@ const CargoList = () => {
               type="text"
               placeholder="업체명 검색"
               onKeyDown={handleCompanySearch}
+              {...companySearch}
               className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
             />
           </div>
@@ -252,13 +343,13 @@ const CargoList = () => {
         <div className="hidden lg:block mt-5 border-y border-gray-200 py-3 bg-headerColor2 gap-x-1">
           <div className="grid grid-cols-9 items-center text-center text-gray-200">
             <div className="col-span-2 border-r border-gray-700">
-              <span>화물내용</span>
-            </div>
-            <div className="col-span-2 border-r border-gray-700">
               <span>상차정보</span>
             </div>
             <div className="col-span-2 border-r border-gray-700">
               <span>하차정보</span>
+            </div>
+            <div className="col-span-2 border-r border-gray-700">
+              <span>화물내용</span>
             </div>
             <div className="border-r border-gray-700">
               <span>상태</span>
@@ -272,7 +363,7 @@ const CargoList = () => {
           </div>
         </div>
 
-        <ul className="mt-5 pb-14 lg:pb-0 lg:mt-0 lg:h-rate5 lg:overflow-auto lg:border-b lg:border-gray-50">
+        <ul className="mt-5 pb-14 lg:pb-0 lg:mt-0 lg:h-rate7 lg:overflow-auto lg:border-b lg:border-gray-50">
           {filteredCargoList().length > 0 ? (
             filteredCargoList().map((item) => {
               const {
@@ -441,31 +532,6 @@ const CargoList = () => {
 
                   <div className="hidden lg:block border-b border-gray-200 py-3">
                     <div className="grid grid-cols-9 items-center">
-                      <div className="flex flex-col col-span-2 px-5">
-                        <p className="text-sm font-semibold leading-6 text-gray-500">
-                          {cargoDsc}
-                        </p>
-                        <div className="flex items-center gap-x-3">
-                          <p className="px-2 py-0 rounded-md flex items-center h-5 shadow-md bg-gray-500 text-xs text-white">
-                            {`${truckType} ${cargoTon}t`}
-                          </p>
-                          {urgent && (
-                            <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-red-400 text-xs text-white">
-                              {urgent}
-                            </p>
-                          )}
-                          {multiCargoGub && (
-                            <p className="px-1 py-0 rounded-md flex items-center h-5 shadow-md bg-indigo-400 text-xs text-white">
-                              {multiCargoGub}
-                            </p>
-                          )}
-                          {shuttleCargoInfo && (
-                            <p className="px-1 py-0 rounded-md flex items-center h-5 bg-yellow-400 text-xs text-white">
-                              {shuttleCargoInfo}
-                            </p>
-                          )}
-                        </div>
-                      </div>
                       <div className="col-span-2 px-5">
                         <p className="mt-1 truncate leading-5 font-bold text-gray-500">
                           {`${startCompanyName || ""} ${
@@ -491,6 +557,31 @@ const CargoList = () => {
                         <p className="mt-1 truncate leading-5 text-gray-500">
                           {formatDate(endPlanDt)}
                         </p>
+                      </div>
+                      <div className="flex flex-col col-span-2 px-5">
+                        <p className="text-sm font-semibold leading-6 text-gray-500">
+                          {cargoDsc}
+                        </p>
+                        <div className="flex items-center gap-x-3">
+                          <p className="px-2 py-0.5 rounded-md shadow-md bg-gray-500 text-sm text-white">
+                            {`${cargoTon}t ${truckType}`}
+                          </p>
+                          {urgent && (
+                            <p className="px-2 py-0.5 rounded-md shadow-md bg-red-400 text-sm text-white">
+                              {urgent}
+                            </p>
+                          )}
+                          {multiCargoGub && (
+                            <p className="px-2 py-0.5 rounded-md shadow-md bg-indigo-400 text-sm text-white">
+                              {multiCargoGub}
+                            </p>
+                          )}
+                          {shuttleCargoInfo && (
+                            <p className="px-2 py-0.5 rounded-md bg-yellow-400 text-sm text-white">
+                              {shuttleCargoInfo}
+                            </p>
+                          )}
+                        </div>
                       </div>
                       <div className="text-center flex flex-col items-center">
                         <span
@@ -559,89 +650,6 @@ const CargoList = () => {
             </div>
           )}
         </ul>
-
-        <div className="hidden lg:flex flex-col mt-5 border border-gray-200 bg-slate-50">
-          <div className="p-5 border border-gray-200 flex items-center justify-between">
-            <p className="rounded-full bg-white border border-gray-200 w-fit py-1 px-3">
-              총 오더 수
-            </p>
-            <p className="text-right font-extrabold text-4xl">{`${getCountByStatus(
-              "ALL"
-            )}`}</p>
-          </div>
-          <div className="grid grid-cols-5 p-5">
-            <div
-              className={
-                "text-sm w-full flex flex-col gap-y-2 p-5 bg-white font-bold border hover:shadow-md " +
-                (searchStatus == "ALL"
-                  ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
-                  : "text-gray-500 border-gray-200")
-              }
-              onClick={() => handleSearchStatus("ALL")}
-            >
-              <p className="text-base">전체</p>
-              <p className="text-right font-extrabold text-3xl">
-                {getCountByStatus("ALL")}
-              </p>
-            </div>
-            <div
-              className={
-                "text-sm w-full flex flex-col gap-y-2 p-5 bg-white font-bold border hover:shadow-md " +
-                (searchStatus == "화물접수"
-                  ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
-                  : "text-gray-500 border-gray-200")
-              }
-              onClick={() => handleSearchStatus("화물접수")}
-            >
-              <p className="text-base">접수중</p>
-              <p className="text-right font-extrabold text-3xl">
-                {getCountByStatus("화물접수")}
-              </p>
-            </div>
-            <div
-              className={
-                "text-sm w-full flex flex-col gap-y-2 p-5 bg-white font-bold border hover:shadow-md " +
-                (searchStatus == "배차신청"
-                  ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
-                  : "text-gray-500 border-gray-200")
-              }
-              onClick={() => handleSearchStatus("배차신청")}
-            >
-              <p className="text-base">배차중</p>
-              <p className="text-right font-extrabold text-3xl">
-                {getCountByStatus("배차신청")}
-              </p>
-            </div>
-            <div
-              className={
-                "text-sm w-full flex flex-col gap-y-2 p-5 bg-white font-bold border hover:shadow-md " +
-                (searchStatus == "배차완료"
-                  ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
-                  : "text-gray-500 border-gray-200")
-              }
-              onClick={() => handleSearchStatus("배차완료")}
-            >
-              <p className="text-base">배차완료</p>
-              <p className="text-right font-extrabold text-3xl">
-                {getCountByStatus("배차완료")}
-              </p>
-            </div>
-            <div
-              className={
-                "text-sm w-full flex flex-col gap-y-2 p-5 bg-white font-bold border hover:shadow-md " +
-                (searchStatus == "취소"
-                  ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
-                  : "text-gray-500 border-gray-200")
-              }
-              onClick={() => handleSearchStatus("취소")}
-            >
-              <p className="text-base">취소</p>
-              <p className="text-right font-extrabold text-3xl">
-                {getCountByStatus("취소")}
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

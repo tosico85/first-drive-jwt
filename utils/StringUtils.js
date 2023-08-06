@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const formatDate = (inputDate) => {
   if (isEmpty(inputDate)) {
     return "";
@@ -97,4 +99,12 @@ export const getDayYYYYMMDD = (addDay = 0) => {
   }
 
   return year.toString() + month.toString() + day.toString();
+};
+
+// 시간(hh)을 가져오는 함수
+export const getNextHourHH = (addHour = 0) => {
+  const today = moment(); // 현재 날짜와 시간을 가져옵니다.
+  const futureTime = today.add(addHour, "hours"); // 현재 시간에 addHour 시간을 더합니다.
+  const hh = futureTime.format("hh"); // 현재 시간 이후의 시간(hh)을 가져옵니다.
+  return hh;
 };

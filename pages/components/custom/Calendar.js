@@ -8,7 +8,6 @@ const CustomCalendar = (prop) => {
     <div className="w-full flex flex-col items-center">
       <Calendar
         formatDay={(locale, date) => moment(date).format("D")}
-        minDate={new Date()}
         {...prop}
       />
       <style jsx global>{`

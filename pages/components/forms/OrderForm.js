@@ -13,6 +13,7 @@ import {
   addCommas,
   formatDate,
   getDayYYYYMMDD,
+  getNextHourHH,
   isEmpty,
 } from "../../../utils/StringUtils";
 import SearchAddressModal from "../modals/SearchAddressModal";
@@ -55,6 +56,10 @@ export default function OrderForm({
 
   //운송료 map
   const [fareMap, setFareMap] = useState({});
+
+  //상하차일시 내용
+  const [planTimeStatement, setPlanTimeStatement] =
+    useState("지금 상차 / 당착");
 
   //base data
   const LOAD_TYPE_LIST = [
@@ -111,7 +116,14 @@ export default function OrderForm({
 
         const curDt = format(new Date(), "yyyyMMdd");
         setValue("startPlanDt", getValues("startPlanDt") || curDt);
+        setValue(
+          "startPlanHour",
+          getValues("startPlanHour") || getNextHourHH(1)
+        );
+        setValue("startPlanMinute", getValues("startPlanMinute") || "00");
         setValue("endPlanDt", getValues("endPlanDt") || curDt);
+        setValue("endPlanHour", getValues("endPlanHour") || getNextHourHH(1));
+        setValue("endPlanMinute", getValues("endPlanMinute") || "00");
         setValue("payPlanYmd", getValues("payPlanYmd") || curDt);
 
         if (isEdit || isCopy) {
@@ -597,15 +609,18 @@ export default function OrderForm({
    * @param {event} e
    * @param {상하차 구분} startEnd
    */
-  const handleSelectTimeButton = (e, startEnd) => {
+  const handleSelectTimeButton = (e) => {
     e.preventDefault();
-    setModalStartEnd(startEnd);
-    console.log("startEnd >> ", startEnd);
+    //setModalStartEnd(startEnd);
+    //console.log("startEnd >> ", startEnd);
 
     let paramObj = {};
-    paramObj["PlanDt"] = getValues(`${startEnd}PlanDt`) || "";
-    paramObj["PlanHour"] = getValues(`${startEnd}PlanHour`) || "";
-    paramObj["PlanMinute"] = getValues(`${startEnd}PlanMinute`) || "";
+    // paramObj["PlanDt"] = getValues(`${startEnd}PlanDt`) || "";
+    // paramObj["PlanHour"] = getValues(`${startEnd}PlanHour`) || "";
+    // paramObj["PlanMinute"] = getValues(`${startEnd}PlanMinute`) || "";
+    paramObj["PlanDt"] = getValues(`startPlanDt`) || "";
+    paramObj["PlanHour"] = getValues(`startPlanHour`) || "";
+    paramObj["PlanMinute"] = getValues(`startPlanMinute`) || "";
     setModalDateTime(paramObj);
     console.log("paramObj >> ", paramObj);
 
@@ -669,7 +684,7 @@ export default function OrderForm({
   };
 
   /**
-   * 상하차일시 선택(모달폼) 일시 선택 후 callback
+   * (예약설정)상하차일시 선택(모달폼) 일시 선택 후 callback
    * @param {주소록 선택 리턴값} retVal
    */
   const callbackSelectTimeModal = (retVal) => {
@@ -680,7 +695,19 @@ export default function OrderForm({
       });
     }
 
+    setPlanTimeStatement(`예약(${getTimeState()}) 상차 / 당착`);
+
     closeSelectTimesModal();
+  };
+
+  const getTimeState = () => {
+    return (
+      getValues(["startPlanDt", "startPlanHour", "startPlanMinute"]).join("")
+        .length == 12 &&
+      ` ${formatDate(getValues("startPlanDt"))} ${getValues(
+        "startPlanHour"
+      )}:${getValues("startPlanMinute")}`
+    );
   };
 
   /**
@@ -734,7 +761,7 @@ export default function OrderForm({
     // 데스크탑 스타일
     content: {
       ...customModalStyles.content,
-      width: "40%",
+      width: "510px",
       minWidth: "fit-content",
     },
   };
@@ -826,7 +853,7 @@ export default function OrderForm({
         <DateTimeSelectModal
           onCancel={closeSelectTimesModal}
           onComplete={callbackSelectTimeModal}
-          startEnd={modalStartEnd}
+          //startEnd={modalStartEnd}
           paramObj={modalDateTime}
         />
       </Modal>
@@ -2204,82 +2231,69 @@ export default function OrderForm({
                     <p className="px-3 py-1 rounded-full bg-zinc-500 text-white w-fit">
                       상하차일시 / 메모
                     </p>
-                    <div className="flex flex-col">
-                      <button
-                        className="rounded-full py-1.5 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
-                        onClick={(e) => handleSelectTimeButton(e, "start")}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="w-6 h-6 top-1.5 right-2 text-gray-400"
+                    <p className="bg-gray-100 text-gray-500 px-2 py-2 rounded-sm">
+                      {planTimeStatement}
+                    </p>
+                    <div className="grid grid-cols-2 gap-x-3">
+                      <div className="flex flex-col">
+                        <button
+                          className="rounded-full py-1.5 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            alert("준비 중");
+                          }}
                         >
-                          <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
-                          <path
-                            fillRule="evenodd"
-                            d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <span>상차 일시</span>
-                        <span>
-                          {getValues([
-                            "startPlanDt",
-                            "startPlanHour",
-                            "startPlanMinute",
-                          ]).join("").length == 12 &&
-                            ` ${formatDate(
-                              getValues("startPlanDt")
-                            )} ${getValues("startPlanHour")}:${getValues(
-                              "startPlanMinute"
-                            )}`}
-                        </span>
-                      </button>
-                      <div className="text-red-500 mx-auto font-bold text-center">
-                        {(!isEmpty(errors.startPlanDt) ||
-                          !isEmpty(errors.startPlanHour) ||
-                          !isEmpty(errors.startPlanMinute)) &&
-                          "상차일시를 입력해주세요"}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="w-6 h-6 top-1.5 right-2 text-gray-400"
+                          >
+                            <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                            <path
+                              fillRule="evenodd"
+                              d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <span>상/하차일시</span>
+                        </button>
+                        <div className="text-red-500 mx-auto font-bold text-center">
+                          {(!isEmpty(errors.startPlanDt) ||
+                            !isEmpty(errors.startPlanHour) ||
+                            !isEmpty(errors.startPlanMinute)) &&
+                            "상차일시를 입력해주세요"}
+                        </div>
+                      </div>
+                      <div className="flex flex-col">
+                        <button
+                          className="rounded-full py-1.5 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
+                          onClick={handleSelectTimeButton}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="w-6 h-6 top-1.5 right-2 text-gray-400"
+                          >
+                            <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                            <path
+                              fillRule="evenodd"
+                              d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <span>예약설정</span>
+                        </button>
+                        <div className="text-red-500 mx-auto font-bold text-center">
+                          {(!isEmpty(errors.endPlanDt) ||
+                            !isEmpty(errors.endPlanHour) ||
+                            !isEmpty(errors.endPlanMinute)) &&
+                            "하차일시를 입력해주세요"}
+                        </div>
                       </div>
                     </div>
-                    <div className="flex flex-col">
-                      <button
-                        className="rounded-full py-1.5 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
-                        onClick={(e) => handleSelectTimeButton(e, "end")}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="w-6 h-6 top-1.5 right-2 text-gray-400"
-                        >
-                          <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z" />
-                          <path
-                            fillRule="evenodd"
-                            d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <span>하차 일시</span>
-                        <span>
-                          {getValues([
-                            "endPlanDt",
-                            "endPlanHour",
-                            "endPlanMinute",
-                          ]).join("").length == 12 &&
-                            ` ${formatDate(getValues("endPlanDt"))} ${getValues(
-                              "endPlanHour"
-                            )}:${getValues("endPlanMinute")}`}
-                        </span>
-                      </button>
-                      <div className="text-red-500 mx-auto font-bold text-center">
-                        {(!isEmpty(errors.endPlanDt) ||
-                          !isEmpty(errors.endPlanHour) ||
-                          !isEmpty(errors.endPlanMinute)) &&
-                          "하차일시를 입력해주세요"}
-                      </div>
-                    </div>
+
                     <div className="">
                       <textarea
                         {...register("cargoDsc", {
