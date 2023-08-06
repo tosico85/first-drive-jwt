@@ -1276,7 +1276,7 @@ export default function OrderForm({
                         className={
                           "flex gap-x-3 ring-1 rounded-md px-4 py-2 w-full " +
                           (watch("multiCargoGub")
-                            ? "ring-2 ring-blue-600"
+                            ? "ring-2 ring-blue-600 text-blue-600"
                             : "ring-gray-300")
                         }
                         onClick={() => {
@@ -1294,9 +1294,7 @@ export default function OrderForm({
                           />
                         </div>
                         <div className="text-sm leading-6">
-                          <label htmlFor="comments" className="font-medium">
-                            혼적
-                          </label>
+                          <label className="font-medium">혼적</label>
                         </div>
                       </div>
                     )}
@@ -1305,7 +1303,7 @@ export default function OrderForm({
                         className={
                           "flex gap-x-3 ring-1 rounded-md px-4 py-2 w-full " +
                           (watch("urgent")
-                            ? "ring-2 ring-blue-600"
+                            ? "ring-2 ring-blue-600 text-blue-600"
                             : "ring-gray-300")
                         }
                         onClick={() => {
@@ -1320,9 +1318,7 @@ export default function OrderForm({
                           />
                         </div>
                         <div className="text-sm leading-6">
-                          <label htmlFor="candidates" className="font-medium">
-                            긴급
-                          </label>
+                          <label className="font-medium">긴급</label>
                         </div>
                       </div>
                     )}
@@ -1331,7 +1327,7 @@ export default function OrderForm({
                         className={
                           "flex gap-x-3 ring-1 rounded-md px-4 py-2 w-full " +
                           (watch("farePaytype")
-                            ? "ring-2 ring-blue-600"
+                            ? "ring-2 ring-blue-600 text-blue-600"
                             : "ring-gray-300")
                         }
                         onClick={() => {
@@ -1356,7 +1352,7 @@ export default function OrderForm({
                       className={
                         "flex gap-x-3 ring-1 rounded-md px-4 py-2 w-full " +
                         (watch("shuttleCargoInfo")
-                          ? "ring-2 ring-blue-600"
+                          ? "ring-2 ring-blue-600 text-blue-600"
                           : "ring-gray-300")
                       }
                       onClick={() => {
@@ -2025,7 +2021,7 @@ export default function OrderForm({
                               className={
                                 "flex gap-x-3 ring-1 rounded-sm px-4 py-2 w-full " +
                                 (watch("multiCargoGub")
-                                  ? "ring-2 ring-blue-600"
+                                  ? "ring-2 ring-blue-600 text-blue-600"
                                   : "ring-gray-300")
                               }
                               onClick={() => {
@@ -2043,12 +2039,7 @@ export default function OrderForm({
                                 />
                               </div>
                               <div className="text-sm leading-6">
-                                <label
-                                  htmlFor="comments"
-                                  className="font-medium"
-                                >
-                                  혼적
-                                </label>
+                                <label className="font-medium">혼적</label>
                               </div>
                             </div>
                           )}
@@ -2057,7 +2048,7 @@ export default function OrderForm({
                               className={
                                 "flex gap-x-3 ring-1 rounded-sm px-4 py-2 w-full " +
                                 (watch("urgent")
-                                  ? "ring-2 ring-blue-600"
+                                  ? "ring-2 ring-blue-600 text-blue-600"
                                   : "ring-gray-300")
                               }
                               onClick={() => {
@@ -2072,12 +2063,7 @@ export default function OrderForm({
                                 />
                               </div>
                               <div className="text-sm leading-6">
-                                <label
-                                  htmlFor="candidates"
-                                  className="font-medium"
-                                >
-                                  긴급
-                                </label>
+                                <label className="font-medium">긴급</label>
                               </div>
                             </div>
                           )}
@@ -2086,7 +2072,7 @@ export default function OrderForm({
                               className={
                                 "flex gap-x-3 ring-1 rounded-sm px-4 py-2 w-full " +
                                 (watch("farePaytype")
-                                  ? "ring-2 ring-blue-600"
+                                  ? "ring-2 ring-blue-600 text-blue-600"
                                   : "ring-gray-300")
                               }
                               onClick={() => {
@@ -2104,12 +2090,7 @@ export default function OrderForm({
                                 />
                               </div>
                               <div className="text-sm leading-6">
-                                <label
-                                  htmlFor="candidates"
-                                  className="font-medium"
-                                >
-                                  착불
-                                </label>
+                                <label className="font-medium">착불</label>
                               </div>
                             </div>
                           )}
@@ -2117,7 +2098,7 @@ export default function OrderForm({
                             className={
                               "flex gap-x-3 ring-1 rounded-sm px-4 py-2 w-full " +
                               (watch("shuttleCargoInfo")
-                                ? "ring-2 ring-blue-600"
+                                ? "ring-2 ring-blue-600 text-blue-600"
                                 : "ring-gray-300")
                             }
                             onClick={() => {
@@ -2135,9 +2116,7 @@ export default function OrderForm({
                               />
                             </div>
                             <div className="text-sm leading-6">
-                              <label htmlFor="offers" className="font-medium">
-                                왕복
-                              </label>
+                              <label className="font-medium">왕복</label>
                             </div>
                           </div>
                         </div>
@@ -2473,7 +2452,7 @@ export default function OrderForm({
                         className={
                           "flex gap-x-3 ring-1 rounded-sm px-4 py-2 w-full " +
                           (watch("taxbillType")
-                            ? "ring-2 ring-blue-600"
+                            ? "ring-2 ring-blue-600 text-blue-600"
                             : "ring-gray-300")
                         }
                         onClick={() => {
@@ -2489,8 +2468,8 @@ export default function OrderForm({
                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                           />
                         </div>
-                        <div className="text-sm leading-6 text-blue-600">
-                          <label htmlFor="candidates" className="font-medium">
+                        <div className="text-sm leading-6">
+                          <label className="font-medium">
                             <p>전자세금계산서 발행여부</p>
                             <p
                               className={
