@@ -2506,7 +2506,7 @@ export default function OrderForm({
                 {recentCargoList &&
                   recentCargoList.map(({ startPlanDt, cargoDsc }, i) => (
                     <li
-                      className="py-5 border-b border-gray-500 flex gap-x-5 cursor-pointer"
+                      className="py-5 border-b border-gray-400 flex gap-x-5 cursor-pointer"
                       onClick={() => selectCargoOrder(i)}
                     >
                       <span>{formatDate(startPlanDt)}</span>
