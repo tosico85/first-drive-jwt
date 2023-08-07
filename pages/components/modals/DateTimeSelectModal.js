@@ -132,7 +132,7 @@ const DateTimeSelectModal = ({
           </select>
         </div>
       </div>
-      <div className="text-center pt-20 grid grid-cols-2 w-full gap-x-3">
+      <div className="text-center pt-10 grid grid-cols-2 w-full gap-x-3">
         <button
           type="button"
           className="rounded-md bg-normalGray px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"

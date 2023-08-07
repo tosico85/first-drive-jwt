@@ -20,6 +20,7 @@ import {
 import SearchAddressModal from "../modals/SearchAddressModal";
 import DateTimeSelectModal from "../modals/DateTimeSelectModal";
 import Label from "../custom/Label";
+import TodayTimeSelectModal from "../modals/TodayTimeSelectModal";
 
 export default function OrderForm({
   isEdit = false,
@@ -614,7 +615,7 @@ export default function OrderForm({
    * @param {event} e
    * @param {상하차 구분} startEnd
    */
-  const handleSelectTimeButton = (e) => {
+  const handleResvTimeButton = (e) => {
     e.preventDefault();
     //setModalStartEnd(startEnd);
     //console.log("startEnd >> ", startEnd);
@@ -629,7 +630,28 @@ export default function OrderForm({
     setModalResvDateTime(paramObj);
     console.log("paramObj >> ", paramObj);
 
-    openSelectTimeModal();
+    openResvTimeModal();
+  };
+
+  /**
+   * 상하차일시 버튼 event handle
+   * @param {event} e
+   * @param {상하차 구분} startEnd
+   */
+  const handleTodayTimeButton = (e) => {
+    e.preventDefault();
+
+    let paramObj = {};
+    paramObj["startPlanDt"] = getValues(`startPlanDt`) || "";
+    paramObj["startPlanHour"] = getValues(`startPlanHour`) || "";
+    paramObj["startPlanMinute"] = getValues(`startPlanMinute`) || "";
+    paramObj["endPlanDt"] = getValues(`endPlanDt`) || "";
+    paramObj["endPlanHour"] = getValues(`endPlanHour`) || "";
+    paramObj["endPlanMinute"] = getValues(`endPlanMinute`) || "";
+    setModalTodayDateTime(paramObj);
+    console.log("paramObj >> ", paramObj);
+
+    openTodayTimeModal();
   };
 
   // Open 주소록 Modal
@@ -653,13 +675,23 @@ export default function OrderForm({
   };
 
   // Open 날짜 시간 선택 Modal
-  const openSelectTimeModal = () => {
+  const openResvTimeModal = () => {
     setIsResvTimeModalOpen(true);
   };
 
   // Close 날짜 시간 선택 Modal
-  const closeSelectTimesModal = () => {
+  const closeResvTimesModal = () => {
     setIsResvTimeModalOpen(false);
+  };
+
+  // Open 날짜 시간 선택 Modal
+  const openTodayTimeModal = () => {
+    setIsTodayTimeModalOpen(true);
+  };
+
+  // Close 날짜 시간 선택 Modal
+  const closeTodayTimesModal = () => {
+    setIsTodayTimeModalOpen(false);
   };
 
   /**
@@ -692,7 +724,7 @@ export default function OrderForm({
    * (예약설정)상하차일시 선택(모달폼) 일시 선택 후 callback
    * @param {주소록 선택 리턴값} retVal
    */
-  const callbackSelectTimeModal = (retVal) => {
+  const callbackResvTimeModal = (retVal) => {
     console.log("retVal >> ", retVal);
     if (retVal) {
       Object.keys(retVal).forEach((key) => {
@@ -702,7 +734,24 @@ export default function OrderForm({
 
     setPlanTimeStatement(getTimeState());
 
-    closeSelectTimesModal();
+    closeResvTimesModal();
+  };
+
+  /**
+   * (예약설정)상하차일시 선택(모달폼) 일시 선택 후 callback
+   * @param {주소록 선택 리턴값} retVal
+   */
+  const callbackTodayTimeModal = (retVal) => {
+    console.log("retVal >> ", retVal);
+    if (retVal) {
+      Object.keys(retVal).forEach((key) => {
+        setValue(key, retVal[key]);
+      });
+    }
+
+    setPlanTimeStatement(getTimeState());
+
+    closeResvTimesModal();
   };
 
   //상하차 일시 display
@@ -888,15 +937,26 @@ export default function OrderForm({
       </Modal>
       <Modal
         isOpen={isResvTimeModalOpen}
-        onRequestClose={closeSelectTimesModal}
+        onRequestClose={closeResvTimesModal}
         contentLabel="Modal"
         style={isMobile ? MobileStyles : DesktopStyles}
       >
         <DateTimeSelectModal
-          onCancel={closeSelectTimesModal}
-          onComplete={callbackSelectTimeModal}
-          //startEnd={modalStartEnd}
+          onCancel={closeResvTimesModal}
+          onComplete={callbackResvTimeModal}
           paramObj={modalResvDateTime}
+        />
+      </Modal>
+      <Modal
+        isOpen={isTodayTimeModalOpen}
+        onRequestClose={closeTodayTimesModal}
+        contentLabel="Modal"
+        style={isMobile ? MobileStyles : DesktopStyles}
+      >
+        <TodayTimeSelectModal
+          onCancel={closeTodayTimesModal}
+          onComplete={callbackTodayTimeModal}
+          paramObj={modalTodayDateTime}
         />
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
@@ -1219,7 +1279,7 @@ export default function OrderForm({
               <div className="flex flex-col">
                 <button
                   className="rounded-full py-2 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
-                  onClick={(e) => handleSelectTimeButton(e, "start")}
+                  onClick={(e) => handleResvTimeButton(e, "start")}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -1256,7 +1316,7 @@ export default function OrderForm({
               <div className="mt-3 flex flex-col">
                 <button
                   className="rounded-full py-2 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
-                  onClick={(e) => handleSelectTimeButton(e, "end")}
+                  onClick={(e) => handleResvTimeButton(e, "end")}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -2259,10 +2319,7 @@ export default function OrderForm({
                       <div className="flex flex-col">
                         <button
                           className="rounded-full py-1.5 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            alert("준비 중");
-                          }}
+                          onClick={handleTodayTimeButton}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -2289,7 +2346,7 @@ export default function OrderForm({
                       <div className="flex flex-col">
                         <button
                           className="rounded-full py-1.5 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
-                          onClick={handleSelectTimeButton}
+                          onClick={handleResvTimeButton}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
