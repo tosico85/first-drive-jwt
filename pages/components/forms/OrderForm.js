@@ -11,6 +11,7 @@ import UserAddressModal from "../modals/UserAddressModal";
 import { isEmptyObject } from "../../../utils/ObjectUtils";
 import {
   addCommas,
+  convertTo12HourFormat,
   formatDate,
   getDayYYYYMMDD,
   getNextHourHH,
@@ -38,9 +39,11 @@ export default function OrderForm({
   //Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  const [isSelectTimeModalOpen, setIsSelectTimeModalOpen] = useState(false);
+  const [isResvTimeModalOpen, setIsResvTimeModalOpen] = useState(false);
+  const [isTodayTimeModalOpen, setIsTodayTimeModalOpen] = useState(false);
   const [modalStartEnd, setModalStartEnd] = useState("");
-  const [modalDateTime, setModalDateTime] = useState({});
+  const [modalResvDateTime, setModalResvDateTime] = useState({});
+  const [modalTodayDateTime, setModalTodayDateTime] = useState({});
 
   //prefill data
   const [startAddressData, setStartAddressData] = useState({
@@ -125,6 +128,8 @@ export default function OrderForm({
         setValue("endPlanHour", getValues("endPlanHour") || getNextHourHH(1));
         setValue("endPlanMinute", getValues("endPlanMinute") || "00");
         setValue("payPlanYmd", getValues("payPlanYmd") || curDt);
+
+        setPlanTimeStatement(getTimeState());
 
         if (isEdit || isCopy) {
           console.log("EditData >> ", editData);
@@ -621,7 +626,7 @@ export default function OrderForm({
     paramObj["PlanDt"] = getValues(`startPlanDt`) || "";
     paramObj["PlanHour"] = getValues(`startPlanHour`) || "";
     paramObj["PlanMinute"] = getValues(`startPlanMinute`) || "";
-    setModalDateTime(paramObj);
+    setModalResvDateTime(paramObj);
     console.log("paramObj >> ", paramObj);
 
     openSelectTimeModal();
@@ -649,12 +654,12 @@ export default function OrderForm({
 
   // Open 날짜 시간 선택 Modal
   const openSelectTimeModal = () => {
-    setIsSelectTimeModalOpen(true);
+    setIsResvTimeModalOpen(true);
   };
 
   // Close 날짜 시간 선택 Modal
   const closeSelectTimesModal = () => {
-    setIsSelectTimeModalOpen(false);
+    setIsResvTimeModalOpen(false);
   };
 
   /**
@@ -695,19 +700,56 @@ export default function OrderForm({
       });
     }
 
-    setPlanTimeStatement(`예약(${getTimeState()}) 상차 / 당착`);
+    setPlanTimeStatement(getTimeState());
 
     closeSelectTimesModal();
   };
 
+  //상하차 일시 display
   const getTimeState = () => {
-    return (
+    let result = "";
+
+    if (
       getValues(["startPlanDt", "startPlanHour", "startPlanMinute"]).join("")
-        .length == 12 &&
-      ` ${formatDate(getValues("startPlanDt"))} ${getValues(
-        "startPlanHour"
-      )}:${getValues("startPlanMinute")}`
-    );
+        .length == 12
+    ) {
+      //예약여부
+      const isResv = getValues("startPlanDt") > getDayYYYYMMDD();
+
+      //예약이 아닌 경우 낼착 여부
+      const isEndTomm = !isResv && getValues("endPlanDt") == getDayYYYYMMDD(1);
+
+      //지금/당일 상차여부 체크
+      const isNowHour = getValues("startPlanHour") <= getNextHourHH(1);
+
+      //날짜 시간 양식 만들기
+      const timeStatement = `${formatDate(
+        getValues("startPlanDt")
+      )} ${convertTo12HourFormat(getValues("startPlanHour"))} ${getValues(
+        "startPlanMinute"
+      )}분`;
+
+      //예약 상하차인 경우
+      if (isResv) {
+        result = `예약 (${timeStatement}) 상차 / 당착`;
+      } else {
+        const endStatement = isEndTomm
+          ? `낼착${convertTo12HourFormat(getValues("endPlanHour"))}`
+          : "당착";
+
+        //지금 상차인 경우
+        if (isNowHour) {
+          result = `지금 상차 / ${endStatement}`;
+          //당일 상차인 경우
+        } else {
+          result = `${convertTo12HourFormat(
+            getValues("startPlanHour")
+          )} / ${endStatement}`;
+        }
+      }
+    }
+
+    return result;
   };
 
   /**
@@ -845,7 +887,7 @@ export default function OrderForm({
         />
       </Modal>
       <Modal
-        isOpen={isSelectTimeModalOpen}
+        isOpen={isResvTimeModalOpen}
         onRequestClose={closeSelectTimesModal}
         contentLabel="Modal"
         style={isMobile ? MobileStyles : DesktopStyles}
@@ -854,7 +896,7 @@ export default function OrderForm({
           onCancel={closeSelectTimesModal}
           onComplete={callbackSelectTimeModal}
           //startEnd={modalStartEnd}
-          paramObj={modalDateTime}
+          paramObj={modalResvDateTime}
         />
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>

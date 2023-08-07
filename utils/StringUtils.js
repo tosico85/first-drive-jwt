@@ -105,6 +105,25 @@ export const getDayYYYYMMDD = (addDay = 0) => {
 export const getNextHourHH = (addHour = 0) => {
   const today = moment(); // 현재 날짜와 시간을 가져옵니다.
   const futureTime = today.add(addHour, "hours"); // 현재 시간에 addHour 시간을 더합니다.
-  const hh = futureTime.format("hh"); // 현재 시간 이후의 시간(hh)을 가져옵니다.
+  const hh = futureTime.format("HH"); // 현재 시간 이후의 시간(hh)을 가져옵니다.
   return hh;
+};
+
+export const convertTo12HourFormat = (hh) => {
+  let time = hh;
+  if (typeof hh == "string") {
+    time = Number.parseInt(hh);
+  }
+
+  if (time >= 0 && time <= 23) {
+    const hh = time < 10 ? "0" + time : "" + time;
+
+    if (time <= 11) {
+      return "오전 " + hh + "시";
+    } else {
+      return "오후 " + hh + "시";
+    }
+  } else {
+    return "올바른 시간을 입력하세요 ('00'부터 '23' 사이)";
+  }
 };

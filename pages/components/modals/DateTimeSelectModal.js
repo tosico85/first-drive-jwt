@@ -14,7 +14,7 @@ const DateTimeSelectModal = ({
   const [hourValue, setHourValue] = useState("");
   const [minuteValue, setMinuteValue] = useState("");
   const minDate = new Date();
-  minDate.setDate(minDate.getDate() + 2);
+  minDate.setDate(minDate.getDate() + 1);
 
   useEffect(() => {
     console.log("paramObj", paramObj);
@@ -85,49 +85,52 @@ const DateTimeSelectModal = ({
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <CustomCalendar
-        value={dateValue}
-        onChange={setDateValue}
-        minDate={minDate}
-      />
-      <div className="w-full border-b border-gray-100 my-5"></div>
-      <div className="grid grid-cols-3 items-center justify-between w-full gap-x-3">
-        <select
-          className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
-          value={amPmValue}
-          onChange={handleAmPm}
-        >
-          <option value="">오전 / 오후</option>
-          <option value="0">오전</option>
-          <option value="12">오후</option>
-        </select>
-        <select
-          className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
-          value={hourValue}
-          onChange={handleHour}
-        >
-          <option value="">- 시 -</option>
-          {amPmValue != "" &&
-            Array.from(Array(12).keys()).map((val) => {
-              const convVal = val + Number.parseInt(amPmValue);
-              const nm = convVal.toString().padStart(2, "0");
-              return (
-                <option key={val} value={nm}>
-                  {nm}
-                </option>
-              );
-            })}
-        </select>
-        <select
-          className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
-          value={minuteValue}
-          onChange={handleMinute}
-        >
-          <option value="">- 분 -</option>
-          <option value="00">00</option>
-          <option value="30">30</option>
-        </select>
+    <div className="h-full flex flex-col items-center justify-between">
+      <div className="flex flex-col">
+        <p className="mb-5 text-xl font-bold text-left">예약일을 설정하세요</p>
+        <CustomCalendar
+          value={dateValue}
+          onChange={setDateValue}
+          minDate={minDate}
+        />
+        <div className="w-full border-b border-gray-100 my-5"></div>
+        <div className="grid grid-cols-3 items-center justify-between w-full gap-x-3">
+          <select
+            className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
+            value={amPmValue}
+            onChange={handleAmPm}
+          >
+            <option value="">오전 / 오후</option>
+            <option value="0">오전</option>
+            <option value="12">오후</option>
+          </select>
+          <select
+            className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
+            value={hourValue}
+            onChange={handleHour}
+          >
+            <option value="">- 시 -</option>
+            {amPmValue != "" &&
+              Array.from(Array(12).keys()).map((val) => {
+                const convVal = val + Number.parseInt(amPmValue);
+                const nm = convVal.toString().padStart(2, "0");
+                return (
+                  <option key={val} value={nm}>
+                    {nm}
+                  </option>
+                );
+              })}
+          </select>
+          <select
+            className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
+            value={minuteValue}
+            onChange={handleMinute}
+          >
+            <option value="">- 분 -</option>
+            <option value="00">00</option>
+            <option value="30">30</option>
+          </select>
+        </div>
       </div>
       <div className="text-center pt-20 grid grid-cols-2 w-full gap-x-3">
         <button
