@@ -1274,10 +1274,13 @@ export default function OrderForm({
                   상하차 일시
                 </h2>
               </div>
-              <div className="flex flex-col">
+              <p className="bg-gray-100 text-gray-500 px-2 py-2 rounded-sm">
+                {planTimeStatement}
+              </p>
+              <div className="mt-3 flex flex-col">
                 <button
                   className="rounded-full py-2 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
-                  onClick={(e) => handleResvTimeButton(e, "start")}
+                  onClick={handleTodayTimeButton}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -1292,29 +1295,13 @@ export default function OrderForm({
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span>상차 일시</span>
-                  <span>
-                    {getValues([
-                      "startPlanDt",
-                      "startPlanHour",
-                      "startPlanMinute",
-                    ]).join("").length == 12 &&
-                      ` ${formatDate(getValues("startPlanDt"))} ${getValues(
-                        "startPlanHour"
-                      )}:${getValues("startPlanMinute")}`}
-                  </span>
+                  <span>상/하차일시</span>
                 </button>
-                <div className="text-red-500 mx-auto font-bold text-center">
-                  {(!isEmpty(errors.startPlanDt) ||
-                    !isEmpty(errors.startPlanHour) ||
-                    !isEmpty(errors.startPlanMinute)) &&
-                    "상차일시를 입력해주세요"}
-                </div>
               </div>
               <div className="mt-3 flex flex-col">
                 <button
                   className="rounded-full py-2 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
-                  onClick={(e) => handleResvTimeButton(e, "end")}
+                  onClick={handleResvTimeButton}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -1329,24 +1316,17 @@ export default function OrderForm({
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span>하차 일시</span>
-                  <span>
-                    {getValues([
-                      "endPlanDt",
-                      "endPlanHour",
-                      "endPlanMinute",
-                    ]).join("").length == 12 &&
-                      ` ${formatDate(getValues("endPlanDt"))} ${getValues(
-                        "endPlanHour"
-                      )}:${getValues("startPlanMinute")}`}
-                  </span>
+                  <span>예약설정</span>
                 </button>
-                <div className="text-red-500 mx-auto font-bold text-center">
-                  {(!isEmpty(errors.endPlanDt) ||
-                    !isEmpty(errors.endPlanHour) ||
-                    !isEmpty(errors.endPlanMinute)) &&
-                    "하차일시를 입력해주세요"}
-                </div>
+              </div>
+              <div className="text-red-500 mx-auto font-bold text-center">
+                {(!isEmpty(errors.startPlanDt) ||
+                  !isEmpty(errors.startPlanHour) ||
+                  !isEmpty(errors.startPlanMinute) ||
+                  !isEmpty(errors.endPlanDt) ||
+                  !isEmpty(errors.endPlanHour) ||
+                  !isEmpty(errors.endPlanMinute)) &&
+                  "상하차일시를 입력해주세요"}
               </div>
             </div>
             <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
@@ -2361,13 +2341,16 @@ export default function OrderForm({
                           </svg>
                           <span>예약설정</span>
                         </button>
-                        <div className="text-red-500 mx-auto font-bold text-center">
-                          {(!isEmpty(errors.endPlanDt) ||
-                            !isEmpty(errors.endPlanHour) ||
-                            !isEmpty(errors.endPlanMinute)) &&
-                            "하차일시를 입력해주세요"}
-                        </div>
                       </div>
+                    </div>
+                    <div className="text-red-500 mx-auto font-bold text-center">
+                      {(!isEmpty(errors.startPlanDt) ||
+                        !isEmpty(errors.startPlanHour) ||
+                        !isEmpty(errors.startPlanMinute) ||
+                        !isEmpty(errors.endPlanDt) ||
+                        !isEmpty(errors.endPlanHour) ||
+                        !isEmpty(errors.endPlanMinute)) &&
+                        "상하차일시를 입력해주세요"}
                     </div>
 
                     <div className="">
