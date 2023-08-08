@@ -733,7 +733,6 @@ export default function OrderForm({
     }
 
     setPlanTimeStatement(getTimeState());
-
     closeResvTimesModal();
   };
 
@@ -750,8 +749,7 @@ export default function OrderForm({
     }
 
     setPlanTimeStatement(getTimeState());
-
-    closeResvTimesModal();
+    closeTodayTimesModal();
   };
 
   //상하차 일시 display
