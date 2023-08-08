@@ -11,3 +11,11 @@ export const useInput = (initialValue) => {
   };
   return { value, onChange };
 };
+
+export const useRadio = (initialValue) => {
+  const [checked, setChecked] = useState(initialValue);
+  const onClick = (e) => {
+    setChecked(true);
+  };
+  return { checked, onClick, setChecked };
+};

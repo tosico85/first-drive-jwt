@@ -2598,6 +2598,7 @@ export default function OrderForm({
                 {recentCargoList &&
                   recentCargoList.map(({ startPlanDt, cargoDsc }, i) => (
                     <li
+                      key={i}
                       className="py-5 border-b border-gray-300 flex gap-x-5 cursor-pointer"
                       onClick={() => selectCargoOrder(i)}
                     >
