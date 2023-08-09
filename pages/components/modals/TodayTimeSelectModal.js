@@ -219,7 +219,7 @@ const TodayTimeSelectModal = ({ onCancel, onComplete, paramObj }) => {
           <div className="grid grid-cols-2 gap-x-3 mt-3">
             <div
               className={
-                "flex justify-center gap-x-2 p-3 rounded-md border border-gray-300 " +
+                "flex justify-center gap-x-2 p-5 text-lg rounded-md border border-gray-300 " +
                 (startNowCheck.checked && "text-blue-600 border-blue-600")
               }
               onClick={() => {
@@ -236,7 +236,7 @@ const TodayTimeSelectModal = ({ onCancel, onComplete, paramObj }) => {
             </div>
             <div
               className={
-                "flex justify-center gap-x-2 p-3 rounded-md border border-gray-300 " +
+                "flex justify-center gap-x-2 p-5 text-lg rounded-md border border-gray-300 " +
                 (startTodayCheck.checked && "text-blue-600 border-blue-600")
               }
               onClick={() => {
@@ -307,7 +307,7 @@ const TodayTimeSelectModal = ({ onCancel, onComplete, paramObj }) => {
           <div className="grid grid-cols-2 gap-x-3 mt-3">
             <div
               className={
-                "flex justify-center gap-x-2 p-3 rounded-md border border-gray-300 " +
+                "flex justify-center gap-x-2 p-5 text-lg rounded-md border border-gray-300 " +
                 (endTodayCheck.checked && "text-blue-600 border-blue-600")
               }
               onClick={() => {
@@ -324,7 +324,7 @@ const TodayTimeSelectModal = ({ onCancel, onComplete, paramObj }) => {
             </div>
             <div
               className={
-                "flex justify-center gap-x-2 p-3 rounded-md border border-gray-300 " +
+                "flex justify-center gap-x-2 p-5 text-lg rounded-md border border-gray-300 " +
                 (endTommCheck.checked && "text-blue-600 border-blue-600")
               }
               onClick={() => {

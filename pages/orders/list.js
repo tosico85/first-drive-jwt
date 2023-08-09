@@ -218,7 +218,7 @@ const CargoList = () => {
                   placeholder="업체명 검색"
                   onKeyDown={handleCompanySearch}
                   {...companySearch}
-                  className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
               </div>
               <div className="ml-1">
@@ -229,7 +229,7 @@ const CargoList = () => {
                       await getOrderList();
                     })()
                   }
-                  className="rounded-md bg-mainBlue px-3 py-1.5 text-sm lg:text-base font-semibold text-white shadow-sm"
+                  className="rounded-md bg-mainBlue px-3 py-3 text-sm lg:text-base font-semibold text-white shadow-sm"
                 >
                   검색
                 </button>
@@ -238,7 +238,7 @@ const CargoList = () => {
             <div className="grid grid-cols-5">
               <div
                 className={
-                  "text-sm w-full flex justify-between gap-x-3 px-5 py-1 bg-white border hover:shadow-md " +
+                  "text-sm w-full flex justify-between gap-x-3 px-5 py-2 bg-white border hover:shadow-md " +
                   (searchStatus == "ALL"
                     ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
                     : "text-gray-500 border-gray-200")
@@ -252,7 +252,7 @@ const CargoList = () => {
               </div>
               <div
                 className={
-                  "text-sm w-full flex justify-between gap-x-3 px-5 py-1 bg-white border hover:shadow-md " +
+                  "text-sm w-full flex justify-between gap-x-3 px-5 py-2 bg-white border hover:shadow-md " +
                   (searchStatus == "화물접수"
                     ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
                     : "text-gray-500 border-gray-200")
@@ -266,7 +266,7 @@ const CargoList = () => {
               </div>
               <div
                 className={
-                  "text-sm w-full flex justify-between gap-x-3 px-5 py-1 bg-white border hover:shadow-md " +
+                  "text-sm w-full flex justify-between gap-x-3 px-5 py-2 bg-white border hover:shadow-md " +
                   (searchStatus == "배차신청"
                     ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
                     : "text-gray-500 border-gray-200")
@@ -280,7 +280,7 @@ const CargoList = () => {
               </div>
               <div
                 className={
-                  "text-sm w-full flex justify-between gap-x-3 px-5 py-1 bg-white border hover:shadow-md " +
+                  "text-sm w-full flex justify-between gap-x-3 px-5 py-2 bg-white border hover:shadow-md " +
                   (searchStatus == "배차완료"
                     ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
                     : "text-gray-500 border-gray-200")
@@ -294,7 +294,7 @@ const CargoList = () => {
               </div>
               <div
                 className={
-                  "text-sm w-full flex justify-between gap-x-3 px-5 py-1 bg-white border hover:shadow-md " +
+                  "text-sm w-full flex justify-between gap-x-3 px-5 py-2 bg-white border hover:shadow-md " +
                   (searchStatus == "취소"
                     ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
                     : "text-gray-500 border-gray-200")
@@ -333,7 +333,7 @@ const CargoList = () => {
               placeholder="업체명 검색"
               onKeyDown={handleCompanySearch}
               {...companySearch}
-              className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+              className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
             />
           </div>
           <p className="text-right">{`${filteredCargoList().length} 건`}</p>

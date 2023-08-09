@@ -83,7 +83,7 @@ const StartEndAddress = ({ paramValue, setValue, isReadOnly = false }) => {
           value={sido}
           onChange={handleSelectSido}
           disabled={isReadOnly}
-          className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+          className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
         >
           <option value="">주소(시/도)</option>
           {sidoList.map(({ nm }, i) => (
@@ -98,7 +98,7 @@ const StartEndAddress = ({ paramValue, setValue, isReadOnly = false }) => {
           value={gugun}
           onChange={handleSelectGugun}
           disabled={isReadOnly}
-          className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+          className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
         >
           <option value="">주소(구/군)</option>
           {gugunList.map(({ nm }, i) => (

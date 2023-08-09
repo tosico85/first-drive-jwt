@@ -34,7 +34,7 @@ const ManageFareTable = () => {
       top: "50%",
       left: "50%",
       width: "400px",
-      height: "620px",
+      height: "750px",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
       boxShadow: "0px 0px 10px #e2e2e2",

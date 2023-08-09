@@ -984,7 +984,7 @@ export default function OrderForm({
                         "startSgg",
                         "startDong",
                       ]).join(" ")}
-                      className="block w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                      className="block w-full flex-grow-0 rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
                     <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-1.5">
                       <span>주소검색</span>
@@ -1050,7 +1050,7 @@ export default function OrderForm({
                     })}
                     type="text"
                     placeholder="상차지 상세주소"
-                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   />
 
                   <div className="text-red-500 mx-auto font-bold text-center">
@@ -1085,7 +1085,7 @@ export default function OrderForm({
                       })}
                       type="text"
                       placeholder={"상차지 업체명"}
-                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                      className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
                     <div className="text-red-500 mx-auto font-bold text-center">
                       {errors.startCompanyName?.message}
@@ -1099,7 +1099,7 @@ export default function OrderForm({
                       type="tel"
                       maxLength={11}
                       placeholder={"상차지 전화번호"}
-                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                      className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
                     <div className="text-red-500 mx-auto font-bold text-center">
                       {errors.startAreaPhone?.message}
@@ -1145,7 +1145,7 @@ export default function OrderForm({
                       value={getValues(["endWide", "endSgg", "endDong"]).join(
                         " "
                       )}
-                      className="block w-full flex-grow-0 rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                      className="block w-full flex-grow-0 rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
                     <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-1.5">
                       <span>주소검색</span>
@@ -1211,7 +1211,7 @@ export default function OrderForm({
                     })}
                     type="text"
                     placeholder="하차지 상세주소"
-                    className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   />
                   <div className="text-red-500 mx-auto font-bold text-center">
                     {(errors.endAddress || errors.endDetail)?.message}
@@ -1245,7 +1245,7 @@ export default function OrderForm({
                       })}
                       type="text"
                       placeholder={"하차지 업체명"}
-                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                      className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
                     <div className="text-red-500 mx-auto font-bold text-center">
                       {errors.endCompanyName?.message}
@@ -1259,7 +1259,7 @@ export default function OrderForm({
                       type="tel"
                       maxLength={11}
                       placeholder={"하차지 전화번호"}
-                      className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                      className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
                     <div className="text-red-500 mx-auto font-bold text-center">
                       {errors.endAreaPhone?.message}
@@ -1342,7 +1342,7 @@ export default function OrderForm({
                   })}
                   type="text"
                   placeholder="화물상세내용(메모)"
-                  className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
                 <div className="text-red-500 mx-auto font-bold text-center">
                   {errors.cargoDsc?.message}
@@ -1518,7 +1518,7 @@ export default function OrderForm({
                           },
                           required: "적재중량을 입력해주세요.",
                         })}
-                        className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                        className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                       />
                       <div className="text-red-500 mx-auto font-bold text-center">
                         {errors.frgton?.message}
@@ -1606,7 +1606,7 @@ export default function OrderForm({
                         })}
                         type="text"
                         placeholder="원화주 명"
-                        className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                        className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                       />
                       <div className="text-red-500 mx-auto font-bold text-center">
                         {errors.firstShipperNm?.message}
@@ -1620,7 +1620,7 @@ export default function OrderForm({
                         type="tel"
                         maxLength={11}
                         placeholder={"원화주 전화번호('-'없이 입력하세요)"}
-                        className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                        className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                       />
                       <div className="text-red-500 mx-auto font-bold text-center">
                         {errors.firstShipperInfo?.message}
@@ -1637,7 +1637,7 @@ export default function OrderForm({
                         type="text"
                         maxLength={10}
                         placeholder="원화주 사업자번호(의뢰자 주선/운송사인 경우 필수)"
-                        className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                        className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                       />
                       <div className="text-red-500 mx-auto font-bold text-center">
                         {errors.firstShipperBizNo?.message}
@@ -1681,7 +1681,7 @@ export default function OrderForm({
                         type="number"
                         maxLength={10}
                         placeholder={"운송료(관리자용)"}
-                        className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                        className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                       />
                     </div>
                     <div>
@@ -1690,7 +1690,7 @@ export default function OrderForm({
                         type="number"
                         maxLength={10}
                         placeholder={"운송료"}
-                        className="block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                        className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                       />
                     </div>
                   </div>
@@ -1741,7 +1741,7 @@ export default function OrderForm({
                                 "startSgg",
                                 "startDong",
                               ]).join(" ")}
-                              className="block w-full flex-grow-0 rounded-sm border-0 px-2 py-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                              className="block w-full flex-grow-0 rounded-sm border-0 px-2 pt-3.5 pb-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
                             <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-1.5">
                               <span>주소검색</span>
@@ -1810,7 +1810,7 @@ export default function OrderForm({
                             })}
                             type="text"
                             placeholder="상차지 상세주소"
-                            className="w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                            className="w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                           />
                         </div>
                         <div className="text-red-500 mx-auto font-bold text-center">
@@ -1826,7 +1826,7 @@ export default function OrderForm({
                             {...register("startLoad", {
                               required: `상차방법을 입력해주세요`,
                             })}
-                            className="block w-full rounded-sm border-0 p-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                            className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                           >
                             <option value="">상차방법</option>
                             {LOAD_TYPE_LIST.map((item, i) => (
@@ -1850,7 +1850,7 @@ export default function OrderForm({
                               })}
                               type="text"
                               placeholder={"상차지 업체명"}
-                              className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                              className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
                           </div>
                           <div className="text-red-500 mx-auto font-bold text-center">
@@ -1867,7 +1867,7 @@ export default function OrderForm({
                               type="tel"
                               maxLength={11}
                               placeholder={"상차지 전화번호"}
-                              className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                              className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
                           </div>
                           <div className="text-red-500 mx-auto font-bold text-center">
@@ -1902,7 +1902,7 @@ export default function OrderForm({
                                 "endSgg",
                                 "endDong",
                               ]).join(" ")}
-                              className="block w-full flex-grow-0 rounded-sm border-0 px-2 py-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                              className="block w-full flex-grow-0 rounded-sm border-0 px-2 pt-3.5 pb-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
                             <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-1.5">
                               <span>주소검색</span>
@@ -1975,7 +1975,7 @@ export default function OrderForm({
                             })}
                             type="text"
                             placeholder="하차지 상세주소"
-                            className="w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                            className="w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                           />
                         </div>
                         <div className="text-red-500 mx-auto font-bold text-center">
@@ -1991,7 +1991,7 @@ export default function OrderForm({
                             {...register("endLoad", {
                               required: `하차방법을 입력해주세요`,
                             })}
-                            className="block w-full rounded-sm border-0 p-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                            className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                           >
                             <option value="">하차방법</option>
                             {LOAD_TYPE_LIST.map((item, i) => (
@@ -2015,7 +2015,7 @@ export default function OrderForm({
                               })}
                               type="text"
                               placeholder={"하차지 업체명"}
-                              className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                              className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
                           </div>
                           <div className="text-red-500 mx-auto font-bold text-center">
@@ -2032,7 +2032,7 @@ export default function OrderForm({
                               type="tel"
                               maxLength={11}
                               placeholder={"하차지 전화번호"}
-                              className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                              className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
                           </div>
                           <div className="text-red-500 mx-auto font-bold text-center">
@@ -2210,7 +2210,7 @@ export default function OrderForm({
                               required: `차량톤수(t)를 입력해주세요`,
                               onChange: () => getTruckTypeList(),
                             })}
-                            className="block w-full rounded-sm border-0 p-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                            className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                           >
                             <option value="">차량톤수(t)</option>
                             {cargoTonList.map(({ nm }, i) => (
@@ -2228,7 +2228,7 @@ export default function OrderForm({
                             {...register("truckType", {
                               required: `차량종류를 입력해주세요`,
                             })}
-                            className="block w-full rounded-sm border-0 p-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                            className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                           >
                             <option value="">차량종류</option>
                             {truckTypeList &&
@@ -2266,7 +2266,7 @@ export default function OrderForm({
                                   },
                                   required: "적재중량을 입력해주세요.",
                                 })}
-                                className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                                className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                               />
                             </div>
                             <div className="text-red-500 mx-auto font-bold text-center">
@@ -2296,7 +2296,7 @@ export default function OrderForm({
                     <div className="grid grid-cols-2 gap-x-3">
                       <div className="flex flex-col">
                         <button
-                          className="rounded-full py-1.5 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
+                          className="rounded-full py-3 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
                           onClick={handleTodayTimeButton}
                         >
                           <svg
@@ -2323,7 +2323,7 @@ export default function OrderForm({
                       </div>
                       <div className="flex flex-col">
                         <button
-                          className="rounded-full py-1.5 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
+                          className="rounded-full py-3 w-full bg-white border border-gray-300 flex items-center justify-center gap-x-3 hover:bg-gray-50"
                           onClick={handleResvTimeButton}
                         >
                           <svg
@@ -2388,7 +2388,7 @@ export default function OrderForm({
                             {...register("fareView")}
                             type="number"
                             maxLength={10}
-                            className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                            className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                           />
                         </div>
                         <div className="flex gap-x-2">
@@ -2397,13 +2397,13 @@ export default function OrderForm({
                             {...register("fare")}
                             type="number"
                             maxLength={10}
-                            className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                            className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                           />
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="mt-12 pt-12 border-t border-dashed border-gray-200">
+                  <div className="mt-10 pt-8 border-t border-dashed border-gray-200">
                     <div className="w-full border-b border-gray-200 mb-5">
                       <h2 className="text-base font-semibold py-1">
                         화주 및 의뢰 정보
@@ -2481,7 +2481,7 @@ export default function OrderForm({
                               })}
                               type="text"
                               placeholder="원화주 명"
-                              className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                              className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
                           </div>
                           <div className="text-red-500 mx-auto font-bold text-center">
@@ -2498,7 +2498,7 @@ export default function OrderForm({
                               type="tel"
                               maxLength={11}
                               placeholder={"원화주 전화번호('-'없이)"}
-                              className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                              className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
                           </div>
                           <div className="text-red-500 mx-auto font-bold text-center">
@@ -2518,7 +2518,7 @@ export default function OrderForm({
                               type="text"
                               maxLength={10}
                               placeholder="원화주 사업자번호"
-                              className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                              className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
                           </div>
                           <div className="text-red-500 mx-auto font-bold text-center">

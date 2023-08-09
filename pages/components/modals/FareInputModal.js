@@ -185,7 +185,7 @@ const FareInputModal = ({ selectedFare = {}, onCancel, onComplete }) => {
                 {...fareMap[fare.varName]}
                 placeholder={`${fare.korName} 요금 입력`}
                 type="text"
-                className="w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                className="w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
               />
             </div>
           ))}

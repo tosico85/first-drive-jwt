@@ -90,7 +90,7 @@ const LoginPage = () => {
                       },
                     })}
                     type="text"
-                    className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                    className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                     placeholder="이름을 입력하세요"
                   />
                 </div>
@@ -110,7 +110,7 @@ const LoginPage = () => {
                     },
                   })}
                   type="email"
-                  className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                  className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                   placeholder="이메일을 입력하세요"
                 />
               </div>
@@ -129,7 +129,7 @@ const LoginPage = () => {
                     },
                   })}
                   type="password"
-                  className="block w-full rounded-sm border-0 px-2 py-1.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                  className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                   placeholder="비밀번호를 입력하세요."
                 />
               </div>
