@@ -13,34 +13,6 @@ import { formatPhoneNumber } from "../../utils/StringUtils";
 import DateInput from "../components/custom/DateInput";
 import { useInput } from "../../hooks/useInput";
 import DirectAllocModal from "../components/modals/DirectAllocModal";
-import XLSX from "xlsx";
-import FileSaver from "file-saver";
-
-const downloadExcel = () => {
-  const filteredData = filteredCargoList(); // 여기서 필터된 데이터를 가져옵니다.
-
-  const formattedData = filteredData.map((item) => ({
-    // 여기서 필요한 데이터를 객체 형태로 변환합니다.
-    // 예시: cargo_seq, ordNo, startPlanDt 등
-    // 예시로 넣어둔 데이터들을 포함하여 필요한 데이터를 추가합니다.
-    cargo_seq: item.cargo_seq,
-    ordNo: item.ordNo,
-    startPlanDt: item.startPlanDt,
-    // ...
-  }));
-
-  const worksheet = XLSX.utils.json_to_sheet(formattedData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Cargo Data");
-
-  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-
-  const blob = new Blob([excelBuffer], {
-    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  });
-
-  FileSaver.saveAs(blob, "cargo_data.xlsx");
-};
 
 const CargoList = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
@@ -231,7 +203,7 @@ const CargoList = () => {
               }
               onClick={() => handleSearchStatus("ALL")}
             >
-              <p className="py-3">전체1</p>
+              <p className="py-3">전체</p>
             </div>
             <div
               className={
@@ -318,11 +290,8 @@ const CargoList = () => {
                   }
                   className="rounded-md bg-mainBlue px-3 py-3 text-sm lg:text-base font-semibold text-white shadow-sm"
                 >
-                  검색21
+                  검색
                 </button>
-              </div>
-              <div className="ml-1">
-                e<button onClick={downloadExcel}>엑셀 다운로드</button>
               </div>
             </div>
             <div className="grid grid-cols-5">
