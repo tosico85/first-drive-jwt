@@ -231,7 +231,7 @@ const CargoList = () => {
               }
               onClick={() => handleSearchStatus("ALL")}
             >
-              <p className="py-3">전체</p>
+              <p className="py-3">전체1</p>
             </div>
             <div
               className={
