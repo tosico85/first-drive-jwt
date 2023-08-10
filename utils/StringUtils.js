@@ -13,6 +13,13 @@ export const formatDate = (inputDate) => {
   return formattedDate;
 };
 
+export const isNumber = (value) => {
+  return (
+    typeof value === "number" ||
+    (typeof value === "string" && !isNaN(parseInt(value)))
+  );
+};
+
 export const formatPhoneNumber = (inputData) => {
   if (!inputData) {
     return "";

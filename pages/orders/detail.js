@@ -76,7 +76,7 @@ export default function Detail() {
       top: "50%",
       left: "50%",
       width: "360px",
-      height: "500px",
+      height: "660px",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
       boxShadow: "0px 0px 10px #e2e2e2",
@@ -233,7 +233,7 @@ export default function Detail() {
         style={customModalStyles}
       >
         <DirectAllocModal
-          cargo_seq={cargoOrder.cargo_seq}
+          paramObj={cargoOrder}
           onCancel={closeAllocModal}
           onComplete={callbackAllocModal}
         />
