@@ -84,7 +84,7 @@ export default function Detail() {
   };
 
   /**
-   * 수기 배차
+   * 수기 배차 Modal Open
    */
   const handleDirectAlloc = (e) => {
     e.preventDefault();
@@ -233,6 +233,7 @@ export default function Detail() {
         style={customModalStyles}
       >
         <DirectAllocModal
+          cargo_seq={cargoOrder.cargo_seq}
           onCancel={closeAllocModal}
           onComplete={callbackAllocModal}
         />

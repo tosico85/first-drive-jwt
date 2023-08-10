@@ -5,7 +5,7 @@ function Label({ title, required = false }) {
     >
       <span>{title}</span>
       {required && (
-        <span className="text-red-500 py-3 absolute top-1 right-1 text-base">
+        <span className="text-red-500 py-0.5 absolute top-1 right-1 text-base">
           *
         </span>
       )}

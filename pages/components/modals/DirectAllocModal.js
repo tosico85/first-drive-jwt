@@ -1,10 +1,15 @@
+import { useContext } from "react";
 import { useInput } from "../../../hooks/useInput";
+import apiPaths from "../../../services/apiRoutes";
+import { isEmpty } from "../../../utils/StringUtils";
+import AuthContext from "../../context/authContext";
 import Label from "../custom/Label";
 
-const DirectAllocModal = ({ onCancel, onComplete }) => {
+const DirectAllocModal = ({ onCancel, onComplete, cargo_seq }) => {
+  const { requestServer } = useContext(AuthContext);
+
   const cjMap = {
     cjName: useInput(""),
-    cjBizNo: useInput(""),
     cjPhone: useInput(""),
     cjCarNum: useInput(""),
     cjCargoTon: useInput(""),
@@ -19,10 +24,67 @@ const DirectAllocModal = ({ onCancel, onComplete }) => {
     { varName: "cjTruckType", korName: "차량규격" },
   ];
 
-  const handleAlloc = () => {};
+  /**
+   * 입력 값 체크
+   * @returns isValidate
+   */
+  const validationCheck = () => {
+    let result = true;
+    let resultMsg = "";
+
+    cjIterator.forEach(({ varName: key, korName }) => {
+      if (!result) return;
+      if (isEmpty(cjMap[key].value)) {
+        result = false;
+        resultMsg = `${korName}을 입력해주세요`;
+      }
+    });
+
+    if (!result) {
+      alert(resultMsg);
+    }
+
+    return result;
+  };
+
+  /**
+   * 배차등록 버튼 click
+   */
+  const handleAlloc = async () => {
+    if (validationCheck()) {
+      if (confirm("수기로 배차하시겠습니까?")) {
+        //배차등록
+        await directAllocProc();
+      }
+    }
+  };
+
+  /**
+   * 수기 배차 수행
+   */
+  const directAllocProc = async () => {
+    const paramObj = {
+      cargo_seq,
+      cjName: cjMap.cjName.value,
+      cjPhone: cjMap.cjPhone.value,
+      cjCarNum: cjMap.cjCarNum.value,
+      cjCargoTon: cjMap.cjCargoTon.value,
+      cjTruckType: cjMap.cjTruckType.value,
+    };
+
+    const result = await requestServer(apiPaths.adminDirectAlloc, paramObj);
+
+    if (result.resultCd == "00") {
+      alert("배차 등록되었습니다.");
+      onComplete();
+    } else {
+      alert("배차등록 실패");
+      return;
+    }
+  };
 
   return (
-    <div className="flex flex-col justify-between">
+    <div className="h-full flex flex-col justify-between">
       <div>
         <div className="pb-5 mb-5 border-b border-gray-200">
           <p className="text-xl font-bold">수기배차(차량정보)</p>
@@ -30,7 +92,7 @@ const DirectAllocModal = ({ onCancel, onComplete }) => {
         <div className="flex flex-col gap-y-3">
           {cjIterator.map(({ varName, korName }) => (
             <div className="flex items-center gap-x-2">
-              <Label title={korName} />
+              <Label title={korName} required={true} />
               <input
                 {...cjMap[varName]}
                 type="text"

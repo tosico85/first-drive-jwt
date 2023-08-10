@@ -25,6 +25,7 @@ const ADMIN_GET_FARE = "/admin/get/fare"; //운송료 관리(조회)
 const ADMIN_ADD_FARE = "/admin/add/fare"; //운송료 관리(등록)
 const ADMIN_MOD_FARE = "/admin/mod/fare"; //운송료 관리(수정)
 const ADMIN_DEL_FARE = "/admin/del/fare"; //운송료 관리(삭제)
+const ADMIN_DIRECT_ALLOC = "/admin/direct/alloc"; //수기 배차(접수중=>배차완료)
 
 //Call24 APIs (ADMIN)
 const API_ORDER_ADD = "/api/order/addOrder"; //화물등록
@@ -76,6 +77,7 @@ const apiPaths = {
   adminAddFare: ADMIN_ADD_FARE,
   adminModFare: ADMIN_MOD_FARE,
   adminDelFare: ADMIN_DEL_FARE,
+  adminDirectAlloc: ADMIN_DIRECT_ALLOC,
 
   // Cust
   custReqAddCargoOrder: CUST_REQ_ADD_CARGO_ORDER,
