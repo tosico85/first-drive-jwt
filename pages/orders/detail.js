@@ -10,12 +10,14 @@ import {
 } from "../../utils/StringUtils";
 import Modal from "react-modal";
 import OrderAddInfoForm from "../components/forms/OrderAddInfoForm";
+import DirectAllocModal from "../components/modals/DirectAllocModal";
 
 export default function Detail() {
   const router = useRouter();
   const { requestServer, userInfo } = useContext(AuthContext);
   const [cargoOrder, setCargoOrder] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAllocModalOpen, setIsAllocModalOpen] = useState(false);
   let isAdmin = userInfo.auth_code === "ADMIN";
 
   useEffect(() => {
@@ -39,6 +41,7 @@ export default function Detail() {
     })();
   }, [userInfo]);
 
+  /*** Modal Controller ***/
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -55,16 +58,38 @@ export default function Detail() {
     closeModal();
   };
 
+  const openAllocModal = () => {
+    setIsAllocModalOpen(true);
+  };
+
+  const closeAllocModal = () => {
+    setIsAllocModalOpen(false);
+  };
+
+  const callbackAllocModal = () => {
+    closeAllocModal();
+    router.push("/orders/list");
+  };
+
   const customModalStyles = {
     content: {
       top: "50%",
       left: "50%",
-      width: "80%",
-      height: "80%",
+      width: "360px",
+      height: "500px",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
       boxShadow: "0px 0px 10px #e2e2e2",
     },
+  };
+
+  /**
+   * 수기 배차
+   */
+  const handleDirectAlloc = (e) => {
+    e.preventDefault();
+
+    openAllocModal();
   };
 
   /**
@@ -199,6 +224,17 @@ export default function Detail() {
           cargo_seq={cargoOrder.cargo_seq}
           onCancel={closeModal}
           onComplete={callbackModal}
+        />
+      </Modal>
+      <Modal
+        isOpen={isAllocModalOpen}
+        onRequestClose={closeAllocModal}
+        contentLabel="Modal"
+        style={customModalStyles}
+      >
+        <DirectAllocModal
+          onCancel={closeAllocModal}
+          onComplete={callbackAllocModal}
         />
       </Modal>
       <div className="px-5 py-10 pb-20 bg-white">
@@ -528,13 +564,22 @@ export default function Detail() {
               화물 삭제
             </button>
             {isAdmin && (
-              <button
-                type="button"
-                className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
-                onClick={handleAdminOrderAdd}
-              >
-                배차 신청
-              </button>
+              <>
+                <button
+                  type="button"
+                  className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+                  onClick={handleAdminOrderAdd}
+                >
+                  배차 신청
+                </button>
+                <button
+                  type="button"
+                  className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+                  onClick={handleDirectAlloc}
+                >
+                  수기 배차
+                </button>
+              </>
             )}
           </>
         )}
