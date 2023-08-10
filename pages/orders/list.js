@@ -318,7 +318,7 @@ const CargoList = () => {
                   }
                   className="rounded-md bg-mainBlue px-3 py-3 text-sm lg:text-base font-semibold text-white shadow-sm"
                 >
-                  검색1
+                  검색21
                 </button>
               </div>
               <div className="ml-1">
