@@ -232,7 +232,6 @@ const CargoList = () => {
               onClick={() => handleSearchStatus("ALL")}
             >
               <p className="py-3">전체</p>
-              <button onClick={downloadExcel}>엑셀 다운로드</button>
             </div>
             <div
               className={
@@ -320,6 +319,7 @@ const CargoList = () => {
                 >
                   검색
                 </button>
+                <button onClick={downloadExcel}>엑셀 다운로드</button>
               </div>
             </div>
             <div className="grid grid-cols-5">
