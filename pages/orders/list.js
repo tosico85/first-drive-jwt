@@ -307,6 +307,7 @@ const CargoList = () => {
                   className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
               </div>
+
               <div className="ml-1">
                 <button
                   type="button"
@@ -317,9 +318,11 @@ const CargoList = () => {
                   }
                   className="rounded-md bg-mainBlue px-3 py-3 text-sm lg:text-base font-semibold text-white shadow-sm"
                 >
-                  검색
+                  검색1
                 </button>
-                <button onClick={downloadExcel}>엑셀 다운로드</button>
+              </div>
+              <div className="ml-1">
+                e<button onClick={downloadExcel}>엑셀 다운로드</button>
               </div>
             </div>
             <div className="grid grid-cols-5">
