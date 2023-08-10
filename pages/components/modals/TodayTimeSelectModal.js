@@ -197,7 +197,7 @@ const TodayTimeSelectModal = ({ onCancel, onComplete, paramObj }) => {
         startPlanHour: startNowCheck.checked
           ? getNextHourHH(1)
           : startHourValue, //상차시간(지금 체크인 경우 다음 시간)
-        startMinuteValue: startMinuteValue || "00",
+        startPlanMinute: startMinuteValue || "00",
         endPlanDt: endTodayCheck.checked ? nowDate : getDayYYYYMMDD(1), //당착인 경우 오늘
         endPlanHour: endTodayCheck.checked
           ? startNowCheck.checked

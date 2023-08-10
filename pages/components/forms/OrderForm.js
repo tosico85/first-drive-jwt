@@ -118,17 +118,7 @@ export default function OrderForm({
           setCargoTonList(data);
         }
 
-        const curDt = format(new Date(), "yyyyMMdd");
-        setValue("startPlanDt", getValues("startPlanDt") || curDt);
-        setValue(
-          "startPlanHour",
-          getValues("startPlanHour") || getNextHourHH(1)
-        );
-        setValue("startPlanMinute", getValues("startPlanMinute") || "00");
-        setValue("endPlanDt", getValues("endPlanDt") || curDt);
-        setValue("endPlanHour", getValues("endPlanHour") || getNextHourHH(1));
-        setValue("endPlanMinute", getValues("endPlanMinute") || "00");
-        setValue("payPlanYmd", getValues("payPlanYmd") || curDt);
+        initDateTime(); //날짜 시간 초기값 세팅
 
         setPlanTimeStatement(getTimeState());
 
@@ -261,6 +251,18 @@ export default function OrderForm({
     }
   };
 
+  //날짜 시간 초기값 세팅
+  const initDateTime = () => {
+    const curDt = format(new Date(), "yyyyMMdd");
+    setValue("startPlanDt", getValues("startPlanDt") || curDt);
+    setValue("startPlanHour", getValues("startPlanHour") || getNextHourHH(1));
+    setValue("startPlanMinute", getValues("startPlanMinute") || "00");
+    setValue("endPlanDt", getValues("endPlanDt") || curDt);
+    setValue("endPlanHour", getValues("endPlanHour") || getNextHourHH(1));
+    setValue("endPlanMinute", getValues("endPlanMinute") || "00");
+    setValue("payPlanYmd", getValues("payPlanYmd") || curDt);
+  };
+
   // TEST DATA 로드
   const loadParamData = async () => {
     setValue("cargoTon", editData["cargoTon"] || "");
@@ -343,6 +345,8 @@ export default function OrderForm({
       }) => rest)(targetOrder);
 
       editData = { ...paramData };
+      initDateTime();
+
       await loadParamData();
     }
   };
@@ -557,8 +561,9 @@ export default function OrderForm({
 
     ["start", "end"].forEach((startEnd) => {
       ["PlanDt", "PlanHour", "PlanMinute"].forEach((time) => {
-        console.log(getValues(`${startEnd}${time}`));
+        console.log(`${startEnd}${time}`, getValues(`${startEnd}${time}`));
         if (isEmpty(getValues(`${startEnd}${time}`))) {
+          console.log(`${startEnd}${time}`, getValues(`${startEnd}${time}`));
           result = false;
           returnMsg = "상/하차 일시를 입력해주세요.";
         }
@@ -2459,9 +2464,11 @@ export default function OrderForm({
                             rules={{
                               required: "운송료지급예정일을 입력해주세요.",
                             }}
-                            render={({ field: { onChange } }) => (
+                            render={() => (
                               <DateInput
-                                onDateChange={onChange}
+                                onDateChange={(returnVal) =>
+                                  setValue("payPlanYmd", returnVal)
+                                }
                                 dateValue={getValues("payPlanYmd")}
                                 addClass="w-full"
                               />
