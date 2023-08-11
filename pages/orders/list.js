@@ -14,24 +14,6 @@ import DateInput from "../components/custom/DateInput";
 import { useInput } from "../../hooks/useInput";
 import DirectAllocModal from "../components/modals/DirectAllocModal";
 import ExcelJS from "exceljs";
-const generateRandomCargoOrder = () => {
-  const statusOptions = ["Pending", "In Progress", "Completed", "Cancelled"];
-  const randomStatus =
-    statusOptions[Math.floor(Math.random() * statusOptions.length)];
-  const randomOrderNumber = Math.floor(Math.random() * 1000) + 100;
-  const randomStartDate = new Date(
-    Date.now() - Math.floor(Math.random() * 86400000 * 30) // Within the last 30 days
-  ).toLocaleDateString();
-  const randomEndDate = new Date(
-    Date.now() + Math.floor(Math.random() * 86400000 * 30) // Within the next 30 days
-  ).toLocaleDateString();
-  return {
-    ordNo: `ORD${randomOrderNumber}`,
-    startPlanDt: randomStartDate,
-    endPlanDt: randomEndDate,
-    ordStatus: randomStatus,
-  };
-};
 
 const CargoList = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
@@ -69,7 +51,7 @@ const CargoList = () => {
         "차주명",
         "차주연락처",
         "운임료",
-        isAdmin ? "운임료(관리자용)" : undefined,
+        isAdmin ? "운임료(관리자용)" : "",
       ]);
       headerRow.font = { bold: true };
 
@@ -90,7 +72,7 @@ const CargoList = () => {
         { width: 15 }, // 차주명
         { width: 15 }, // 차주연락처
         { width: 15 }, // 운임료
-        isAdmin ? { width: 15 } : undefined, // 관리자용 운임료
+        isAdmin ? { width: 15 } : 0, // 관리자용 운임료
       ];
 
       // 테두리 스타일 설정 함수
@@ -124,7 +106,7 @@ const CargoList = () => {
           item.cjName,
           item.cjPhone,
           item.fare,
-          isAdmin ? item.fareView : undefined,
+          isAdmin ? item.fareView : "",
         ]);
 
         if (index === 0) {
