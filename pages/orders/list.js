@@ -117,8 +117,8 @@ const CargoList = () => {
           item.create_dtm,
           item.cjName,
           item.cjPhone,
-          item.fare,
-          isAdmin ? item.fareView : "",
+          item.fareView,
+          isAdmin ? item.fare : "",
         ]);
 
         // 각 셀에 테두리 스타일 적용
