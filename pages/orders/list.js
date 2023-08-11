@@ -290,7 +290,7 @@ const CargoList = () => {
                   }
                   className="rounded-md bg-mainBlue px-3 py-3 text-sm lg:text-base font-semibold text-white shadow-sm"
                 >
-                  검색
+                  검1색
                 </button>
               </div>
             </div>
