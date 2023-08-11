@@ -13,6 +13,25 @@ import { formatPhoneNumber } from "../../utils/StringUtils";
 import DateInput from "../components/custom/DateInput";
 import { useInput } from "../../hooks/useInput";
 import DirectAllocModal from "../components/modals/DirectAllocModal";
+import ExcelJS from "exceljs";
+const generateRandomCargoOrder = () => {
+  const statusOptions = ["Pending", "In Progress", "Completed", "Cancelled"];
+  const randomStatus =
+    statusOptions[Math.floor(Math.random() * statusOptions.length)];
+  const randomOrderNumber = Math.floor(Math.random() * 1000) + 100;
+  const randomStartDate = new Date(
+    Date.now() - Math.floor(Math.random() * 86400000 * 30) // Within the last 30 days
+  ).toLocaleDateString();
+  const randomEndDate = new Date(
+    Date.now() + Math.floor(Math.random() * 86400000 * 30) // Within the next 30 days
+  ).toLocaleDateString();
+  return {
+    ordNo: `ORD${randomOrderNumber}`,
+    startPlanDt: randomStartDate,
+    endPlanDt: randomEndDate,
+    ordStatus: randomStatus,
+  };
+};
 
 const CargoList = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
@@ -27,6 +46,101 @@ const CargoList = () => {
   const router = useRouter();
 
   const isAdmin = userInfo.auth_code === "ADMIN";
+
+  const exportToExcel = async () => {
+    try {
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet("Cargo Orders");
+
+      // 엑셀 헤더 추가
+      worksheet.addRow([
+        "주문 번호",
+        "상차지",
+        "하차지",
+        "혼적여부",
+        "긴급여부",
+        "왕복여부",
+        "차량종류",
+        "화물량",
+        "상차일",
+        "하차일",
+        "화물상태",
+        "등록일시",
+        "차주명",
+        "차주연락처",
+      ]);
+
+      // 비동기 작업을 위해 await 추가
+      const cargoListData = await getOrderList();
+
+      // 필터링된 데이터 가져오기
+      const filteredData = filteredCargoList();
+
+      filteredData.forEach((item) => {
+        const {
+          ordNo,
+          startWide,
+          startSgg,
+          startDong,
+          endWide,
+          endSgg,
+          endDong,
+          multiCargoGub,
+          urgent,
+          shuttleCargoInfo,
+          truckType,
+          cargoTon,
+          startPlanDt,
+          startPlanHour,
+          startPlanMinute,
+          endPlanDt,
+          endPlanHour,
+          endPlanMinute,
+          ordStatus,
+          create_dtm,
+          cjName,
+          cjPhone,
+        } = item;
+
+        const startAddress = `${startWide} ${startSgg} ${startDong}`;
+        const endAddress = `${endWide} ${endSgg} ${endDong}`;
+
+        worksheet.addRow([
+          ordNo,
+          startAddress,
+          endAddress,
+          multiCargoGub,
+          urgent,
+          shuttleCargoInfo,
+          truckType,
+          cargoTon,
+          `${startPlanDt} ${startPlanHour}:${startPlanMinute}`,
+          `${endPlanDt} ${endPlanHour}:${endPlanMinute}`,
+          ordStatus,
+          create_dtm,
+          cjName,
+          cjPhone,
+        ]);
+      });
+
+      const buffer = await workbook.xlsx.writeBuffer();
+      const blob = new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "cargo_orders.xlsx";
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleExportClick = () => {
+    exportToExcel();
+  };
 
   const getOrderList = async () => {
     const url =
@@ -290,9 +404,21 @@ const CargoList = () => {
                   }
                   className="rounded-md bg-mainBlue px-3 py-3 text-sm lg:text-base font-semibold text-white shadow-sm"
                 >
-                  검1색
+                  검색
                 </button>
               </div>
+
+              <div className="ml-1">
+                <button
+                  onClick={handleExportClick}
+                  className="rounded-md bg-mainBlue px-3 py-3 text-sm lg:text-base font-semibold text-white shadow-sm"
+                >
+                  {" "}
+                  엑셀
+                </button>
+              </div>
+
+              <div className="ml-1"></div>
             </div>
             <div className="grid grid-cols-5">
               <div
