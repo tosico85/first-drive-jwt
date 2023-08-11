@@ -85,6 +85,18 @@ const CargoList = () => {
         };
       };
 
+      // 데이터가 있는 헤더 셀에 배경색과 테두리 스타일 적용
+      headerRow.eachCell((cell, colNumber) => {
+        if (colNumber <= (isAdmin ? 16 : 15)) {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "FFFF00" }, // 노란색 배경
+          };
+          setBorderStyle(cell, { style: "thin" });
+        }
+      });
+
       // 필터링된 데이터 가져오기
       const filteredData = filteredCargoList();
 
@@ -109,27 +121,6 @@ const CargoList = () => {
           isAdmin ? item.fareView : "",
         ]);
 
-        if (index === 0) {
-          // 데이터가 있는 헤더 셀에만 배경색과 테두리 스타일 적용
-          headerRow.eachCell((cell, colNumber) => {
-            for (
-              let colNumber = 0;
-              colNumber <= (isAdmin ? 16 : 15);
-              colNumber++
-            ) {
-              const cell = row.getCell(colNumber);
-
-              if (colNumber <= 15) {
-                cell.fill = {
-                  type: "pattern",
-                  pattern: "solid",
-                  fgColor: { argb: "FFFF00" }, // 노란색 배경
-                };
-                setBorderStyle(cell, { style: "thin" });
-              }
-            }
-          });
-        }
         // 각 셀에 테두리 스타일 적용
         for (let colNumber = 1; colNumber <= 15; colNumber++) {
           setBorderStyle(row.getCell(colNumber), { style: "thin" });
