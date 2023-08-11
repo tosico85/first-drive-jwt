@@ -70,11 +70,6 @@ const CargoList = () => {
         "차주연락처",
       ]);
       headerRow.font = { bold: true };
-      headerRow.fill = {
-        type: "pattern",
-        pattern: "solid",
-        fgColor: { argb: "FFFF00" }, // 노란색 배경
-      };
 
       // 엑셀 칸 너비 조정
       worksheet.columns = [
@@ -126,21 +121,20 @@ const CargoList = () => {
           item.cjPhone,
         ]);
 
-        setBorderStyle(headerRow.getCell(1), { style: "thin" });
-        setBorderStyle(headerRow.getCell(2), { style: "thin" });
-        setBorderStyle(headerRow.getCell(3), { style: "thin" });
-        setBorderStyle(headerRow.getCell(4), { style: "thin" });
-        setBorderStyle(headerRow.getCell(5), { style: "thin" });
-        setBorderStyle(headerRow.getCell(6), { style: "thin" });
-        setBorderStyle(headerRow.getCell(7), { style: "thin" });
-        setBorderStyle(headerRow.getCell(8), { style: "thin" });
-        setBorderStyle(headerRow.getCell(9), { style: "thin" });
-        setBorderStyle(headerRow.getCell(10), { style: "thin" });
-        setBorderStyle(headerRow.getCell(11), { style: "thin" });
-        setBorderStyle(headerRow.getCell(12), { style: "thin" });
-        setBorderStyle(headerRow.getCell(13), { style: "thin" });
-        setBorderStyle(headerRow.getCell(14), { style: "thin" });
-
+        if (index === 0) {
+          // 데이터가 있는 헤더 셀에만 배경색과 테두리 스타일 적용
+          headerRow.eachCell((cell, colNumber) => {
+            if (colNumber <= 14) {
+              // 예시에서는 14번째 열까지 데이터가 있는 것으로 가정
+              cell.fill = {
+                type: "pattern",
+                pattern: "solid",
+                fgColor: { argb: "FFFF00" }, // 노란색 배경
+              };
+              setBorderStyle(cell, { style: "thin" });
+            }
+          });
+        }
         // 각 셀에 테두리 스타일 적용
         setBorderStyle(row.getCell(1), { style: "thin" });
         setBorderStyle(row.getCell(2), { style: "thin" });
