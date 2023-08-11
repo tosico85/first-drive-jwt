@@ -53,7 +53,7 @@ const CargoList = () => {
       const worksheet = workbook.addWorksheet("Cargo Orders");
 
       // 엑셀 헤더 추가
-      worksheet.addRow([
+      const headerRow = worksheet.addRow([
         "주문 번호",
         "상차지",
         "하차지",
@@ -69,58 +69,93 @@ const CargoList = () => {
         "차주명",
         "차주연락처",
       ]);
+      headerRow.font = { bold: true };
+      headerRow.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFFF00" }, // 노란색 배경
+      };
 
-      // 비동기 작업을 위해 await 추가
-      const cargoListData = await getOrderList();
+      // 엑셀 칸 너비 조정
+      worksheet.columns = [
+        { width: 10 }, // 주문 번호
+        { width: 20 }, // 상차지
+        { width: 20 }, // 하차지
+        { width: 10 }, // 혼적여부
+        { width: 10 }, // 긴급여부
+        { width: 10 }, // 왕복여부
+        { width: 15 }, // 차량종류
+        { width: 10 }, // 화물량
+        { width: 20 }, // 상차일
+        { width: 20 }, // 하차일
+        { width: 15 }, // 화물상태
+        { width: 20 }, // 등록일시
+        { width: 15 }, // 차주명
+        { width: 15 }, // 차주연락처
+      ];
+
+      // 테두리 스타일 설정 함수
+      const setBorderStyle = (cell, style) => {
+        cell.border = {
+          top: style,
+          bottom: style,
+          left: style,
+          right: style,
+        };
+      };
 
       // 필터링된 데이터 가져오기
       const filteredData = filteredCargoList();
 
-      filteredData.forEach((item) => {
-        const {
-          ordNo,
-          startWide,
-          startSgg,
-          startDong,
-          endWide,
-          endSgg,
-          endDong,
-          multiCargoGub,
-          urgent,
-          shuttleCargoInfo,
-          truckType,
-          cargoTon,
-          startPlanDt,
-          startPlanHour,
-          startPlanMinute,
-          endPlanDt,
-          endPlanHour,
-          endPlanMinute,
-          ordStatus,
-          create_dtm,
-          cjName,
-          cjPhone,
-        } = item;
-
-        const startAddress = `${startWide} ${startSgg} ${startDong}`;
-        const endAddress = `${endWide} ${endSgg} ${endDong}`;
-
-        worksheet.addRow([
-          ordNo,
-          startAddress,
-          endAddress,
-          multiCargoGub,
-          urgent,
-          shuttleCargoInfo,
-          truckType,
-          cargoTon,
-          `${startPlanDt} ${startPlanHour}:${startPlanMinute}`,
-          `${endPlanDt} ${endPlanHour}:${endPlanMinute}`,
-          ordStatus,
-          create_dtm,
-          cjName,
-          cjPhone,
+      filteredData.forEach((item, index) => {
+        // 엑셀 행 추가
+        const row = worksheet.addRow([
+          item.ordNo,
+          `${item.startWide} ${item.startSgg} ${item.startDong}`,
+          `${item.endWide} ${item.endSgg} ${item.endDong}`,
+          item.multiCargoGub,
+          item.urgent,
+          item.shuttleCargoInfo,
+          item.truckType,
+          item.cargoTon,
+          `${item.startPlanDt} ${item.startPlanHour}:${item.startPlanMinute}`,
+          `${item.endPlanDt} ${item.endPlanHour}:${item.endPlanMinute}`,
+          item.ordStatus,
+          item.create_dtm,
+          item.cjName,
+          item.cjPhone,
         ]);
+
+        setBorderStyle(headerRow.getCell(1), { style: "thin" });
+        setBorderStyle(headerRow.getCell(2), { style: "thin" });
+        setBorderStyle(headerRow.getCell(3), { style: "thin" });
+        setBorderStyle(headerRow.getCell(4), { style: "thin" });
+        setBorderStyle(headerRow.getCell(5), { style: "thin" });
+        setBorderStyle(headerRow.getCell(6), { style: "thin" });
+        setBorderStyle(headerRow.getCell(7), { style: "thin" });
+        setBorderStyle(headerRow.getCell(8), { style: "thin" });
+        setBorderStyle(headerRow.getCell(9), { style: "thin" });
+        setBorderStyle(headerRow.getCell(10), { style: "thin" });
+        setBorderStyle(headerRow.getCell(11), { style: "thin" });
+        setBorderStyle(headerRow.getCell(12), { style: "thin" });
+        setBorderStyle(headerRow.getCell(13), { style: "thin" });
+        setBorderStyle(headerRow.getCell(14), { style: "thin" });
+
+        // 각 셀에 테두리 스타일 적용
+        setBorderStyle(row.getCell(1), { style: "thin" });
+        setBorderStyle(row.getCell(2), { style: "thin" });
+        setBorderStyle(row.getCell(3), { style: "thin" });
+        setBorderStyle(row.getCell(4), { style: "thin" });
+        setBorderStyle(row.getCell(5), { style: "thin" });
+        setBorderStyle(row.getCell(6), { style: "thin" });
+        setBorderStyle(row.getCell(7), { style: "thin" });
+        setBorderStyle(row.getCell(8), { style: "thin" });
+        setBorderStyle(row.getCell(9), { style: "thin" });
+        setBorderStyle(row.getCell(10), { style: "thin" });
+        setBorderStyle(row.getCell(11), { style: "thin" });
+        setBorderStyle(row.getCell(12), { style: "thin" });
+        setBorderStyle(row.getCell(13), { style: "thin" });
+        setBorderStyle(row.getCell(14), { style: "thin" });
       });
 
       const buffer = await workbook.xlsx.writeBuffer();
