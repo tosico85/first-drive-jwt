@@ -68,6 +68,8 @@ const CargoList = () => {
         "등록일시",
         "차주명",
         "차주연락처",
+        "운임료",
+        isAdmin ? "운임료(관리자용)" : undefined,
       ]);
       headerRow.font = { bold: true };
 
@@ -87,6 +89,8 @@ const CargoList = () => {
         { width: 20 }, // 등록일시
         { width: 15 }, // 차주명
         { width: 15 }, // 차주연락처
+        { width: 15 }, // 운임료
+        isAdmin ? { width: 15 } : undefined, // 관리자용 운임료
       ];
 
       // 테두리 스타일 설정 함수
@@ -119,37 +123,35 @@ const CargoList = () => {
           item.create_dtm,
           item.cjName,
           item.cjPhone,
+          item.fare,
+          isAdmin ? item.fareView : undefined,
         ]);
 
         if (index === 0) {
           // 데이터가 있는 헤더 셀에만 배경색과 테두리 스타일 적용
           headerRow.eachCell((cell, colNumber) => {
-            if (colNumber <= 14) {
-              // 예시에서는 14번째 열까지 데이터가 있는 것으로 가정
-              cell.fill = {
-                type: "pattern",
-                pattern: "solid",
-                fgColor: { argb: "FFFF00" }, // 노란색 배경
-              };
-              setBorderStyle(cell, { style: "thin" });
+            for (
+              let colNumber = 1;
+              colNumber <= (isAdmin ? 16 : 15);
+              colNumber++
+            ) {
+              const cell = row.getCell(colNumber);
+
+              if (colNumber <= 15) {
+                cell.fill = {
+                  type: "pattern",
+                  pattern: "solid",
+                  fgColor: { argb: "FFFF00" }, // 노란색 배경
+                };
+                setBorderStyle(cell, { style: "thin" });
+              }
             }
           });
         }
         // 각 셀에 테두리 스타일 적용
-        setBorderStyle(row.getCell(1), { style: "thin" });
-        setBorderStyle(row.getCell(2), { style: "thin" });
-        setBorderStyle(row.getCell(3), { style: "thin" });
-        setBorderStyle(row.getCell(4), { style: "thin" });
-        setBorderStyle(row.getCell(5), { style: "thin" });
-        setBorderStyle(row.getCell(6), { style: "thin" });
-        setBorderStyle(row.getCell(7), { style: "thin" });
-        setBorderStyle(row.getCell(8), { style: "thin" });
-        setBorderStyle(row.getCell(9), { style: "thin" });
-        setBorderStyle(row.getCell(10), { style: "thin" });
-        setBorderStyle(row.getCell(11), { style: "thin" });
-        setBorderStyle(row.getCell(12), { style: "thin" });
-        setBorderStyle(row.getCell(13), { style: "thin" });
-        setBorderStyle(row.getCell(14), { style: "thin" });
+        for (let colNumber = 1; colNumber <= 15; colNumber++) {
+          setBorderStyle(row.getCell(colNumber), { style: "thin" });
+        }
       });
 
       const buffer = await workbook.xlsx.writeBuffer();
@@ -612,6 +614,7 @@ const CargoList = () => {
                 create_dtm, //등록일시
                 cjName, //차주명
                 cjPhone, //차주연락처
+                fare,
               } = item;
               return (
                 <li
