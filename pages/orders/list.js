@@ -113,7 +113,7 @@ const CargoList = () => {
           // 데이터가 있는 헤더 셀에만 배경색과 테두리 스타일 적용
           headerRow.eachCell((cell, colNumber) => {
             for (
-              let colNumber = 1;
+              let colNumber = 0;
               colNumber <= (isAdmin ? 16 : 15);
               colNumber++
             ) {
