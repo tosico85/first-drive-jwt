@@ -1,11 +1,33 @@
 import { useRouter } from "next/router";
 import AuthContext from "../context/authContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 const SideNav = () => {
   const router = useRouter();
-  const { userInfo } = useContext(AuthContext);
-  const isAdmin = userInfo.AuthContext === "ADMIN";
+  const { requestServer, userInfo } = useContext(AuthContext);
+  const isAdmin = userInfo.auth_code === "ADMIN";
+
+  useEffect(() => {
+    (async () => {
+      const {
+        query: { param: cargo_seq },
+      } = router;
+
+      const url =
+        userInfo.auth_code == "ADMIN"
+          ? apiPaths.adminGetCargoOrder
+          : apiPaths.custReqGetCargoOrder;
+      const result = await requestServer(url, {
+        cargo_seq,
+      });
+      console.log(result);
+
+      if (result.length > 0) {
+        setCargoOrder(() => result[0]);
+      }
+    })();
+  }, [userInfo]);
+
   return (
     <div className="fixed left-0 top-0 h-full bg-mainBlue flex flex-col items-center gap-y-5 w-24 pt-5 px-3 text-white text-sm z-50">
       <div
