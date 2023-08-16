@@ -96,7 +96,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       cjTruckType: inputMap.cjTruckType.value,
       fare: inputMap.fare.value,
       fareView: inputMap.fareView.value,
-      startWide: inputMap.startWide.value,
+      startWide: cargoOrder.startWide,
     };
 
     const result = await requestServer(apiPaths.adminDirectAlloc, paramObj);
