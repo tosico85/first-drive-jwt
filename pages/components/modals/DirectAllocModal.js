@@ -101,17 +101,17 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       startSgg: cargoOrder.startSgg,
       startDong: cargoOrder.startDong,
       startDetail: cargoOrder.startDetail,
-      startAreaPhone: cargoOrder.startAreaPhone,
-      startPlanDt: cargoOrder.startPlanDt,
-      startCompanyName: startCompanyName,
+      //      startAreaPhone: cargoOrder.startAreaPhone,
+      //      startPlanDt: cargoOrder.startPlanDt,
+      //      startCompanyName: startCompanyName,
 
       endWide: cargoOrder.endWide,
       endSgg: cargoOrder.endSgg,
       endDong: cargoOrder.endDong,
       endDetail: cargoOrder.endDetail,
-      endAreaPhone: cargoOrder.endAreaPhone,
-      endPlanDt: cargoOrder.endPlanDt,
-      endCompanyName: endCompanyName,
+      //      endAreaPhone: cargoOrder.endAreaPhone,
+      //      endPlanDt: cargoOrder.endPlanDt,
+      //      endCompanyName: endCompanyName,
     };
 
     const result = await requestServer(apiPaths.adminDirectAlloc, paramObj);
