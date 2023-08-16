@@ -96,13 +96,28 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       cjTruckType: inputMap.cjTruckType.value,
       fare: inputMap.fare.value,
       fareView: inputMap.fareView.value,
+
       startWide: cargoOrder.startWide,
+      startSgg: cargoOrder.startSgg,
+      startDong: cargoOrder.startDong,
+      startDetail: cargoOrder.startDetail,
+      startAreaPhone: cargoOrder.startAreaPhone,
+      startPlanDt: cargoOrder.startPlanDt,
+      startCompanyName: startCompanyName,
+
+      endWide: cargoOrder.endWide,
+      endSgg: cargoOrder.endSgg,
+      endDong: cargoOrder.endDong,
+      endDetail: cargoOrder.endDetail,
+      endAreaPhone: cargoOrder.endAreaPhone,
+      endPlanDt: cargoOrder.endPlanDt,
+      endCompanyName: endCompanyName,
     };
 
     const result = await requestServer(apiPaths.adminDirectAlloc, paramObj);
 
     if (result.resultCd == "00") {
-      alert("배차 등록되었습니다1.");
+      alert("배차 등록되었습니다.");
       onComplete();
     } else {
       alert("배차등록 실패");
