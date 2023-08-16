@@ -102,7 +102,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
     const result = await requestServer(apiPaths.adminDirectAlloc, paramObj);
 
     if (result.resultCd == "00") {
-      alert("배차 등록되었습니다.");
+      alert("배차 등록되었습니다1.");
       onComplete();
     } else {
       alert("배차등록 실패");
