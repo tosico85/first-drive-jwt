@@ -103,7 +103,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       startDetail: cargoOrder.startDetail,
       startAreaPhone: cargoOrder.startAreaPhone,
       startPlanDt: cargoOrder.startPlanDt,
-      startCompanyName: startCompanyName,
+      startCompanyName: cargoOrder.startCompanyName,
 
       endWide: cargoOrder.endWide,
       endSgg: cargoOrder.endSgg,
@@ -111,7 +111,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       endDetail: cargoOrder.endDetail,
       endAreaPhone: cargoOrder.endAreaPhone,
       endPlanDt: cargoOrder.endPlanDt,
-      endCompanyName: endCompanyName,
+      endCompanyName: cargoOrder.endCompanyName,
     };
 
     const result = await requestServer(apiPaths.adminDirectAlloc, paramObj);
