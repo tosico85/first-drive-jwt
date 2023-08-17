@@ -406,7 +406,7 @@ const CargoList = () => {
                       await getOrderList();
                     })()
                   }
-                  className="rounded-md bg-mainBlue px-3 py-3 text-sm lg:text-base font-semibold text-white shadow-sm"
+                  className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm"
                 >
                   검색
                 </button>
@@ -415,9 +415,8 @@ const CargoList = () => {
               <div className="ml-1">
                 <button
                   onClick={handleExportClick}
-                  className="rounded-md bg-mainBlue px-3 py-3 text-sm lg:text-base font-semibold text-white shadow-sm"
+                  className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm"
                 >
-                  {" "}
                   엑셀
                 </button>
               </div>
@@ -427,7 +426,7 @@ const CargoList = () => {
             <div className="grid grid-cols-5">
               <div
                 className={
-                  "text-sm w-full flex justify-between gap-x-3 px-5 py-2 bg-white border hover:shadow-md " +
+                  "relative text-sm w-full flex justify-between gap-x-3 px-5 py-3 bg-white border hover:shadow-md " +
                   (searchStatus == "ALL"
                     ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
                     : "text-gray-500 border-gray-200")
@@ -435,13 +434,13 @@ const CargoList = () => {
                 onClick={() => handleSearchStatus("ALL")}
               >
                 <p className="text-sm">전체</p>
-                <p className="text-right font-extrabold text-lg">
+                <p className="absolute top-0 right-2 text-right font-extrabold text-lg">
                   {getCountByStatus("ALL")}
                 </p>
               </div>
               <div
                 className={
-                  "text-sm w-full flex justify-between gap-x-3 px-5 py-2 bg-white border hover:shadow-md " +
+                  "relative text-sm w-full flex justify-between gap-x-3 px-5 py-3 bg-white border hover:shadow-md " +
                   (searchStatus == "화물접수"
                     ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
                     : "text-gray-500 border-gray-200")
@@ -449,13 +448,13 @@ const CargoList = () => {
                 onClick={() => handleSearchStatus("화물접수")}
               >
                 <p className="text-sm">접수중</p>
-                <p className="text-right font-extrabold text-lg">
+                <p className="absolute top-0 right-2 text-right font-extrabold text-lg">
                   {getCountByStatus("화물접수")}
                 </p>
               </div>
               <div
                 className={
-                  "text-sm w-full flex justify-between gap-x-3 px-5 py-2 bg-white border hover:shadow-md " +
+                  "relative text-sm w-full flex justify-between gap-x-3 px-5 py-3 bg-white border hover:shadow-md " +
                   (searchStatus == "배차신청"
                     ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
                     : "text-gray-500 border-gray-200")
@@ -463,13 +462,13 @@ const CargoList = () => {
                 onClick={() => handleSearchStatus("배차신청")}
               >
                 <p className="text-sm">배차중</p>
-                <p className="text-right font-extrabold text-lg">
+                <p className="absolute top-0 right-2 text-right font-extrabold text-lg">
                   {getCountByStatus("배차신청")}
                 </p>
               </div>
               <div
                 className={
-                  "text-sm w-full flex justify-between gap-x-3 px-5 py-2 bg-white border hover:shadow-md " +
+                  "relative text-sm w-full flex justify-between gap-x-3 px-5 py-3 bg-white border hover:shadow-md " +
                   (searchStatus == "배차완료"
                     ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
                     : "text-gray-500 border-gray-200")
@@ -477,13 +476,13 @@ const CargoList = () => {
                 onClick={() => handleSearchStatus("배차완료")}
               >
                 <p className="text-sm">배차완료</p>
-                <p className="text-right font-extrabold text-lg">
+                <p className="absolute top-0 right-2 text-right font-extrabold text-lg">
                   {getCountByStatus("배차완료")}
                 </p>
               </div>
               <div
                 className={
-                  "text-sm w-full flex justify-between gap-x-3 px-5 py-2 bg-white border hover:shadow-md " +
+                  "relative text-sm w-full flex justify-between gap-x-3 px-5 py-3 bg-white border hover:shadow-md " +
                   (searchStatus == "취소"
                     ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
                     : "text-gray-500 border-gray-200")
@@ -491,7 +490,7 @@ const CargoList = () => {
                 onClick={() => handleSearchStatus("취소")}
               >
                 <p className="text-sm">취소</p>
-                <p className="text-right font-extrabold text-lg">
+                <p className="absolute top-0 right-2 text-right font-extrabold text-lg">
                   {getCountByStatus("취소")}
                 </p>
               </div>
