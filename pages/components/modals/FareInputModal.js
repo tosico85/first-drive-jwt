@@ -7,7 +7,12 @@ import { isEmptyObject } from "../../../utils/ObjectUtils";
 import { isEmpty } from "../../../utils/StringUtils";
 import StartEndAddress from "../mixins/StartEndAddress";
 
-const FareInputModal = ({ selectedFare = {}, onCancel, onComplete }) => {
+const FareInputModal = ({
+  selectedFare = {},
+  onCancel,
+  onComplete,
+  selectedGroup,
+}) => {
   const { requestServer } = useContext(AuthContext);
 
   //input elements를 위한 useInput(react-hook)(수정 요청인 경우 금액 세팅)
@@ -90,6 +95,7 @@ const FareInputModal = ({ selectedFare = {}, onCancel, onComplete }) => {
 
   const getRequestData = () => {
     return {
+      group_code: selectedGroup.value,
       startWide: startAddr.wide,
       startSgg: startAddr.sgg,
       endWide: endAddr.wide,
@@ -158,9 +164,9 @@ const FareInputModal = ({ selectedFare = {}, onCancel, onComplete }) => {
   return (
     <div className="flex flex-col gap-y-3">
       <p className="text-center font-bold">
-        요금 {requestType == "I" ? "입력" : "수정"}
+        {`요금 ${requestType == "I" ? "입력" : "수정"}(${selectedGroup.name})`}
       </p>
-      <div className="flex flex-col gap-y-3 mt-3">
+      <div className="flex flex-col gap-y-2">
         <div className="flex items-center gap-x-3">
           <Label title={"상차지"} required={true} />
           <StartEndAddress
@@ -177,7 +183,7 @@ const FareInputModal = ({ selectedFare = {}, onCancel, onComplete }) => {
             isReadOnly={requestType == "U"}
           />
         </div>
-        <div className="flex flex-col gap-y-3">
+        <div className="flex flex-col gap-y-2">
           {fareNameMap.map((fare) => (
             <div className="flex items-center gap-x-3" key={fare.varName}>
               <Label title={fare.korName} required={true} />

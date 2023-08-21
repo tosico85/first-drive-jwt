@@ -1,20 +1,22 @@
-import { useEffect, useState } from "react";
-
 const ComboBox = ({ onComboChange, list, selectedValue, title }) => {
-  const [comboValue, setComboValue] = useState("");
-  const [comboList, setComboList] = useState([]);
+  const handleChange = (e) => {
+    const {
+      target: { value },
+    } = e;
 
-  useEffect(() => {
-    setComboValue(selectedValue);
-    setComboList(list);
-  }, []);
+    onComboChange(value);
+  };
 
   return (
-    <select onChange={onComboChange}>
-      <option value="">{title}</option>
-      {comboList.map((item, i) => (
-        <option key={i} value={item}>
-          {item}
+    <select
+      className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
+      value={selectedValue}
+      onChange={handleChange}
+    >
+      <option value={-1}>{title}</option>
+      {list.map((item, i) => (
+        <option key={i} value={item.value}>
+          {item.name}
         </option>
       ))}
     </select>

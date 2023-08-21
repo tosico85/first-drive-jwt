@@ -25,6 +25,7 @@ const ADMIN_GET_FARE = "/admin/get/fare"; //운송료 관리(조회)
 const ADMIN_ADD_FARE = "/admin/add/fare"; //운송료 관리(등록)
 const ADMIN_MOD_FARE = "/admin/mod/fare"; //운송료 관리(수정)
 const ADMIN_DEL_FARE = "/admin/del/fare"; //운송료 관리(삭제)
+const ADMIN_LOAD_FARE = "/admin/load/fare"; //운송료 관리(기본요금으로부터 복사)
 const ADMIN_GET_GROUP = "/admin/get/group"; //그룹 관리(조회)
 const ADMIN_ADD_GROUP = "/admin/add/group"; //그룹 관리(등록)
 const ADMIN_MOD_GROUP = "/admin/mod/group"; //그룹 관리(수정)
@@ -81,6 +82,7 @@ const apiPaths = {
   adminAddFare: ADMIN_ADD_FARE,
   adminModFare: ADMIN_MOD_FARE,
   adminDelFare: ADMIN_DEL_FARE,
+  adminLoadFare: ADMIN_LOAD_FARE,
   adminDirectAlloc: ADMIN_DIRECT_ALLOC,
   adminGetGroup: ADMIN_GET_GROUP,
   adminAddGroup: ADMIN_ADD_GROUP,
