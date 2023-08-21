@@ -21,10 +21,9 @@ const ManageFareTable = () => {
     setIsModalOpen(false);
   };
 
-  const callbackModal = (retVal) => {
+  const callbackModal = () => {
     closeModal();
 
-    const fare = { ...selectedFare };
     setSelectedFare({});
     getFareList();
   };

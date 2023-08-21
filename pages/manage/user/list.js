@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Modal from "react-modal";
 import apiPaths from "../../../services/apiRoutes";
 import AuthContext from "../../context/authContext";
-import UserAuthForm from "../../components/forms/UserAuthForm";
+import UserAuthModal from "../../components/modals/UserAuthModal";
 
 const ManageUser = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
@@ -20,28 +20,13 @@ const ManageUser = () => {
     setIsModalOpen(false);
   };
 
-  const callbackModal = (retVal) => {
+  const callbackModal = async () => {
     closeModal();
 
-    const user = { ...selectedUser };
-    user = { ...user, auth_code: retVal.auth_code };
-    console.log("user > ", user);
-    setSelectedUser(() => user);
+    setSelectedUser({});
+    await getUserList();
 
-    updateUserList(user);
-  };
-
-  const updateUserList = (user) => {
-    console.log("selectedUser > ", user);
-    const prevUserList = [...userList];
-    prevUserList.forEach((item) => {
-      if (item.email === user.email) {
-        item.auth_code = user.auth_code;
-      }
-    });
-    //console.log("userList >> ", userList);
-    //console.log("prevUserList >> ", prevUserList);
-    setUserList(() => prevUserList);
+    //updateUserList(user);
   };
 
   const customModalStyles = {
@@ -138,7 +123,7 @@ const ManageUser = () => {
         contentLabel="Modal"
         style={customModalStyles}
       >
-        <UserAuthForm
+        <UserAuthModal
           selectedUser={selectedUser}
           onCancel={closeModal}
           onComplete={callbackModal}
@@ -152,7 +137,14 @@ const ManageUser = () => {
         <ul className="border-y border-gray-200 h-full overflow-auto">
           {userList.length > 0 &&
             userList.map((item, index) => {
-              const { name, email, company_code, auth_code, create_dtm } = item;
+              const {
+                name,
+                email,
+                group_code,
+                group_name,
+                auth_code,
+                create_dtm,
+              } = item;
               return (
                 <li
                   className="border-b border-gray-100 flex justify-between gap-x-3 py-5 lg:px-5 hover:bg-gray-100"
@@ -171,9 +163,14 @@ const ManageUser = () => {
                     <p className="col-span-3 lg:col-span-1 text-sm font-semibold leading-6 text-gray-500">
                       {email}
                     </p>
-                    <p className="text-center col-span-2 lg:col-span-3 lg:text-left text-sm font-semibold leading-6 text-gray-500">
-                      {name}
-                    </p>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 col-span-2 lg:col-span-3 lg:text-left">
+                      <p className="text-center text-sm font-semibold leading-6 text-gray-500">
+                        {name}
+                      </p>
+                      <p className="text-center text-sm font-semibold leading-6 text-mainColor3">
+                        {group_name}
+                      </p>
+                    </div>
                     <div className="col-span-1 lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-y-3 gap-x-5 justify-end">
                       <div className="flex justify-end">
                         <p
@@ -213,7 +210,7 @@ const ManageUser = () => {
           className="rounded-md bg-buttonZamboa px-2 py-2 text-base font-semibold text-white shadow-sm"
           onClick={handleAuthChange}
         >
-          권한 수정
+          사용자정보 수정
         </button>
         <button
           type="button"
