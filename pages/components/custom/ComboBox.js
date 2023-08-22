@@ -9,7 +9,7 @@ const ComboBox = ({ onComboChange, list, selectedValue, title }) => {
 
   return (
     <select
-      className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
+      className="rounded-md w-full text-lgz border-0 px-2 py-3 bg-slate-100"
       value={selectedValue}
       onChange={handleChange}
     >

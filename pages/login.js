@@ -1,10 +1,16 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import AuthContext from "./context/authContext";
+import ComboBox from "./components/custom/ComboBox";
+import { useEffect } from "react";
+import apiPaths from "../services/apiRoutes";
 
 const LoginPage = () => {
   const [mode, setMode] = useState("login");
-  const { login, join } = useContext(AuthContext);
+  const { requestServer, login, join } = useContext(AuthContext);
+  const [groupList, setGroupList] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -12,9 +18,30 @@ const LoginPage = () => {
     clearErrors,
     getValues,
     reset,
-    resetField,
     formState: { errors },
   } = useForm({ mode: "onSubmit" });
+
+  useEffect(() => {
+    (async () => {
+      await getGroupList();
+    })();
+  }, []);
+
+  // 그룹목록 조회
+  const getGroupList = async () => {
+    const url = apiPaths.commonGetGroup;
+    const params = {};
+
+    const result = await requestServer(url, params);
+    if (result?.length > 0) {
+      result = result.map((item) => ({
+        value: item.group_code + "",
+        name: item.name,
+      }));
+
+      setGroupList(() => result);
+    }
+  };
 
   const onValid = async () => {
     //login()
@@ -34,7 +61,12 @@ const LoginPage = () => {
       }
     } else {
       const name = getValues("name");
-      const { resultCd, result } = await join(name, email, password);
+      const { resultCd, result } = await join(
+        name,
+        email,
+        password,
+        selectedGroup
+      );
       if (resultCd !== "00") {
         if (resultCd === "99") {
           setError("submitError", {
@@ -79,25 +111,41 @@ const LoginPage = () => {
             onSubmit={handleSubmit(onValid, oninvalid)}
           >
             {mode === "join" && (
-              <div className="flex flex-col mb-5">
-                <p className="text-sm">이름</p>
-                <div className="flex relative ">
-                  <input
-                    {...register("name", {
-                      required: "이름을 입력해주세요.",
-                      onChange: () => {
-                        clearErrors();
-                      },
-                    })}
-                    type="text"
-                    className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-                    placeholder="이름을 입력하세요"
-                  />
+              <>
+                <div className="flex flex-col mb-5">
+                  <p className="text-sm">이름</p>
+                  <div className="flex relative ">
+                    <input
+                      {...register("name", {
+                        required: "이름을 입력해주세요.",
+                        onChange: () => {
+                          clearErrors();
+                        },
+                      })}
+                      type="text"
+                      className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                      placeholder="이름을 입력하세요"
+                    />
+                  </div>
+                  <div className="text-red-500 text-sm text-end">
+                    {errors.name?.message}
+                  </div>
                 </div>
-                <div className="text-red-500 text-sm text-end">
-                  {errors.name?.message}
+                <div className="flex flex-col mb-5">
+                  <p className="text-sm">그룹</p>
+                  <div className="flex relative ">
+                    <ComboBox
+                      onComboChange={setSelectedGroup}
+                      list={groupList}
+                      selectedValue={selectedGroup}
+                      title={"그룹 선택"}
+                    />
+                  </div>
+                  <div className="text-red-500 text-sm text-end">
+                    {errors.name?.message}
+                  </div>
                 </div>
-              </div>
+              </>
             )}
             <div className="flex flex-col mb-5">
               <p className="text-sm">이메일</p>

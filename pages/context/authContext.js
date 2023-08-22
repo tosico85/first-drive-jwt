@@ -75,12 +75,13 @@ export const AuthProvider = ({ children }) => {
     return result;
   };
 
-  const join = async (name, email, password) => {
+  const join = async (name, email, password, group_code) => {
     // 서버에 로그인 요청을 보내고, 응답에 따라 상태를 업데이트합니다.
     const params = {
       name,
       email,
       password,
+      group_code,
     };
 
     const result = await requestServer(apiPaths.userJoin, params);

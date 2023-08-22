@@ -55,6 +55,7 @@ const CUST_REQ_CANCEL_CARGO_ORDER = "/cust/req/cancel/cargoOrder"; //화물정�
 //Common
 const COMMON_GET_FARE = "/common/get/fare"; //운행구간 별 요금 조회
 const COMMON_GET_DASHBOARD = "/common/get/dashboard"; //통계(대시보드)
+const COMMON_GET_GROUP = "/common/get/group"; //그룹 조회
 
 const apiPaths = {
   baseUrl: BASE_URL,
@@ -114,6 +115,7 @@ const apiPaths = {
   // Common
   commonGetFare: COMMON_GET_FARE,
   commonGetDashboard: COMMON_GET_DASHBOARD,
+  commonGetGroup: COMMON_GET_GROUP,
 };
 
 export default apiPaths;
