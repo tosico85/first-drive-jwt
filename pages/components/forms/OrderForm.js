@@ -95,6 +95,7 @@ export default function OrderForm({
   const watchStartSgg = watch("startSgg");
   const watchEndSgg = watch("endSgg");
   const watchCargoTon = watch("cargoTon");
+  const watchTruckType = watch("truckType");
   const watchShuttleCargoInfo = watch("shuttleCargoInfo");
   let addressPopupStartEnd = "";
   let startBaseYn = "N";
@@ -185,7 +186,7 @@ export default function OrderForm({
         setFareByCargoTon(watchCargoTon);
       }
     }
-  }, [watchCargoTon, watchShuttleCargoInfo]);
+  }, [watchCargoTon, watchTruckType, watchShuttleCargoInfo]);
 
   // 운행요금 조회 시 차량톤수에 따른 운행료 세팅
   useEffect(() => {
@@ -229,8 +230,10 @@ export default function OrderForm({
         resultFare = threeHalfTon;
       } else if (floatCargoTon <= 5) {
         resultFare = fiveTon;
-        // 5톤축? 뭔지 모름
-        //setValue("fareView", fiveTonPlus);
+        // 5톤축
+        if (watchTruckType?.includes("축")) {
+          resultFare = fiveTonPlus;
+        }
       } else if (floatCargoTon <= 11) {
         resultFare = elevenTon;
       } else if (floatCargoTon <= 18) {
