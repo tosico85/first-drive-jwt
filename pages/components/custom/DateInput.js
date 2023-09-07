@@ -2,7 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { format, parse } from "date-fns";
 
-function DateInput({ onDateChange, dateValue, title, addClass = "" }) {
+function DateInput({
+  onDateChange,
+  dateValue,
+  title,
+  addClass = "",
+  disabled = false,
+}) {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const datePickerRef = useRef();
@@ -38,6 +44,7 @@ function DateInput({ onDateChange, dateValue, title, addClass = "" }) {
         selected={selectedDate}
         onChange={handleDateChange}
         dateFormat="yyyy-MM-dd"
+        disabled={disabled}
         className={
           "rounded-md lg:rounded-sm border-0 py-3 px-2 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 lg:ring-0 lg:focus:ring-0 lg:focus:bg-mainInputFocusColor lg:bg-mainInputColor lg:outline-none focus:ring-mainColor2 lg:text-sm lg:leading-6 " +
           addClass

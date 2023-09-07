@@ -98,7 +98,9 @@ const LoginPage = () => {
     <div className="h-full flex items-center bg-white">
       <div className="relative flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-md shadow mx-auto">
         <div className="absolute top-0 left-0 w-full p-5 rounded-t-md text-white bg-black">
-          <p className="font-extrabold text-xl lg:text-2xl">간편접수 로그인</p>
+          <p className="font-extrabold text-xl lg:text-2xl">
+            간편접수 {mode === "join" ? "회원가입" : "로그인"}
+          </p>
           <p className="text-sm mt-2">
             365일 24시간 언제 어디서든 화물을 접수하세요!!
           </p>

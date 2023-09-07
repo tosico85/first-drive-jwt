@@ -30,8 +30,8 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
 
   // 운임료정보 map
   const fareIterator = [
-    { varName: "fare", korName: "화주용" },
-    { varName: "fareView", korName: "관리자용" },
+    { varName: "fareView", korName: "화주용" },
+    { varName: "fare", korName: "관리자용" },
   ];
 
   /**

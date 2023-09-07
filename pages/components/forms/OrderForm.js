@@ -13,8 +13,10 @@ import {
   addCommas,
   convertTo12HourFormat,
   formatDate,
+  formatPhoneNumber,
   getDayYYYYMMDD,
   getNextHourHH,
+  getPayPlanYmd,
   isEmpty,
 } from "../../../utils/StringUtils";
 import SearchAddressModal from "../modals/SearchAddressModal";
@@ -120,6 +122,7 @@ export default function OrderForm({
         }
 
         initDateTime(); //날짜 시간 초기값 세팅
+        initDefaultValues(); //초기값 세팅
 
         setPlanTimeStatement(getTimeState());
 
@@ -254,6 +257,12 @@ export default function OrderForm({
     }
   };
 
+  //배차신청 기본 값 설정
+  const initDefaultValues = () => {
+    setValue("farePaytype", "인수증");
+    setValue("payPlanYmd", getPayPlanYmd());
+  };
+
   //날짜 시간 초기값 세팅
   const initDateTime = () => {
     const curDt = format(new Date(), "yyyyMMdd");
@@ -273,6 +282,7 @@ export default function OrderForm({
     if (editData["cargoTon"]) {
       await getTruckTypeList();
       Object.keys(editData).forEach((key) => {
+        if (["group_name"].includes(key)) return; //제외항목
         if (
           [
             "taxbillType",
@@ -303,6 +313,7 @@ export default function OrderForm({
     const params = {
       start_dt: getDayYYYYMMDD(-30),
       end_dt: getDayYYYYMMDD(),
+      delete_yn: "N",
     };
 
     let result = await requestServer(url, params);
@@ -342,6 +353,7 @@ export default function OrderForm({
         endPlanHour,
         endPlanMinute,
         payPlanYmd,
+        group_name,
         create_dtm,
         delete_yn,
         ...rest
@@ -1345,16 +1357,11 @@ export default function OrderForm({
               </div>
               <div className="mt-5">
                 <input
-                  {...register("cargoDsc", {
-                    required: "화물상세내용을 입력해주세요.",
-                  })}
+                  {...register("cargoDsc")}
                   type="text"
                   placeholder="화물상세내용(메모)"
                   className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
-                <div className="text-red-500 mx-auto font-bold text-center">
-                  {errors.cargoDsc?.message}
-                </div>
               </div>
               <div className="mt-3">
                 <fieldset>
@@ -1751,7 +1758,7 @@ export default function OrderForm({
                               ]).join(" ")}
                               className="block w-full flex-grow-0 rounded-sm border-0 px-2 pt-3.5 pb-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
-                            <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-1.5">
+                            <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-3">
                               <span>주소검색</span>
                               <svg
                                 xmlns="h  ttp://www.w3.org/2000/svg"
@@ -1912,7 +1919,7 @@ export default function OrderForm({
                               ]).join(" ")}
                               className="block w-full flex-grow-0 rounded-sm border-0 px-2 pt-3.5 pb-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
-                            <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-1.5">
+                            <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-3">
                               <span>주소검색</span>
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -2366,16 +2373,11 @@ export default function OrderForm({
 
                     <div className="">
                       <textarea
-                        {...register("cargoDsc", {
-                          required: "화물상세내용을 입력해주세요.",
-                        })}
+                        {...register("cargoDsc")}
                         placeholder="화물상세내용(메모)"
                         rows="7"
                         className="block w-full rounded-sm border-0 px-2 py-2.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none resize-none"
                       />
-                      <div className="text-red-500 mx-auto font-bold text-center">
-                        {errors.cargoDsc?.message}
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -2590,16 +2592,65 @@ export default function OrderForm({
               </div>
               <ul>
                 {recentCargoList &&
-                  recentCargoList.map(({ startPlanDt, cargoDsc }, i) => (
-                    <li
-                      key={i}
-                      className="py-5 border-b border-gray-300 flex gap-x-5 cursor-pointer"
-                      onClick={() => selectCargoOrder(i)}
-                    >
-                      <span>{formatDate(startPlanDt)}</span>
-                      <span>{cargoDsc}</span>
-                    </li>
-                  ))}
+                  recentCargoList.map(
+                    (
+                      {
+                        startWide, //상차지 시/도
+                        startSgg, //상차지 구/군
+                        startDong, //상차지 읍/면/동
+                        startDetail,
+                        endWide, //하차지 시/도
+                        endSgg, //하차지 구/군
+                        endDong, //하차지 읍/면/동
+                        endDetail,
+                        multiCargoGub, //혼적여부("혼적")
+                        urgent, //긴급여부("긴급")
+                        shuttleCargoInfo, //왕복여부("왕복")
+                        truckType, //차량종류
+                        cargoTon,
+                        startPlanDt, //상차일("YYYYMMDD")
+                      },
+                      i
+                    ) => (
+                      <li key={i} onClick={() => selectCargoOrder(i)}>
+                        <div className="py-5 border-b border-gray-300 flex flex-col cursor-pointer">
+                          <div className="mb-3 flex items-center gap-x-5">
+                            <span className="">{formatDate(startPlanDt)}</span>
+                            <div className="flex items-center gap-x-3">
+                              <p className="px-0.5 rounded-md shadow-md bg-gray-500 text-sm text-white">
+                                {`${cargoTon}t ${truckType}`}
+                              </p>
+                              {urgent && (
+                                <p className="px-0.5 rounded-md shadow-md bg-red-400 text-sm text-white">
+                                  {urgent}
+                                </p>
+                              )}
+                              {multiCargoGub && (
+                                <p className="px-0.5 rounded-md shadow-md bg-indigo-400 text-sm text-white">
+                                  {multiCargoGub}
+                                </p>
+                              )}
+                              {shuttleCargoInfo && (
+                                <p className="px-0.5 rounded-md bg-yellow-400 text-sm text-white">
+                                  {shuttleCargoInfo}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="">
+                            <p className="mt-1 truncate leading-5 text-gray-500 whitespace-pre-wrap">
+                              {`상차지 : ${startWide} ${startSgg} ${startDong} ${startDetail}`}
+                            </p>
+                          </div>
+                          <div className="">
+                            <p className="mt-1 truncate leading-5 text-gray-500 whitespace-pre-wrap">
+                              {`하차지 : ${endWide} ${endSgg} ${endDong} ${endDetail}`}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    )
+                  )}
               </ul>
             </div>
           </div>

@@ -7,6 +7,7 @@ import {
   addCommas,
   formatDate,
   getOneWeekAgoDate,
+  getPeriodDate,
   getTodayDate,
 } from "../../utils/StringUtils";
 import { formatPhoneNumber } from "../../utils/StringUtils";
@@ -14,6 +15,7 @@ import DateInput from "../components/custom/DateInput";
 import { useInput } from "../../hooks/useInput";
 import DirectAllocModal from "../components/modals/DirectAllocModal";
 import ExcelJS from "exceljs";
+import ComboBox from "../components/custom/ComboBox";
 
 const CargoList = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
@@ -23,11 +25,22 @@ const CargoList = () => {
   const [endSearchDt, setEndSearchDt] = useState(getTodayDate());
   const [isAllocModalOpen, setIsAllocModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState({});
+  const [selectedPeriod, setSelectedPeriod] = useState(-1);
   //const [companySearch, setCompanySearch] = useState("");
   const companySearch = useInput("");
   const router = useRouter();
 
   const isAdmin = userInfo.auth_code === "ADMIN";
+  const selectPeriodList = [
+    { name: "오늘", value: 1 },
+    { name: "어제", value: 2 },
+    { name: "이번주", value: 3 },
+    { name: "최근한주", value: 4 },
+    { name: "지난주", value: 5 },
+    { name: "이번달", value: 6 },
+    { name: "최근한달", value: 7 },
+    { name: "지난달", value: 8 },
+  ];
 
   const exportToExcel = async () => {
     try {
@@ -39,11 +52,11 @@ const CargoList = () => {
         "주문 번호",
         "상차지",
         "하차지",
-        "혼적여부",
-        "긴급여부",
+        //"혼적여부",
+        //"긴급여부",
         "왕복여부",
         "차량종류",
-        "화물량",
+        //"화물량",
         "상차일",
         "하차일",
         "화물상태",
@@ -60,11 +73,11 @@ const CargoList = () => {
         { width: 10 }, // 주문 번호
         { width: 20 }, // 상차지
         { width: 20 }, // 하차지
-        { width: 10 }, // 혼적여부
-        { width: 10 }, // 긴급여부
+        //{ width: 10 }, // 혼적여부
+        //{ width: 10 }, // 긴급여부
         { width: 10 }, // 왕복여부
-        { width: 15 }, // 차량종류
-        { width: 10 }, // 화물량
+        { width: 25 }, // 차량종류
+        //{ width: 10 }, // 화물량
         { width: 20 }, // 상차일
         { width: 20 }, // 하차일
         { width: 15 }, // 화물상태
@@ -106,11 +119,11 @@ const CargoList = () => {
           item.ordNo,
           `${item.startWide} ${item.startSgg} ${item.startDong}`,
           `${item.endWide} ${item.endSgg} ${item.endDong}`,
-          item.multiCargoGub,
-          item.urgent,
+          //item.multiCargoGub,
+          //item.urgent,
           item.shuttleCargoInfo,
-          item.truckType,
-          item.cargoTon,
+          `${item.cargoTon}톤 ${item.truckType}`,
+          //item.cargoTon,
           `${item.startPlanDt} ${item.startPlanHour}:${item.startPlanMinute}`,
           `${item.endPlanDt} ${item.endPlanHour}:${item.endPlanMinute}`,
           item.ordStatus,
@@ -144,6 +157,15 @@ const CargoList = () => {
 
   const handleExportClick = () => {
     exportToExcel();
+  };
+
+  const handlePeriodChange = (value) => {
+    const period = getPeriodDate(value);
+    setStartSearchDt(period.startDate);
+    setEndSearchDt(period.endDate);
+
+    setSelectedPeriod(value);
+    return;
   };
 
   const getOrderList = async () => {
@@ -372,11 +394,20 @@ const CargoList = () => {
           <div className="hidden lg:flex items-center justify-between w-full pb-5 border-b border-gray-200">
             <div className="flex items-center">
               <div className="flex justify-between gap-x-2 items-center">
+                <div>
+                  <ComboBox
+                    onComboChange={handlePeriodChange}
+                    list={selectPeriodList}
+                    selectedValue={selectedPeriod}
+                    title={"기간입력"}
+                  />
+                </div>
                 <div className="z-0">
                   <DateInput
                     dateValue={startSearchDt}
                     onDateChange={setStartSearchDt}
-                    addClass="w-40"
+                    disabled={selectedPeriod != -1}
+                    addClass="w-32"
                   />
                 </div>
                 <span>~</span>
@@ -384,7 +415,8 @@ const CargoList = () => {
                   <DateInput
                     dateValue={endSearchDt}
                     onDateChange={setEndSearchDt}
-                    addClass="w-40"
+                    disabled={selectedPeriod != -1}
+                    addClass="w-32"
                   />
                 </div>
               </div>
@@ -529,7 +561,10 @@ const CargoList = () => {
 
         {/* Grid header(PC) */}
         <div className="hidden lg:block mt-5 border-y border-gray-200 py-3 bg-headerColor2 gap-x-1">
-          <div className="grid grid-cols-9 items-center text-center text-gray-200">
+          <div className="grid grid-cols-10 items-center text-center text-gray-200">
+            <div className="border-r border-gray-700">
+              <span>그룹명</span>
+            </div>
             <div className="col-span-2 border-r border-gray-700">
               <span>상차정보</span>
             </div>
@@ -587,6 +622,7 @@ const CargoList = () => {
                 cjName, //차주명
                 cjPhone, //차주연락처
                 fare,
+                group_name,
               } = item;
               return (
                 <li
@@ -720,7 +756,10 @@ const CargoList = () => {
                   </div>
 
                   <div className="hidden lg:block border-b border-gray-200 py-3">
-                    <div className="grid grid-cols-9 items-center">
+                    <div className="grid grid-cols-10 items-center">
+                      <div className="px-5">
+                        <p>{group_name}</p>
+                      </div>
                       <div className="col-span-2 px-5">
                         <p className="mt-1 truncate leading-5 font-bold text-gray-500">
                           {`${startCompanyName || ""} ${
