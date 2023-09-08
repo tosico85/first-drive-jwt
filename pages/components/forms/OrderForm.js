@@ -67,6 +67,9 @@ export default function OrderForm({
   const [planTimeStatement, setPlanTimeStatement] =
     useState("지금 상차 / 당착");
 
+  //차량선택(트럭/라보/다마스)
+  const [carType, setCarType] = useState("truck");
+
   //base data
   const LOAD_TYPE_LIST = [
     "지게차",
@@ -554,6 +557,16 @@ export default function OrderForm({
     }
   };
 
+  //전화번호 필드 숫자만 필터링
+  const filterTelNoHyphen = (e) => {
+    const {
+      target: { value },
+    } = e;
+
+    // 정규 표현식을 사용하여 숫자만 추출
+    e.target.value = value.replace(/[^0-9]/g, "");
+  };
+
   /**
    * submit invalid event
    * form 안의 모든 필수항목 입력된 경우 이 이벤트 ..
@@ -624,7 +637,7 @@ export default function OrderForm({
    * @param {상하차 구분} startEnd
    */
   const handleAddressSearchButton = (e, startEnd) => {
-    e.preventDefault();
+    //e.preventDefault();
     setModalStartEnd(startEnd);
     console.log("startEnd >> ", startEnd);
     openAddressModal();
@@ -1115,9 +1128,10 @@ export default function OrderForm({
                     <input
                       {...register("startAreaPhone", {
                         required: "상차지 전화번호를 입력해주세요.",
+                        onChange: filterTelNoHyphen,
                       })}
                       type="tel"
-                      maxLength={11}
+                      maxLength={12}
                       placeholder={"상차지 전화번호"}
                       className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
@@ -1275,9 +1289,10 @@ export default function OrderForm({
                     <input
                       {...register("endAreaPhone", {
                         required: "하차지 전화번호를 입력해주세요.",
+                        onChange: filterTelNoHyphen,
                       })}
                       type="tel"
-                      maxLength={11}
+                      maxLength={12}
                       placeholder={"하차지 전화번호"}
                       className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
@@ -1631,9 +1646,10 @@ export default function OrderForm({
                       <input
                         {...register("firstShipperInfo", {
                           required: "원화주 전화번호를 입력해주세요.",
+                          onChange: filterTelNoHyphen,
                         })}
                         type="tel"
-                        maxLength={11}
+                        maxLength={12}
                         placeholder={"원화주 전화번호('-'없이 입력하세요)"}
                         className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                       />
@@ -1878,9 +1894,10 @@ export default function OrderForm({
                             <input
                               {...register("startAreaPhone", {
                                 required: "상차지 전화번호를 입력해주세요.",
+                                onChange: filterTelNoHyphen,
                               })}
                               type="tel"
-                              maxLength={11}
+                              maxLength={12}
                               placeholder={"상차지 전화번호"}
                               className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
@@ -2043,9 +2060,10 @@ export default function OrderForm({
                             <input
                               {...register("endAreaPhone", {
                                 required: "하차지 전화번호를 입력해주세요.",
+                                onChange: filterTelNoHyphen,
                               })}
                               type="tel"
-                              maxLength={11}
+                              maxLength={12}
                               placeholder={"하차지 전화번호"}
                               className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
@@ -2065,35 +2083,89 @@ export default function OrderForm({
                     </p>
 
                     <div className="grid grid-cols-4 gap-x-3">
-                      <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col items-center">
+                      <div
+                        className={
+                          "rounded-sm border px-2 pt-2 pb-7 flex flex-col items-center" +
+                          (carType == "truck"
+                            ? " border-mainBlue"
+                            : " border-gray-200")
+                        }
+                        onClick={() => setCarType("truck")}
+                      >
                         <img
                           src={"/cars/트럭.png"}
-                          className="h-16 w-20 object-contain"
+                          className={
+                            "h-16 w-20 object-contain" +
+                            (carType != "truck" ? " opacity-40" : "")
+                          }
                         />
                         <div className="w-5/6 mx-auto text-center relative">
-                          <p className="w-full py-1 px-3 bg-mainBlue rounded-full text-white absolute -bottom-10">
+                          <p
+                            className={
+                              "w-full py-1 px-3 rounded-full absolute -bottom-10" +
+                              (carType == "truck"
+                                ? " bg-mainBlue text-white"
+                                : " bg-gray-200 text-gray-400")
+                            }
+                          >
                             트럭
                           </p>
                         </div>
                       </div>
-                      <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col items-center">
+                      <div
+                        className={
+                          "rounded-sm border px-2 pt-2 pb-7 flex flex-col items-center" +
+                          (carType == "labo"
+                            ? " border-mainBlue"
+                            : " border-gray-200")
+                        }
+                        onClick={() => setCarType("labo")}
+                      >
                         <img
                           src={"/cars/라보.png"}
-                          className="h-16 w-20 opacity-40 object-contain"
+                          className={
+                            "h-16 w-20 object-contain" +
+                            (carType != "labo" ? " opacity-40" : "")
+                          }
                         />
                         <div className="w-5/6 mx-auto text-center relative">
-                          <p className="w-full py-1 px-3 bg-gray-200 rounded-full text-gray-400 absolute -bottom-10">
+                          <p
+                            className={
+                              "w-full py-1 px-3 rounded-full absolute -bottom-10" +
+                              (carType == "labo"
+                                ? " bg-mainBlue text-white"
+                                : " bg-gray-200 text-gray-400")
+                            }
+                          >
                             라보
                           </p>
                         </div>
                       </div>
-                      <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col items-center">
+                      <div
+                        className={
+                          "rounded-sm border px-2 pt-2 pb-7 flex flex-col items-center" +
+                          (carType == "damas"
+                            ? " border-mainBlue"
+                            : " border-gray-200")
+                        }
+                        onClick={() => setCarType("damas")}
+                      >
                         <img
                           src={"/cars/다마스.png"}
-                          className="h-16 w-20 opacity-40 object-contain"
+                          className={
+                            "h-16 w-20 object-contain" +
+                            (carType != "damas" ? " opacity-40" : "")
+                          }
                         />
                         <div className="w-5/6 mx-auto text-center relative">
-                          <p className="w-full py-1 px-3 bg-gray-200 rounded-full text-gray-400 absolute -bottom-10">
+                          <p
+                            className={
+                              "w-full py-1 px-3 rounded-full absolute -bottom-10" +
+                              (carType == "damas"
+                                ? " bg-mainBlue text-white"
+                                : " bg-gray-200 text-gray-400")
+                            }
+                          >
                             다마스
                           </p>
                         </div>
@@ -2103,9 +2175,13 @@ export default function OrderForm({
                           src={"/cars/오토바이 퀵.png"}
                           className="h-16 w-20 opacity-40 object-contain"
                         />
-                        <div className="w-5/6 mx-auto text-center relative">
+                        <div className="w-full mx-auto text-center relative">
                           <p className="w-full py-1 px-3 bg-gray-200 rounded-full text-gray-400 absolute -bottom-10">
                             오토바이
+                          </p>
+
+                          <p className="w-full py-1 px-3 text-gray-600 italic absolute -top-4">
+                            준비중
                           </p>
                         </div>
                       </div>
@@ -2231,11 +2307,23 @@ export default function OrderForm({
                             className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                           >
                             <option value="">차량톤수(t)</option>
-                            {cargoTonList.map(({ nm }, i) => (
-                              <option key={i} value={nm}>
-                                {nm} 톤
-                              </option>
-                            ))}
+                            {cargoTonList.map(({ nm }, i) => {
+                              if (carType == "truck") {
+                                if (["0.3", "0.5"].includes(nm)) {
+                                  return;
+                                }
+                              } else {
+                                if (nm != "0.5") {
+                                  return;
+                                }
+                              }
+
+                              return (
+                                <option key={i} value={nm}>
+                                  {nm} 톤
+                                </option>
+                              );
+                            })}
                           </select>
                           <div className="text-red-500 mx-auto font-bold text-center">
                             {errors.cargoTon?.message}
@@ -2509,9 +2597,10 @@ export default function OrderForm({
                             <input
                               {...register("firstShipperInfo", {
                                 required: "원화주 전화번호를 입력해주세요.",
+                                onChange: filterTelNoHyphen,
                               })}
                               type="tel"
-                              maxLength={11}
+                              maxLength={12}
                               placeholder={"원화주 전화번호('-'없이)"}
                               className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />

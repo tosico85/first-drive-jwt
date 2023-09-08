@@ -224,7 +224,7 @@ const CargoList = () => {
     content: {
       top: "50%",
       left: "50%",
-      width: "360px",
+      width: "420px",
       height: "660px",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
@@ -438,7 +438,7 @@ const CargoList = () => {
                       await getOrderList();
                     })()
                   }
-                  className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm"
+                  className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
                 >
                   검색
                 </button>
@@ -447,7 +447,7 @@ const CargoList = () => {
               <div className="ml-1">
                 <button
                   onClick={handleExportClick}
-                  className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm"
+                  className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
                 >
                   엑셀
                 </button>
@@ -561,7 +561,7 @@ const CargoList = () => {
 
         {/* Grid header(PC) */}
         <div className="hidden lg:block mt-5 border-y border-gray-200 py-3 bg-headerColor2 gap-x-1">
-          <div className="grid grid-cols-10 items-center text-center text-gray-200">
+          <div className="grid grid-cols-11 items-center text-center text-gray-200">
             <div className="border-r border-gray-700">
               <span>그룹명</span>
             </div>
@@ -575,10 +575,13 @@ const CargoList = () => {
               <span>화물내용</span>
             </div>
             <div className="border-r border-gray-700">
+              <span>차량정보</span>
+            </div>
+            <div className="border-r border-gray-700">
               <span>상태</span>
             </div>
             <div className="border-r border-gray-700">
-              <span>{"화물복사" + (isAdmin ? " / 배차" : "")}</span>
+              <span>{isAdmin ? "복사 / 배차" : "화물복사"}</span>
             </div>
             <div className="">
               <span>등록일자</span>
@@ -756,7 +759,7 @@ const CargoList = () => {
                   </div>
 
                   <div className="hidden lg:block border-b border-gray-200 py-3">
-                    <div className="grid grid-cols-10 items-center">
+                    <div className="grid grid-cols-11 items-center">
                       <div className="px-5">
                         <p>{group_name}</p>
                       </div>
@@ -770,7 +773,9 @@ const CargoList = () => {
                           {`${startWide} ${startSgg} ${startDong} ${startDetail}`}
                         </p>
                         <p className="mt-1 truncate leading-5 text-gray-500">
-                          {formatDate(startPlanDt)}
+                          {`${formatDate(
+                            startPlanDt
+                          )} ${startPlanHour}:${startPlanMinute}`}
                         </p>
                       </div>
                       <div className="col-span-2 px-5">
@@ -783,7 +788,9 @@ const CargoList = () => {
                           {`${endWide} ${endSgg} ${endDong} ${endDetail}`}
                         </p>
                         <p className="mt-1 truncate leading-5 text-gray-500">
-                          {formatDate(endPlanDt)}
+                          {`${formatDate(
+                            endPlanDt
+                          )} ${endPlanHour}:${endPlanMinute}`}
                         </p>
                       </div>
                       <div className="flex flex-col col-span-2 px-5">
@@ -811,6 +818,17 @@ const CargoList = () => {
                           )}
                         </div>
                       </div>
+
+                      <div className="text-center flex flex-col items-center">
+                        {ordStatus == "배차완료" && (
+                          <div className="w-full mt-2 flex flex-col items-baseline text-sm text-slate-500">
+                            <span className="text-left">{`${cjName}`}</span>
+                            <span className="text-left">{`${formatPhoneNumber(
+                              cjPhone
+                            )}`}</span>
+                          </div>
+                        )}
+                      </div>
                       <div className="text-center flex flex-col items-center">
                         <span
                           className={
@@ -832,12 +850,6 @@ const CargoList = () => {
                             ? "배차중"
                             : ordStatus}
                         </span>
-                        {ordStatus == "배차완료" && (
-                          <div className="w-full mt-2 px-5 flex flex-col items-baseline text-sm text-slate-500">
-                            <span className="text-left">{`(차주) ${cjName}`}</span>
-                            <span className="text-left">{`${cjPhone}`}</span>
-                          </div>
-                        )}
                       </div>
                       <div className="flex flex-col items-center gap-y-2 justify-center px-5">
                         <div
@@ -847,7 +859,7 @@ const CargoList = () => {
                             handleCargoCopy(cargo_seq);
                           }}
                         >
-                          <p>복사</p>
+                          <p className="shrink-0">복사</p>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -871,7 +883,7 @@ const CargoList = () => {
                               handleDirectAlloc(cargo_seq);
                             }}
                           >
-                            <p>배차</p>
+                            <p className="shrink-0">배차</p>
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"

@@ -11,12 +11,12 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
   // 차주정보 useInput
   const inputMap = {
     cjName: useInput(""),
-    cjPhone: useInput(""),
+    cjPhone: useInput("", "number"),
     cjCarNum: useInput(""),
-    cjCargoTon: useInput(""),
+    cjCargoTon: useInput("", "float"),
     cjTruckType: useInput(""),
-    fare: useInput(cargoOrder?.fare || "0"),
-    fareView: useInput(cargoOrder?.fareView || "0"),
+    fare: useInput(cargoOrder?.fare || "0", "number"),
+    fareView: useInput(cargoOrder?.fareView || "0", "number"),
   };
 
   // 차주정보 map
@@ -136,12 +136,12 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
         <div className="flex flex-col gap-y-3">
           <p className="text-base">배차정보(차량정보)</p>
           {cjIterator.map(({ varName, korName }) => (
-            <div className="flex items-center gap-x-2">
+            <div key={varName} className="flex items-center gap-x-2">
               <Label title={korName} required={true} />
               <input
                 {...inputMap[varName]}
                 type="text"
-                maxLength={varName == "cjPhone" ? "11" : ""}
+                maxLength={varName == "cjPhone" ? "12" : ""}
                 placeholder={`${korName} 입력`}
                 className="w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
               />
@@ -152,7 +152,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
         <div className="flex flex-col gap-y-3">
           <p className="text-base">운임료 정보(화주용/관리자용)</p>
           {fareIterator.map(({ varName, korName }) => (
-            <div className="flex items-center gap-x-2">
+            <div key={varName} className="flex items-center gap-x-2">
               <Label title={korName} required={true} />
               <input
                 {...inputMap[varName]}
