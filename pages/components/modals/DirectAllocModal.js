@@ -17,21 +17,25 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
     cjTruckType: useInput(""),
     fare: useInput(cargoOrder?.fare || "0", "number"),
     fareView: useInput(cargoOrder?.fareView || "0", "number"),
+    addFare: useInput(cargoOrder?.fare || "0", "number"),
+    addFareReason: useInput(""),
   };
 
   // 차주정보 map
   const cjIterator = [
-    { varName: "cjName", korName: "이름" },
-    { varName: "cjPhone", korName: "전화번호" },
-    { varName: "cjCarNum", korName: "차량번호" },
-    { varName: "cjCargoTon", korName: "차량톤수" },
-    { varName: "cjTruckType", korName: "차량규격" },
+    { varName: "cjName", korName: "이름", required: true },
+    { varName: "cjPhone", korName: "전화번호", required: true },
+    { varName: "cjCarNum", korName: "차량번호", required: true },
+    { varName: "cjCargoTon", korName: "차량톤수", required: true },
+    { varName: "cjTruckType", korName: "차량규격", required: true },
   ];
 
   // 운임료정보 map
   const fareIterator = [
-    { varName: "fareView", korName: "화주용" },
-    { varName: "fare", korName: "관리자용" },
+    { varName: "fareView", korName: "화주용", required: true },
+    { varName: "fare", korName: "관리자용", required: true },
+    { varName: "addFare", korName: "추가요금", required: true },
+    { varName: "addFareReason", korName: "추가사유", required: false },
   ];
 
   /**
@@ -44,8 +48,9 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
 
     // 필수 입력값 체크
     const iterator = [...cjIterator, ...fareIterator];
-    iterator.forEach(({ varName: key, korName }) => {
+    iterator.forEach(({ varName: key, korName, required }) => {
       if (!result) return;
+      if (!required) return;
       if (isEmpty(inputMap[key].value)) {
         result = false;
         resultMsg = `${korName}을 입력해주세요`;
@@ -56,7 +61,8 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       // 운임료 숫자 체크, 최저운임료 체크
       if (
         !isNumber(inputMap.fare.value) ||
-        !isNumber(inputMap.fareView.value)
+        !isNumber(inputMap.fareView.value) ||
+        !isNumber(inputMap.addFare.value)
       ) {
         result = false;
         resultMsg = "운임료를 숫자로 입력하세요.";
@@ -96,6 +102,8 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       cjTruckType: inputMap.cjTruckType.value,
       fare: inputMap.fare.value,
       fareView: inputMap.fareView.value,
+      addFare: inputMap.addFare.value,
+      addFareReason: inputMap.addFareReason.value,
 
       startWide: cargoOrder.startWide,
       startSgg: cargoOrder.startSgg,
@@ -133,35 +141,36 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
             수기배차 입력 (차량 및 운임료 정보)
           </p>
         </div>
-        <div className="flex flex-col gap-y-3">
-          <p className="text-base">배차정보(차량정보)</p>
-          {cjIterator.map(({ varName, korName }) => (
-            <div key={varName} className="flex items-center gap-x-2">
-              <Label title={korName} required={true} />
-              <input
-                {...inputMap[varName]}
-                type="text"
-                maxLength={varName == "cjPhone" ? "12" : ""}
-                placeholder={`${korName} 입력`}
-                className="w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-              />
-            </div>
-          ))}
-        </div>
-        <div className="border-b border-gray-200 my-5"></div>
-        <div className="flex flex-col gap-y-3">
-          <p className="text-base">운임료 정보(화주용/관리자용)</p>
-          {fareIterator.map(({ varName, korName }) => (
-            <div key={varName} className="flex items-center gap-x-2">
-              <Label title={korName} required={true} />
-              <input
-                {...inputMap[varName]}
-                type="text"
-                placeholder={`${korName} 입력`}
-                className="w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-              />
-            </div>
-          ))}
+        <div className="grid grid-cols-2 gap-x-5">
+          <div className="flex flex-col gap-y-3 pr-5 border-r border-gray-200">
+            <p className="text-base">배차정보(차량정보)</p>
+            {cjIterator.map(({ varName, korName, required }) => (
+              <div key={varName} className="flex items-center gap-x-2">
+                <Label title={korName} required={required} />
+                <input
+                  {...inputMap[varName]}
+                  type="text"
+                  maxLength={varName == "cjPhone" ? "12" : ""}
+                  placeholder={`${korName} 입력`}
+                  className="w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                />
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-col gap-y-3">
+            <p className="text-base">운임료 정보(화주용/관리자용)</p>
+            {fareIterator.map(({ varName, korName, required }) => (
+              <div key={varName} className="flex items-center gap-x-2">
+                <Label title={korName} required={required} />
+                <input
+                  {...inputMap[varName]}
+                  type="text"
+                  placeholder={`${korName} 입력`}
+                  className="w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <div className="text-center pt-5 grid grid-cols-2 w-full gap-x-3">

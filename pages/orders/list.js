@@ -16,6 +16,7 @@ import { useInput } from "../../hooks/useInput";
 import DirectAllocModal from "../components/modals/DirectAllocModal";
 import ExcelJS from "exceljs";
 import ComboBox from "../components/custom/ComboBox";
+import ModifyAddFareModal from "../components/modals/ModifyAddFareModal";
 
 const CargoList = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
@@ -24,6 +25,7 @@ const CargoList = () => {
   const [startSearchDt, setStartSearchDt] = useState(getOneWeekAgoDate());
   const [endSearchDt, setEndSearchDt] = useState(getTodayDate());
   const [isAllocModalOpen, setIsAllocModalOpen] = useState(false);
+  const [isAddFareModalOpen, setIsAddFareModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState({});
   const [selectedPeriod, setSelectedPeriod] = useState(-1);
   //const [companySearch, setCompanySearch] = useState("");
@@ -220,15 +222,39 @@ const CargoList = () => {
     })();
   };
 
+  const openAddFareModal = () => {
+    setIsAddFareModalOpen(true);
+  };
+
+  const closeAddFareModal = () => {
+    setIsAddFareModalOpen(false);
+  };
+
+  const callbackAddFareModal = () => {
+    closeAddFareModal();
+    (async () => {
+      await getOrderList();
+    })();
+  };
+
   const customModalStyles = {
     content: {
       top: "50%",
       left: "50%",
-      width: "420px",
-      height: "660px",
+      width: "860px",
+      height: "500px",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
       boxShadow: "0px 0px 10px #e2e2e2",
+    },
+  };
+
+  //추가요금 수정 모달 스타일
+  const customModalStyles_addFare = {
+    content: {
+      ...customModalStyles.content,
+      width: "460px",
+      height: "300px",
     },
   };
 
@@ -283,6 +309,18 @@ const CargoList = () => {
     }
   };
 
+  //추가요금 수정
+  const handleAddFare = (cargo_seq) => {
+    const cargoItem = {
+      ...cargoOrder.find((item) => item.cargo_seq === cargo_seq),
+    };
+
+    if (cargoItem) {
+      setSelectedOrder(cargoItem);
+      openAddFareModal();
+    }
+  };
+
   const filteredCargoList = () => {
     return (cargoOrder || []).length > 0
       ? cargoOrder.filter((item) => {
@@ -329,6 +367,18 @@ const CargoList = () => {
           paramObj={selectedOrder}
           onCancel={closeAllocModal}
           onComplete={callbackAllocModal}
+        />
+      </Modal>
+      <Modal
+        isOpen={isAddFareModalOpen}
+        onRequestClose={closeAddFareModal}
+        contentLabel="Modal"
+        style={customModalStyles_addFare}
+      >
+        <ModifyAddFareModal
+          paramObj={selectedOrder}
+          onCancel={closeAddFareModal}
+          onComplete={callbackAddFareModal}
         />
       </Modal>
       <div className="lg:border lg:border-gray-200 bg-white lg:p-5 lg:mt-2">
@@ -459,16 +509,20 @@ const CargoList = () => {
               <div
                 className={
                   "relative text-sm w-full flex justify-between gap-x-3 px-5 py-3 bg-white border hover:shadow-md " +
-                  (searchStatus == "ALL"
+                  (searchStatus === "ALL"
                     ? "bg-gray-100 border-mainBlue border-2 text-mainBlue"
                     : "text-gray-500 border-gray-200")
                 }
                 onClick={() => handleSearchStatus("ALL")}
               >
-                <p className="text-sm">전체</p>
-                <p className="absolute top-0 right-2 text-right font-extrabold text-lg">
-                  {getCountByStatus("ALL")}
-                </p>
+                <div className="flex items-center">
+                  <p className="text-sm">전체</p>
+                </div>
+                <div className="flex items-center">
+                  <p className="text-right font-extrabold text-lg">
+                    {getCountByStatus("ALL")}
+                  </p>
+                </div>
               </div>
               <div
                 className={
@@ -479,10 +533,14 @@ const CargoList = () => {
                 }
                 onClick={() => handleSearchStatus("화물접수")}
               >
-                <p className="text-sm">접수중</p>
-                <p className="absolute top-0 right-2 text-right font-extrabold text-lg">
-                  {getCountByStatus("화물접수")}
-                </p>
+                <div className="flex items-center">
+                  <p className="text-sm">접수중</p>
+                </div>
+                <div className="flex items-center">
+                  <p className="text-right font-extrabold text-lg">
+                    {getCountByStatus("화물접수")}
+                  </p>
+                </div>
               </div>
               <div
                 className={
@@ -493,10 +551,14 @@ const CargoList = () => {
                 }
                 onClick={() => handleSearchStatus("배차신청")}
               >
-                <p className="text-sm">배차중</p>
-                <p className="absolute top-0 right-2 text-right font-extrabold text-lg">
-                  {getCountByStatus("배차신청")}
-                </p>
+                <div className="flex items-center">
+                  <p className="text-sm">배차중</p>
+                </div>
+                <div className="flex items-center">
+                  <p className="text-right font-extrabold text-lg">
+                    {getCountByStatus("배차신청")}
+                  </p>
+                </div>
               </div>
               <div
                 className={
@@ -507,10 +569,14 @@ const CargoList = () => {
                 }
                 onClick={() => handleSearchStatus("배차완료")}
               >
-                <p className="text-sm">배차완료</p>
-                <p className="absolute top-0 right-2 text-right font-extrabold text-lg">
-                  {getCountByStatus("배차완료")}
-                </p>
+                <div className="flex items-center">
+                  <p className="text-sm">배차완료</p>
+                </div>
+                <div className="flex items-center">
+                  <p className="text-right font-extrabold text-lg">
+                    {getCountByStatus("배차완료")}
+                  </p>
+                </div>
               </div>
               <div
                 className={
@@ -521,10 +587,14 @@ const CargoList = () => {
                 }
                 onClick={() => handleSearchStatus("취소")}
               >
-                <p className="text-sm">취소</p>
-                <p className="absolute top-0 right-2 text-right font-extrabold text-lg">
-                  {getCountByStatus("취소")}
-                </p>
+                <div className="flex items-center">
+                  <p className="text-sm">취소</p>
+                </div>
+                <div className="flex items-center">
+                  <p className="text-right font-extrabold text-lg">
+                    {getCountByStatus("취소")}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -625,6 +695,8 @@ const CargoList = () => {
                 cjName, //차주명
                 cjPhone, //차주연락처
                 fare,
+                addFare,
+                addFareReason,
                 group_name,
               } = item;
               return (
@@ -850,10 +922,20 @@ const CargoList = () => {
                             ? "배차중"
                             : ordStatus}
                         </span>
+                        {ordStatus == "배차완료" && (
+                          <div className="w-full mt-2 flex flex-col items-baseline text-sm text-slate-500 px-3">
+                            <span className="text-left">{`추가요금 : ${addCommas(
+                              addFare
+                            )}`}</span>
+                            {addFare != "0" && (
+                              <span className="text-left">{`추가사유 : ${addFareReason}`}</span>
+                            )}
+                          </div>
+                        )}
                       </div>
-                      <div className="flex flex-col items-center gap-y-2 justify-center px-5">
+                      <div className="flex flex-col items-center gap-y-2 justify-center px-3">
                         <div
-                          className="text-sm font-semibold flex items-center gap-x-3 w-fit text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
+                          className="text-sm font-semibold flex items-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleCargoCopy(cargo_seq);
@@ -875,9 +957,9 @@ const CargoList = () => {
                             />
                           </svg>
                         </div>
-                        {isAdmin && (
+                        {isAdmin && ordStatus == "화물접수" && (
                           <div
-                            className="text-sm font-semibold flex items-center gap-x-3 w-fit text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
+                            className="text-sm font-semibold flex items-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleDirectAlloc(cargo_seq);
@@ -898,6 +980,17 @@ const CargoList = () => {
                                 d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
                               />
                             </svg>
+                          </div>
+                        )}
+                        {isAdmin && ordStatus == "배차완료" && (
+                          <div
+                            className="text-sm font-semibold flex items-center justify-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddFare(cargo_seq);
+                            }}
+                          >
+                            <p className="shrink-0">추가요금</p>
                           </div>
                         )}
                       </div>

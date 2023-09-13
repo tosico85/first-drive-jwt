@@ -4,6 +4,7 @@ import apiPaths from "../../services/apiRoutes";
 import Seo from "../components/Seo";
 import AuthContext from "../context/authContext";
 import {
+  addCommas,
   formatDate,
   formatPhoneNumber,
   isEmpty,
@@ -495,7 +496,19 @@ export default function Detail() {
                         운송료
                       </dt>
                       <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
-                        {cargoOrder.fareView}
+                        {addCommas(cargoOrder.fareView)}
+                      </dd>
+                    </div>
+                  )}
+                  {cargoOrder.addFare != "0" && (
+                    <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
+                      <dt className="text-sm font-semibold leading-6 ">
+                        추가비용
+                      </dt>
+                      <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
+                        {`${addCommas(cargoOrder.addFare)} / ${
+                          cargoOrder.addFareReason
+                        }`}
                       </dd>
                     </div>
                   )}
@@ -516,13 +529,13 @@ export default function Detail() {
                   <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                     <dt className="text-sm font-semibold leading-6 ">운송료</dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
-                      {cargoOrder.fare}
+                      {addCommas(cargoOrder.fare)}
                     </dd>
                   </div>
                   <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                     <dt className="text-sm font-semibold leading-6 ">수수료</dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
-                      {cargoOrder.fee}
+                      {addCommas(cargoOrder.fee)}
                     </dd>
                   </div>
                   <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">

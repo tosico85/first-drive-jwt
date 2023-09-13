@@ -50,6 +50,8 @@ export const isEmpty = (obj) => {
 export const addCommas = (number) => {
   if (typeof number === "number") {
     number = number.toString();
+  } else {
+    if (isEmpty(number)) return "";
   }
   return number.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
@@ -189,6 +191,7 @@ function getMondayDate(addWeek = 0) {
  * @returns
  */
 export const getPeriodDate = (type = 1) => {
+  let currentDate = new Date();
   let startDate = getTodayDate(),
     endDate = getTodayDate();
 
@@ -205,7 +208,7 @@ export const getPeriodDate = (type = 1) => {
   } else if (type == 5) {
     //지난주
     startDate = getMondayDate(-1);
-    endDate = getDayYYYYMMDD(today.getDay() * -1);
+    endDate = getDayYYYYMMDD(currentDate.getDay() * -1);
   } else if (type == 6) {
     //이번달
     startDate = getMonthYYYYMM() + "01";
