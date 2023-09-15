@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
       name,
       email,
       password,
-      group_code,
+      // group_code,
     };
 
     const result = await requestServer(apiPaths.userJoin, params);

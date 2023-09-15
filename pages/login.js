@@ -133,7 +133,7 @@ const LoginPage = () => {
                     {errors.name?.message}
                   </div>
                 </div>
-                <div className="flex flex-col mb-5">
+                {/* <div className="flex flex-col mb-5">
                   <p className="text-sm">그룹</p>
                   <div className="flex relative ">
                     <ComboBox
@@ -146,7 +146,7 @@ const LoginPage = () => {
                   <div className="text-red-500 text-sm text-end">
                     {errors.name?.message}
                   </div>
-                </div>
+                </div> */}
               </>
             )}
             <div className="flex flex-col mb-5">

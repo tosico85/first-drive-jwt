@@ -694,6 +694,9 @@ const CargoList = () => {
                 create_dtm, //등록일시
                 cjName, //차주명
                 cjPhone, //차주연락처
+                cjCarNum,
+                cjTruckType,
+                cjCargoTon,
                 fare,
                 addFare,
                 addFareReason,
@@ -893,11 +896,14 @@ const CargoList = () => {
 
                       <div className="text-center flex flex-col items-center">
                         {ordStatus == "배차완료" && (
-                          <div className="w-full mt-2 flex flex-col items-baseline text-sm text-slate-500">
+                          <div className="w-full mt-2 flex flex-col items-baseline text-base text-slate-500">
                             <span className="text-left">{`${cjName}`}</span>
                             <span className="text-left">{`${formatPhoneNumber(
                               cjPhone
                             )}`}</span>
+                            <span className="text-left">{`${cjCarNum}`}</span>
+                            <span className="text-left">{`${cjTruckType}`}</span>
+                            <span className="text-left">{`${cjCargoTon}`}</span>
                           </div>
                         )}
                       </div>
@@ -922,20 +928,26 @@ const CargoList = () => {
                             ? "배차중"
                             : ordStatus}
                         </span>
-                        {ordStatus == "배차완료" && (
-                          <div className="w-full mt-2 flex flex-col items-baseline text-sm text-slate-500 px-3">
-                            <span className="text-left">{`추가요금 : ${addCommas(
-                              addFare
-                            )}`}</span>
-                            {addFare != "0" && (
-                              <span className="text-left">{`추가사유 : ${addFareReason}`}</span>
-                            )}
+                        {isAdmin && ordStatus == "배차완료" && (
+                          <div
+                            className={
+                              "text-sm text-white font-bold px-3 py-2 rounded-full mt-3 cursor-pointer" +
+                              (addFare != "0"
+                                ? " bg-red-400 ring-bg-red-400"
+                                : " bg-slate-400 ring-bg-slate-400")
+                            }
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddFare(cargo_seq);
+                            }}
+                          >
+                            <p className="shrink-0">추가요금</p>
                           </div>
                         )}
                       </div>
                       <div className="flex flex-col items-center gap-y-2 justify-center px-3">
                         <div
-                          className="text-sm font-semibold flex items-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
+                          className="text-sm font-semibold flex items-center justify-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleCargoCopy(cargo_seq);
@@ -957,9 +969,9 @@ const CargoList = () => {
                             />
                           </svg>
                         </div>
-                        {isAdmin && ordStatus == "화물접수" && (
+                        {isAdmin /* && ordStatus == "화물접수" */ && (
                           <div
-                            className="text-sm font-semibold flex items-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
+                            className="text-sm font-semibold flex items-center justify-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleDirectAlloc(cargo_seq);
@@ -982,19 +994,8 @@ const CargoList = () => {
                             </svg>
                           </div>
                         )}
-                        {isAdmin && ordStatus == "배차완료" && (
-                          <div
-                            className="text-sm font-semibold flex items-center justify-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleAddFare(cargo_seq);
-                            }}
-                          >
-                            <p className="shrink-0">추가요금</p>
-                          </div>
-                        )}
                       </div>
-                      <div className="text-right text-sm text-gray-500 px-5">
+                      <div className="text-right text-base text-gray-500 px-5">
                         <p>{create_dtm}</p>
                       </div>
                     </div>
