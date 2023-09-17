@@ -206,6 +206,25 @@ export default function OrderForm({
     console.log("result >> ", fareMap);
   }, [fareMap]);
 
+  useEffect(() => {
+    if (carType == "truck") {
+      setValue("cargoTon", "");
+      setValue("truckType", "");
+    } else {
+      setValue("cargoTon", "0.5");
+
+      (async () => {
+        await getTruckTypeList();
+
+        if (carType == "labo") {
+          setValue("truckType", "라보");
+        } else if (carType == "damas") {
+          setValue("truckType", "다마스");
+        }
+      })();
+    }
+  }, [carType]);
+
   //상하차지 변경에 따른 운행요금 조회
   const setFareByDistance = async (params) => {
     const result = await requestServer(apiPaths.commonGetFare, params);
@@ -297,6 +316,19 @@ export default function OrderForm({
           setValue(key, (editData[key] || "") != "");
         } else {
           setValue(key, editData[key]);
+
+          if (key == "cargoTon") {
+            if (editData["cargoTon"] == "0.5") {
+              const truckType = editData["truckType"];
+              if (truckType == "라보") {
+                setCarType("labo");
+              } else if (truckType == "다마스") {
+                setCarType("damas");
+              }
+            } else {
+              setCarType("truck");
+            }
+          }
         }
       });
 
@@ -331,41 +363,45 @@ export default function OrderForm({
 
   // 배차목록 선택 시 화물오더 load
   const selectCargoOrder = async (index) => {
-    if (confirm("해당 오더를 불러오시겠습니까?")) {
-      reset();
-      let targetOrder = { ...recentCargoList[index] };
-      setStartAddressData({
-        startWide: targetOrder.startWide,
-        startSgg: targetOrder.startSgg,
-        startDong: targetOrder.startDong,
-      });
-      setEndAddressData({
-        endWide: targetOrder.endWide,
-        endSgg: targetOrder.endSgg,
-        endDong: targetOrder.endDong,
-      });
+    if (isEdit) {
+      alert("화물 수정 시에는 불러오기 기능을 이용할 수 없습니다.");
+    } else {
+      if (confirm("해당 오더를 불러오시겠습니까?")) {
+        reset();
+        let targetOrder = { ...recentCargoList[index] };
+        setStartAddressData({
+          startWide: targetOrder.startWide,
+          startSgg: targetOrder.startSgg,
+          startDong: targetOrder.startDong,
+        });
+        setEndAddressData({
+          endWide: targetOrder.endWide,
+          endSgg: targetOrder.endSgg,
+          endDong: targetOrder.endDong,
+        });
 
-      // Copy 제외항목 필터링
-      const paramData = (({
-        cargo_seq,
-        ordNo,
-        startPlanDt,
-        startPlanHour,
-        startPlanMinute,
-        endPlanDt,
-        endPlanHour,
-        endPlanMinute,
-        payPlanYmd,
-        group_name,
-        create_dtm,
-        delete_yn,
-        ...rest
-      }) => rest)(targetOrder);
+        // Copy 제외항목 필터링
+        const paramData = (({
+          cargo_seq,
+          ordNo,
+          startPlanDt,
+          startPlanHour,
+          startPlanMinute,
+          endPlanDt,
+          endPlanHour,
+          endPlanMinute,
+          payPlanYmd,
+          group_name,
+          create_dtm,
+          delete_yn,
+          ...rest
+        }) => rest)(targetOrder);
 
-      editData = { ...paramData };
-      initDateTime();
+        editData = { ...paramData };
+        initDateTime();
 
-      await loadParamData();
+        await loadParamData();
+      }
     }
   };
 
@@ -380,6 +416,14 @@ export default function OrderForm({
       });
       if (code === 1) {
         setTruckTypeList(data);
+
+        if (cargoTon == "0.5") {
+          if (carType == "labo") {
+            setValue("truckType", "라보");
+          } else if (carType == "damas") {
+            setValue("truckType", "다마스");
+          }
+        }
       }
     }
   };
