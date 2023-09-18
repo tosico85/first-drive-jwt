@@ -1,7 +1,11 @@
 import { useContext } from "react";
 import { useInput } from "../../../hooks/useInput";
 import apiPaths from "../../../services/apiRoutes";
-import { isEmpty, isNumber } from "../../../utils/StringUtils";
+import {
+  formatPhoneNumber,
+  isEmpty,
+  isNumber,
+} from "../../../utils/StringUtils";
 import AuthContext from "../../context/authContext";
 import Label from "../custom/Label";
 
@@ -10,15 +14,15 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
 
   // 차주정보 useInput
   const inputMap = {
-    cjName: useInput(""),
-    cjPhone: useInput("", "number"),
-    cjCarNum: useInput(""),
-    cjCargoTon: useInput("", "float"),
-    cjTruckType: useInput(""),
+    cjName: useInput(cargoOrder?.cjName || ""),
+    cjPhone: useInput(formatPhoneNumber(cargoOrder?.cjPhone) || "", "phone"),
+    cjCarNum: useInput(cargoOrder?.cjCarNum || ""),
+    cjCargoTon: useInput(cargoOrder?.cjCargoTon || "", "float"),
+    cjTruckType: useInput(cargoOrder?.cjTruckType || ""),
     fare: useInput(cargoOrder?.fare || "0", "number"),
     fareView: useInput(cargoOrder?.fareView || "0", "number"),
-    addFare: useInput(cargoOrder?.fare || "0", "number"),
-    addFareReason: useInput(""),
+    addFare: useInput(cargoOrder?.addFare || "0", "number"),
+    addFareReason: useInput(cargoOrder.addFareReason || ""),
   };
 
   // 차주정보 map
@@ -34,7 +38,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
   const fareIterator = [
     { varName: "fareView", korName: "화주용", required: true },
     { varName: "fare", korName: "관리자용", required: true },
-    { varName: "addFare", korName: "추가요금", required: true },
+    { varName: "addFare", korName: "추가요금", required: false },
     { varName: "addFareReason", korName: "추가사유", required: false },
   ];
 
@@ -61,8 +65,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       // 운임료 숫자 체크, 최저운임료 체크
       if (
         !isNumber(inputMap.fare.value) ||
-        !isNumber(inputMap.fareView.value) ||
-        !isNumber(inputMap.addFare.value)
+        !isNumber(inputMap.fareView.value)
       ) {
         result = false;
         resultMsg = "운임료를 숫자로 입력하세요.";
@@ -96,13 +99,13 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
     const paramObj = {
       cargo_seq: cargoOrder.cargo_seq,
       cjName: inputMap.cjName.value,
-      cjPhone: inputMap.cjPhone.value,
+      cjPhone: inputMap.cjPhone.value.replace(/[^0-9]/g, ""),
       cjCarNum: inputMap.cjCarNum.value,
       cjCargoTon: inputMap.cjCargoTon.value,
       cjTruckType: inputMap.cjTruckType.value,
       fare: inputMap.fare.value,
       fareView: inputMap.fareView.value,
-      addFare: inputMap.addFare.value,
+      addFare: inputMap.addFare.value || "0",
       addFareReason: inputMap.addFareReason.value,
 
       startWide: cargoOrder.startWide,
@@ -150,7 +153,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
                 <input
                   {...inputMap[varName]}
                   type="text"
-                  maxLength={varName == "cjPhone" ? "12" : ""}
+                  maxLength={varName == "cjPhone" ? "14" : ""}
                   placeholder={`${korName} 입력`}
                   className="w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                 />

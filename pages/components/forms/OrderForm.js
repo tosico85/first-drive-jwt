@@ -314,6 +314,10 @@ export default function OrderForm({
           ].includes(key)
         ) {
           setValue(key, (editData[key] || "") != "");
+        } else if (
+          ["startAreaPhone", "endAreaPhone", "firstShipperInfo"].includes(key)
+        ) {
+          setValue(key, formatPhoneNumber(editData[key]));
         } else {
           setValue(key, editData[key]);
 
@@ -479,6 +483,17 @@ export default function OrderForm({
     return object;
   };
 
+  /**
+   * 연락처 '-' 제거
+   */
+  const filterTelNoHyphen = (object) => {
+    ["startAreaPhone", "endAreaPhone", "firstShipperInfo"].forEach((key) => {
+      object[key] = object[key].replace(/[^0-9]/g, "");
+    });
+
+    return object;
+  };
+
   // 상하차지 주소정보 update
   const regStartEndAddress = async () => {
     let [wide, sgg, dong, detail] = getValues([
@@ -522,6 +537,7 @@ export default function OrderForm({
       getValues()
     );
     cargoOrder = checkboxValueReset(cargoOrder);
+    cargoOrder = filterTelNoHyphen(cargoOrder);
 
     // 상하차지 주소정보 update
     await regStartEndAddress();
@@ -555,6 +571,7 @@ export default function OrderForm({
     }) => rest)(getValues());
 
     cargoOrder = checkboxValueReset(cargoOrder);
+    cargoOrder = filterTelNoHyphen(cargoOrder);
 
     console.log(cargoOrder);
 
@@ -599,16 +616,6 @@ export default function OrderForm({
         alert(result);
       }
     }
-  };
-
-  //전화번호 필드 숫자만 필터링
-  const filterTelNoHyphen = (e) => {
-    const {
-      target: { value },
-    } = e;
-
-    // 정규 표현식을 사용하여 숫자만 추출
-    e.target.value = value.replace(/[^0-9]/g, "");
   };
 
   /**
@@ -1172,10 +1179,9 @@ export default function OrderForm({
                     <input
                       {...register("startAreaPhone", {
                         required: "상차지 전화번호를 입력해주세요.",
-                        onChange: filterTelNoHyphen,
                       })}
                       type="tel"
-                      maxLength={12}
+                      maxLength={14}
                       placeholder={"상차지 전화번호"}
                       className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
@@ -1333,10 +1339,9 @@ export default function OrderForm({
                     <input
                       {...register("endAreaPhone", {
                         required: "하차지 전화번호를 입력해주세요.",
-                        onChange: filterTelNoHyphen,
                       })}
                       type="tel"
-                      maxLength={12}
+                      maxLength={14}
                       placeholder={"하차지 전화번호"}
                       className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
@@ -1690,10 +1695,9 @@ export default function OrderForm({
                       <input
                         {...register("firstShipperInfo", {
                           required: "원화주 전화번호를 입력해주세요.",
-                          onChange: filterTelNoHyphen,
                         })}
                         type="tel"
-                        maxLength={12}
+                        maxLength={14}
                         placeholder={"원화주 전화번호('-'없이 입력하세요)"}
                         className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                       />
@@ -1938,10 +1942,9 @@ export default function OrderForm({
                             <input
                               {...register("startAreaPhone", {
                                 required: "상차지 전화번호를 입력해주세요.",
-                                onChange: filterTelNoHyphen,
                               })}
                               type="tel"
-                              maxLength={12}
+                              maxLength={14}
                               placeholder={"상차지 전화번호"}
                               className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
@@ -2104,10 +2107,9 @@ export default function OrderForm({
                             <input
                               {...register("endAreaPhone", {
                                 required: "하차지 전화번호를 입력해주세요.",
-                                onChange: filterTelNoHyphen,
                               })}
                               type="tel"
-                              maxLength={12}
+                              maxLength={14}
                               placeholder={"하차지 전화번호"}
                               className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
@@ -2641,10 +2643,9 @@ export default function OrderForm({
                             <input
                               {...register("firstShipperInfo", {
                                 required: "원화주 전화번호를 입력해주세요.",
-                                onChange: filterTelNoHyphen,
                               })}
                               type="tel"
-                              maxLength={12}
+                              maxLength={14}
                               placeholder={"원화주 전화번호('-'없이)"}
                               className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />

@@ -12,6 +12,8 @@ export const useInput = (initialValue, type = "text") => {
       setValue(value.replace(/[^0-9]/g, ""));
     } else if (type == "float") {
       setValue(value.replace(/[^0-9.]/g, ""));
+    } else if (type == "phone") {
+      setValue(value.replace(/[^0-9-]/g, ""));
     } else {
       setValue(value);
     }

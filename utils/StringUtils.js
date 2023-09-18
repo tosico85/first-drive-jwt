@@ -31,6 +31,11 @@ export const formatPhoneNumber = (inputData) => {
       3,
       7
     )}-${inputData.substring(7, 11)}`;
+  } else if (inputData.length === 12) {
+    result = `${inputData.substring(0, 4)}-${inputData.substring(
+      4,
+      8
+    )}-${inputData.substring(8, 12)}`;
   } else if (inputData) {
     result = `${inputData.substring(0, 2)}-${inputData.substring(
       2,
