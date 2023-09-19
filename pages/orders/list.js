@@ -311,6 +311,8 @@ const CargoList = () => {
 
   //추가요금 수정
   const handleAddFare = (cargo_seq) => {
+    if (!isAdmin) return;
+
     const cargoItem = {
       ...cargoOrder.find((item) => item.cargo_seq === cargo_seq),
     };
@@ -928,7 +930,7 @@ const CargoList = () => {
                             ? "배차중"
                             : ordStatus}
                         </span>
-                        {isAdmin && ordStatus == "배차완료" && (
+                        {ordStatus == "배차완료" && (
                           <div
                             className={
                               "text-sm text-white font-bold px-3 py-2 rounded-full mt-3 cursor-pointer" +
