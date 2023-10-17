@@ -687,7 +687,7 @@ export default function OrderForm({
    * @param {event} e
    * @param {상하차 구분} startEnd
    */
-  const handleAddressSearchButton = (e, startEnd) => {
+  const handleAddressSearchButton = (startEnd) => {
     //e.preventDefault();
     setModalStartEnd(startEnd);
     console.log("startEnd >> ", startEnd);
@@ -1053,16 +1053,16 @@ export default function OrderForm({
               <div className="grid grid-cols-1 gap-y-2 mt-5">
                 <div className="flex gap-x-3">
                   <div
-                    onClick={(e) => {
+                    onClick={() => {
                       //searchAddress("start"); //팝업방식
-                      handleAddressSearchButton(e, "start"); //레이어 모달 방식
+                      handleAddressSearchButton("start"); //레이어 모달 방식
                     }}
                     className="w-full text-right items-center gap-x-5 relative"
                   >
                     <input
                       type="text"
                       placeholder="상차지 주소(시군구동)"
-                      disabled={true}
+                      readOnly={true}
                       value={getValues([
                         "startWide",
                         "startSgg",
@@ -1216,16 +1216,16 @@ export default function OrderForm({
               <div className="grid grid-cols-1 gap-y-2">
                 <div className="flex gap-x-3">
                   <div
-                    onClick={(e) => {
+                    onClick={() => {
                       //searchAddress("end"); //팝업방식
-                      handleAddressSearchButton(e, "end"); //레이어 모달 방식
+                      handleAddressSearchButton("end"); //레이어 모달 방식
                     }}
                     className="w-full text-right items-center gap-x-5 relative"
                   >
                     <input
                       type="text"
                       placeholder="하차지 주소(시군구동)"
-                      disabled={true}
+                      readOnly={true}
                       value={getValues(["endWide", "endSgg", "endDong"]).join(
                         " "
                       )}
@@ -1805,16 +1805,16 @@ export default function OrderForm({
                         <Label title={"주소"} required={true} />
                         <div className="w-full flex  gap-x-2">
                           <div
-                            onClick={(e) => {
+                            onClick={() => {
                               //searchAddress("start"); //팝업방식
-                              handleAddressSearchButton(e, "start"); //레이어 모달 방식
+                              handleAddressSearchButton("start"); //레이어 모달 방식
                             }}
                             className="w-full text-right items-center gap-x-5 relative"
                           >
                             <input
                               type="text"
                               placeholder="상차지 주소(시군구동)"
-                              disabled={true}
+                              readOnly={true}
                               value={getValues([
                                 "startWide",
                                 "startSgg",
@@ -1966,16 +1966,16 @@ export default function OrderForm({
                         <Label title={"주소"} required={true} />
                         <div className="w-full flex gap-x-2">
                           <div
-                            onClick={(e) => {
+                            onClick={() => {
                               //searchAddress("end"); //팝업방식
-                              handleAddressSearchButton(e, "end"); //레이어 모달 방식
+                              handleAddressSearchButton("end"); //레이어 모달 방식
                             }}
                             className="w-full text-right items-center gap-x-5 relative"
                           >
                             <input
                               type="text"
                               placeholder="하차지 주소(시군구동)"
-                              disabled={true}
+                              readOnly={true}
                               value={getValues([
                                 "endWide",
                                 "endSgg",
