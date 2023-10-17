@@ -488,7 +488,7 @@ export default function OrderForm({
    */
   const filterTelNoHyphen = (object) => {
     ["startAreaPhone", "endAreaPhone", "firstShipperInfo"].forEach((key) => {
-      object[key] = object[key].replace(/[^0-9]/g, "");
+      object[key] = object[key]?.replace(/[^0-9]/g, "") || "";
     });
 
     return object;
