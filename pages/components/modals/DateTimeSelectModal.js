@@ -100,7 +100,7 @@ const DateTimeSelectModal = ({
             value={amPmValue}
             onChange={handleAmPm}
           >
-            <option value="">오전 / 오후</option>
+            {/*<option value="">오전 / 오후</option>*/}
             <option value="0">오전</option>
             <option value="12">오후</option>
           </select>

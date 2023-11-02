@@ -1,6 +1,48 @@
 @font-face {
-  font-family: "Spoqa Han Sans";
-  src: url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;700&display=swap");
+  font-family: "NotoMedium"; /* 변경된 폰트 이름 */
+  src: url("../fonts/NotoSansKR-Medium.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NotoSansKRMedium"; /* 변경된 폰트 이름 */
+  src: url("../fonts/NotoSansKR-Medium.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NotoSansKRThin"; /* 변경된 폰트 이름 */
+  src: url("../fonts/NotoSansKR-Thin.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "AritaBold"; /* 변경된 폰트 이름 */
+  src: url("../fonts/AritaBold.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "AritaMedium"; /* 변경된 폰트 이름 */
+  src: url("../fonts/AritaMedium.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "AritaSemiBold"; /* 변경된 폰트 이름 */
+  src: url("../fonts/AritaSemiBold.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "AritaThin"; /* 변경된 폰트 이름 */
+  src: url("../fonts/AritaThin.otf");
   font-weight: normal;
   font-style: normal;
 }

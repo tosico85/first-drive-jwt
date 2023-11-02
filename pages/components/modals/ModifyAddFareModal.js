@@ -6,8 +6,8 @@ import AuthContext from "../../context/authContext";
 import Label from "../custom/Label";
 
 const ModifyAddFareModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
-  const { requestServer } = useContext(AuthContext);
-
+  const { requestServer, userInfo } = useContext(AuthContext);
+  const isAdmin = userInfo.auth_code === "ADMIN";
   // 차주정보 useInput
   const inputMap = {
     addFare: useInput(cargoOrder?.addFare || "0", "number"),
@@ -114,27 +114,34 @@ const ModifyAddFareModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
                 {...inputMap[varName]}
                 type="text"
                 placeholder={`${korName} 입력`}
-                className="w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                className={`w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none ${
+                  !isAdmin ? "pointer-events-none" : ""
+                }`}
+                disabled={!isAdmin}
               />
             </div>
           ))}
         </div>
       </div>
       <div className="text-center pt-5 grid grid-cols-2 w-full gap-x-3">
-        <button
-          type="button"
-          className="rounded-md bg-normalGray px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
-          onClick={onCancel}
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          className="rounded-md bg-mainBlue px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mainColor2"
-          onClick={handleAlloc}
-        >
-          추가요금 수정
-        </button>
+        {isAdmin && (
+          <button
+            type="button"
+            className="rounded-md bg-normalGray px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
+            onClick={onCancel}
+          >
+            Cancel
+          </button>
+        )}
+        {isAdmin && (
+          <button
+            type="button"
+            className="rounded-md bg-mainBlue px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mainColor2"
+            onClick={handleAlloc}
+          >
+            추가요금 수정
+          </button>
+        )}
       </div>
     </div>
   );

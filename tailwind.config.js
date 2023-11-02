@@ -4,16 +4,24 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Noto Sans KR", "sans-serif"],
+        NotoMedium: ["NotoMedium", "sans-serif"],
+        AritaThin: ["AritaThin", "sans-serif"],
+        AritaMedium: ["AritaMedium", "sans-serif"],
+        AritaSemiBold: ["AritaSemiBold", "sans-serif"],
+        AritaBold: ["AritaBold", "sans-serif"],
+        NotoSansKRThin: ["NotoSansKRThin", "sans-serif"],
+        NotoSansKRMedium: ["NotoSansKRMedium", "sans-serif"],
       },
+
       colors: {
         mainColor1: "#03045e",
-        mainColor2: "#023e8a",
-        mainColor3: "#0077b6",
-        mainColor4: "#0096c7",
+        mainColor2: "#283670", //모바일 list header 색상
+        mainColor4: "#607ffc", //모바일 list header bar 색상
+        subBgColor4: "#f4f5f9", // 모바일 list bg 컬러
+        subBgColor5: "#fbfbfd", // 모바일 order bg 컬러
+        mainColor3: "#455599",
         mainColor5: "#00b4d8",
         mainColor6: "#48cae4",
-        mainColor4: "#90e0ef",
         mainColor5: "#ade8f4",
         mainColor6: "#caf0f8",
         darkGray: "#4A4453",
@@ -26,20 +34,24 @@ module.exports = {
         buttonZamboa: "#FFB149",
         buttonGreen: "#2E8F8B",
         buttonZamboa: "#ED6A4A",
-
-        mainBlue: "#2E58EB",
+        navStroke: "#455599",
+        mainBlue: "#283670", //PC navSide 색상
+        boxColor1: "#7590bc", // PC HOME CARD LEFT 색상
+        homeBgColor1: "#f4f5fa", // PC HOME BG 색상
         mainBgColor: "#F7F7F7",
         subBgColor1: "#5F7F96",
         subBgColor2: "#CCCCCC",
         //        subBgColor3: "#f4f7f9",
-        subBgColor3: "#f5f6fa",
+        subBgColor3: "#ffffff",
+
         headerColor1: "#336699",
-        headerColor2: "#003366",
+        headerColor2: "#405096",
         maroonColor: "#6e323b",
         titleButtonColor: "#999999",
         mainInputColor: "#F3F6F9",
         mainInputFocusColor: "#EAEDF2",
       },
+
       height: {
         rate5: "50vh",
         rate6: "60vh",

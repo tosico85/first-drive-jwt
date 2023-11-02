@@ -4,7 +4,12 @@ class MyDocument extends Document {
   render() {
     return (
       <Html className="h-full bg-white">
-        <Head />
+        <Head>
+          <meta
+            name="naver-site-verification"
+            content="56b96dbb3539b8bb0a2020f58511fca083c53d8d"
+          />
+        </Head>
         <body className="h-full w-full">
           <Main className="" />
           <NextScript />

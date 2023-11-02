@@ -58,7 +58,7 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-center px-5 py-10 gap-x-2 border-b border-gray-300">
+      <div className="flex items-center justify-center px-5 py-10 gap-x-2 border-b border-gray-300 font-NotoSansKRMedium">
         <div className="relative flex flex-col w-full bg-white border border-gray-200 shadow-md rounded-xl">
           <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-xl">
             <p className="text-white font-bold text-base text-center py-2">
@@ -92,7 +92,7 @@ const HomePage = () => {
       </div>
       <div className="flex flex-col mt-5 p-5 text-black">
         <p className="text-xl font-bold">{"< 공지사항 >"}</p>
-        <ul className="flex flex-col p-5 gap-y-3">
+        <ul className="flex flex-col p-5 gap-y-3 font-NotoSansKRMedium">
           <li>
             <span>- 안녕하세요. 공지사항입니다.</span>
           </li>

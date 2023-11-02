@@ -107,7 +107,7 @@ const BottomNav = () => {
           "flex flex-col items-center transition-color " +
           (router.pathname == "/user/profile" ? "text-mainColor2" : "")
         }
-        onClick={() => (window.location.href = "tel:01012341234")}
+        onClick={() => (window.location.href = "tel:01041633114")}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
