@@ -396,6 +396,15 @@ export default function OrderForm({
           endPlanHour,
           endPlanMinute,
           payPlanYmd,
+          cjName,
+          cjPhone,
+          cjCarNum,
+          cjCargoTon,
+          cjTruckType,
+          fare,
+          fareView,
+          addFare,
+          addFareReason,
           group_name,
           create_dtm,
           delete_yn,
@@ -712,6 +721,8 @@ export default function OrderForm({
     paramObj["PlanDt"] = getValues(`startPlanDt`) || "";
     paramObj["PlanHour"] = getValues(`startPlanHour`) || "";
     paramObj["PlanMinute"] = getValues(`startPlanMinute`) || "";
+    paramObj["isEndToday"] = getValues(`startPlanDt`) == getValues(`endPlanDt`);
+
     setModalResvDateTime(paramObj);
     console.log("paramObj >> ", paramObj);
 
@@ -863,7 +874,9 @@ export default function OrderForm({
 
       //예약 상하차인 경우
       if (isResv) {
-        result = `예약 (${timeStatement}) 상차 / 당착`;
+        const isEndToday = getValues("startPlanDt") == getValues("endPlanDt");
+        const endTimeStatement = isEndToday ? "당착" : "낼착";
+        result = `예약 (${timeStatement}) 상차 / ${endTimeStatement}`;
       } else {
         const endStatement = isEndTomm
           ? `낼착${convertTo12HourFormat(getValues("endPlanHour"))}`

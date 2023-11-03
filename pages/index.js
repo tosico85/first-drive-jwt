@@ -101,6 +101,55 @@ const HomePage = () => {
           </li>
         </ul>
       </div>
+      <div className="p-5">
+        <div className="flex items-end w-full gap-x-3">
+          <span>날씨</span>
+          <span className="text-xs text-gray-400">현재위치: 서울</span>
+        </div>
+        <div className="flex flex-col gap-y-3 bg-gray-800 text-gray-200 rounded-lg w-96">
+          <div className="grid grid-cols-3 justify-evenly px-10">
+            <div className="flex items-center">
+              <span>오늘</span>
+            </div>
+            <div className="flex">
+              <div>햇님</div>
+              <div className="flex flex-col">
+                <div>오전</div>
+                <div>23</div>
+              </div>
+            </div>
+            <div className="flex">
+              <div>햇님</div>
+              <div className="flex flex-col">
+                <div>오후</div>
+                <div>18</div>
+              </div>
+            </div>
+          </div>
+          <div className="px-5">
+            <div className="border-t border-gray-200"></div>
+          </div>
+          <div className="grid grid-cols-3 justify-evenly px-10">
+            <div className="flex items-center">
+              <span>내일</span>
+            </div>
+            <div className="flex">
+              <div>햇님</div>
+              <div className="flex flex-col">
+                <div>오전</div>
+                <div>23</div>
+              </div>
+            </div>
+            <div className="flex">
+              <div>햇님</div>
+              <div className="flex flex-col">
+                <div>오후</div>
+                <div>18</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
