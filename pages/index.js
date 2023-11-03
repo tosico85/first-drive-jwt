@@ -92,15 +92,9 @@ const HomePage = () => {
       </div>
       <div className="flex flex-col mt-5 p-5 text-black">
         <p className="text-xl font-bold">{"< 공지사항 >"}</p>
-        <ul className="flex flex-col p-5 gap-y-3 font-NotoSansKRMedium">
-          <li>
-            <span>- 안녕하세요. 공지사항입니다.</span>
-          </li>
-          <li>
-            <span>- 테스트 공지사항</span>
-          </li>
-        </ul>
+        <ul className="flex flex-col p-5 gap-y-3 font-NotoSansKRMedium"></ul>
       </div>
+      {/*
       <div className="p-5">
         <div className="flex items-end w-full gap-x-3">
           <span>날씨</span>
@@ -149,7 +143,8 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+*/}
     </div>
   );
 };
