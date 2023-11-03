@@ -281,7 +281,8 @@ export default function OrderForm({
 
   //배차신청 기본 값 설정
   const initDefaultValues = () => {
-    setValue("farePaytype", "인수증");
+    //setValue("farePaytype", "인수증");
+    setValue("인수증");
     setValue("payPlanYmd", getPayPlanYmd());
   };
 
@@ -395,6 +396,15 @@ export default function OrderForm({
           endPlanHour,
           endPlanMinute,
           payPlanYmd,
+          cjName,
+          cjPhone,
+          cjCarNum,
+          cjCargoTon,
+          cjTruckType,
+          fare,
+          fareView,
+          addFare,
+          addFareReason,
           group_name,
           create_dtm,
           delete_yn,
@@ -711,6 +721,8 @@ export default function OrderForm({
     paramObj["PlanDt"] = getValues(`startPlanDt`) || "";
     paramObj["PlanHour"] = getValues(`startPlanHour`) || "";
     paramObj["PlanMinute"] = getValues(`startPlanMinute`) || "";
+    paramObj["isEndToday"] = getValues(`startPlanDt`) == getValues(`endPlanDt`);
+
     setModalResvDateTime(paramObj);
     console.log("paramObj >> ", paramObj);
 
@@ -862,7 +874,9 @@ export default function OrderForm({
 
       //예약 상하차인 경우
       if (isResv) {
-        result = `예약 (${timeStatement}) 상차 / 당착`;
+        const isEndToday = getValues("startPlanDt") == getValues("endPlanDt");
+        const endTimeStatement = isEndToday ? "당착" : "낼착";
+        result = `예약 (${timeStatement}) 상차 / ${endTimeStatement}`;
       } else {
         const endStatement = isEndTomm
           ? `낼착${convertTo12HourFormat(getValues("endPlanHour"))}`
@@ -1044,7 +1058,7 @@ export default function OrderForm({
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
         {isMobile ? (
           <div className="pb-12 grid gap-x-5 md:hidden">
-            <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300 lg:row-span-2">
+            <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300 lg:row-span-2 font-NotoSansKRMedium bg-subBgColor5">
               <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-md">
                 <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                   상하차지 정보
@@ -1070,23 +1084,27 @@ export default function OrderForm({
                       ]).join(" ")}
                       className="block w-full flex-grow-0 rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
-                    <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-1.5">
-                      <span>주소검색</span>
-                      <svg
-                        xmlns="h  ttp://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                        />
-                      </svg>
-                    </div>
+                    {getValues(["startWide", "startSgg", "startDong"])
+                      .join(" ")
+                      .trim() === "" ? (
+                      <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-3">
+                        <span>주소검색</span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                          />
+                        </svg>
+                      </div>
+                    ) : null}
                   </div>
                   <button
                     className="min-w-fit rounded-md bg-white px-3 py-1 text-sm font-semibold text-gray-500 shadow-md border"
@@ -1231,23 +1249,27 @@ export default function OrderForm({
                       )}
                       className="block w-full flex-grow-0 rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     />
-                    <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-1.5">
-                      <span>주소검색</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={1.5}
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                        />
-                      </svg>
-                    </div>
+                    {getValues(["endWide", "endSgg", "endDong"])
+                      .join(" ")
+                      .trim() === "" ? (
+                      <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-3">
+                        <span>주소검색</span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={1.5}
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                          />
+                        </svg>
+                      </div>
+                    ) : null}
                   </div>
                   <button
                     className="min-w-fit rounded-md bg-white px-3 py-1 text-sm font-semibold text-gray-500 shadow-md border"
@@ -1352,7 +1374,7 @@ export default function OrderForm({
                 </div>
               </div>
             </div>
-            <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg2 pt-12 border border-gray-300">
+            <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg2 pt-12 border border-gray-300 font-NotoSansKRMedium bg-subBgColor5">
               <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-md">
                 <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                   상하차 일시
@@ -1413,7 +1435,7 @@ export default function OrderForm({
                   "상하차일시를 입력해주세요"}
               </div>
             </div>
-            <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
+            <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300 font-NotoSansKRMedium bg-subBgColor5">
               <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-md">
                 <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
                   화물 정보
@@ -1794,7 +1816,7 @@ export default function OrderForm({
                   : " lg:grid-cols-3 grid-cols-2 col-span-3")
               }
             >
-              <div className="lg:col-span-3 md:col-span-2 mb-5">
+              <div className="lg:col-span-3 md:col-span-2 mb-5 font-NotoSansKRMedium">
                 <div className="flex flex-col lg:flex-row justify-between gap-x-5 gap-y-5">
                   <div className="w-full flex flex-col gap-y-3">
                     <div className="grid grid-cols-1 gap-y-3">
@@ -1822,23 +1844,27 @@ export default function OrderForm({
                               ]).join(" ")}
                               className="block w-full flex-grow-0 rounded-sm border-0 px-2 pt-3.5 pb-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
-                            <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-3">
-                              <span>주소검색</span>
-                              <svg
-                                xmlns="h  ttp://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="w-6 h-6"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                                />
-                              </svg>
-                            </div>
+                            {getValues(["startWide", "startSgg", "startDong"])
+                              .join(" ")
+                              .trim() === "" ? (
+                              <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-3">
+                                <span>주소검색</span>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth={1.5}
+                                  stroke="currentColor"
+                                  className="w-6 h-6"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                                  />
+                                </svg>
+                              </div>
+                            ) : null}
                           </div>
                           <button
                             className="min-w-fit rounded-md bg-white px-3 py-1 text-sm font-semibold text-gray-500 shadow-sm hover:bg-gray-50 border"
@@ -1881,7 +1907,7 @@ export default function OrderForm({
                         />
                       </div>
                       <div className="flex flex-col">
-                        <div className="flex gap-x-2">
+                        <div className="flex gap-x-2 font-Noto">
                           <Label title={"상세주소"} required={true} />
                           <input
                             {...register(`startDetail`, {
@@ -1983,23 +2009,27 @@ export default function OrderForm({
                               ]).join(" ")}
                               className="block w-full flex-grow-0 rounded-sm border-0 px-2 pt-3.5 pb-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             />
-                            <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-3">
-                              <span>주소검색</span>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth={1.5}
-                                className="w-6 h-6"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                                />
-                              </svg>
-                            </div>
+                            {getValues(["endWide", "endSgg", "endDong"])
+                              .join(" ")
+                              .trim() === "" ? (
+                              <div className="flex items-center text-sm min-w-fit gap-x-1 cursor-pointer font-semibold text-gray-300 hover:font-extralight absolute right-2 top-3">
+                                <span>주소검색</span>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={1.5}
+                                  className="w-6 h-6"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                                  />
+                                </svg>
+                              </div>
+                            ) : null}
                           </div>
                           <button
                             className="min-w-fit rounded-md bg-white px-3 py-1 text-sm font-semibold text-gray-500 shadow-sm hover:bg-gray-50 border"
@@ -2717,11 +2747,11 @@ export default function OrderForm({
             </div>
             <div
               className={
-                "hidden flex-col p-5 bg-subBgColor3 text-black border border-gray-300 rounded-sm ml-5 row-span-2colo" +
+                "hidden flex-col p-5 bg-subBgColor3 text-black border border-gray-300 rounded-sm ml-5 font-NotoSansKRMedium row-span-2colo" +
                 (isAdmin ? " 2xl:flex" : " lg:flex")
               }
             >
-              <div className="w-full border-b border-black">
+              <div className="w-full border-b border-black font-NotoSansKRMedium">
                 <h2 className="text-base font-semibold py-7">배차 목록</h2>
               </div>
               <ul>

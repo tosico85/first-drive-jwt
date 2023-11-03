@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import AuthContext from "../context/authContext";
 import { useContext, useEffect } from "react";
-
 const SideNav = () => {
   const router = useRouter();
   const { userInfo } = useContext(AuthContext);
@@ -11,7 +10,7 @@ const SideNav = () => {
     <div className="fixed left-0 top-0 h-full bg-mainBlue flex flex-col items-center gap-y-5 w-24 pt-5 px-3 text-white text-sm z-50">
       <div
         className={
-          "flex flex-col items-center transition-color border-b border-mainColor3 gap-y-2 pb-5 w-full hover:cursor-pointer " +
+          "flex flex-col items-center transition-color border-b border-navStroke gap-y-2 pb-5 w-full hover:cursor-pointer " +
           (router.pathname == "/" ? "font-bold" : "")
         }
         onClick={() => router.push("/")}
@@ -34,7 +33,7 @@ const SideNav = () => {
       </div>
       <div
         className={
-          "flex flex-col items-center transition-color border-b border-mainColor3 gap-y-2 pb-5 w-full hover:cursor-pointer " +
+          "flex flex-col items-center transition-color border-b border-navStroke gap-y-2 pb-5 w-full hover:cursor-pointer " +
           (router.pathname == "/orders/create" ? "font-bold" : "")
         }
         onClick={() => router.push("/orders/create")}
@@ -58,7 +57,7 @@ const SideNav = () => {
 
       <div
         className={
-          "flex flex-col items-center transition-color border-b border-mainColor3 gap-y-2 pb-5 w-full hover:cursor-pointer " +
+          "flex flex-col items-center transition-color border-b border-navStroke gap-y-2 pb-5 w-full hover:cursor-pointer " +
           (router.pathname == "/orders/list" ? "font-bold" : "")
         }
         onClick={() => router.push("/orders/list")}
@@ -81,7 +80,7 @@ const SideNav = () => {
       </div>
       <div
         className={
-          "flex flex-col items-center transition-color border-b border-mainColor3 gap-y-2 pb-5 w-full hover:cursor-pointer "
+          "flex flex-col items-center transition-color border-b border-navStroke gap-y-2 pb-5 w-full hover:cursor-pointer "
         }
         onClick={() => {
           window.open(
@@ -111,7 +110,7 @@ const SideNav = () => {
         <>
           <div
             className={
-              "flex flex-col items-center transition-color border-b border-mainColor3 gap-y-2 pb-5 w-full hover:cursor-pointer " +
+              "flex flex-col items-center transition-color border-b border-navStroke gap-y-2 pb-5 w-full hover:cursor-pointer " +
               (router.pathname == "/manage/group/list" ? "font-bold" : "")
             }
             onClick={() => router.push("/manage/group/list")}
@@ -135,7 +134,7 @@ const SideNav = () => {
           </div>
           <div
             className={
-              "flex flex-col items-center transition-color border-b border-mainColor3 gap-y-2 pb-5 w-full hover:cursor-pointer " +
+              "flex flex-col items-center transition-color border-b border-navStroke gap-y-2 pb-5 w-full hover:cursor-pointer " +
               (router.pathname == "/manage/user/list" ? "font-bold" : "")
             }
             onClick={() => router.push("/manage/user/list")}

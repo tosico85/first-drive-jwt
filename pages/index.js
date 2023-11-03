@@ -58,7 +58,7 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-center px-5 py-10 gap-x-2 border-b border-gray-300">
+      <div className="flex items-center justify-center px-5 py-10 gap-x-2 border-b border-gray-300 font-NotoSansKRMedium">
         <div className="relative flex flex-col w-full bg-white border border-gray-200 shadow-md rounded-xl">
           <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-xl">
             <p className="text-white font-bold text-base text-center py-2">
@@ -92,7 +92,7 @@ const HomePage = () => {
       </div>
       <div className="flex flex-col mt-5 p-5 text-black">
         <p className="text-xl font-bold">{"< 공지사항 >"}</p>
-        <ul className="flex flex-col p-5 gap-y-3">
+        <ul className="flex flex-col p-5 gap-y-3 font-NotoSansKRMedium">
           <li>
             <span>- 안녕하세요. 공지사항입니다.</span>
           </li>
@@ -100,6 +100,55 @@ const HomePage = () => {
             <span>- 테스트 공지사항</span>
           </li>
         </ul>
+      </div>
+      <div className="p-5">
+        <div className="flex items-end w-full gap-x-3">
+          <span>날씨</span>
+          <span className="text-xs text-gray-400">현재위치: 서울</span>
+        </div>
+        <div className="flex flex-col gap-y-3 bg-gray-800 text-gray-200 rounded-lg w-96">
+          <div className="grid grid-cols-3 justify-evenly px-10">
+            <div className="flex items-center">
+              <span>오늘</span>
+            </div>
+            <div className="flex">
+              <div>햇님</div>
+              <div className="flex flex-col">
+                <div>오전</div>
+                <div>23</div>
+              </div>
+            </div>
+            <div className="flex">
+              <div>햇님</div>
+              <div className="flex flex-col">
+                <div>오후</div>
+                <div>18</div>
+              </div>
+            </div>
+          </div>
+          <div className="px-5">
+            <div className="border-t border-gray-200"></div>
+          </div>
+          <div className="grid grid-cols-3 justify-evenly px-10">
+            <div className="flex items-center">
+              <span>내일</span>
+            </div>
+            <div className="flex">
+              <div>햇님</div>
+              <div className="flex flex-col">
+                <div>오전</div>
+                <div>23</div>
+              </div>
+            </div>
+            <div className="flex">
+              <div>햇님</div>
+              <div className="flex flex-col">
+                <div>오후</div>
+                <div>18</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

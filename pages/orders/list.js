@@ -283,6 +283,16 @@ const CargoList = () => {
       endPlanHour,
       endPlanMinute,
       payPlanYmd,
+      cjName,
+      cjPhone,
+      cjCarNum,
+      cjCargoTon,
+      cjTruckType,
+      fare,
+      fareView,
+      addFare,
+      addFareReason,
+      group_name,
       create_dtm,
       delete_yn,
       ...rest
@@ -311,7 +321,7 @@ const CargoList = () => {
 
   //추가요금 수정
   const handleAddFare = (cargo_seq) => {
-    if (!isAdmin) return;
+    //if (!isAdmin) return;
 
     const cargoItem = {
       ...cargoOrder.find((item) => item.cargo_seq === cargo_seq),
@@ -385,7 +395,7 @@ const CargoList = () => {
       </Modal>
       <div className="lg:border lg:border-gray-200 bg-white lg:p-5 lg:mt-2">
         <div className="bg-white fixed lg:static top-16 w-full z-40">
-          <div className="grid grid-cols-5 items-center lg:hidden">
+          <div className="grid grid-cols-5 items-center lg:hidden font-NotoSansKRMedium">
             <div
               className={
                 "text-white text-center bg-mainColor2 border-b-8 shadow-inner transition-all duration-500" +
@@ -601,7 +611,7 @@ const CargoList = () => {
             </div>
           </div>
         </div>
-        <div className="bg-gray-50 p-5 flex flex-col gap-y-3 border-b-2 lg:hidden">
+        <div className="bg-subBgColor4 p-5 flex flex-col gap-y-3 border-b-3 lg:hidden font-NotoSansKRMedium">
           <div className="flex w-full justify-between items-center">
             <div className="z-0">
               <DateInput
@@ -632,7 +642,7 @@ const CargoList = () => {
         </div>
 
         {/* Grid header(PC) */}
-        <div className="hidden lg:block mt-5 border-y border-gray-200 py-3 bg-headerColor2 gap-x-1">
+        <div className="hidden lg:block mt-5 border-y border-gray-200 py-3 bg-headerColor2 gap-x-1 font-NotoMedium">
           <div className="grid grid-cols-11 items-center text-center text-gray-200">
             <div className="border-r border-gray-700">
               <span>그룹명</span>
@@ -661,7 +671,7 @@ const CargoList = () => {
           </div>
         </div>
 
-        <ul className="mt-5 pb-14 lg:pb-0 lg:mt-0 lg:h-rate7 lg:overflow-auto lg:border-b lg:border-gray-50">
+        <ul className="mt-5 pb-14 lg:pb-0 lg:mt-0 lg:h-rate7 lg:overflow-auto lg:border-b lg:border-gray-50 font-NotoSansKRMedium">
           {filteredCargoList().length > 0 ? (
             filteredCargoList().map((item) => {
               const {
@@ -717,7 +727,7 @@ const CargoList = () => {
                           <p className="bg-buttonPink rounded-lg text-white font-bold p-1 min-w-fit text-xs">
                             출발
                           </p>
-                          <p className="truncate leading-5 text-gray-600 whitespace-pre-wrap">
+                          <p className="truncate leading-5 text-gray-600 whitespace-pre-wrap ">
                             {`${startWide} ${startSgg} ${startDong} ${startDetail}`}
                           </p>
                         </div>
@@ -731,7 +741,7 @@ const CargoList = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="p-5 bg-gray-50 rounded-b-xl flex flex-col gap-y-4">
+                    <div className="p-5 bg-subBgColor4 rounded-b-xl flex flex-col gap-y-4">
                       <div className="grid grid-cols-2 items-center">
                         <div className="flex flex-col items-start gap-y-1">
                           <span className="text-sm text-gray-400">
@@ -835,7 +845,7 @@ const CargoList = () => {
                     </div>
                   </div>
 
-                  <div className="hidden lg:block border-b border-gray-200 py-3">
+                  <div className="hidden lg:block border-b border-gray-200 py-3 font-NotoSansKRThin font-bold">
                     <div className="grid grid-cols-11 items-center">
                       <div className="px-5">
                         <p>{group_name}</p>

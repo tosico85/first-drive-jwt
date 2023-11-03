@@ -3,6 +3,8 @@ import "react-calendar/dist/Calendar.css"; // css import
 import CustomCalendar from "../custom/Calendar";
 import { isEmptyObject } from "../../../utils/ObjectUtils";
 import moment from "moment/moment";
+import { useRadio } from "../../../hooks/useInput";
+import { getDayByDateYYYYMMDD } from "../../../utils/StringUtils";
 
 const DateTimeSelectModal = ({
   onCancel,
@@ -13,6 +15,11 @@ const DateTimeSelectModal = ({
   const [amPmValue, setAmPmValue] = useState("");
   const [hourValue, setHourValue] = useState("");
   const [minuteValue, setMinuteValue] = useState("");
+
+  //하차일 당착/내일 기능 추가(20231103)
+  const endTodayCheck = useRadio(true);
+  const endTommCheck = useRadio(false);
+
   const minDate = new Date();
   minDate.setDate(minDate.getDate() + 1);
 
@@ -22,6 +29,10 @@ const DateTimeSelectModal = ({
       const planDt = paramObj["PlanDt"];
       const planHour = paramObj["PlanHour"];
       const planMinute = paramObj["PlanMinute"];
+
+      // 하차일 당착/내일 선택
+      endTodayCheck.setChecked(paramObj["isEndToday"]);
+      endTommCheck.setChecked(!paramObj["isEndToday"]);
 
       if (planDt != "") {
         try {
@@ -74,9 +85,11 @@ const DateTimeSelectModal = ({
       retVal[`startPlanDt`] = moment(dateValue).format("YYYYMMDD");
       retVal[`startPlanHour`] = hourValue;
       retVal[`startPlanMinute`] = minuteValue;
-      retVal[`endPlanDt`] = moment(dateValue).format("YYYYMMDD");
-      retVal[`endPlanHour`] = hourValue;
-      retVal[`endPlanMinute`] = minuteValue;
+      retVal[`endPlanDt`] = endTodayCheck.checked
+        ? moment(dateValue).format("YYYYMMDD")
+        : getDayByDateYYYYMMDD(moment(dateValue).format("YYYYMMDD"), 1);
+      retVal[`endPlanHour`] = endTodayCheck.checked ? hourValue : "00";
+      retVal[`endPlanMinute`] = endTodayCheck.checked ? minuteValue : "00";
 
       onComplete(retVal);
     } else {
@@ -100,7 +113,7 @@ const DateTimeSelectModal = ({
             value={amPmValue}
             onChange={handleAmPm}
           >
-            <option value="">오전 / 오후</option>
+            {/*<option value="">오전 / 오후</option>*/}
             <option value="0">오전</option>
             <option value="12">오후</option>
           </select>
@@ -130,6 +143,44 @@ const DateTimeSelectModal = ({
             <option value="00">00</option>
             <option value="30">30</option>
           </select>
+        </div>
+        <div>
+          <div className="grid grid-cols-2 gap-x-3 mt-3">
+            <div
+              className={
+                "flex justify-center gap-x-2 py-2 px-5 text-lg rounded-md border border-gray-300 " +
+                (endTodayCheck.checked && "text-blue-600 border-blue-600")
+              }
+              onClick={() => {
+                endTommCheck.setChecked(false);
+                endTodayCheck.onClick();
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={endTodayCheck.checked}
+                onChange={() => {}}
+              />
+              <span>당착</span>
+            </div>
+            <div
+              className={
+                "flex justify-center gap-x-2 py-2 px-5 text-lg rounded-md border border-gray-300 " +
+                (endTommCheck.checked && "text-blue-600 border-blue-600")
+              }
+              onClick={() => {
+                endTodayCheck.setChecked(false);
+                endTommCheck.onClick();
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={endTommCheck.checked}
+                onChange={() => {}}
+              />
+              <span>내일</span>
+            </div>
+          </div>
         </div>
       </div>
       <div className="text-center pt-10 grid grid-cols-2 w-full gap-x-3">

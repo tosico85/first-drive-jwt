@@ -25,7 +25,7 @@ const Navbar = () => {
   };
 
   let navigation = [
-    { name: "Home", href: "/", current: "/" === router.pathname },
+    { name: "메인화면", href: "/", current: "/" === router.pathname },
     {
       name: "화물목록",
       href: "/orders/list",
@@ -50,9 +50,9 @@ const Navbar = () => {
   }
 
   const userNavigation = [
-    { name: "Your Profile", href: "/user/profile" },
+    { name: "내정보", href: "/user/profile" },
     {
-      name: "Sign out",
+      name: "로그아웃",
       href: "#",
       onclick: logout,
     },
@@ -65,7 +65,10 @@ const Navbar = () => {
           <div className="flex h-16 items-center justify-between gap-10">
             <div className="flex items-center justify-between w-full">
               <div className="text-xl lg:pl-24">
-                <span>{currentPage.name}</span>
+                <span className="flex items-center font-AritaBold">
+                  <img src="/logo/logo.png" className="w-14 h-14 mr-2" />
+                  {currentPage.name}
+                </span>
               </div>
             </div>
             <div className="hidden lg:block min-w-fit">
