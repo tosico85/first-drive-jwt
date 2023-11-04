@@ -833,12 +833,21 @@ const CargoList = () => {
                       <div className="grid grid-cols-2">
                         <div className="flex flex-col items-start gap-y-1">
                           <span className="text-sm text-gray-400">
-                            운송일시
+                            상차일시
                           </span>
                           <span className="text-gray-600">
                             {formatDate(startPlanDt)}
                             {` (${startPlanHour || "00"}:${
                               startPlanMinute || "00"
+                            })`}
+                          </span>
+                          <span className="text-sm text-gray-400">
+                            하차일시
+                          </span>
+                          <span className="text-gray-600">
+                            {formatDate(endPlanDt)}
+                            {` (${endPlanHour || "00"}:${
+                              endPlanMinute || "00"
                             })`}
                           </span>
                         </div>
