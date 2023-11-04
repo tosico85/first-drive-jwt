@@ -123,6 +123,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       endAreaPhone: cargoOrder.endAreaPhone,
       endPlanDt: cargoOrder.endPlanDt,
       endCompanyName: cargoOrder.endCompanyName,
+      create_user: cargoOrder.create_user,
     };
 
     const result = await requestServer(apiPaths.adminDirectAlloc, paramObj);
