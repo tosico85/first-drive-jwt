@@ -137,56 +137,48 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
   };
 
   return (
-    <div className="h-full flex flex-col justify-between">
+    <div className="p-4">
       <div>
-        <div className="pb-3 mb-3 border-b border-gray-200">
-          <p className="text-xl font-bold">
+        <div className="pb-2 mb-2 border-b border-gray-200">
+          <p className="text-lg font-bold">
             수기배차 입력 (차량 및 운임료 정보)
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-x-5">
-          <div className="flex flex-col gap-y-3 pr-5 border-r border-gray-200">
-            <p className="text-base">배차정보(차량정보)</p>
-            {cjIterator.map(({ varName, korName, required }) => (
-              <div key={varName} className="flex items-center gap-x-2">
-                <Label title={korName} required={required} />
-                <input
-                  {...inputMap[varName]}
-                  type="text"
-                  maxLength={varName == "cjPhone" ? "14" : ""}
-                  placeholder={`${korName} 입력`}
-                  className="w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-                />
-              </div>
-            ))}
+        {cjIterator.map(({ varName, korName, required }) => (
+          <div key={varName} className="mb-3">
+            <Label title={korName} required={required} />
+            <input
+              {...inputMap[varName]}
+              type="text"
+              maxLength={varName === "cjPhone" ? "14" : ""}
+              placeholder={`${korName} 입력`}
+              className="w-full rounded-sm border-0 px-2 py-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+            />
           </div>
-          <div className="flex flex-col gap-y-3">
-            <p className="text-base">운임료 정보(화주용/관리자용)</p>
-            {fareIterator.map(({ varName, korName, required }) => (
-              <div key={varName} className="flex items-center gap-x-2">
-                <Label title={korName} required={required} />
-                <input
-                  {...inputMap[varName]}
-                  type="text"
-                  placeholder={`${korName} 입력`}
-                  className="w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-                />
-              </div>
-            ))}
+        ))}
+        {fareIterator.map(({ varName, korName, required }) => (
+          <div key={varName} className="mb-3">
+            <Label title={korName} required={required} />
+            <input
+              {...inputMap[varName]}
+              type="text"
+              placeholder={`${korName} 입력`}
+              className="w-full rounded-sm border-0 px-2 py-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+            />
           </div>
-        </div>
+        ))}
       </div>
-      <div className="text-center pt-5 grid grid-cols-2 w-full gap-x-3">
+      <div className="text-center pt-4">
         <button
           type="button"
-          className="rounded-md bg-normalGray px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
+          className="w-1/2 rounded-md bg-normalGray px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
           onClick={onCancel}
         >
           Cancel
         </button>
         <button
           type="button"
-          className="rounded-md bg-mainBlue px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mainColor2"
+          className="w-1/2 mt-2 rounded-md bg-mainBlue px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mainColor2"
           onClick={handleAlloc}
         >
           배차등록
