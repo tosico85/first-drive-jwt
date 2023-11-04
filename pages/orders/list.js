@@ -871,7 +871,7 @@ const CargoList = () => {
                           <span className="text-sm text-gray-400">
                             차량톤수
                           </span>
-                          <span className="text-gray-600">{cargoTon}</span>
+                          <span className="text-gray-600">{cargoTon}톤</span>
                         </div>
                       </div>
                       {ordStatus == "배차완료" && (
