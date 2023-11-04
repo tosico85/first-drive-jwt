@@ -367,6 +367,20 @@ const CargoList = () => {
     setSearchStatus(status);
   };
 
+  function getStatusColorClass(ordStatus) {
+    if (ordStatus === "화물접수") {
+      return "bg-pastelBlue text-white border-pastelBlue"; // 파스텔 블루
+    } else if (ordStatus === "배차신청") {
+      return "bg-pastelYellow text-white border-pastelYellow"; // 파스텔 옐로우
+    } else if (ordStatus === "배차완료") {
+      return "bg-pastelGreen text-white border-pastelGreen"; // 파스텔 그린
+    } else if (ordStatus === "화물취소") {
+      return "bg-pastelRed text-white border-pastelRed"; // 파스텔 레드
+    } else {
+      return "bg-gray-200 text-gray-600 border-gray-300"; // 기본 파스텔 그레이
+    }
+  }
+
   return (
     <div className="pt-16 pb-5 lg:p-3 relative">
       <Modal
@@ -482,38 +496,44 @@ const CargoList = () => {
                   />
                 </div>
               </div>
-              <div className="ml-3">
-                <input
-                  type="text"
-                  placeholder="업체명 검색"
-                  onKeyDown={handleCompanySearch}
-                  {...companySearch}
-                  className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                />
-              </div>
+              {isAdmin && (
+                <div className="ml-3">
+                  <input
+                    type="text"
+                    placeholder="업체명 검색"
+                    onKeyDown={handleCompanySearch}
+                    {...companySearch}
+                    className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                </div>
+              )}
 
-              <div className="ml-1">
-                <button
-                  type="button"
-                  onClick={() =>
-                    (async () => {
+              {isAdmin && (
+                <div className="ml-1">
+                  <button
+                    type="button"
+                    onClick={async () => {
                       await getOrderList();
-                    })()
-                  }
-                  className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
-                >
-                  검색
-                </button>
-              </div>
+                    }}
+                    className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
+                  >
+                    검색
+                  </button>
+                </div>
+              )}
 
-              <div className="ml-1">
-                <button
-                  onClick={handleExportClick}
-                  className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
-                >
-                  엑셀
-                </button>
-              </div>
+              {!isAdmin && (
+                <div className="ml-3">
+                  {" "}
+                  {/* 좌측 여백을 ml-3으로 수정 */}
+                  <button
+                    onClick={handleExportClick}
+                    className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
+                  >
+                    엑셀
+                  </button>
+                </div>
+              )}
 
               <div className="ml-1"></div>
             </div>
@@ -629,15 +649,17 @@ const CargoList = () => {
               />
             </div>
           </div>
-          <div className="">
-            <input
-              type="text"
-              placeholder="업체명 검색"
-              onKeyDown={handleCompanySearch}
-              {...companySearch}
-              className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-            />
-          </div>
+          {isAdmin && (
+            <div className="">
+              <input
+                type="text"
+                placeholder="업체명 검색"
+                onKeyDown={handleCompanySearch}
+                {...companySearch}
+                className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+              />
+            </div>
+          )}
           <p className="text-right">{`${filteredCargoList().length} 건`}</p>
         </div>
 
@@ -784,15 +806,30 @@ const CargoList = () => {
                           <span className="text-sm text-gray-400">
                             운송상태
                           </span>
-                          <span className="text-gray-600">
-                            {ordStatus == "화물접수"
+                          <div
+                            className={`rounded-lg shadow-lg p-3 ${getStatusColorClass(
+                              ordStatus
+                            )}`}
+                            style={{
+                              width: "75px",
+                              height: "32px",
+                              fontSize: "12px",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              fontWeight: "bold",
+                              letterSpacing: "1px",
+                            }}
+                          >
+                            {ordStatus === "화물접수"
                               ? "접수중"
-                              : ordStatus == "배차신청"
+                              : ordStatus === "배차신청"
                               ? "배차중"
                               : ordStatus}
-                          </span>
+                          </div>
                         </div>
                       </div>
+
                       <div className="grid grid-cols-2">
                         <div className="flex flex-col items-start gap-y-1">
                           <span className="text-sm text-gray-400">

@@ -138,47 +138,47 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
 
   return (
     <div className="p-4">
-      <div>
-        <div className="pb-2 mb-2 border-b border-gray-200">
-          <p className="text-lg font-bold">
+      <div className="flex flex-col">
+        <div className="mb-4 border-b border-gray-200">
+          <p className="text-2xl font-bold">
             수기배차 입력 (차량 및 운임료 정보)
           </p>
         </div>
         {cjIterator.map(({ varName, korName, required }) => (
-          <div key={varName} className="mb-3">
+          <div key={varName} className="mb-4">
             <Label title={korName} required={required} />
             <input
               {...inputMap[varName]}
               type="text"
               maxLength={varName === "cjPhone" ? "14" : ""}
               placeholder={`${korName} 입력`}
-              className="w-full rounded-sm border-0 px-2 py-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+              className="w-full rounded-md border-2 px-3 py-2 shadow-md placeholder-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor focus:outline-none"
             />
           </div>
         ))}
         {fareIterator.map(({ varName, korName, required }) => (
-          <div key={varName} className="mb-3">
+          <div key={varName} className="mb-4">
             <Label title={korName} required={required} />
             <input
               {...inputMap[varName]}
               type="text"
               placeholder={`${korName} 입력`}
-              className="w-full rounded-sm border-0 px-2 py-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+              className="w-full rounded-md border-2 px-3 py-2 shadow-md placeholder-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor focus:outline-none"
             />
           </div>
         ))}
       </div>
-      <div className="text-center pt-4">
+      <div className="flex justify-center mt-4 space-x-4">
         <button
           type="button"
-          className="w-1/2 rounded-md bg-normalGray px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
+          className="w-1/2 md:w-1/4 rounded-md bg-normalGray px-4 py-2 text-base font-semibold text-white shadow-md hover:bg-gray-300 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-gray-400"
           onClick={onCancel}
         >
           Cancel
         </button>
         <button
           type="button"
-          className="w-1/2 mt-2 rounded-md bg-mainBlue px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-mainColor2"
+          className="w-1/2 md:w-1/4 rounded-md bg-mainBlue px-4 py-2 text-base font-semibold text-white shadow-md hover:bg-indigo-400 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-mainColor2"
           onClick={handleAlloc}
         >
           배차등록

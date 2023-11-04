@@ -50,6 +50,11 @@ module.exports = {
         titleButtonColor: "#999999",
         mainInputColor: "#F3F6F9",
         mainInputFocusColor: "#EAEDF2",
+
+        pastelBlue: "#6395b4", // 더 진한 파스텔 블루
+        pastelYellow: "#e0ca5e", // 더 진한 파스텔 옐로우
+        pastelGreen: "#9dbd7c", // 더 진한 파스텔 그린
+        pastelRed: "#ed6666", // 더 진한 파스텔 레드
       },
 
       height: {
