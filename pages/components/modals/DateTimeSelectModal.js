@@ -108,41 +108,7 @@ const DateTimeSelectModal = ({
         />
         <div className="w-full border-b border-gray-100 my-5"></div>
         <div className="grid grid-cols-3 items-center justify-between w-full gap-x-3">
-          <select
-            className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
-            value={amPmValue}
-            onChange={handleAmPm}
-          >
-            {/*<option value="">오전 / 오후</option>*/}
-            <option value="0">오전</option>
-            <option value="12">오후</option>
-          </select>
-          <select
-            className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
-            value={hourValue}
-            onChange={handleHour}
-          >
-            <option value="">- 시 -</option>
-            {amPmValue != "" &&
-              Array.from(Array(12).keys()).map((val) => {
-                const convVal = val + Number.parseInt(amPmValue);
-                const nm = convVal.toString().padStart(2, "0");
-                return (
-                  <option key={val} value={nm}>
-                    {nm}
-                  </option>
-                );
-              })}
-          </select>
-          <select
-            className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100"
-            value={minuteValue}
-            onChange={handleMinute}
-          >
-            <option value="">- 분 -</option>
-            <option value="00">00</option>
-            <option value="30">30</option>
-          </select>
+          {/* ... */}
         </div>
         <div>
           <div className="grid grid-cols-2 gap-x-3 mt-3">
