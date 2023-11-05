@@ -813,7 +813,7 @@ const CargoList = () => {
                             style={{
                               width: "75px",
                               height: "32px",
-                              fontSize: "12px",
+                              fontSize: "13px",
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
@@ -825,6 +825,8 @@ const CargoList = () => {
                               ? "접수중"
                               : ordStatus === "배차신청"
                               ? "배차중"
+                              : ordStatus === "배차완료" // 추가: "배차완료" 처리
+                              ? "완료"
                               : ordStatus}
                           </div>
                         </div>
