@@ -259,7 +259,7 @@ const TodayTimeSelectModal = ({ onCancel, onComplete, paramObj }) => {
               onChange={handleStartAmPm}
               disabled={disableStartTime}
             >
-              {/*<option value="unset">오전 / 오후</option>*/}
+              <option value="unset">선택</option>
               <option value="0">오전</option>
               <option value="12">오후</option>
             </select>
@@ -347,7 +347,7 @@ const TodayTimeSelectModal = ({ onCancel, onComplete, paramObj }) => {
               onChange={handleEndAmPm}
               disabled={disableEndTime}
             >
-              {/*<option value="unset">오전 / 오후</option>*/}
+              *<option value="unset">선택</option>
               <option value="0">오전</option>
               <option value="12">오후</option>
             </select>
