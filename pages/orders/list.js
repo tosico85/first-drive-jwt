@@ -827,6 +827,8 @@ const CargoList = () => {
                               ? "배차중"
                               : ordStatus === "배차완료" // 추가: "배차완료" 처리
                               ? "완료"
+                              : ordStatus === "배차취소" // 추가: "배차완료" 처리
+                              ? "취소"
                               : ordStatus}
                           </div>
                         </div>
