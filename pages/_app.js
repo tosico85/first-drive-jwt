@@ -36,7 +36,7 @@ class MyApp extends App {
               <img
                 src="/cars/loading_10.gif"
                 alt="Loading GIF"
-                className="w-16 h-16 object-contain"
+                className="w-32 h-32 object-contain"
               />
             </div>
           ) : (
