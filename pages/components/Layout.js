@@ -47,9 +47,9 @@ const Layout = ({ children }) => {
       {isLoading ? ( // 로딩 중일 때 로딩 이미지를 표시
         <div className="w-screen h-screen fixed bottom-0 left-0 flex items-center justify-center bg-black bg-opacity-0 z-50 md:hidden">
           <img
-            src="/cars/loading_10.gif"
+            src="/cars/loading_11.gif"
             alt="Loading GIF"
-            className="w-32 h-32 object-contain"
+            className="w-20 h-20 object-contain"
           />
         </div>
       ) : (
