@@ -8,17 +8,15 @@ import { useContext, useEffect, useState } from "react";
 
 const Layout = ({ children }) => {
   const router = useRouter();
-  //const [currentPage, setCurrentPage] = useState(router.pathname);
   const { sessionCheck, userInfo } = useContext(AuthContext);
-  //const currentPage = localRoutes.find((item) => item.path === router.pathname);
   const isLoginPage = router.pathname === "/login";
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const isLoggedIn = await sessionCheck();
       console.log("isAuthenticated : ", isLoggedIn);
       console.log("pathname : ", router.pathname);
-      //alert(isLoggedIn);
       if (isLoggedIn) {
         if (router.pathname == "/login") {
           router.push("/");
@@ -28,6 +26,8 @@ const Layout = ({ children }) => {
           router.push("/login");
         }
       }
+      // 로딩 상태를 false로 변경
+      setIsLoading(false);
     })();
   }, [router]);
 
@@ -44,36 +44,33 @@ const Layout = ({ children }) => {
 
   return (
     <div className="h-full relative">
-      <div className="h-full relative">
-        {!isLoginPage && (
-          <>
-            {/* <header
+      {isLoading ? ( // 로딩 중일 때 로딩 이미지를 표시
+        <div className="w-screen h-screen fixed bottom-0 left-0 flex items-center justify-center bg-black bg-opacity-0 z-50">
+          <img
+            src="/cars/loading_9.gif"
+            alt="Loading GIF"
+            className="w-16 h-16 object-contain"
+          />
+        </div>
+      ) : (
+        <>
+          {!isLoginPage && (
+            <>
+              <Navbar className="h-16 pl-40" />
+            </>
+          )}
+          <main className={"h-full " + (!isLoginPage && "lg:ml-24")}>
+            <div
               className={
-                "bg-white absolute shadow-md w-full" +
-                (router.pathname == "/orders/list" ? " hidden lg:block" : "")
+                "h-full " +
+                (isLoginPage ? "" : "bg-white lg:bg-mainBgColor pt-14")
               }
             >
-              <div className="mx-auto max-w-7xl px-4 py-4 lg:px-6 lg:px-8">
-                <h1 className="text-2xl font-bold tracking-tight text-mainColor1 font-sans mt-16">
-                  {currentPage?.name}
-                </h1>
-              </div>
-            </header> */}
-            <Navbar className="h-16 pl-40" />
-          </>
-        )}
-        <main className={"h-full " + (!isLoginPage && "lg:ml-24")}>
-          <div
-            className={
-              "h-full " +
-              (isLoginPage ? "" : "bg-white lg:bg-mainBgColor pt-14")
-            }
-          >
-            {/* <div className="h-full mx-auto max-w-7xl px-5 lg:px-8 pt-36"> */}
-            {children}
-          </div>
-        </main>
-      </div>
+              {children}
+            </div>
+          </main>
+        </>
+      )}
       <div>
         <div className="hidden lg:block">{!isLoginPage && <SideNav />}</div>
         <div className="lg:hidden">{!isShowBottomNav() && <BottomNav />}</div>
