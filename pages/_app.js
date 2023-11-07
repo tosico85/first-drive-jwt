@@ -34,7 +34,7 @@ class MyApp extends App {
             // 로딩 중일 때 GIF 이미지를 표시하고 가운데 정렬
             <div className="h-screen flex items-center justify-center bg-black bg-opacity-0 fixed top-100 left-0 right-0 bottom-0 z-50">
               <img
-                src="/cars/loading_9.gif"
+                src="/cars/loading_10.gif"
                 alt="Loading GIF"
                 className="w-16 h-16 object-contain"
               />
