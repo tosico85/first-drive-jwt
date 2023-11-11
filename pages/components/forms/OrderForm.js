@@ -413,7 +413,7 @@ export default function OrderForm({
 
         editData = { ...paramData };
         initDateTime();
-
+        initializeTimeFields();
         await loadParamData();
       }
     }
@@ -848,6 +848,74 @@ export default function OrderForm({
     closeTodayTimesModal();
   };
 
+  const initializeTimeFields = () => {
+    let result = "";
+
+    const setNullValues = () => {
+      setValue("startPlanDt", null);
+      setValue("startPlanHour", null);
+      setValue("startPlanMinute", null);
+      setValue("endPlanDt", null);
+      setValue("endPlanHour", null);
+      setValue("endPlanMinute", null);
+    };
+
+    if (
+      getValues(["startPlanDt", "startPlanHour", "startPlanMinute"]).join("")
+        .length == 12
+    ) {
+      setNullValues();
+
+      // 시간 설정
+      setValue("startPlanHour", getNextHourHH(1));
+      setValue("startPlanMinute", "00");
+      setValue("endPlanHour", getNextHourHH(2));
+      setValue("endPlanMinute", "00");
+
+      // 예약 여부
+      const isResv = getValues("startPlanDt") > getDayYYYYMMDD();
+
+      // 예약이 아닌 경우 낼착 여부
+      const isEndTomm = !isResv && getValues("endPlanDt") == getDayYYYYMMDD(1);
+
+      // 지금/당일 상차여부 체크
+      const isNowHour = getValues("startPlanHour") <= getNextHourHH(1);
+
+      // 날짜 시간 양식 만들기
+      const timeStatement = `${formatDate(
+        getValues("startPlanDt")
+      )} ${convertTo12HourFormat(getValues("startPlanHour"))} ${getValues(
+        "startPlanMinute"
+      )}분`;
+
+      // 예약 상하차인 경우
+      if (isResv) {
+        const isEndToday = getValues("startPlanDt") == getValues("endPlanDt");
+        const endTimeStatement = isEndToday
+          ? `당착 ${convertTo12HourFormat(getValues("endPlanHour"))}`
+          : `낼착 ${convertTo12HourFormat(getValues("endPlanHour"))}`;
+        result = `예약 (${timeStatement}) 상차 / ${endTimeStatement}`;
+      } else {
+        const endStatement = isEndTomm
+          ? `낼착${convertTo12HourFormat(getValues("endPlanHour"))}`
+          : "당착";
+
+        // 지금 상차인 경우
+        if (isNowHour) {
+          result = `지금 상차 / ${endStatement}`;
+        } else {
+          result = `${convertTo12HourFormat(
+            getValues("startPlanHour")
+          )} / ${endStatement}`;
+        }
+      }
+    } else {
+      setNullValues();
+    }
+
+    return result;
+  };
+
   //상하차 일시 display
   const getTimeState = () => {
     let result = "";
@@ -875,7 +943,10 @@ export default function OrderForm({
       //예약 상하차인 경우
       if (isResv) {
         const isEndToday = getValues("startPlanDt") == getValues("endPlanDt");
-        const endTimeStatement = isEndToday ? "당착" : "낼착";
+
+        const endTimeStatement = isEndToday
+          ? `당착 ${convertTo12HourFormat(getValues("endPlanHour"))}` // 추가된 부분
+          : `낼착 ${convertTo12HourFormat(getValues("endPlanHour"))}`;
         result = `예약 (${timeStatement}) 상차 / ${endTimeStatement}`;
       } else {
         const endStatement = isEndTomm

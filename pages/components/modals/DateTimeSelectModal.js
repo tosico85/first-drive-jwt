@@ -5,7 +5,7 @@ import { isEmptyObject } from "../../../utils/ObjectUtils";
 import moment from "moment/moment";
 import { useRadio } from "../../../hooks/useInput";
 import { getDayByDateYYYYMMDD } from "../../../utils/StringUtils";
-
+import { getNextHourHH, isEmpty } from "../../../utils/StringUtils";
 const DateTimeSelectModal = ({
   onCancel,
   onComplete /* , startEnd */,
@@ -15,6 +15,14 @@ const DateTimeSelectModal = ({
   const [amPmValue, setAmPmValue] = useState("");
   const [hourValue, setHourValue] = useState("");
   const [minuteValue, setMinuteValue] = useState("");
+
+  // 상하차 시간 변수
+  const [startAmPmValue, setStartAmPmValue] = useState("");
+  const [startHourValue, setStartHourValue] = useState("");
+  const [startMinuteValue, setStartMinuteValue] = useState("");
+  const [endAmPmValue, setEndAmPmValue] = useState("");
+  const [endHourValue, setEndHourValue] = useState("");
+  const [endMinuteValue, setEndMinuteValue] = useState("");
 
   //하차일 당착/내일 기능 추가(20231103)
   const endTodayCheck = useRadio(true);
@@ -77,25 +85,104 @@ const DateTimeSelectModal = ({
   };
 
   const handleSelect = () => {
-    if (hourValue != "" && minuteValue != "") {
-      let retVal = {};
-      // retVal[`${startEnd}PlanDt`] = moment(dateValue).format("YYYYMMDD");
-      // retVal[`${startEnd}PlanHour`] = hourValue;
-      // retVal[`${startEnd}PlanMinute`] = minuteValue;
-      retVal[`startPlanDt`] = moment(dateValue).format("YYYYMMDD");
-      retVal[`startPlanHour`] = hourValue;
-      retVal[`startPlanMinute`] = minuteValue;
-      retVal[`endPlanDt`] = endTodayCheck.checked
-        ? moment(dateValue).format("YYYYMMDD")
-        : getDayByDateYYYYMMDD(moment(dateValue).format("YYYYMMDD"), 1);
-      retVal[`endPlanHour`] = endTodayCheck.checked ? hourValue : "00";
-      retVal[`endPlanMinute`] = endTodayCheck.checked ? minuteValue : "00";
+    if (startHourValue !== "" && startMinuteValue !== "") {
+      if (endHourValue !== "" && endMinuteValue !== "") {
+        if (
+          moment(dateValue).format("YYYYMMDD") > moment().format("YYYYMMDD")
+        ) {
+          // Check if endHourValue is greater than startHourValue when endTodayCheck is checked
+          if (endTodayCheck.checked && endHourValue <= startHourValue) {
+            alert("하차시간이 상차시간보다 늦어야 합니다.");
+            return; // Exit the function if the condition is not met
+          }
 
-      onComplete(retVal);
+          let retVal = {};
+          retVal[`startPlanDt`] = moment(dateValue).format("YYYYMMDD");
+          retVal[`startPlanHour`] = startHourValue;
+          retVal[`startPlanMinute`] = startMinuteValue;
+          retVal[`endPlanDt`] = endTodayCheck.checked
+            ? moment(dateValue).format("YYYYMMDD")
+            : getDayByDateYYYYMMDD(moment(dateValue).format("YYYYMMDD"), 1);
+          retVal[`endPlanHour`] = endHourValue;
+          retVal[`endPlanMinute`] = endMinuteValue;
+
+          onComplete(retVal);
+        } else {
+          alert("날짜를 선택해주세요.");
+        }
+      } else {
+        alert("하차시간을 선택해주세요.");
+      }
     } else {
-      alert("시/분을 입력해주세요.");
+      alert("상차시간을 선택해주세요.");
     }
   };
+
+  /************* SelectBox Change Event ***********/
+  // 상차일 : 오전/오후
+  const handleStartAmPm = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setStartAmPmValue(value);
+  };
+
+  // 상차일 : 시간
+  const handleStartHour = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setStartHourValue(value);
+
+    console.log("value", value);
+    if (value != "") {
+      if (startMinuteValue == "") {
+        setStartMinuteValue("00");
+      }
+    }
+  };
+
+  // 상차일 : 분(00, 30)
+  const handleStartMinute = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setStartMinuteValue(value);
+  };
+
+  // 하차일 : 오전/오후
+  const handleEndAmPm = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setEndAmPmValue(value);
+  };
+
+  // 하차일 : 시간
+  const handleEndHour = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setEndHourValue(value);
+
+    if (value != "") {
+      if (endMinuteValue == "") {
+        setEndMinuteValue("00");
+      }
+    }
+  };
+
+  // 하차일 : 분(00, 30)
+  const handleEndMinute = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setEndMinuteValue(value);
+  };
+
+  // 상하차 시간 disabled제어 변수
+  const [disableStartTime, setDisableStartTime] = useState(false);
+  const [disableEndTime, setDisableEndTime] = useState(false);
 
   return (
     <div className="h-full flex flex-col items-center justify-between">
@@ -106,6 +193,55 @@ const DateTimeSelectModal = ({
           onChange={setDateValue}
           minDate={minDate}
         />
+
+        <div className="mt-5 grid grid-cols-3 items-center justify-between w-full gap-x-3">
+          <select
+            className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100 disabled:text-gray-400"
+            value={startAmPmValue}
+            onChange={handleStartAmPm}
+            disabled={disableStartTime}
+          >
+            <option value="unset">선택</option>
+            <option value="0">오전</option>
+            <option value="12">오후</option>
+          </select>
+
+          <select
+            className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100 disabled:text-gray-400"
+            value={startHourValue}
+            onChange={handleStartHour}
+            disabled={disableStartTime}
+          >
+            <option value="">- 시 -</option>
+            {startAmPmValue !== "" &&
+              Array.from(Array(12).keys()).map((val) => {
+                const displayHour = startAmPmValue === "0" ? val : val + 12;
+                const displayHourText = displayHour.toString().padStart(2, "0");
+                const amPm = startAmPmValue === "0" ? "오전" : "오후";
+                const nm = displayHourText;
+                return (
+                  <option key={val} value={nm}>
+                    {displayHourText}
+                  </option>
+                );
+              })}
+          </select>
+          <select
+            className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100 disabled:text-gray-400"
+            value={startMinuteValue}
+            onChange={handleStartMinute}
+            disabled={disableStartTime}
+          >
+            <option value="">- 분 -</option>
+            {!isEmpty(startHourValue) != "" && (
+              <>
+                <option value="00">00</option>
+                <option value="30">30</option>
+              </>
+            )}
+          </select>
+        </div>
+
         <div className="w-full border-b border-gray-100 my-5"></div>
         <div className="grid grid-cols-3 items-center justify-between w-full gap-x-3">
           {/* ... */}
@@ -146,6 +282,50 @@ const DateTimeSelectModal = ({
               />
               <span>내일</span>
             </div>
+          </div>
+          <div className="mt-5 grid grid-cols-3 items-center justify-between w-full gap-x-3">
+            <select
+              className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100 disabled:text-gray-400"
+              value={endAmPmValue}
+              onChange={handleEndAmPm}
+              disabled={disableEndTime}
+            >
+              *<option value="unset">선택</option>
+              <option value="0">오전</option>
+              <option value="12">오후</option>
+            </select>
+            <select
+              className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100 disabled:text-gray-400"
+              value={endHourValue}
+              onChange={handleEndHour}
+              disabled={disableEndTime}
+            >
+              <option value="">- 시 -</option>
+              {endAmPmValue != "" &&
+                Array.from(Array(12).keys()).map((val) => {
+                  const convVal = val + Number.parseInt(endAmPmValue);
+                  const nm = convVal.toString().padStart(2, "0");
+                  return (
+                    <option key={val} value={nm}>
+                      {nm}
+                    </option>
+                  );
+                })}
+            </select>
+            <select
+              className="rounded-md text-center text-lgz border-0 px-5 py-3 bg-slate-100 disabled:text-gray-400"
+              value={endMinuteValue}
+              onChange={handleEndMinute}
+              disabled={disableEndTime}
+            >
+              <option value="">- 분 -</option>
+              {!isEmpty(endHourValue) && (
+                <>
+                  <option value="00">00</option>
+                  <option value="30">30</option>
+                </>
+              )}
+            </select>
           </div>
         </div>
       </div>
