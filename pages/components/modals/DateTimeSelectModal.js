@@ -91,7 +91,7 @@ const DateTimeSelectModal = ({
           moment(dateValue).format("YYYYMMDD") > moment().format("YYYYMMDD")
         ) {
           // Check if endHourValue is greater than startHourValue when endTodayCheck is checked
-          if (endTodayCheck.checked && endHourValue <= startHourValue) {
+          if (endTodayCheck.checked && endHourValue < startHourValue) {
             alert("하차시간이 상차시간보다 늦어야 합니다.");
             return; // Exit the function if the condition is not met
           }
