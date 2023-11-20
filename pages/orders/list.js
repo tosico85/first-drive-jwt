@@ -735,6 +735,8 @@ const CargoList = () => {
                 addFare,
                 addFareReason,
                 group_name,
+                create_user,
+                userName,
               } = item;
               return (
                 <li
@@ -764,6 +766,26 @@ const CargoList = () => {
                       </div>
                     </div>
                     <div className="p-5 bg-subBgColor4 rounded-b-xl flex flex-col gap-y-4">
+                      {isAdmin && (
+                        <div className="grid grid-cols-2 items-center">
+                          <div className="flex flex-col items-start gap-y-1">
+                            <span className="text-sm text-gray-400">
+                              그룹명
+                            </span>
+                            <span className="text-gray-600">
+                              {group_name || "-"}
+                            </span>
+                          </div>
+                          <div className="flex flex-col items-start gap-y-1">
+                            <span className="text-sm text-gray-400">
+                              부서명
+                            </span>
+                            <span className="text-gray-600">
+                              {userName || "-"}
+                            </span>
+                          </div>
+                        </div>
+                      )}
                       <div className="grid grid-cols-2 items-center">
                         <div className="flex flex-col items-start gap-y-1">
                           <span className="text-sm text-gray-400">
