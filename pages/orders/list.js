@@ -994,7 +994,9 @@ const CargoList = () => {
                             )}`}</span>
                             <span className="text-left">{`${cjCarNum}`}</span>
                             <span className="text-left">{`${cjTruckType}`}</span>
-                            <span className="text-left">{`${cjCargoTon}`}</span>
+                            <span className="text-left">
+                              {`${cjCargoTon}`}톤
+                            </span>
                           </div>
                         )}
                       </div>
