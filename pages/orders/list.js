@@ -522,18 +522,16 @@ const CargoList = () => {
                 </div>
               )}
 
-              {!isAdmin && (
-                <div className="ml-3">
-                  {" "}
-                  {/* 좌측 여백을 ml-3으로 수정 */}
-                  <button
-                    onClick={handleExportClick}
-                    className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
-                  >
-                    엑셀
-                  </button>
-                </div>
-              )}
+              <div className="ml-3">
+                {" "}
+                {/* 좌측 여백을 ml-3으로 수정 */}
+                <button
+                  onClick={handleExportClick}
+                  className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
+                >
+                  엑셀
+                </button>
+              </div>
 
               <div className="ml-1"></div>
             </div>
