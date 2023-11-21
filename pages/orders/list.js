@@ -920,7 +920,16 @@ const CargoList = () => {
                   <div className="hidden lg:block border-b border-gray-200 py-3 font-NotoSansKRThin font-bold">
                     <div className="grid grid-cols-11 items-center">
                       <div className="px-5">
-                        <p>{group_name}</p>
+                        {isAdmin ? (
+                          <>
+                            <p>{group_name}</p>
+                            <p className="text-blue-600 font-bold">
+                              {userName}
+                            </p>
+                          </>
+                        ) : (
+                          <p>{group_name}</p>
+                        )}
                       </div>
                       <div className="col-span-2 px-5">
                         <p className="mt-1 truncate leading-5 font-bold text-gray-500">
