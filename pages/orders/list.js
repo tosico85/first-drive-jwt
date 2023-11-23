@@ -419,7 +419,7 @@ const CargoList = () => {
               }
               onClick={() => handleSearchStatus("ALL")}
             >
-              <p className="py-3">전체</p>
+              <p className="py-3 whitespace-nowrap">전체</p>
             </div>
             <div
               className={
@@ -430,7 +430,7 @@ const CargoList = () => {
               }
               onClick={() => handleSearchStatus("화물접수")}
             >
-              <p className="py-3">접수중</p>
+              <p className="py-3 whitespace-nowrap">접수중</p>
             </div>
             <div
               className={
@@ -441,7 +441,7 @@ const CargoList = () => {
               }
               onClick={() => handleSearchStatus("배차신청")}
             >
-              <p className="py-3">배차중</p>
+              <p className="py-3 whitespace-nowrap">배차중</p>
             </div>
             <div
               className={
@@ -452,7 +452,7 @@ const CargoList = () => {
               }
               onClick={() => handleSearchStatus("배차완료")}
             >
-              <p className="py-3">배차완료</p>
+              <p className="py-3 whitespace-nowrap">배차완료</p>
             </div>
             <div
               className={
@@ -463,7 +463,7 @@ const CargoList = () => {
               }
               onClick={() => handleSearchStatus("취소")}
             >
-              <p className="py-3">취소</p>
+              <p className="py-3 whitespace-nowrap">취소</p>
             </div>
           </div>
 
@@ -792,7 +792,7 @@ const CargoList = () => {
                           <span className="text-gray-600">{ordNo || "-"}</span>
                         </div>
                         <div
-                          className="text-sm font-semibold w-fit flex items-center text-white bg-buttonSilver rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
+                          className="text-sm font-semibold w-20 flex items-center text-white bg-buttonSilver rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleCargoCopy(cargo_seq);
@@ -812,7 +812,7 @@ const CargoList = () => {
                               d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75"
                             />
                           </svg>
-                          <p>복사</p>
+                          <p className="shrink-0">복사</p>
                         </div>
                       </div>
                       <div className="grid grid-cols-2">
@@ -827,29 +827,21 @@ const CargoList = () => {
                             운송상태
                           </span>
                           <div
-                            className={`rounded-lg shadow-lg p-3 ${getStatusColorClass(
+                            className={`rounded-lg shadow-lg py-1 w-20 text-center ${getStatusColorClass(
                               ordStatus
                             )}`}
-                            style={{
-                              width: "75px",
-                              height: "32px",
-                              fontSize: "13px",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              fontWeight: "bold",
-                              letterSpacing: "1px",
-                            }}
                           >
-                            {ordStatus === "화물접수"
-                              ? "접수중"
-                              : ordStatus === "배차신청"
-                              ? "배차중"
-                              : ordStatus === "배차완료" // 추가: "배차완료" 처리
-                              ? "완료"
-                              : ordStatus === "화물취소" // 추가: "배차완료" 처리
-                              ? "취소"
-                              : ordStatus}
+                            <span className="shrink-0 p-3">
+                              {ordStatus === "화물접수"
+                                ? "접수중"
+                                : ordStatus === "배차신청"
+                                ? "배차중"
+                                : ordStatus === "배차완료" // 추가: "배차완료" 처리
+                                ? "완료"
+                                : ordStatus === "화물취소" // 추가: "배차완료" 처리
+                                ? "취소"
+                                : ordStatus}
+                            </span>
                           </div>
                         </div>
                       </div>
