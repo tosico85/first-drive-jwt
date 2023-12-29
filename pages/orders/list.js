@@ -67,6 +67,7 @@ const CargoList = () => {
         "차주연락처",
         "운임료",
         isAdmin ? "운임료(관리자용)" : "",
+        isAdmin ? "회원아이디" : "",
       ]);
       headerRow.font = { bold: true };
 
@@ -88,6 +89,7 @@ const CargoList = () => {
         { width: 15 }, // 차주연락처
         { width: 15 }, // 운임료
         isAdmin ? { width: 15 } : 0, // 관리자용 운임료
+        isAdmin ? { width: 15 } : 0, // 아이디
       ];
 
       // 테두리 스타일 설정 함수
@@ -134,6 +136,7 @@ const CargoList = () => {
           item.cjPhone,
           item.fareView,
           isAdmin ? item.fare : "",
+          isAdmin ? item.create_user : "",
         ]);
 
         // 각 셀에 테두리 스타일 적용
@@ -841,6 +844,7 @@ const CargoList = () => {
                                 : ordStatus === "화물취소" // 추가: "배차완료" 처리
                                 ? "취소"
                                 : ordStatus}
+                              {console.log(ordStatus)}
                             </span>
                           </div>
                         </div>

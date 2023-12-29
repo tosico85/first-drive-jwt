@@ -93,7 +93,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
   };
 
   /**
-   * 수기 배차 수행
+   * 수기 배차 수행 (화주 알람톡 변수 전송)
    */
   const directAllocProc = async () => {
     const paramObj = {
@@ -103,6 +103,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       cjCarNum: inputMap.cjCarNum.value,
       cjCargoTon: inputMap.cjCargoTon.value,
       cjTruckType: inputMap.cjTruckType.value,
+
       fare: inputMap.fare.value,
       fareView: inputMap.fareView.value,
       addFare: inputMap.addFare.value || "0",
