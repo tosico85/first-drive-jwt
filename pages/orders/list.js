@@ -137,6 +137,11 @@ const CargoList = () => {
           item.fareView,
           isAdmin ? item.fare : "",
           isAdmin ? item.create_user : "",
+          isAdmin ? item.cjName : "",
+          isAdmin ? item.cjPhone : "",
+          isAdmin ? item.cjCarNum : "",
+          isAdmin ? item.cjTruckType : "",
+          isAdmin ? item.cjCargoTon : "",
         ]);
 
         // 각 셀에 테두리 스타일 적용
