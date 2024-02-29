@@ -64,17 +64,10 @@ const CargoList = () => {
         "화물상태",
         "등록일시",
         "차주명",
-        "차주연락처1",
+        "차주연락처",
         "운임료",
         isAdmin ? "운임료(관리자용)" : "",
         isAdmin ? "회원아이디" : "",
-        isAdmin ? "기사이름" : "",
-        isAdmin ? "기사연락처" : "",
-        isAdmin ? "차량번호" : "",
-        isAdmin ? "기사연락처" : "",
-        isAdmin ? "차량번호" : "",
-        isAdmin ? "차량타입" : "",
-        isAdmin ? "차량톤수" : "",
       ]);
       headerRow.font = { bold: true };
 
@@ -144,8 +137,6 @@ const CargoList = () => {
           item.fareView,
           isAdmin ? item.fare : "",
           isAdmin ? item.create_user : "",
-          isAdmin ? item.cjName : "",
-          isAdmin ? item.cjPhone : "",
           isAdmin ? item.cjCarNum : "",
           isAdmin ? item.cjTruckType : "",
           isAdmin ? item.cjCargoTon : "",
