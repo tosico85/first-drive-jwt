@@ -216,7 +216,7 @@ export default function Detail() {
     // 클립보드에 복사할 내용 생성
     const startAddr = `${cargoOrder.startWide} ${cargoOrder.startSgg} ${cargoOrder.startDong} / ${cargoOrder.startDetail} ${cargoOrder.startCompanyName}`;
     const endAddr = `${cargoOrder.endWide} ${cargoOrder.endSgg} ${cargoOrder.endDong} / ${cargoOrder.endDetail} ${cargoOrder.endCompanyName}`;
-    const clipboardText = `상차지 \n${startAddr} \n${cargoOrder.startAreaPhone} \n\n하차지 \n${endAddr}\n${cargoOrder.endAreaPhone}`;
+    const clipboardText = `상차지 \n${startAddr} \n${cargoOrder.startAreaPhone} \n\n하차지1 \n${endAddr}\n${cargoOrder.endAreaPhone}`;
 
     // 클립보드에 복사
     try {
