@@ -212,6 +212,21 @@ export default function Detail() {
     }
   };
 
+  const copyToClipboard = async () => {
+    // 클립보드에 복사할 내용 생성
+    const startAddr = `${cargoOrder.startWide} ${cargoOrder.startSgg} ${cargoOrder.startDong} / ${cargoOrder.startDetail} ${cargoOrder.startCompanyName}`;
+    const endAddr = `${cargoOrder.endWide} ${cargoOrder.endSgg} ${cargoOrder.endDong} / ${cargoOrder.endDetail} ${cargoOrder.endCompanyName}`;
+    const clipboardText = `상차지 \n${startAddr} \n${cargoOrder.startAreaPhone} \n\n하차지1 \n${endAddr}\n${cargoOrder.endAreaPhone}`;
+
+    // 클립보드에 복사
+    try {
+      await navigator.clipboard.writeText(clipboardText);
+      console.log("클립보드에 복사되었습니다.");
+    } catch (err) {
+      console.error("클립보드 복사 실패: ", err);
+    }
+  };
+
   return (
     <div className="">
       <Seo title={"화물 상세"} />
@@ -554,6 +569,18 @@ export default function Detail() {
       </div>
 
       <div className="fixed bottom-0 left-0 p-3 bg-white w-full border mt-6 pb-6 flex items-center justify-end lg:gap-x-6 gap-x-3">
+        {isAdmin && (
+          <>
+            <button
+              type="button"
+              className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+              onClick={copyToClipboard}
+            >
+              클립보드
+            </button>
+          </>
+        )}
+
         <button
           type="button"
           onClick={() => router.push("/orders/list")}
