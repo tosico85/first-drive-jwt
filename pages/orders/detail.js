@@ -214,9 +214,24 @@ export default function Detail() {
 
   const copyToClipboard = async () => {
     // 클립보드에 복사할 내용 생성
-    const startAddr = `${cargoOrder.startWide} ${cargoOrder.startSgg} ${cargoOrder.startDong} / ${cargoOrder.startDetail} ${cargoOrder.startCompanyName}`;
-    const endAddr = `${cargoOrder.endWide} ${cargoOrder.endSgg} ${cargoOrder.endDong} / ${cargoOrder.endDetail} ${cargoOrder.endCompanyName}`;
-    const clipboardText = `상차지 \n${startAddr} \n${cargoOrder.startAreaPhone} \n\n하차지1 \n${endAddr}\n${cargoOrder.endAreaPhone}`;
+    const {
+      startWide,
+      startSgg,
+      startDong,
+      startDetail,
+      startCompanyName,
+      endWide,
+      endSgg,
+      endDong,
+      endDetail,
+      endCompanyName,
+      startAreaPhone,
+      endAreaPhone,
+    } = cargoOrder;
+
+    const startAddr = `${startWide} ${startSgg} ${startDong} / ${startDetail} ${startCompanyName}`;
+    const endAddr = `${endWide} ${endSgg} ${endDong} / ${endDetail} ${endCompanyName}`;
+    const clipboardText = `상차지 \n${startAddr} \n${startAreaPhone} \n\n하차지1 \n${endAddr}\n${endAreaPhone}`;
 
     // 클립보드에 복사
     try {
