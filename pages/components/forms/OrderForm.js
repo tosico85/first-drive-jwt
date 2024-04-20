@@ -211,8 +211,11 @@ export default function OrderForm({
       setValue("cargoTon", "");
       setValue("truckType", "");
     } else {
-      setValue("cargoTon", "0.5");
-
+      if (carType == "labo" || carType == "damas") {
+        setValue("cargoTon", "0.5");
+      } else if (carType == "motorcycle") {
+        setValue("cargoTon", "특송");
+      }
       (async () => {
         await getTruckTypeList();
 
@@ -220,6 +223,8 @@ export default function OrderForm({
           setValue("truckType", "라보");
         } else if (carType == "damas") {
           setValue("truckType", "다마스");
+        } else {
+          setValue("truckType", "오토바이");
         }
       })();
     }
@@ -233,6 +238,8 @@ export default function OrderForm({
 
   // 차량 톤수에 대한 운행료 계산
   const setFareByCargoTon = (cargoTon) => {
+    if (cargoTon == "특송") return;
+
     try {
       const floatCargoTon = Number.parseFloat(cargoTon);
       let resultFare = "0";
@@ -424,7 +431,12 @@ export default function OrderForm({
     const cargoTon = getValues("cargoTon");
     setTruckTypeList([]);
 
-    if (cargoTon !== "") {
+    if (cargoTon == "") {
+    } else if (cargoTon == "특송") {
+      const data = [{ nm: "오토바이" }];
+      setTruckTypeList(data);
+      setValue("truckType", "오토바이");
+    } else {
       const { code, data } = await requestServer(apiPaths.apiOrderTruckType, {
         cargoTon,
       });
@@ -1678,7 +1690,10 @@ export default function OrderForm({
                         placeholder="적재중량(차량톤수의 110%까지)"
                         {...register("frgton", {
                           onChange: (e) => {
-                            const cargoTon = Number(getValues("cargoTon"));
+                            const cargoTon =
+                              getValues("cargoTon") == "특송"
+                                ? 0.3
+                                : Number(getValues("cargoTon"));
                             const frgTon = Number(e.target.value);
                             const maxTon = cargoTon * 1.1;
                             if (frgTon > maxTon) {
@@ -2317,19 +2332,33 @@ export default function OrderForm({
                           </p>
                         </div>
                       </div>
-                      <div className="rounded-sm border border-gray-200 px-2 pt-2 pb-7 flex flex-col items-center">
+                      <div
+                        className={
+                          "rounded-sm border px-2 pt-2 pb-7 flex flex-col items-center" +
+                          (carType == "motorcycle"
+                            ? " border-mainBlue"
+                            : " border-gray-200")
+                        }
+                        onClick={() => setCarType("motorcycle")}
+                      >
                         <img
                           src={"/cars/오토바이 퀵.png"}
                           className="h-16 w-20 opacity-40 object-contain"
                         />
                         <div className="w-full mx-auto text-center relative">
-                          <p className="w-full py-1 px-3 bg-gray-200 rounded-full text-gray-400 absolute -bottom-10">
+                          <p
+                            className={
+                              "w-full py-1 px-3 rounded-full absolute -bottom-10" +
+                              (carType == "motorcycle"
+                                ? " bg-mainBlue text-white"
+                                : " bg-gray-200 text-gray-400")
+                            }
+                          >
                             오토바이
                           </p>
-
-                          <p className="w-full py-1 px-3 text-gray-600 italic absolute -top-4">
+                          {/* <p className="w-full py-1 px-3 text-gray-600 italic absolute -top-4">
                             준비중
-                          </p>
+                          </p> */}
                         </div>
                       </div>
                     </div>
@@ -2454,23 +2483,27 @@ export default function OrderForm({
                             className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                           >
                             <option value="">차량톤수(t)</option>
-                            {cargoTonList.map(({ nm }, i) => {
-                              if (carType == "truck") {
-                                if (["0.3", "0.5"].includes(nm)) {
-                                  return;
+                            {carType == "motorcycle" ? (
+                              <option value="특송">특송</option>
+                            ) : (
+                              cargoTonList.map(({ nm }, i) => {
+                                if (carType == "truck") {
+                                  if (["0.3", "0.5"].includes(nm)) {
+                                    return;
+                                  }
+                                } else {
+                                  if (nm != "0.5") {
+                                    return;
+                                  }
                                 }
-                              } else {
-                                if (nm != "0.5") {
-                                  return;
-                                }
-                              }
 
-                              return (
-                                <option key={i} value={nm}>
-                                  {nm} 톤
-                                </option>
-                              );
-                            })}
+                                return (
+                                  <option key={i} value={nm}>
+                                    {nm} 톤
+                                  </option>
+                                );
+                              })
+                            )}
                           </select>
                           <div className="text-red-500 mx-auto font-bold text-center">
                             {errors.cargoTon?.message}
@@ -2505,9 +2538,10 @@ export default function OrderForm({
                                 placeholder="차량톤수의 110%까지"
                                 {...register("frgton", {
                                   onChange: (e) => {
-                                    const cargoTon = Number(
-                                      getValues("cargoTon")
-                                    );
+                                    const cargoTon =
+                                      getValues("cargoTon") == "특송"
+                                        ? 0.3
+                                        : Number(getValues("cargoTon"));
                                     const frgTon = Number(e.target.value);
                                     const maxTon = cargoTon * 1.1;
                                     if (frgTon > maxTon) {
