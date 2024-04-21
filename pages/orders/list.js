@@ -894,7 +894,10 @@ const CargoList = () => {
                           <span className="text-sm text-gray-400">
                             차량톤수
                           </span>
-                          <span className="text-gray-600">{cargoTon}톤</span>
+                          <span className="text-gray-600">
+                            {cargoTon}
+                            {cargoTon == "특송" ? "" : "톤"}
+                          </span>
                         </div>
                       </div>
                       {ordStatus == "배차완료" && (
@@ -964,7 +967,9 @@ const CargoList = () => {
                         </p>
                         <div className="flex items-center gap-x-3">
                           <p className="px-2 py-0.5 rounded-md shadow-md bg-gray-500 text-sm text-white">
-                            {`${cargoTon}t ${truckType}`}
+                            {`${cargoTon}${
+                              cargoTon == "특송" ? "" : "t"
+                            } ${truckType}`}
                           </p>
                           {urgent && (
                             <p className="px-2 py-0.5 rounded-md shadow-md bg-red-400 text-sm text-white">
