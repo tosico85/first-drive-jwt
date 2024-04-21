@@ -234,7 +234,9 @@ export default function Detail() {
 
     const startAddr = `${startWide} ${startSgg} ${startDong} / ${startDetail} ${startCompanyName}`;
     const endAddr = `${endWide} ${endSgg} ${endDong} / ${endDetail} ${endCompanyName}`;
-    const clipboardText = `배차요청 드립니다.\n-상차지\n${startAddr} \n${startAreaPhone} \n\n-하차지\n${endAddr}\n${endAreaPhone}\n\n${cargoTon}톤 ${truckType}\n\n${cargoDsc}\n\n업체-곽용호`;
+    const clipboardText = `배차요청 드립니다.\n-상차지\n${startAddr} \n${startAreaPhone} \n\n-하차지\n${endAddr}\n${endAreaPhone}\n\n ${
+      cargoTon == "특송" ? "" : "톤"
+    } ${truckType}\n\n${cargoDsc}\n\n업체-곽용호`;
 
     // 클립보드에 복사
     try {
