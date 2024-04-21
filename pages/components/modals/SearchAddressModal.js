@@ -20,11 +20,13 @@ export default function SearchAddressModal({ onCancel, onComplete }) {
     new daum.Postcode({
       oncomplete: function (data) {
         console.log(data);
-        const { sido, sigungu, bname1, bname2, buildingName } = data;
+        const { sido, sigungu, bname1, bname2, buildingName, jibunAddress } =
+          data;
 
         let convSido = sido?.substring(0, 2); //시/도는 무조건 앞 2글자
         let splitSigungu = sigungu?.split(" ");
         let convGugun = splitSigungu.shift(); //시군구의 첫번째 단어만 시/군 항목으로 사용
+        let bunji = jibunAddress.split(" ").pop(); //마지막에 있는 번수 가오
 
         //세종시 예외처리
         if (convSido == "세종") {
@@ -53,7 +55,7 @@ export default function SearchAddressModal({ onCancel, onComplete }) {
           wide: convSido,
           sgg: convGugun,
           dong: convDong,
-          detail: buildingName,
+          detail: `${bunji} ${buildingName}`,
           baseYn: "N",
         });
       },
