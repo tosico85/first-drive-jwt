@@ -20,12 +20,21 @@ export default function SearchAddressModal({ onCancel, onComplete }) {
     new daum.Postcode({
       oncomplete: function (data) {
         console.log(data);
-        const { sido, sigungu, bname1, bname2, buildingName, jibunAddress } =
-          data;
+        let {
+          sido,
+          sigungu,
+          bname1,
+          bname2,
+          buildingName,
+          jibunAddress,
+          autoJibunAddress,
+        } = data;
 
         let convSido = sido?.substring(0, 2); //시/도는 무조건 앞 2글자
         let splitSigungu = sigungu?.split(" ");
         let convGugun = splitSigungu.shift(); //시군구의 첫번째 단어만 시/군 항목으로 사용
+
+        jibunAddress = jibunAddress == "" ? autoJibunAddress : jibunAddress; //지번이 없는 경우도 있음
         let bunji = jibunAddress.split(" ").pop(); //마지막에 있는 번수 가오
 
         //세종시 예외처리
