@@ -229,11 +229,12 @@ export default function Detail() {
       endAreaPhone,
       cargoTon,
       truckType,
+      cargoDsc,
     } = cargoOrder;
 
     const startAddr = `${startWide} ${startSgg} ${startDong} / ${startDetail} ${startCompanyName}`;
     const endAddr = `${endWide} ${endSgg} ${endDong} / ${endDetail} ${endCompanyName}`;
-    const clipboardText = `배차요청 드립니다.\n 상차지\n${startAddr} \n${startAreaPhone} \n\n하차지\n${endAddr}\n${endAreaPhone}\n${cargoTon}톤 ${truckType}\n업체-곽용호`;
+    const clipboardText = `배차요청 드립니다.\n 상차지\n${startAddr} \n${startAreaPhone} \n\n하차지\n${endAddr}\n${endAreaPhone}\n${cargoTon}톤 ${truckType}\n${cargoDsc}\n업체-곽용호`;
 
     // 클립보드에 복사
     try {
