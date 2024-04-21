@@ -212,6 +212,38 @@ export default function Detail() {
     }
   };
 
+  const copyToClipboardbibi = async () => {
+    // 클립보드에 복사할 내용 생성
+    const {
+      startWide,
+      startSgg,
+      startDong,
+      startDetail,
+      startCompanyName,
+      endWide,
+      endSgg,
+      endDong,
+      endDetail,
+      endCompanyName,
+      startAreaPhone,
+      endAreaPhone,
+      cargoTon,
+      truckType,
+    } = cargoOrder;
+
+    const startAddr = `${startWide} ${startSgg} ${startDong} / ${startDetail} ${startCompanyName}`;
+    const endAddr = `${endWide} ${endSgg} ${endDong} / ${endDetail} ${endCompanyName}`;
+    const clipboardText = `배차요청 드립니다.\n 상차지\n${startAddr} \n${startAreaPhone} \n\n하차지\n${endAddr}\n${endAreaPhone}\n${cargoTon}톤 ${truckType}\n업체-곽용호`;
+
+    // 클립보드에 복사
+    try {
+      await navigator.clipboard.writeText(clipboardText);
+      console.log("클립보드에 복사되었습니다.");
+    } catch (err) {
+      console.error("클립보드 복사 실패: ", err);
+    }
+  };
+
   const copyToClipboard = async () => {
     // 클립보드에 복사할 내용 생성
     const {
@@ -231,7 +263,7 @@ export default function Detail() {
 
     const startAddr = `${startWide} ${startSgg} ${startDong} / ${startDetail} ${startCompanyName}`;
     const endAddr = `${endWide} ${endSgg} ${endDong} / ${endDetail} ${endCompanyName}`;
-    const clipboardText = `상차지 \n${startAddr} \n${startAreaPhone} \n\n하차지1 \n${endAddr}\n${endAreaPhone}`;
+    const clipboardText = `상차지 \n${startAddr} \n${startAreaPhone} \n\n하차지\n${endAddr}\n${endAreaPhone}`;
 
     // 클립보드에 복사
     try {
@@ -591,7 +623,14 @@ export default function Detail() {
               className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               onClick={copyToClipboard}
             >
-              클립보드
+              차주전송
+            </button>
+            <button
+              type="button"
+              className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+              onClick={copyToClipboardbibi}
+            >
+              비비퀵
             </button>
           </>
         )}
