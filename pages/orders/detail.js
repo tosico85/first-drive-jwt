@@ -234,8 +234,8 @@ export default function Detail() {
 
     const startAddr = `${startWide} ${startSgg} ${startDong} / ${startDetail} ${startCompanyName}`;
     const endAddr = `${endWide} ${endSgg} ${endDong} / ${endDetail} ${endCompanyName}`;
-    const clipboardText = `배차요청 드립니다.\n-상차지\n${startAddr} \n${startAreaPhone} \n\n-하차지\n${endAddr}\n${endAreaPhone}\n\n ${
-      cargoTon == "특송" ? "" : "톤"
+    const clipboardText = `배차요청 드립니다.\n-상차지\n${startAddr} \n${startAreaPhone} \n\n-하차지\n${endAddr}\n${endAreaPhone}\n\n ${cargoTon} ${
+      cargoTon !== "특송" ? "톤" : ""
     } ${truckType}\n\n${cargoDsc}\n\n업체-곽용호`;
 
     // 클립보드에 복사
@@ -630,7 +630,7 @@ export default function Detail() {
             </button>
             <button
               type="button"
-              className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+              className="rounded-md bg-buttonGreen px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               onClick={copyToClipboardbibi}
             >
               비비퀵
