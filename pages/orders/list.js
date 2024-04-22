@@ -67,6 +67,7 @@ const CargoList = () => {
         "차주연락처",
         "운임료",
         "추가운임료",
+        "추가운임 사유",
         isAdmin ? "운임료(관리자용)" : "",
         isAdmin ? "회원아이디" : "",
       ]);
@@ -90,6 +91,7 @@ const CargoList = () => {
         { width: 15 }, // 차주연락처
         { width: 15 }, // 운임료
         { width: 15 }, // 추가운임료
+        { width: 20 }, // 추가운임료 사유
         isAdmin ? { width: 15 } : 0, // 관리자용 운임료
         isAdmin ? { width: 15 } : 0, // 아이디
       ];
@@ -138,6 +140,7 @@ const CargoList = () => {
           item.cjPhone,
           item.fareView,
           item.addFare,
+          item.addFareReason,
           isAdmin ? item.fare : "",
           isAdmin ? item.create_user : "",
           isAdmin ? item.cjCarNum : "",
