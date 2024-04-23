@@ -524,7 +524,7 @@ const CargoList = () => {
               <div className="ml-3">
                 <input
                   type="text"
-                  placeholder="상차지명 검색"
+                  placeholder="상차지 업체명"
                   onKeyDown={handleCompanySearch}
                   {...startCompanySearch}
                   className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
