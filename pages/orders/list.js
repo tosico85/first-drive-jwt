@@ -30,6 +30,7 @@ const CargoList = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(-1);
   //const [companySearch, setCompanySearch] = useState("");
   const companySearch = useInput("");
+  const startCompanySearch = useInput("");
   const router = useRouter();
 
   const isAdmin = userInfo.auth_code === "ADMIN";
@@ -194,6 +195,7 @@ const CargoList = () => {
       start_dt: startSearchDt,
       end_dt: endSearchDt,
       company_nm: companySearch.value,
+      startCompanyName: startCompanySearch.value, // 추가된 부분
     };
 
     const result = await requestServer(url, params);
@@ -519,20 +521,27 @@ const CargoList = () => {
                   />
                 </div>
               )}
+              <div className="ml-3">
+                <input
+                  type="text"
+                  placeholder="상차지명 검색"
+                  onKeyDown={handleCompanySearch}
+                  {...startCompanySearch}
+                  className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                />
+              </div>
 
-              {isAdmin && (
-                <div className="ml-1">
-                  <button
-                    type="button"
-                    onClick={async () => {
-                      await getOrderList();
-                    }}
-                    className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
-                  >
-                    검색
-                  </button>
-                </div>
-              )}
+              <div className="ml-1">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await getOrderList();
+                  }}
+                  className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
+                >
+                  검색
+                </button>
+              </div>
 
               <div className="ml-3">
                 {" "}
