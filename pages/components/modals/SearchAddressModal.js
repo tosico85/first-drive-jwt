@@ -64,7 +64,7 @@ export default function SearchAddressModal({ onCancel, onComplete }) {
           wide: convSido,
           sgg: convGugun,
           dong: convDong,
-          detail: `${bunji} ${buildingName}`,
+          detail: `${bunji}` /* ${buildingName} */,
           baseYn: "N",
         });
       },
