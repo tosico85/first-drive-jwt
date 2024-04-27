@@ -21,6 +21,17 @@ export const useInput = (initialValue, type = "text") => {
   return { value, onChange };
 };
 
+export const useInputBase = (initialValue, type = "text") => {
+  const [value, setValue] = useState(initialValue);
+  const onChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setValue(value);
+  };
+  return { value, onChange, setValue };
+};
+
 export const useRadio = (initialValue) => {
   const [checked, setChecked] = useState(initialValue);
   const onClick = (e) => {

@@ -16,6 +16,12 @@ const USER_ADDRESS_BASE = "/user/address/base"; //기본주소 조회
 const USER_ADDRESS_ADD = "/user/address/add"; //주소 등록 (상하차지구분, 주소(시도, 시군구, 동, 상세주소)로 merge처리)
 const USER_ADDRESS_DEL = "/user/address/del"; //주소 등록 (상하차지구분, 주소(시도, 시군구, 동, 상세주소)로 merge처리)
 
+//User Bookmark
+const USER_BOOKMARK_LIST = "/user/bookmark/list"; //주소목록 조회
+const USER_BOOKMARK_ADD = "/user/bookmark/add"; //주소 등록 (계정, 상하차지구분, 거래처명로 merge처리)
+const USER_BOOKMARK_UPDATE = "/user/bookmark/update"; //주소 등록 (계정, 상하차지구분, 거래처명로 merge처리)
+const USER_BOOKMARK_DEL = "/user/bookmark/del"; //주소 등록 (계정, 상하차지구분, 거래처명로 merge처리)
+
 //ADMIN APIs  (TO-DO)
 const ADMIN_GET_USER_LIST = "/admin/get/user/list"; //사용자 목록 조회
 const ADMIN_CHANGE_USER = "/admin/change/user"; //사용자 권한 변경
@@ -73,6 +79,12 @@ const apiPaths = {
   userAddressBase: USER_ADDRESS_BASE,
   userAddressAdd: USER_ADDRESS_ADD,
   userAddressDel: USER_ADDRESS_DEL,
+
+  // User address manage
+  userBookmarkList: USER_BOOKMARK_LIST,
+  userBookmarkAdd: USER_BOOKMARK_ADD,
+  userBookmarkUpdate: USER_BOOKMARK_UPDATE,
+  userBookmarkDel: USER_BOOKMARK_DEL,
 
   // Admin
   adminGetUserList: ADMIN_GET_USER_LIST,

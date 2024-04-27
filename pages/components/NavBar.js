@@ -36,6 +36,11 @@ const Navbar = () => {
       href: "/orders/create",
       current: "/orders/create" === router.pathname,
     },
+    {
+      name: "거래처관리",
+      href: "/manage/bookmark/list",
+      current: "/manage/bookmark/list" === router.pathname,
+    },
   ];
   const navigationAdmin = [
     {

@@ -1,4 +1,4 @@
-const ComboBox = ({ onComboChange, list, selectedValue, title }) => {
+const ComboBox = ({ onComboChange, list, selectedValue, title = "" }) => {
   const handleChange = (e) => {
     const {
       target: { value },
@@ -13,7 +13,7 @@ const ComboBox = ({ onComboChange, list, selectedValue, title }) => {
       value={selectedValue}
       onChange={handleChange}
     >
-      <option value={-1}>{title}</option>
+      {title != "" && <option value={-1}>{title}</option>}
       {list.map((item, i) => (
         <option key={i} value={item.value}>
           {item.name}

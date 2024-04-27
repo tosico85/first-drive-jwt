@@ -10,6 +10,7 @@ const localRoutes = [
 
   { path: "/manage/group/list", name: "그룹 관리" },
   { path: "/manage/user/list", name: "사용자 관리" },
+  { path: "/manage/bookmark/list", name: "거래처 관리" },
   { path: "/manage/fareTable/list", name: "운행요금 관리" },
 ];
 
