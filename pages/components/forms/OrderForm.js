@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { format } from "date-fns";
 import AuthContext from "../../context/authContext";
 import Modal from "react-modal";
-import UserAddressModal from "../modals/UserAddressModal";
+//import UserAddressModal from "../modals/UserAddressModal";
 import { isEmptyObject } from "../../../utils/ObjectUtils";
 import {
   addCommas,
@@ -23,6 +23,7 @@ import SearchAddressModal from "../modals/SearchAddressModal";
 import DateTimeSelectModal from "../modals/DateTimeSelectModal";
 import Label from "../custom/Label";
 import TodayTimeSelectModal from "../modals/TodayTimeSelectModal";
+import UserBookmarkModal from "../modals/UserBookmarkModal";
 
 export default function OrderForm({
   isEdit = false,
@@ -133,8 +134,8 @@ export default function OrderForm({
           console.log("EditData >> ", editData);
           await loadParamData();
         } else {
-          console.log("Prefill ..");
-          prefillBaseAddress();
+          //console.log("Prefill ..");
+          //prefillBaseAddress();
         }
 
         await getOrderList();
@@ -455,7 +456,7 @@ export default function OrderForm({
   };
 
   // 상하차지 기본주소 프리필
-  const prefillBaseAddress = async () => {
+  /* const prefillBaseAddress = async () => {
     //console.log(userInfo);
 
     const {
@@ -481,7 +482,7 @@ export default function OrderForm({
       setValue("endDetail", end.detail);
       endBaseYn = end.baseYn;
     }
-  };
+  }; */
 
   /**
    * 체크박스 control을 위한 처리
@@ -517,7 +518,7 @@ export default function OrderForm({
   };
 
   // 상하차지 주소정보 update
-  const regStartEndAddress = async () => {
+  /* const regStartEndAddress = async () => {
     let [wide, sgg, dong, detail] = getValues([
       "startWide",
       "startSgg",
@@ -549,7 +550,7 @@ export default function OrderForm({
       startEnd: "end",
     };
     await requestServer(apiPaths.userAddressAdd, endAddress);
-  };
+  }; */
 
   /**
    * 화물 등록(화주가 화물 등록 하는 경우)
@@ -562,7 +563,7 @@ export default function OrderForm({
     cargoOrder = filterTelNoHyphen(cargoOrder);
 
     // 상하차지 주소정보 update
-    await regStartEndAddress();
+    //await regStartEndAddress();
 
     // 화물등록
     const { result, resultCd } = await requestServer(
@@ -810,6 +811,10 @@ export default function OrderForm({
     console.log("retVal >> ", retVal);
     if (retVal) {
       setAddressInput(retVal, modalStartEnd);
+
+      //bookmark 정보
+      setValue(`${modalStartEnd}CompanyName`, retVal["bookmarkName"]);
+      setValue(`${modalStartEnd}AreaPhone`, retVal["areaPhone"]);
     }
 
     closeModal();
@@ -1036,59 +1041,6 @@ export default function OrderForm({
     },
   };
 
-  /**
-   * @title 주소 검색(팝업창 방식)
-   * @param {상하차 구분} startEnd
-   */
-  /* function searchAddress(startEnd) {
-    addressPopupStartEnd = startEnd;
-
-    new daum.Postcode({
-      oncomplete: function (data) {
-        console.log(data);
-        const { sido, sigungu, bname1, bname2, buildingName } = data;
-
-        let convSido = sido?.substring(0, 2); //시/도는 무조건 앞 2글자
-        let splitSigungu = sigungu?.split(" ");
-        let convGugun = splitSigungu.shift(); //시군구의 첫번째 단어만 시/군 항목으로 사용
-
-        //세종시 예외처리
-        if (convSido == "세종") {
-          convGugun = sido.substring(2); //'특별자치시'
-        }
-
-        //시군구 데이터 정제
-        const pattern = /^(.*?)(시|군|구)$/;
-        if (!/^(동구|남구|북구|서구|중구)$/i.test(convGugun)) {
-          convGugun = convGugun.replace(pattern, "$1");
-        }
-        //console.log("splitSigungu", splitSigungu);
-
-        //동 데이터 만들기. 시군구 앞단어 빼고 나머지, 법정동1, 2 합쳐서 처리
-        const extraSigungu = splitSigungu.join(" ");
-        let convDong = [extraSigungu, bname1, bname2]
-          .join(" ")
-          .replace("  ", " ")
-          .trim();
-
-        console.log("convSido", convSido);
-        console.log("convGugun", convGugun);
-        console.log("convDong", convDong);
-
-        setAddressInput(
-          {
-            wide: convSido,
-            sgg: convGugun,
-            dong: convDong,
-            detail: buildingName,
-            baseYn: "N",
-          },
-          addressPopupStartEnd
-        );
-      },
-    }).open();
-  } */
-
   return (
     <div className="p-5 lg:pt-0 lg:p-3">
       <Modal
@@ -1097,7 +1049,7 @@ export default function OrderForm({
         contentLabel="Modal"
         style={isMobile ? MobileStyles : DesktopStyles}
       >
-        <UserAddressModal
+        <UserBookmarkModal
           onCancel={closeModal}
           onComplete={callbackModal}
           startEnd={modalStartEnd}

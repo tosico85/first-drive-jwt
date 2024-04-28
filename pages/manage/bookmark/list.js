@@ -6,6 +6,7 @@ import SearchAddressModal from "../../components/modals/SearchAddressModal";
 import Label from "../../components/custom/Label";
 import Script from "next/script";
 import { useInput, useInputBase } from "../../../hooks/useInput";
+import { formatPhoneNumber } from "../../../utils/StringUtils";
 
 const ManageBookmark = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
@@ -128,7 +129,7 @@ const ManageBookmark = () => {
 
   /********************** Event Control Start *******************************/
 
-  const handleSearch = async () => {
+  const handleSearch = async (e) => {
     const { key } = e;
 
     if (key == "Enter") {
@@ -183,7 +184,7 @@ const ManageBookmark = () => {
     }
   };
 
-  /********************** Event Control End *******************************/
+  /********************** Event Control End *********************************/
 
   /********************** Modal Control Start *******************************/
 
@@ -258,7 +259,7 @@ const ManageBookmark = () => {
         <div className="mt-6 pb-24 col-span-6 h-rate8">
           <div className="flex justify-between items-center mb-3">
             <div className="flex gap-x-5 items-center w-60">
-              <h3 className="text-base font-semibold w-full">상하차 구분</h3>
+              <h3 className="text-base font-semibold w-full">업체명 검색</h3>
               <input
                 type="text"
                 placeholder={"업체명"}
@@ -311,7 +312,9 @@ const ManageBookmark = () => {
                         <div>{`${wide} ${sgg} ${dong}`}</div>
                         <div>{`${detail}`}</div>
                       </div>
-                      <div className="px-3 py-5 col-span-3">{areaPhone}</div>
+                      <div className="px-3 py-5 col-span-3">
+                        {formatPhoneNumber(areaPhone)}
+                      </div>
                     </li>
                   );
                 })}
