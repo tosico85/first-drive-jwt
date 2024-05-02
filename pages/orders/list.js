@@ -913,7 +913,13 @@ const CargoList = () => {
                           }`}</span>
                         </div>
                       </div>
-                      <div className="grid grid-cols-2">
+                      <div
+                        className="grid grid-cols-2"
+                        onClick={(e) => {
+                          e.stopPropagation(); // 이벤트 버블링 방지
+                          copyCjInfo(cargo_seq); // 이벤트 핸들러 호출
+                        }}
+                      >
                         <div className="flex flex-col items-start gap-y-1">
                           <span className="text-sm text-gray-400">
                             차량종류
@@ -926,7 +932,7 @@ const CargoList = () => {
                           </span>
                           <span className="text-gray-600">
                             {cargoTon}
-                            {cargoTon == "특송" ? "" : "톤"}
+                            {cargoTon === "특송" ? "" : "톤"}
                           </span>
                         </div>
                       </div>
