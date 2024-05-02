@@ -937,7 +937,13 @@ const CargoList = () => {
                         </div>
                       </div>
                       {ordStatus == "배차완료" && (
-                        <div className="grid grid-cols-2">
+                        <div
+                          className="grid grid-cols-2"
+                          onClick={(e) => {
+                            e.stopPropagation(); // 이벤트 버블링 방지
+                            copyCjInfo(cargo_seq); // 이벤트 핸들러 호출
+                          }}
+                        >
                           <div className="flex flex-col items-start gap-y-1">
                             <span className="text-sm text-gray-400">차주</span>
                             <span className="text-gray-600">{cjName}</span>
