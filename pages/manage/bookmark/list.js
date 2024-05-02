@@ -2,72 +2,49 @@ import { useContext, useEffect, useState } from "react";
 import Modal from "react-modal";
 import apiPaths from "../../../services/apiRoutes";
 import AuthContext from "../../context/authContext";
-import ComboBox from "../../components/custom/ComboBox";
 import SearchAddressModal from "../../components/modals/SearchAddressModal";
 import Label from "../../components/custom/Label";
 import Script from "next/script";
-import { useInputBase } from "../../../hooks/useInput";
+import { useInput, useInputBase } from "../../../hooks/useInput";
 import { formatPhoneNumber } from "../../../utils/StringUtils";
 
 const ManageBookmark = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
   const [bookmarkList, setBookmarkList] = useState([]);
   const [selectedBookmark, setSelectedBookmark] = useState({});
-  const [selectedStartEnd, setSelectedStartEnd] = useState("");
   const [requestType, setRequestTyoe] = useState("I");
+
+  // search input
+  const searchName = useInput("");
 
   // input map set
   const inputMap = {
-    startEnd: useInputBase("start"),
+    bookmarkName: useInputBase(""),
     mainAddress: useInputBase(""),
     detail: useInputBase(""),
-    loadMethod: useInputBase(""),
-    bookmarkName: useInputBase(""),
     areaPhone: useInputBase(""),
   };
 
   //Modal control
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
 
-  //base data
-  const LOAD_TYPE_LIST = [
-    "지게차",
-    "수작업",
-    "크레인",
-    "호이스트",
-    "컨베이어",
-    "기타",
-  ];
-
-  const START_END_LIST = [
-    { name: "전체", value: "" },
-    { name: "상차지", value: "start" },
-    { name: "하차지", value: "end" },
-  ];
-  //const router = useRouter();
-
   useEffect(() => {
     (async () => {
       await getBookmarkList();
     })();
-  }, [userInfo, selectedStartEnd]);
+  }, [userInfo]);
 
   useEffect(() => {
-    inputMap["startEnd"].setValue(
-      selectedBookmark["startEnd"] || inputMap["startEnd"].value
-    );
     inputMap["mainAddress"].setValue(
       `${selectedBookmark["wide"] || ""} ${selectedBookmark["sgg"] || ""} ${
         selectedBookmark["dong"] || ""
       }`
     );
     inputMap["detail"].setValue(selectedBookmark["detail"] || "");
-    inputMap["loadMethod"].setValue(selectedBookmark["loadMethod"] || "");
     inputMap["bookmarkName"].setValue(selectedBookmark["bookmarkName"] || "");
     inputMap["areaPhone"].setValue(selectedBookmark["areaPhone"] || "");
 
     setRequestTyoe(isSelected() ? "U" : "I");
-    console.log(inputMap["startEnd"].value);
   }, [selectedBookmark]);
 
   /********************** API Call Method Start *******************************/
@@ -75,7 +52,7 @@ const ManageBookmark = () => {
   // 거래처 조회
   const getBookmarkList = async () => {
     const url = apiPaths.userBookmarkList;
-    const params = { startEnd: selectedStartEnd };
+    const params = { bookmarkName: searchName.value };
 
     const result = await requestServer(url, params);
     result = result.map((item) => ({ ...item, checked: false }));
@@ -85,9 +62,8 @@ const ManageBookmark = () => {
   };
 
   const deleteBookmark = async () => {
-    const paramData = (({ bookmarkName, startEnd, ...rest }) => ({
+    const paramData = (({ bookmarkName, ...rest }) => ({
       bookmarkName,
-      startEnd,
     }))(selectedBookmark);
 
     const { result, resultCd } = await requestServer(apiPaths.userBookmarkDel, {
@@ -106,12 +82,10 @@ const ManageBookmark = () => {
   const insertBookmark = async () => {
     const paramData = {
       bookmarkName: inputMap["bookmarkName"].value,
-      startEnd: inputMap["startEnd"].value,
       wide: selectedBookmark["wide"],
       sgg: selectedBookmark["sgg"],
       dong: selectedBookmark["dong"],
       detail: inputMap["detail"].value,
-      loadMethod: inputMap["loadMethod"].value,
       areaPhone: inputMap["areaPhone"].value,
     };
 
@@ -131,12 +105,10 @@ const ManageBookmark = () => {
   const updateBookmark = async () => {
     const paramData = {
       bookmarkName: selectedBookmark["bookmarkName"],
-      startEnd: selectedBookmark["startEnd"],
       wide: selectedBookmark["wide"],
       sgg: selectedBookmark["sgg"],
       dong: selectedBookmark["dong"],
       detail: inputMap["detail"].value,
-      loadMethod: inputMap["loadMethod"].value,
       areaPhone: inputMap["areaPhone"].value,
     };
 
@@ -156,6 +128,14 @@ const ManageBookmark = () => {
   /********************** API Call Method End *******************************/
 
   /********************** Event Control Start *******************************/
+
+  const handleSearch = async (e) => {
+    const { key } = e;
+
+    if (key == "Enter") {
+      await getBookmarkList();
+    }
+  };
 
   const handleItemChange = (selectedIndex) => {
     //console.log(bookmarkList);
@@ -204,7 +184,7 @@ const ManageBookmark = () => {
     }
   };
 
-  /********************** Event Control End *******************************/
+  /********************** Event Control End *********************************/
 
   /********************** Modal Control Start *******************************/
 
@@ -279,11 +259,13 @@ const ManageBookmark = () => {
         <div className="mt-6 pb-24 col-span-6 h-rate8">
           <div className="flex justify-between items-center mb-3">
             <div className="flex gap-x-5 items-center w-60">
-              <h3 className="text-base font-semibold w-full">상하차 구분</h3>
-              <ComboBox
-                onComboChange={setSelectedStartEnd}
-                list={START_END_LIST}
-                selectedValue={selectedStartEnd}
+              <h3 className="text-base font-semibold w-full">업체명 검색</h3>
+              <input
+                type="text"
+                placeholder={"업체명"}
+                {...searchName}
+                onKeyDown={handleSearch}
+                className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
               />
             </div>
             <p className="text-right">{`${bookmarkList.length} 건`}</p>
@@ -291,13 +273,9 @@ const ManageBookmark = () => {
           <div className="flex justify-between border-y border-gray-200 py-3 bg-headerColor2 text-gray-200 text-center">
             <div className="grid grid-cols-12 w-full">
               <div className="col-span-1"></div>
-              <div className="col-span-1 border-l border-gray-700">상하차</div>
-              <div className="col-span-3 border-l border-gray-700">업체명</div>
-              <div className="col-span-3 border-l border-gray-700">주소</div>
-              <div className="col-span-2 border-l border-gray-700">
-                상하차방법
-              </div>
-              <div className="col-span-2 border-l border-gray-700">연락처</div>
+              <div className="col-span-4 border-l border-gray-700">업체명</div>
+              <div className="col-span-4 border-l border-gray-700">주소</div>
+              <div className="col-span-3 border-l border-gray-700">연락처</div>
             </div>
           </div>
           <ul className="h-full overflow-auto border border-slate-200">
@@ -305,13 +283,11 @@ const ManageBookmark = () => {
               <>
                 {bookmarkList.map((item, index) => {
                   const {
-                    startEnd,
                     bookmarkName,
                     wide,
                     sgg,
                     dong,
                     detail,
-                    loadMethod,
                     areaPhone,
                     checked,
                   } = item;
@@ -329,20 +305,16 @@ const ManageBookmark = () => {
                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                       </div>
-                      <div className="px-3 py-5 col-span-1 border-r border-slate-200">
-                        {startEnd == "start" ? "상차지" : "하차지"}
-                      </div>
-                      <div className="px-3 py-5 col-span-3 border-r border-slate-200">
+                      <div className="px-3 py-5 col-span-4 border-r border-slate-200">
                         {bookmarkName}
                       </div>
-                      <div className="px-3 py-5 col-span-3 border-r border-slate-200">
+                      <div className="px-3 py-5 col-span-4 border-r border-slate-200">
                         <div>{`${wide} ${sgg} ${dong}`}</div>
                         <div>{`${detail}`}</div>
                       </div>
-                      <div className="px-3 py-5 col-span-2 border-r border-slate-200">
-                        {loadMethod}
+                      <div className="px-3 py-5 col-span-3">
+                        {formatPhoneNumber(areaPhone)}
                       </div>
-                      <div className="px-3 py-5 col-span-2">{areaPhone}</div>
                     </li>
                   );
                 })}
@@ -357,26 +329,6 @@ const ManageBookmark = () => {
         <div className="flex flex-col justify-center gap-y-3 pl-5 ml-5 p-5 col-span-4 border-l border-slate-200">
           <div className="w-full flex flex-col gap-y-3">
             <div className="grid grid-cols-1 gap-y-3">
-              <div className="flex gap-x-2">
-                <Label title={"상하차구분"} required={true} />
-                <div className="flex flex-col w-full">
-                  <select
-                    {...{
-                      value: inputMap["startEnd"].value,
-                      onChange: inputMap["startEnd"].onChange,
-                    }}
-                    readOnly={requestType == "U"}
-                    className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-                  >
-                    <option key={0} value={"start"}>
-                      상차
-                    </option>
-                    <option key={1} value={"end"}>
-                      하차
-                    </option>
-                  </select>
-                </div>
-              </div>
               <div className="flex gap-x-2">
                 <Label title={"주소"} required={true} />
                 <div className="w-full flex  gap-x-2">
@@ -435,25 +387,6 @@ const ManageBookmark = () => {
               </div>
             </div>
             <div className="grid grid-cols-1 gap-y-3">
-              <div className="flex gap-x-2">
-                <Label title={"상하차방법"} required={false} />
-                <div className="flex flex-col w-full">
-                  <select
-                    {...{
-                      value: inputMap["loadMethod"].value,
-                      onChange: inputMap["loadMethod"].onChange,
-                    }}
-                    className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-                  >
-                    <option value="">상하차방법</option>
-                    {LOAD_TYPE_LIST.map((item, i) => (
-                      <option key={i} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
               <div className="grid grid-cols-2 gap-x-3 justify-stretch">
                 <div className="flex flex-col">
                   <div className="flex w-full gap-x-2">
