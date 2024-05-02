@@ -333,6 +333,21 @@ const CargoList = () => {
     }
   };
 
+  const copyCjInfo = (cargo_seq) => {
+    const cargoItem = {
+      ...cargoOrder.find((item) => item.cargo_seq === cargo_seq),
+    };
+
+    if (cargoItem) {
+      const clipboardText = `- 차량정보 \n${cargoItem.cjName} \n${cargoItem.cjPhone}\n${cargoItem.cjCarNum}\n${cargoItem.cjCargoTon}톤/${cargoItem.cjTruckType}\n`;
+      try {
+        navigator.clipboard.writeText(clipboardText);
+      } catch (err) {
+        console.error("클립보드 복사 실패: ", err);
+      }
+    }
+  };
+
   //추가요금 수정
   const handleAddFare = (cargo_seq) => {
     //if (!isAdmin) return;
@@ -1004,7 +1019,13 @@ const CargoList = () => {
                         </div>
                       </div>
 
-                      <div className="text-center flex flex-col items-center">
+                      <div
+                        className="text-center flex flex-col items-center"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          copyCjInfo(cargo_seq);
+                        }}
+                      >
                         {ordStatus == "배차완료" && (
                           <div className="w-full mt-2 flex flex-col items-baseline text-base text-slate-500">
                             <span className="text-left">{`${cjName}`}</span>
