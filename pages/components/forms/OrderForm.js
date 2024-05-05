@@ -314,6 +314,7 @@ export default function OrderForm({
       await getTruckTypeList();
       Object.keys(editData).forEach((key) => {
         if (["group_name"].includes(key)) return; //제외항목
+        if (["userName"].includes(key)) return; //제외항목
         if (
           [
             "taxbillType",
@@ -414,6 +415,7 @@ export default function OrderForm({
           addFare,
           addFareReason,
           group_name,
+          userName,
           create_dtm,
           delete_yn,
           ...rest

@@ -31,6 +31,7 @@ const CargoList = () => {
   //const [companySearch, setCompanySearch] = useState("");
   const companySearch = useInput("");
   const startCompanySearch = useInput("");
+  const endCompanySearch = useInput("");
   const router = useRouter();
 
   const isAdmin = userInfo.auth_code === "ADMIN";
@@ -196,6 +197,7 @@ const CargoList = () => {
       end_dt: endSearchDt,
       company_nm: companySearch.value,
       startCompanyName: startCompanySearch.value, // 추가된 부분
+      endCompanyName: endCompanySearch.value, // 추가된 부분
     };
 
     const result = await requestServer(url, params);
@@ -307,6 +309,7 @@ const CargoList = () => {
       addFare,
       addFareReason,
       group_name,
+      userName,
       create_dtm,
       delete_yn,
       ...rest
@@ -482,9 +485,13 @@ const CargoList = () => {
           </div>
 
           <div className="hidden lg:flex items-center justify-between w-full pb-5 border-b border-gray-200">
-            <div className="flex items-center">
-              <div className="flex justify-between gap-x-2 items-center">
-                <div>
+            <div
+              className={
+                "flex gap-x-3 gap-y-3 " + (isAdmin && "flex-col 2xl:flex-row")
+              }
+            >
+              <div className="flex justify-start gap-x-2 items-center">
+                <div className="shrink-0">
                   <ComboBox
                     onComboChange={handlePeriodChange}
                     list={selectPeriodList}
@@ -510,51 +517,59 @@ const CargoList = () => {
                   />
                 </div>
               </div>
-              {isAdmin && (
-                <div className="ml-3">
+              <div className="flex gap-x-3">
+                {isAdmin && (
+                  <div className="">
+                    <input
+                      type="text"
+                      placeholder="업체명 검색"
+                      onKeyDown={handleCompanySearch}
+                      {...companySearch}
+                      className="w-36 rounded-sm border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    />
+                  </div>
+                )}
+                <div className="">
                   <input
                     type="text"
-                    placeholder="업체명 검색"
+                    placeholder="상차지 업체명"
                     onKeyDown={handleCompanySearch}
-                    {...companySearch}
-                    className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                    {...startCompanySearch}
+                    className="w-36 rounded-sm border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   />
                 </div>
-              )}
-              <div className="ml-3">
-                <input
-                  type="text"
-                  placeholder="상차지 업체명"
-                  onKeyDown={handleCompanySearch}
-                  {...startCompanySearch}
-                  className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                />
-              </div>
+                <div className="">
+                  <input
+                    type="text"
+                    placeholder="하차지 업체명"
+                    onKeyDown={handleCompanySearch}
+                    {...endCompanySearch}
+                    className="w-36 rounded-sm border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  />
+                </div>
+                <div className="shrink-0">
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await getOrderList();
+                    }}
+                    className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
+                  >
+                    검색
+                  </button>
+                </div>
 
-              <div className="ml-1">
-                <button
-                  type="button"
-                  onClick={async () => {
-                    await getOrderList();
-                  }}
-                  className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
-                >
-                  검색
-                </button>
+                <div className="shrink-0">
+                  {" "}
+                  {/* 좌측 여백을 ml-3으로 수정 */}
+                  <button
+                    onClick={handleExportClick}
+                    className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
+                  >
+                    엑셀
+                  </button>
+                </div>
               </div>
-
-              <div className="ml-3">
-                {" "}
-                {/* 좌측 여백을 ml-3으로 수정 */}
-                <button
-                  onClick={handleExportClick}
-                  className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
-                >
-                  엑셀
-                </button>
-              </div>
-
-              <div className="ml-1"></div>
             </div>
             <div className="grid grid-cols-5">
               <div
@@ -567,7 +582,7 @@ const CargoList = () => {
                 onClick={() => handleSearchStatus("ALL")}
               >
                 <div className="flex items-center">
-                  <p className="text-sm">전체</p>
+                  <p className="text-sm shrink-0">전체</p>
                 </div>
                 <div className="flex items-center">
                   <p className="text-right font-extrabold text-lg">
@@ -585,7 +600,7 @@ const CargoList = () => {
                 onClick={() => handleSearchStatus("화물접수")}
               >
                 <div className="flex items-center">
-                  <p className="text-sm">접수중</p>
+                  <p className="text-sm shrink-0">접수중</p>
                 </div>
                 <div className="flex items-center">
                   <p className="text-right font-extrabold text-lg">
@@ -603,7 +618,7 @@ const CargoList = () => {
                 onClick={() => handleSearchStatus("배차신청")}
               >
                 <div className="flex items-center">
-                  <p className="text-sm">배차중</p>
+                  <p className="text-sm shrink-0">배차중</p>
                 </div>
                 <div className="flex items-center">
                   <p className="text-right font-extrabold text-lg">
@@ -621,7 +636,7 @@ const CargoList = () => {
                 onClick={() => handleSearchStatus("배차완료")}
               >
                 <div className="flex items-center">
-                  <p className="text-sm">배차완료</p>
+                  <p className="text-sm shrink-0">배차완료</p>
                 </div>
                 <div className="flex items-center">
                   <p className="text-right font-extrabold text-lg">
@@ -639,7 +654,7 @@ const CargoList = () => {
                 onClick={() => handleSearchStatus("취소")}
               >
                 <div className="flex items-center">
-                  <p className="text-sm">취소</p>
+                  <p className="text-sm shrink-0">취소</p>
                 </div>
                 <div className="flex items-center">
                   <p className="text-right font-extrabold text-lg">

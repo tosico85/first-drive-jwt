@@ -76,7 +76,7 @@ export default function Detail() {
     content: {
       top: "50%",
       left: "50%",
-      width: "360px",
+      width: "460px",
       height: "660px",
       borderRadius: "10px",
       transform: "translate(-50%, -50%)",
