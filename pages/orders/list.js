@@ -336,6 +336,21 @@ const CargoList = () => {
     }
   };
 
+  const copyCjInfo = (cargo_seq) => {
+    const cargoItem = {
+      ...cargoOrder.find((item) => item.cargo_seq === cargo_seq),
+    };
+
+    if (cargoItem) {
+      const clipboardText = `- 차량정보 \n${cargoItem.cjName} \n${cargoItem.cjPhone}\n${cargoItem.cjCarNum}\n${cargoItem.cjCargoTon}톤/${cargoItem.cjTruckType}\n`;
+      try {
+        navigator.clipboard.writeText(clipboardText);
+      } catch (err) {
+        console.error("클립보드 복사 실패: ", err);
+      }
+    }
+  };
+
   //추가요금 수정
   const handleAddFare = (cargo_seq) => {
     //if (!isAdmin) return;
@@ -913,7 +928,13 @@ const CargoList = () => {
                           }`}</span>
                         </div>
                       </div>
-                      <div className="grid grid-cols-2">
+                      <div
+                        className="grid grid-cols-2"
+                        onClick={(e) => {
+                          e.stopPropagation(); // 이벤트 버블링 방지
+                          copyCjInfo(cargo_seq); // 이벤트 핸들러 호출
+                        }}
+                      >
                         <div className="flex flex-col items-start gap-y-1">
                           <span className="text-sm text-gray-400">
                             차량종류
@@ -926,12 +947,18 @@ const CargoList = () => {
                           </span>
                           <span className="text-gray-600">
                             {cargoTon}
-                            {cargoTon == "특송" ? "" : "톤"}
+                            {cargoTon === "특송" ? "" : "톤"}
                           </span>
                         </div>
                       </div>
                       {ordStatus == "배차완료" && (
-                        <div className="grid grid-cols-2">
+                        <div
+                          className="grid grid-cols-2"
+                          onClick={(e) => {
+                            e.stopPropagation(); // 이벤트 버블링 방지
+                            copyCjInfo(cargo_seq); // 이벤트 핸들러 호출
+                          }}
+                        >
                           <div className="flex flex-col items-start gap-y-1">
                             <span className="text-sm text-gray-400">차주</span>
                             <span className="text-gray-600">{cjName}</span>
@@ -1019,7 +1046,13 @@ const CargoList = () => {
                         </div>
                       </div>
 
-                      <div className="text-center flex flex-col items-center">
+                      <div
+                        className="text-center flex flex-col items-center"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          copyCjInfo(cargo_seq);
+                        }}
+                      >
                         {ordStatus == "배차완료" && (
                           <div className="w-full mt-2 flex flex-col items-baseline text-base text-slate-500">
                             <span className="text-left">{`${cjName}`}</span>
