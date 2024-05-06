@@ -239,7 +239,7 @@ export default function OrderForm({
 
   // 차량 톤수에 대한 운행료 계산
   const setFareByCargoTon = (cargoTon) => {
-    if (cargoTon == "특송") return;
+    if (cargoTon == "특송" || cargoTon == "기본") return;
 
     try {
       const floatCargoTon = Number.parseFloat(cargoTon);
@@ -339,6 +339,11 @@ export default function OrderForm({
               } else if (truckType == "다마스") {
                 setCarType("damas");
               }
+            } else if (
+              editData["cargoTon"] == "특송" ||
+              editData["cargoTon"] == "기본"
+            ) {
+              setCarType("motorcycle");
             } else {
               setCarType("truck");
             }
@@ -435,7 +440,7 @@ export default function OrderForm({
     setTruckTypeList([]);
 
     if (cargoTon == "") {
-    } else if (cargoTon == "특송") {
+    } else if (cargoTon == "특송" || cargoTon == "기본") {
       const data = [{ nm: "오토바이" }];
       setTruckTypeList(data);
       setValue("truckType", "오토바이");
@@ -558,14 +563,16 @@ export default function OrderForm({
    * 화물 등록(화주가 화물 등록 하는 경우)
    */
   const createCargoOrder = async () => {
-    const cargoOrder = (({ startAddress, endAddress, ...rest }) => rest)(
-      getValues()
-    );
+    const cargoOrder = (({ startAddress, endAddress, create_user, ...rest }) =>
+      rest)(getValues());
     cargoOrder = checkboxValueReset(cargoOrder);
     cargoOrder = filterTelNoHyphen(cargoOrder);
 
     // 상하차지 주소정보 update
     //await regStartEndAddress();
+    if (isAdmin) {
+      cargoOrder = { ...cargoOrder, create_user: getValues("create_user") };
+    }
 
     // 화물등록
     const { result, resultCd } = await requestServer(
@@ -1607,8 +1614,11 @@ export default function OrderForm({
                       className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     >
                       <option value="">차량톤수(t)</option>
-                      <option key={99} value="특송">
+                      <option key={90} value="특송">
                         특송
+                      </option>
+                      <option key={91} value="기본">
+                        기본
                       </option>
                       {cargoTonList.map(({ nm }, i) => (
                         <option key={i} value={nm}>
@@ -1648,7 +1658,8 @@ export default function OrderForm({
                         {...register("frgton", {
                           onChange: (e) => {
                             const cargoTon =
-                              getValues("cargoTon") == "특송"
+                              getValues("cargoTon") == "특송" ||
+                              getValues("cargoTon") == "기본"
                                 ? 0.3
                                 : Number(getValues("cargoTon"));
                             const frgTon = Number(e.target.value);
@@ -2440,27 +2451,27 @@ export default function OrderForm({
                             className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                           >
                             <option value="">차량톤수(t)</option>
-                            {carType == "motorcycle" ? (
-                              <option value="특송">특송</option>
-                            ) : (
-                              cargoTonList.map(({ nm }, i) => {
-                                if (carType == "truck") {
-                                  if (["0.3", "0.5"].includes(nm)) {
-                                    return;
+                            {carType == "motorcycle"
+                              ? ["특송", "기본"].map((item) => {
+                                  return <option value={item}>{item}</option>;
+                                })
+                              : cargoTonList.map(({ nm }, i) => {
+                                  if (carType == "truck") {
+                                    if (["0.3", "0.5"].includes(nm)) {
+                                      return;
+                                    }
+                                  } else {
+                                    if (nm != "0.5") {
+                                      return;
+                                    }
                                   }
-                                } else {
-                                  if (nm != "0.5") {
-                                    return;
-                                  }
-                                }
 
-                                return (
-                                  <option key={i} value={nm}>
-                                    {nm} 톤
-                                  </option>
-                                );
-                              })
-                            )}
+                                  return (
+                                    <option key={i} value={nm}>
+                                      {nm} 톤
+                                    </option>
+                                  );
+                                })}
                           </select>
                           <div className="text-red-500 mx-auto font-bold text-center">
                             {errors.cargoTon?.message}
@@ -2496,7 +2507,8 @@ export default function OrderForm({
                                 {...register("frgton", {
                                   onChange: (e) => {
                                     const cargoTon =
-                                      getValues("cargoTon") == "특송"
+                                      getValues("cargoTon") == "특송" ||
+                                      getValues("cargoTon") == "기본"
                                         ? 0.3
                                         : Number(getValues("cargoTon"));
                                     const frgTon = Number(e.target.value);
@@ -2612,14 +2624,34 @@ export default function OrderForm({
               {isAdmin && (
                 <div className="ml-5 pl-5 pb-5 mb-5 border-l border-dashed border-gray-200">
                   <div className="">
-                    <div className="w-full border-b border-gray-200 mb-5">
+                    <div className="w-full border-b border-gray-200 mb-2">
+                      <h2 className="text-base font-semibold py-1">
+                        계정 정보
+                      </h2>
+                    </div>
+
+                    <div className="">
+                      <div className="grid gap-y-2">
+                        <div className="flex gap-x-2">
+                          <Label title={"계정"} required={true} />
+                          <input
+                            {...register("create_user")}
+                            type="text"
+                            className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-5 pt-4 border-t border-dashed border-gray-200">
+                    <div className="w-full border-b border-gray-200 mb-2">
                       <h2 className="text-base font-semibold py-1">
                         운송료 정보
                         {watchShuttleCargoInfo ? " (왕복)" : " (편도)"}
                       </h2>
                     </div>
 
-                    <div className="mt-3">
+                    <div className="">
                       <div className="grid gap-y-2">
                         <div className="flex gap-x-2">
                           <Label title={"운송료"} />
@@ -2642,8 +2674,8 @@ export default function OrderForm({
                       </div>
                     </div>
                   </div>
-                  <div className="mt-10 pt-8 border-t border-dashed border-gray-200">
-                    <div className="w-full border-b border-gray-200 mb-5">
+                  <div className="mt-5 pt-4 border-t border-dashed border-gray-200">
+                    <div className="w-full border-b border-gray-200 mb-2">
                       <h2 className="text-base font-semibold py-1">
                         화주 및 의뢰 정보
                       </h2>

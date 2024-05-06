@@ -27,6 +27,7 @@ const ADMIN_GET_USER_LIST = "/admin/get/user/list"; //사용자 목록 조회
 const ADMIN_CHANGE_USER = "/admin/change/user"; //사용자 권한 변경
 const ADMIN_GET_CARGO_ORDER = "/admin/get/cargo/order"; //화물정보조회
 const ADMIN_MOD_CARGO_ORDER = "/admin/mod/cargo/order"; //화물부가정보조회(수수료/운송료)
+const ADMIN_CHANGE_ORDER_STATUS = "/admin/change/order/status"; //화물오더상태변경
 const ADMIN_GET_FARE = "/admin/get/fare"; //운송료 관리(조회)
 const ADMIN_ADD_FARE = "/admin/add/fare"; //운송료 관리(등록)
 const ADMIN_MOD_FARE = "/admin/mod/fare"; //운송료 관리(수정)
@@ -91,6 +92,7 @@ const apiPaths = {
   adminChangeUser: ADMIN_CHANGE_USER,
   adminGetCargoOrder: ADMIN_GET_CARGO_ORDER,
   adminModCargoOrder: ADMIN_MOD_CARGO_ORDER,
+  adminChangeOrderStatus: ADMIN_CHANGE_ORDER_STATUS,
   adminGetFare: ADMIN_GET_FARE,
   adminAddFare: ADMIN_ADD_FARE,
   adminModFare: ADMIN_MOD_FARE,

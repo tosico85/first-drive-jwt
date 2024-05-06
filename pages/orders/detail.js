@@ -212,6 +212,27 @@ export default function Detail() {
     }
   };
 
+  /**
+   * 화물 오더 상태변경
+   */
+  const handleAdminChangeOrderStatus = async (e) => {
+    e.preventDefault();
+
+    const { code, message } = await requestServer(
+      apiPaths.adminChangeOrderStatus,
+      {
+        cargo_seq: cargoOrder.cargo_seq,
+      }
+    );
+
+    if (code !== -99) {
+      alert("화물 오더 상태가 변경되었습니다.");
+      router.push("/orders/list");
+    } else {
+      alert(message);
+    }
+  };
+
   const copyToClipboardbibi = async () => {
     // 클립보드에 복사할 내용 생성
     const {
@@ -619,6 +640,15 @@ export default function Detail() {
       </div>
 
       <div className="fixed bottom-0 left-0 p-3 bg-white w-full border mt-6 pb-6 flex items-center justify-end lg:gap-x-6 gap-x-3">
+        {isAdmin && cargoOrder.ordStatus === "화물접수" && (
+          <button
+            type="button"
+            className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+            onClick={handleAdminChangeOrderStatus}
+          >
+            상태변경(배차중)
+          </button>
+        )}
         {isAdmin && (
           <>
             <button
