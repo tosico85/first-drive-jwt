@@ -95,54 +95,12 @@ const HomePage = () => {
         <ul className="flex flex-col p-5 gap-y-3 font-NotoSansKRMedium"></ul>
       </div>
       {
-        <div className="p-5">
-          <div className="flex items-end w-full gap-x-3">
-            <span>공지사항</span>
-            <span className="text-xs text-gray-400">현재위치: 서울</span>
-          </div>
-          <div className="flex flex-col gap-y-3 bg-gray-800 text-gray-200 rounded-lg w-96">
-            <div className="grid grid-cols-3 justify-evenly px-10">
-              <div className="flex items-center">
-                <span>오토바이 구분</span>
-              </div>
-              <div className="flex">
-                <div>기본</div>
-                <div className="flex flex-col">
-                  <div>오전</div>
-                  <div>23</div>
-                </div>
-              </div>
-              <div className="flex">
-                <div>특송</div>
-                <div className="flex flex-col">
-                  <div>오후</div>
-                  <div>18</div>
-                </div>
-              </div>
-            </div>
-            <div className="px-5">
-              <div className="border-t border-gray-200"></div>
-            </div>
-            <div className="grid grid-cols-3 justify-evenly px-10">
-              <div className="flex items-center">
-                <span>인수증 기능</span>
-              </div>
-              <div className="flex">
-                <div>추가되었습니다</div>
-                <div className="flex flex-col">
-                  <div>오전</div>
-                  <div>23</div>
-                </div>
-              </div>
-              <div className="flex">
-                <div></div>
-                <div className="flex flex-col">
-                  <div>오후</div>
-                  <div>18</div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="bg-gray-100 p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold mb-4">공지사항</h2>
+          <p className="text-lg mb-4">
+            오토바이 기본/특송 구분이 추가 되었습니다.
+          </p>
+          <p className="text-lg">인수증 확인 기능이 추가되었습니다.</p>
         </div>
       }
     </div>
