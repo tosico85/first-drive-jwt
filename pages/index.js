@@ -92,12 +92,14 @@ const HomePage = () => {
       </div>
 
       {
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">공지사항</h2>
-          <p className="text-lg mb-4">
-            오토바이 기본/특송 구분이 추가 되었습니다.
-          </p>
-          <p className="text-lg">인수증 확인 기능이 추가되었습니다.</p>
+        <div className="mt-8 mx-5">
+          <div className="bg-gray-200 p-6 rounded-lg shadow-md border-l-4 border-mainColor2">
+            <h2 className="text-xl font-semibold mb-4">공지사항</h2>
+            <p className="text-lg mb-4">
+              오토바이 기본/특송 구분이 추가 되었습니다.
+            </p>
+            <p className="text-lg">인수증 확인 기능이 추가되었습니다.</p>
+          </div>
         </div>
       }
     </div>
