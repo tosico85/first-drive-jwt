@@ -1203,7 +1203,7 @@ const CargoList = () => {
                             )}
                             {receipt_add_yn == "N" && (
                               <div
-                                className="text-sm text-white font-bold px-3 py-2 rounded-full mt-3 cursor-pointer bg-yellow-100 ring-yellow-100"
+                                className="text-sm text-white font-bold px-3 py-2 rounded-full mt-3 cursor-pointer bg-zinc-400 ring-zinc-400"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                 }}
