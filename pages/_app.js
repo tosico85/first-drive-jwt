@@ -6,6 +6,7 @@ import "../styles/globals.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Modal from "react-modal";
 import loadingGif from "./loading.gif"; // GIF 이미지 파일 경로를 적절하게 수정
+import { GlobalProvider } from "./context/globalContext";
 
 // Set app element for react-modal
 Modal.setAppElement("#__next");
@@ -29,21 +30,23 @@ class MyApp extends App {
 
     return (
       <AuthProvider>
-        <Layout>
-          {isLoading ? (
-            // 로딩 중일 때 GIF 이미지를 표시하고 가운데 정렬
-            <div className="h-screen flex items-center justify-center bg-black bg-opacity-0 fixed top-100 left-0 right-0 bottom-0 z-50 md:hidden">
-              <img
-                src="/cars/loading_15.gif"
-                alt="Loading GIF"
-                className="w-40 h-40 object-contain"
-              />
-            </div>
-          ) : (
-            // 로딩이 끝나면 페이지 컴포넌트를 표시
-            <Component {...pageProps} />
-          )}
-        </Layout>
+        <GlobalProvider>
+          <Layout>
+            {isLoading ? (
+              // 로딩 중일 때 GIF 이미지를 표시하고 가운데 정렬
+              <div className="h-screen flex items-center justify-center bg-black bg-opacity-0 fixed top-100 left-0 right-0 bottom-0 z-50 md:hidden">
+                <img
+                  src="/cars/loading_15.gif"
+                  alt="Loading GIF"
+                  className="w-40 h-40 object-contain"
+                />
+              </div>
+            ) : (
+              // 로딩이 끝나면 페이지 컴포넌트를 표시
+              <Component {...pageProps} />
+            )}
+          </Layout>
+        </GlobalProvider>
       </AuthProvider>
     );
   }

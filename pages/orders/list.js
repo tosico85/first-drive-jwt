@@ -19,13 +19,14 @@ import ComboBox from "../components/custom/ComboBox";
 import ModifyAddFareModal from "../components/modals/ModifyAddFareModal";
 import ReceiptUploadModal from "../components/modals/ReceiptUploadModal";
 import ReceiptViewModal from "../components/modals/ReceptViewModal";
+import { useGlobalContext } from "../context/globalContext";
 
 const CargoList = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
+  const { globalVariable, updateGlobalVariable } = useGlobalContext();
+
   const [cargoOrder, setCargoOrder] = useState([]);
   const [searchStatus, setSearchStatus] = useState("ALL");
-  const [startSearchDt, setStartSearchDt] = useState(getOneWeekAgoDate());
-  const [endSearchDt, setEndSearchDt] = useState(getTodayDate());
   const [selectedOrder, setSelectedOrder] = useState({});
   const [selectedPeriod, setSelectedPeriod] = useState(-1);
 
@@ -33,10 +34,34 @@ const CargoList = () => {
   const [isAddFareModalOpen, setIsAddFareModalOpen] = useState(false);
   const [isAddReceiptModalOpen, setIsAddReceiptModalOpen] = useState(false);
   const [isViewReceiptModalOpen, setIsViewReceiptModalOpen] = useState(false);
+
   //const [companySearch, setCompanySearch] = useState("");
-  const companySearch = useInput("");
-  const startCompanySearch = useInput("");
-  const endCompanySearch = useInput("");
+
+  // 조회 조건 set
+  let searchOptions = {
+    start_dt: getOneWeekAgoDate(),
+    end_dt: getTodayDate(),
+    company_nm: "",
+    startCompanyName: "",
+    endCompanyName: "",
+  };
+
+  if (globalVariable["orderList"]?.searchOptions) {
+    const globalSearchOptions = globalVariable["orderList"]["searchOptions"];
+    searchOptions = {
+      start_dt: globalSearchOptions["start_dt"],
+      end_dt: globalSearchOptions["end_dt"],
+      company_nm: globalSearchOptions["company_nm"],
+      startCompanyName: globalSearchOptions["startCompanyName"],
+      endCompanyName: globalSearchOptions["endCompanyName"],
+    };
+  }
+  const [startSearchDt, setStartSearchDt] = useState(searchOptions["start_dt"]);
+  const [endSearchDt, setEndSearchDt] = useState(searchOptions["end_dt"]);
+  const companySearch = useInput(searchOptions["company_nm"]);
+  const startCompanySearch = useInput(searchOptions["startCompanyName"]);
+  const endCompanySearch = useInput(searchOptions["endCompanyName"]);
+
   const router = useRouter();
 
   const isAdmin = userInfo.auth_code === "ADMIN";
@@ -204,6 +229,13 @@ const CargoList = () => {
       startCompanyName: startCompanySearch.value, // 추가된 부분
       endCompanyName: endCompanySearch.value, // 추가된 부분
     };
+
+    // 조회조건 적재
+    if (!globalVariable["orderList"]) {
+      globalVariable["orderList"] = {};
+    }
+    globalVariable["orderList"] = { searchOptions: { ...params } };
+    updateGlobalVariable(globalVariable);
 
     const result = await requestServer(url, params);
     setCargoOrder(() => result);
