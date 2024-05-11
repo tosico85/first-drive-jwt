@@ -1068,6 +1068,7 @@ const CargoList = () => {
                             <p className="text-blue-600 font-bold">
                               {userName}
                             </p>
+                            <p>{cargo_seq}</p>
                           </>
                         ) : (
                           <p>{group_name}</p>
