@@ -1200,6 +1200,16 @@ const CargoList = () => {
                                 <p className="shrink-0">인수증</p>
                               </div>
                             )}
+                            {receipt_add_yn == "N" && (
+                              <div
+                                className="text-sm text-white font-bold px-3 py-2 rounded-full mt-3 cursor-pointer bg-green-700 ring-green-700"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                }}
+                              >
+                                <p className="shrink-0">인수증 없음</p>
+                              </div>
+                            )}
                           </>
                         )}
                       </div>
