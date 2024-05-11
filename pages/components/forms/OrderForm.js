@@ -315,6 +315,7 @@ export default function OrderForm({
       Object.keys(editData).forEach((key) => {
         if (["group_name"].includes(key)) return; //제외항목
         if (["userName"].includes(key)) return; //제외항목
+        if (["receipt_add_yn"].includes(key)) return; //제외항목
         if (
           [
             "taxbillType",
@@ -421,6 +422,7 @@ export default function OrderForm({
           addFareReason,
           group_name,
           userName,
+          receipt_add_yn,
           create_dtm,
           delete_yn,
           ...rest

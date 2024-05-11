@@ -17,6 +17,8 @@ import DirectAllocModal from "../components/modals/DirectAllocModal";
 import ExcelJS from "exceljs";
 import ComboBox from "../components/custom/ComboBox";
 import ModifyAddFareModal from "../components/modals/ModifyAddFareModal";
+import ReceiptUploadModal from "../components/modals/ReceiptUploadModal";
+import ReceiptViewModal from "../components/modals/ReceptViewModal";
 
 const CargoList = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
@@ -24,10 +26,13 @@ const CargoList = () => {
   const [searchStatus, setSearchStatus] = useState("ALL");
   const [startSearchDt, setStartSearchDt] = useState(getOneWeekAgoDate());
   const [endSearchDt, setEndSearchDt] = useState(getTodayDate());
-  const [isAllocModalOpen, setIsAllocModalOpen] = useState(false);
-  const [isAddFareModalOpen, setIsAddFareModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState({});
   const [selectedPeriod, setSelectedPeriod] = useState(-1);
+
+  const [isAllocModalOpen, setIsAllocModalOpen] = useState(false);
+  const [isAddFareModalOpen, setIsAddFareModalOpen] = useState(false);
+  const [isAddReceiptModalOpen, setIsAddReceiptModalOpen] = useState(false);
+  const [isViewReceiptModalOpen, setIsViewReceiptModalOpen] = useState(false);
   //const [companySearch, setCompanySearch] = useState("");
   const companySearch = useInput("");
   const startCompanySearch = useInput("");
@@ -253,6 +258,29 @@ const CargoList = () => {
     })();
   };
 
+  const openAddReceiptModal = () => {
+    setIsAddReceiptModalOpen(true);
+  };
+
+  const closeAddReceiptModal = () => {
+    setIsAddReceiptModalOpen(false);
+  };
+
+  const callbackAddReceiptModal = () => {
+    closeAddReceiptModal();
+    (async () => {
+      await getOrderList();
+    })();
+  };
+
+  const openViewReceiptModal = () => {
+    setIsViewReceiptModalOpen(true);
+  };
+
+  const closeViewReceiptModal = () => {
+    setIsViewReceiptModalOpen(false);
+  };
+
   const customModalStyles = {
     content: {
       top: "50%",
@@ -271,6 +299,15 @@ const CargoList = () => {
       ...customModalStyles.content,
       width: "460px",
       height: "300px",
+    },
+  };
+
+  //추가요금 수정 모달 스타일
+  const customModalStyles_addReceipt = {
+    content: {
+      ...customModalStyles.content,
+      width: "860px",
+      height: "680px",
     },
   };
 
@@ -310,6 +347,7 @@ const CargoList = () => {
       addFareReason,
       group_name,
       userName,
+      receipt_add_yn,
       create_dtm,
       delete_yn,
       ...rest
@@ -333,6 +371,29 @@ const CargoList = () => {
     if (cargoItem) {
       setSelectedOrder(cargoItem);
       openAllocModal();
+    }
+  };
+
+  //인수증 업로드
+  const handleReceiptUpload = (cargo_seq) => {
+    const cargoItem = {
+      ...cargoOrder.find((item) => item.cargo_seq === cargo_seq),
+    };
+
+    if (cargoItem) {
+      setSelectedOrder(cargoItem);
+      openAddReceiptModal();
+    }
+  };
+
+  const handleReceiptView = (cargo_seq) => {
+    const cargoItem = {
+      ...cargoOrder.find((item) => item.cargo_seq === cargo_seq),
+    };
+
+    if (cargoItem) {
+      setSelectedOrder(cargoItem);
+      openViewReceiptModal();
     }
   };
 
@@ -437,6 +498,29 @@ const CargoList = () => {
           paramObj={selectedOrder}
           onCancel={closeAddFareModal}
           onComplete={callbackAddFareModal}
+        />
+      </Modal>
+      <Modal
+        isOpen={isAddReceiptModalOpen}
+        onRequestClose={closeAddReceiptModal}
+        contentLabel="Modal"
+        style={customModalStyles_addReceipt}
+      >
+        <ReceiptUploadModal
+          cargo_seq={selectedOrder.cargo_seq}
+          onCancel={closeAddReceiptModal}
+          onComplete={callbackAddReceiptModal}
+        />
+      </Modal>
+      <Modal
+        isOpen={isViewReceiptModalOpen}
+        onRequestClose={closeViewReceiptModal}
+        contentLabel="Modal"
+        style={customModalStyles_addReceipt}
+      >
+        <ReceiptViewModal
+          cargo_seq={selectedOrder.cargo_seq}
+          onCancel={closeViewReceiptModal}
         />
       </Modal>
       <div className="lg:border lg:border-gray-200 bg-white lg:p-5 lg:mt-2">
@@ -786,6 +870,7 @@ const CargoList = () => {
                 group_name,
                 create_user,
                 userName,
+                receipt_add_yn,
               } = item;
               return (
                 <li
@@ -1089,20 +1174,33 @@ const CargoList = () => {
                             : ordStatus}
                         </span>
                         {ordStatus == "배차완료" && (
-                          <div
-                            className={
-                              "text-sm text-white font-bold px-3 py-2 rounded-full mt-3 cursor-pointer" +
-                              (addFare != "0"
-                                ? " bg-red-400 ring-bg-red-400"
-                                : " bg-slate-400 ring-bg-slate-400")
-                            }
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleAddFare(cargo_seq);
-                            }}
-                          >
-                            <p className="shrink-0">추가요금</p>
-                          </div>
+                          <>
+                            <div
+                              className={
+                                "text-sm text-white font-bold px-3 py-2 rounded-full mt-3 cursor-pointer" +
+                                (addFare != "0"
+                                  ? " bg-red-400 ring-bg-red-400"
+                                  : " bg-slate-400 ring-bg-slate-400")
+                              }
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAddFare(cargo_seq);
+                              }}
+                            >
+                              <p className="shrink-0">추가요금</p>
+                            </div>
+                            {receipt_add_yn == "Y" && (
+                              <div
+                                className="text-sm text-white font-bold px-3 py-2 rounded-full mt-3 cursor-pointer bg-green-700 ring-green-700"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleReceiptView(cargo_seq);
+                                }}
+                              >
+                                <p className="shrink-0">인수증</p>
+                              </div>
+                            )}
+                          </>
                         )}
                       </div>
                       <div className="flex flex-col items-center gap-y-2 justify-center px-3">
@@ -1130,29 +1228,57 @@ const CargoList = () => {
                           </svg>
                         </div>
                         {isAdmin /* && ordStatus == "화물접수" */ && (
-                          <div
-                            className="text-sm font-semibold flex items-center justify-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDirectAlloc(cargo_seq);
-                            }}
-                          >
-                            <p className="shrink-0">배차</p>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-6 h-6"
+                          <>
+                            <div
+                              className="text-sm font-semibold flex items-center justify-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDirectAlloc(cargo_seq);
+                              }}
                             >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
-                              />
-                            </svg>
-                          </div>
+                              <p className="shrink-0">배차</p>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="w-6 h-6"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
+                                />
+                              </svg>
+                            </div>
+                            {ordStatus == "배차완료" &&
+                              receipt_add_yn == "" && (
+                                <div
+                                  className="text-sm font-semibold flex items-center justify-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleReceiptUpload(cargo_seq);
+                                  }}
+                                >
+                                  <p className="shrink-0">인수증</p>
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="currentColor"
+                                    className="w-6 h-6"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15"
+                                    />
+                                  </svg>
+                                </div>
+                              )}
+                          </>
                         )}
                       </div>
                       <div className="text-right text-base text-gray-500 px-5">
