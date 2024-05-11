@@ -1068,7 +1068,6 @@ const CargoList = () => {
                             <p className="text-blue-600 font-bold">
                               {userName}
                             </p>
-                            <p>{cargo_seq}</p>
                           </>
                         ) : (
                           <p>{group_name}</p>
@@ -1198,9 +1197,7 @@ const CargoList = () => {
                                   handleReceiptView(cargo_seq);
                                 }}
                               >
-                                <p className="shrink-0">
-                                  하차완료<br>(인수증)</br>
-                                </p>
+                                <p className="shrink-0">하차완료1</p>
                               </div>
                             )}
                             {receipt_add_yn == "N" && (
