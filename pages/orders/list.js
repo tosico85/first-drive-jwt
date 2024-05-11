@@ -1100,6 +1100,7 @@ const CargoList = () => {
                             <p className="text-blue-600 font-bold">
                               {userName}
                             </p>
+                            <p>{cargo_seq}</p>
                           </>
                         ) : (
                           <p>{group_name}</p>
@@ -1229,12 +1230,12 @@ const CargoList = () => {
                                   handleReceiptView(cargo_seq);
                                 }}
                               >
-                                <p className="shrink-0">인 수 증</p>
+                                <p className="shrink-0">하차완료</p>
                               </div>
                             )}
                             {receipt_add_yn == "N" && (
                               <div
-                                className="text-sm text-white font-bold px-3 py-2 rounded-full mt-3 cursor-pointer bg-green-700 ring-green-700"
+                                className="text-sm text-white font-bold px-3 py-2 rounded-full mt-3 cursor-pointer bg-zinc-400 ring-zinc-400"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                 }}
