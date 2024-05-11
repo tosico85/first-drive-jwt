@@ -58,7 +58,7 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-center px-5 py-10 gap-x-2 border-b border-gray-300 font-NotoSansKRMedium">
+      <div className="flex items-center justify-center px-5 py-10 gap-x-2 border-b border-gray-300 font-Montserrat">
         <div className="relative flex flex-col w-full bg-white border border-gray-200 shadow-md rounded-xl">
           <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-xl">
             <p className="text-white font-bold text-base text-center py-2">
