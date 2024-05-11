@@ -28,6 +28,7 @@ const ADMIN_CHANGE_USER = "/admin/change/user"; //사용자 권한 변경
 const ADMIN_GET_CARGO_ORDER = "/admin/get/cargo/order"; //화물정보조회
 const ADMIN_MOD_CARGO_ORDER = "/admin/mod/cargo/order"; //화물부가정보조회(수수료/운송료)
 const ADMIN_CHANGE_ORDER_STATUS = "/admin/change/order/status"; //화물오더상태변경
+const ADMIN_ADD_ORDER_RECEIPT = "/admin/add/order/receipt"; //인수증 등록
 const ADMIN_GET_FARE = "/admin/get/fare"; //운송료 관리(조회)
 const ADMIN_ADD_FARE = "/admin/add/fare"; //운송료 관리(등록)
 const ADMIN_MOD_FARE = "/admin/mod/fare"; //운송료 관리(수정)
@@ -58,6 +59,7 @@ const CUST_REQ_GET_CARGO_ORDER = "/cust/req/get/cargoOrder"; //화물정보 요�
 const CUST_REQ_ADD_CARGO_ORDER = "/cust/req/add/cargoOrder"; //화물정보 등록(DB)
 const CUST_REQ_MOD_CARGO_ORDER = "/cust/req/mod/cargoOrder"; //화물정보 수정(DB)
 const CUST_REQ_CANCEL_CARGO_ORDER = "/cust/req/cancel/cargoOrder"; //화물정보 취소(DB)
+const CUST_REQ_GET_ORDER_RECEIPT = "/cust/req/get/orderReceipt"; //인수증 이미지 조회
 
 //Common
 const COMMON_GET_FARE = "/common/get/fare"; //운행구간 별 요금 조회
@@ -93,6 +95,7 @@ const apiPaths = {
   adminGetCargoOrder: ADMIN_GET_CARGO_ORDER,
   adminModCargoOrder: ADMIN_MOD_CARGO_ORDER,
   adminChangeOrderStatus: ADMIN_CHANGE_ORDER_STATUS,
+  adminAddOrderReceipt: ADMIN_ADD_ORDER_RECEIPT,
   adminGetFare: ADMIN_GET_FARE,
   adminAddFare: ADMIN_ADD_FARE,
   adminModFare: ADMIN_MOD_FARE,
@@ -110,6 +113,7 @@ const apiPaths = {
   custReqModCargoOrder: CUST_REQ_MOD_CARGO_ORDER,
   custReqGetCargoOrder: CUST_REQ_GET_CARGO_ORDER,
   custReqCancelCargoOrder: CUST_REQ_CANCEL_CARGO_ORDER,
+  custReqGetOrderReceipt: CUST_REQ_GET_ORDER_RECEIPT,
 
   // Call24 APIs
   apiOrderAdd: API_ORDER_ADD,
