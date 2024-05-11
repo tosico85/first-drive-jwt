@@ -218,7 +218,7 @@ export default function OrderForm({
       if (carType == "labo" || carType == "damas") {
         setValue("cargoTon", "0.5");
       } else if (carType == "motorcycle") {
-        setValue("cargoTon", "특송");
+        setValue("cargoTon", "기본");
       }
       (async () => {
         await getTruckTypeList();
