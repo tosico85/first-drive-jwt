@@ -1614,11 +1614,11 @@ export default function OrderForm({
                       className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     >
                       <option value="">차량톤수(t)</option>
-                      <option key={90} value="특송">
-                        특송
-                      </option>
                       <option key={91} value="기본">
                         기본
+                      </option>
+                      <option key={90} value="특송">
+                        특송
                       </option>
                       {cargoTonList.map(({ nm }, i) => (
                         <option key={i} value={nm}>
