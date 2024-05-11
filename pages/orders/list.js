@@ -1067,8 +1067,8 @@ const CargoList = () => {
                             <p>{group_name}</p>
                             <p className="text-blue-600 font-bold">
                               {userName}
-                              {cargo_seq}
                             </p>
+                            <p>{cargo_seq}</p>
                           </>
                         ) : (
                           <p>{group_name}</p>
