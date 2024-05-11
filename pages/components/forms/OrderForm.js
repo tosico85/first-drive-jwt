@@ -24,6 +24,7 @@ import DateTimeSelectModal from "../modals/DateTimeSelectModal";
 import Label from "../custom/Label";
 import TodayTimeSelectModal from "../modals/TodayTimeSelectModal";
 import UserBookmarkModal from "../modals/UserBookmarkModal";
+import UserAccountSelectModal from "../modals/UserAccountSelectModal";
 
 export default function OrderForm({
   isEdit = false,
@@ -45,6 +46,8 @@ export default function OrderForm({
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [isResvTimeModalOpen, setIsResvTimeModalOpen] = useState(false);
   const [isTodayTimeModalOpen, setIsTodayTimeModalOpen] = useState(false);
+  const [isUserAccountSelectModalOpen, setIsUserAccountSelectModalOpen] =
+    useState(false);
   const [modalStartEnd, setModalStartEnd] = useState("");
   const [modalResvDateTime, setModalResvDateTime] = useState({});
   const [modalTodayDateTime, setModalTodayDateTime] = useState({});
@@ -814,6 +817,16 @@ export default function OrderForm({
     setIsTodayTimeModalOpen(false);
   };
 
+  // Open 날짜 시간 선택 Modal
+  const openUserAccountSelectModal = () => {
+    setIsUserAccountSelectModalOpen(true);
+  };
+
+  // Close 날짜 시간 선택 Modal
+  const closeUserAccountSelectModal = () => {
+    setIsUserAccountSelectModalOpen(false);
+  };
+
   /**
    * 주소록(모달폼) 주소선택 후 callback
    * @param {주소록 선택 리턴값} retVal
@@ -874,6 +887,20 @@ export default function OrderForm({
 
     setPlanTimeStatement(getTimeState());
     closeTodayTimesModal();
+  };
+
+  /**
+   * 계정선택 모달 callback
+   * @param {계정 선택 리턴값} retVal
+   */
+  const callbackUserAccountSelectModal = (retVal) => {
+    console.log("retVal >> ", retVal);
+    if (retVal) {
+      Object.keys(retVal).forEach((key) => {
+        setValue("create_user", retVal);
+      });
+    }
+    closeUserAccountSelectModal();
   };
 
   const initializeTimeFields = () => {
@@ -1099,6 +1126,17 @@ export default function OrderForm({
           onCancel={closeTodayTimesModal}
           onComplete={callbackTodayTimeModal}
           paramObj={modalTodayDateTime}
+        />
+      </Modal>
+      <Modal
+        isOpen={isUserAccountSelectModalOpen}
+        onRequestClose={closeUserAccountSelectModal}
+        contentLabel="Modal"
+        style={isMobile ? MobileStyles : DesktopStyles}
+      >
+        <UserAccountSelectModal
+          onCancel={closeUserAccountSelectModal}
+          onComplete={callbackUserAccountSelectModal}
         />
       </Modal>
       <form onSubmit={handleSubmit(onValid, oninvalid)}>
@@ -2639,6 +2677,8 @@ export default function OrderForm({
                           <input
                             {...register("create_user")}
                             type="text"
+                            readOnly={true}
+                            onClick={openUserAccountSelectModal}
                             className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                           />
                         </div>
