@@ -90,10 +90,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col mt-5 p-5 text-black">
-        <p className="text-xl font-bold">{"< 공지사항 >"}</p>
-        <ul className="flex flex-col p-5 gap-y-3 font-NotoSansKRMedium"></ul>
-      </div>
+
       {
         <div className="bg-gray-100 p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4">공지사항</h2>
