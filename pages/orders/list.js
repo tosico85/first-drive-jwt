@@ -1207,7 +1207,7 @@ const CargoList = () => {
                                   e.stopPropagation();
                                 }}
                               >
-                                <p className="shrink-0">하차완료</p>
+                                <p className="shrink-0">인수증X</p>
                               </div>
                             )}
                           </>
