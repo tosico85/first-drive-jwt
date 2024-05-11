@@ -1198,7 +1198,7 @@ const CargoList = () => {
                                   handleReceiptView(cargo_seq);
                                 }}
                               >
-                                <p className="shrink-0">인 수 증</p>
+                                <p className="shrink-0">하차완료</p>
                               </div>
                             )}
                             {receipt_add_yn == "N" && (
@@ -1208,7 +1208,7 @@ const CargoList = () => {
                                   e.stopPropagation();
                                 }}
                               >
-                                <p className="shrink-0">인수증X</p>
+                                <p className="bg-yellow-300">하차완료</p>
                               </div>
                             )}
                           </>
