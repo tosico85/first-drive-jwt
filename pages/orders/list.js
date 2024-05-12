@@ -1162,6 +1162,11 @@ const CargoList = () => {
                             </p>
                           )}
                         </div>
+                        {isAdmin && (
+                          <p className="text-sm font-semibold leading-6 text-red-500">
+                            {`요금(관리자용) : ${fare}`}
+                          </p>
+                        )}
                       </div>
 
                       <div
