@@ -19,7 +19,7 @@ import ComboBox from "../components/custom/ComboBox";
 import ModifyAddFareModal from "../components/modals/ModifyAddFareModal";
 import ReceiptUploadModal from "../components/modals/ReceiptUploadModal";
 import ReceiptViewModal from "../components/modals/ReceptViewModal";
-import { useGlobalContext } from "../context/globalContext";
+import { useGlobalContext } from "../../components/globalContext";
 
 const CargoList = () => {
   const { requestServer, userInfo } = useContext(AuthContext);

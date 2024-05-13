@@ -6,7 +6,7 @@ import "../styles/globals.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Modal from "react-modal";
 import loadingGif from "./loading.gif"; // GIF 이미지 파일 경로를 적절하게 수정
-import { GlobalProvider } from "./context/globalContext";
+import { GlobalProvider } from "../components/globalContext";
 
 // Set app element for react-modal
 Modal.setAppElement("#__next");
