@@ -42,7 +42,7 @@ const ReceiptViewModal = ({ onCancel, cargo_seq }) => {
       <div className="text-center pt-5 grid w-full gap-x-3">
         <button
           type="button"
-          className="rounded-md bg-normalGray px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
+          className="rounded-md bg-normalGray px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
           onClick={onCancel}
         >
           닫기
