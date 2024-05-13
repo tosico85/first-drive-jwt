@@ -27,7 +27,7 @@ const ReceiptViewModal = ({ onCancel, cargo_seq }) => {
   };
 
   return (
-    <div className="h-full flex flex-col justify-between">
+    <div className="fixed top-0 left-0 w-full h-full flex flex-col justify-between">
       <div className="flex flex-col gap-y-5 h-full">
         <div className="flex justify-center items-center h-full bg-slate-100  relative overflow-hidden">
           <img
