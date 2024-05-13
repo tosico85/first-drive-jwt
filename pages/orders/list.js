@@ -338,8 +338,8 @@ const CargoList = () => {
   const customModalStyles_addReceipt = {
     content: {
       ...customModalStyles.content,
-      width: "860px",
-      height: "680px",
+      width: "100vw",
+      height: "100vh",
     },
   };
 

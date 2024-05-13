@@ -27,20 +27,19 @@ const ReceiptViewModal = ({ onCancel, cargo_seq }) => {
   };
 
   return (
-    <div className="h-screen flex flex-col justify-between">
-      <div className="flex flex-col gap-y-5 flex-grow">
-        <div className="flex justify-center items-center flex-grow bg-slate-100 relative overflow-hidden">
+    <div className="h-full flex flex-col justify-between">
+      <div className="flex flex-col gap-y-5 h-full">
+        <div className="flex justify-center items-center h-full bg-slate-100 relative overflow-hidden">
           <img
             src={`data:image/png;base64,${receiptImage.replace(
               "dataimage/jpegbase64",
               ""
             )}`}
-            className="absolute inset-0 w-full h-full object-cover"
-            alt="Receipt Image"
+            className="absolute inset-0 w-full h-full object-contain"
           />
         </div>
       </div>
-      <div className="text-center pb-5">
+      <div className="text-center pt-5 grid w-full gap-x-3">
         <button
           type="button"
           className="rounded-md bg-normalGray px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400"
