@@ -361,6 +361,7 @@ const CargoList = () => {
     const paramData = (({
       cargo_seq,
       ordNo,
+      adminMemo,
       startPlanDt,
       startPlanHour,
       startPlanMinute,
@@ -864,6 +865,7 @@ const CargoList = () => {
               const {
                 cargo_seq,
                 ordNo,
+                adminMemo,
                 startWide, //상차지 시/도
                 startSgg, //상차지 구/군
                 startDong, //상차지 읍/면/동
@@ -1163,9 +1165,14 @@ const CargoList = () => {
                           )}
                         </div>
                         {isAdmin && (
-                          <p className="text-sm font-semibold leading-6 text-red-500">
-                            {`요금(관리자용) : ${fare}`}
-                          </p>
+                          <div>
+                            <p className="text-sm font-semibold leading-6 text-red-500">
+                              {`요금(관리자용) : ${fare}`}
+                            </p>
+                            <p className="text-sm font-semibold leading-6 text-red-500">
+                              {adminMemo && `관리자메모 : ${adminMemo || ""}`}
+                            </p>
+                          </div>
                         )}
                       </div>
 

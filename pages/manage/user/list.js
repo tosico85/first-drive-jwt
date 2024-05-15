@@ -4,12 +4,15 @@ import Modal from "react-modal";
 import apiPaths from "../../../services/apiRoutes";
 import AuthContext from "../../context/authContext";
 import UserAuthModal from "../../components/modals/UserAuthModal";
+import UserPasswordSetModal from "../../components/modals/UserPasswordSetModal";
 
 const ManageUser = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
   const [userList, setUserList] = useState([]);
   const [selectedUser, setSelectedUser] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] =
+    useState(false);
   const router = useRouter();
 
   const openModal = () => {
@@ -29,6 +32,18 @@ const ManageUser = () => {
     //updateUserList(user);
   };
 
+  const openPasswordChangeModal = () => {
+    setIsPasswordChangeModalOpen(true);
+  };
+
+  const closePasswordChangeModal = () => {
+    setIsPasswordChangeModalOpen(false);
+  };
+
+  const callbackPasswordChangeModal = async () => {
+    closePasswordChangeModal();
+  };
+
   const customModalStyles = {
     content: {
       top: "50%",
@@ -39,6 +54,10 @@ const ManageUser = () => {
       transform: "translate(-50%, -50%)",
       boxShadow: "0px 0px 10px #e2e2e2",
     },
+  };
+
+  const customModalStyles_password = {
+    content: { ...customModalStyles.content, height: "200px" },
   };
 
   const getUserList = async () => {
@@ -86,6 +105,13 @@ const ManageUser = () => {
   };
 
   //권한 선택 모달창 open
+  const handlePasswordChange = () => {
+    if (isSelected()) {
+      openPasswordChangeModal();
+    }
+  };
+
+  //권한 선택 모달창 open
   const handleDelete = async () => {
     if (isSelected()) {
       const user = { email: selectedUser.email, delete_yn: "Y" };
@@ -127,6 +153,18 @@ const ManageUser = () => {
           selectedUser={selectedUser}
           onCancel={closeModal}
           onComplete={callbackModal}
+        />
+      </Modal>
+      <Modal
+        isOpen={isPasswordChangeModalOpen}
+        onRequestClose={closePasswordChangeModal}
+        contentLabel="Modal"
+        style={customModalStyles_password}
+      >
+        <UserPasswordSetModal
+          selectedUser={selectedUser}
+          onCancel={closePasswordChangeModal}
+          onComplete={callbackPasswordChangeModal}
         />
       </Modal>
       <div className="flex justify-between">
@@ -204,6 +242,20 @@ const ManageUser = () => {
           className="rounded-md bg-normalGray px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm lg:hidden"
         >
           목록으로
+        </button>
+        <button
+          type="button"
+          className="rounded-md bg-buttonZamboa px-2 py-2 text-base font-semibold text-white shadow-sm"
+          onClick={handlePasswordChange}
+        >
+          사용자 비밀번호 수정
+        </button>
+        <button
+          type="button"
+          className="rounded-md bg-buttonZamboa px-2 py-2 text-base font-semibold text-white shadow-sm"
+          onClick={handleAuthChange}
+        >
+          사용자정보 수정
         </button>
         <button
           type="button"

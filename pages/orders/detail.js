@@ -632,6 +632,14 @@ export default function Detail() {
                       {formatDate(cargoOrder.allocReqDt) || "-"}
                     </dd>
                   </div>
+                  <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
+                    <dt className="text-sm font-semibold leading-6 ">
+                      관리자용 메모
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
+                      {cargoOrder.adminMemo || ""}
+                    </dd>
+                  </div>
                 </dl>
               </div>
             </>

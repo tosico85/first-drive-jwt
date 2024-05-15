@@ -318,6 +318,7 @@ export default function OrderForm({
       Object.keys(editData).forEach((key) => {
         if (["group_name"].includes(key)) return; //제외항목
         if (["userName"].includes(key)) return; //제외항목
+        if (["adminMemo"].includes(key)) return; //제외항목
         if (["receipt_add_yn"].includes(key)) return; //제외항목
         if (
           [
@@ -406,6 +407,7 @@ export default function OrderForm({
         // Copy 제외항목 필터링
         const paramData = (({
           cargo_seq,
+          adminMemo,
           ordNo,
           startPlanDt,
           startPlanHour,
