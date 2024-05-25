@@ -230,17 +230,47 @@ const CargoList = () => {
       endCompanyName: endCompanySearch.value, // 추가된 부분
     };
 
+    const result = await requestServer(url, params);
+    setCargoOrder(() => result);
+
     // 조회조건 적재
     if (!globalVariable["orderList"]) {
       globalVariable["orderList"] = {};
     }
-    globalVariable["orderList"] = { searchOptions: { ...params } };
+    globalVariable["orderList"] = {
+      ...globalVariable["orderList"],
+      searchOptions: { ...params },
+    };
     updateGlobalVariable(globalVariable);
 
-    const result = await requestServer(url, params);
-    setCargoOrder(() => result);
+    // 스크롤 이동
+    if (globalVariable["orderList"]?.scrollTop) {
+      document
+        .querySelector("ul")
+        .scrollTo({ top: globalVariable["orderList"]?.scrollTop });
+    }
+
+    //console.log(globalVariable);
     //console.log("Cargo order >>", cargoOrder);
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!globalVariable["orderList"]) {
+        globalVariable["orderList"] = {};
+      }
+      globalVariable["orderList"] = {
+        ...globalVariable["orderList"],
+        scrollTop: document.querySelector("ul").scrollTop,
+      };
+      updateGlobalVariable(globalVariable);
+
+      //console.log(globalVariable);
+      //console.log('Scroll position:', document.querySelector("ul").scrollTop);
+    };
+
+    document.querySelector("ul").addEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -1012,7 +1042,6 @@ const CargoList = () => {
                                 : ordStatus === "화물취소" // 추가: "배차완료" 처리
                                 ? "취소"
                                 : ordStatus}
-                              {console.log(ordStatus)}
                             </span>
                           </div>
                         </div>
