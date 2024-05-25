@@ -905,6 +905,7 @@ const CargoList = () => {
                 create_user,
                 userName,
                 receipt_add_yn,
+                farePaytype,
               } = item;
               return (
                 <li
@@ -1161,6 +1162,12 @@ const CargoList = () => {
                           {shuttleCargoInfo && (
                             <p className="px-2 py-0.5 rounded-md bg-yellow-400 text-sm text-white">
                               {shuttleCargoInfo}
+                            </p>
+                          )}
+
+                          {farePaytype == "선착불" && (
+                            <p className="px-2 py-0.5 rounded-md bg-orange-400 text-sm text-white">
+                              {farePaytype}
                             </p>
                           )}
                         </div>
