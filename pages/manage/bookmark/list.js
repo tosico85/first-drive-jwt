@@ -7,12 +7,17 @@ import Label from "../../components/custom/Label";
 import Script from "next/script";
 import { useInput, useInputBase } from "../../../hooks/useInput";
 import { formatPhoneNumber } from "../../../utils/StringUtils";
+import ComboBox from "../../components/custom/ComboBox";
 
 const ManageBookmark = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
   const [bookmarkList, setBookmarkList] = useState([]);
   const [selectedBookmark, setSelectedBookmark] = useState({});
   const [requestType, setRequestTyoe] = useState("I");
+
+  const isAdmin = userInfo.auth_code === "ADMIN";
+  const [selectedGroup, setSelectedGroup] = useState(0);
+  const [groupList, setGroupList] = useState([]);
 
   // search input
   const searchName = useInput("");
@@ -30,9 +35,17 @@ const ManageBookmark = () => {
 
   useEffect(() => {
     (async () => {
+      console.log(userInfo);
+      await getGroupList();
       await getBookmarkList();
     })();
   }, [userInfo]);
+
+  useEffect(() => {
+    (async () => {
+      await getBookmarkList();
+    })();
+  }, [selectedGroup]);
 
   useEffect(() => {
     inputMap["mainAddress"].setValue(
@@ -48,6 +61,30 @@ const ManageBookmark = () => {
   }, [selectedBookmark]);
 
   /********************** API Call Method Start *******************************/
+
+  // 그룹목록 조회
+  const getGroupList = async () => {
+    const url = apiPaths.commonGetGroup;
+    const params = {};
+
+    let result = await requestServer(url, params);
+    if (result?.length > 0) {
+      result = result.map((item) => ({
+        value: item.group_code + "",
+        name: item.name,
+      }));
+
+      if (isAdmin) {
+        result = [{ value: "", name: "전체" }, ...result];
+      } else {
+        result = result.filter((item) => {
+          return item.value == userInfo.group_code;
+        });
+      }
+
+      setGroupList(() => result);
+    }
+  };
 
   // 거래처 조회
   const getBookmarkList = async () => {
@@ -257,16 +294,30 @@ const ManageBookmark = () => {
       </Modal>
       <div className="grid grid-cols-10 w-full">
         <div className="mt-6 pb-24 col-span-6 h-rate8">
-          <div className="flex justify-between items-center mb-3">
-            <div className="flex gap-x-5 items-center w-60">
-              <h3 className="text-base font-semibold w-full">업체명 검색</h3>
-              <input
-                type="text"
-                placeholder={"업체명"}
-                {...searchName}
-                onKeyDown={handleSearch}
-                className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
-              />
+          <div className="grid grid-cols-5 items-center mb-3">
+            <div class="col-span-4 flex justify-start gap-x-3">
+              <div className="flex gap-x-5 items-center w-full">
+                <h3 className="text-base font-semibold whitespace-nowrap">
+                  그룹 선택
+                </h3>
+                <ComboBox
+                  onComboChange={setSelectedGroup}
+                  list={groupList}
+                  selectedValue={selectedGroup}
+                />
+              </div>
+              <div className="flex gap-x-5 items-center w-full">
+                <h3 className="text-base font-semibold whitespace-nowrap">
+                  업체명 검색
+                </h3>
+                <input
+                  type="text"
+                  placeholder={"업체명"}
+                  {...searchName}
+                  onKeyDown={handleSearch}
+                  className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
+                />
+              </div>
             </div>
             <p className="text-right">{`${bookmarkList.length} 건`}</p>
           </div>

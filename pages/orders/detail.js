@@ -344,12 +344,25 @@ export default function Detail() {
                   <div>{`${cargoOrder.startDetail}`}</div>
                 </dd>
               </div>
+
               <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">상차일자</dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   {formatDate(cargoOrder.startPlanDt)}
                 </dd>
               </div>
+
+              {isAdmin && (
+                <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
+                  <dt className="text-sm font-semibold leading-6">상차시간</dt>
+                  <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
+                    <span style={{ color: "red", fontWeight: "bold" }}>
+                      {cargoOrder.startPlanHour} 시 {cargoOrder.startPlanMinute}{" "}
+                      분
+                    </span>
+                  </dd>
+                </div>
+              )}
               <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
                 <dt className="text-sm font-semibold leading-6 ">상차방법</dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">

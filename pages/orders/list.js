@@ -896,6 +896,7 @@ const CargoList = () => {
                 cargo_seq,
                 ordNo,
                 adminMemo,
+                userMemo,
                 startWide, //상차지 시/도
                 startSgg, //상차지 구/군
                 startDong, //상차지 읍/면/동
@@ -1167,7 +1168,7 @@ const CargoList = () => {
                           )} ${endPlanHour}:${endPlanMinute}`}
                         </p>
                       </div>
-                      <div className="flex flex-col col-span-2 px-5">
+                      <div className="flex flex-col col-span-2 px-5 gap-y-1">
                         <p className="text-sm font-semibold leading-6 text-gray-500">
                           {cargoDsc}
                         </p>
@@ -1203,6 +1204,9 @@ const CargoList = () => {
                             </p>
                           </div>
                         )}
+                        <p className="text-sm font-semibold leading-6 text-gray-500">
+                          {userMemo && `사용자메모 : ${userMemo || ""}`}
+                        </p>
                       </div>
 
                       <div

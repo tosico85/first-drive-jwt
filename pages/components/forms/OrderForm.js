@@ -1536,6 +1536,14 @@ export default function OrderForm({
                 />
               </div>
               <div className="mt-3">
+                <input
+                  {...register("userMemo")}
+                  type="text"
+                  placeholder="사용자메모"
+                  className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                />
+              </div>
+              <div className="mt-3">
                 <fieldset>
                   <div className="grid grid-flow-col justify-stretch gap-x-2">
                     {isAdmin && (
@@ -2572,6 +2580,14 @@ export default function OrderForm({
                             </div>
                           </div>
                         )}
+                        <div className="col-span-2">
+                          <textarea
+                            {...register("userMemo")}
+                            placeholder="사용자 메모"
+                            rows="1"
+                            className="block w-full rounded-sm border-0 px-2 py-2.5 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none resize-none"
+                          />
+                        </div>
                       </div>
                     </div>
                     {!isAdmin && Number.parseInt(watch("fareView")) > 0 && (
