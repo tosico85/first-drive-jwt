@@ -27,7 +27,19 @@ export const useInputBase = (initialValue, type = "text") => {
     const {
       target: { value },
     } = event;
-    setValue(value);
+
+    console.log("test");
+
+    // 숫자 필드인 경우 필터링
+    if (type == "number") {
+      setValue(value.replace(/[^0-9]/g, ""));
+    } else if (type == "float") {
+      setValue(value.replace(/[^0-9.]/g, ""));
+    } else if (type == "phone") {
+      setValue(value.replace(/[^0-9-]/g, ""));
+    } else {
+      setValue(value);
+    }
   };
   return { value, onChange, setValue };
 };

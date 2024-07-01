@@ -588,11 +588,59 @@ export default function OrderForm({
     );
 
     if (resultCd === "00") {
+      await insertBookmark();
       alert("화물 오더가 등록되었습니다.");
       router.push("/orders/list");
     } else {
       alert(result);
     }
+  };
+
+  /**
+   * 북마크 추가
+   */
+  const insertBookmark = async () => {
+    let [wide, sgg, dong, detail, bookmarkName, areaPhone] = getValues([
+      "startWide",
+      "startSgg",
+      "startDong",
+      "startDetail",
+      "startCompanyName",
+      "startAreaPhone",
+    ]);
+
+    let paramData = {
+      bookmarkName,
+      wide,
+      sgg,
+      dong,
+      detail,
+      areaPhone: areaPhone.replace(/[^0-9]/g, ""),
+    };
+
+    //상차지 등록
+    await requestServer(apiPaths.userBookmarkMerge, paramData);
+
+    [wide, sgg, dong, detail, bookmarkName, areaPhone] = getValues([
+      "endWide",
+      "endSgg",
+      "endDong",
+      "endDetail",
+      "endCompanyName",
+      "endAreaPhone",
+    ]);
+
+    paramData = {
+      bookmarkName,
+      wide,
+      sgg,
+      dong,
+      detail,
+      areaPhone: areaPhone.replace(/[^0-9]/g, ""),
+    };
+
+    //하차지 등록
+    await requestServer(apiPaths.userBookmarkMerge, paramData);
   };
 
   /**
@@ -646,6 +694,7 @@ export default function OrderForm({
       }
     } else {
       if (resultCd === "00") {
+        await insertBookmark();
         alert("화물 오더가 수정되었습니다.");
         router.push({
           pathname: "/orders/detail",

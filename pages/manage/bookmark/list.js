@@ -27,7 +27,7 @@ const ManageBookmark = () => {
     bookmarkName: useInputBase(""),
     mainAddress: useInputBase(""),
     detail: useInputBase(""),
-    areaPhone: useInputBase(""),
+    areaPhone: useInputBase("", "number"),
   };
 
   //Modal control
@@ -471,7 +471,7 @@ const ManageBookmark = () => {
                         onChange: inputMap["areaPhone"].onChange,
                       }}
                       type="tel"
-                      maxLength={11}
+                      maxLength={14}
                       placeholder={"전화번호"}
                       className="block w-full rounded-sm border-0 px-2 py-3 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                     />
