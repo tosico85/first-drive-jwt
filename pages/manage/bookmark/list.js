@@ -16,7 +16,7 @@ const ManageBookmark = () => {
   const [requestType, setRequestTyoe] = useState("I");
 
   const isAdmin = userInfo.auth_code === "ADMIN";
-  const [selectedGroup, setSelectedGroup] = useState(0);
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const [groupList, setGroupList] = useState([]);
 
   // search input
@@ -89,7 +89,10 @@ const ManageBookmark = () => {
   // 거래처 조회
   const getBookmarkList = async () => {
     const url = apiPaths.userBookmarkList;
-    const params = { bookmarkName: searchName.value };
+    const params = {
+      bookmarkName: searchName.value,
+      group_code: selectedGroup,
+    };
 
     const result = await requestServer(url, params);
     result = result.map((item) => ({ ...item, checked: false }));
@@ -295,7 +298,7 @@ const ManageBookmark = () => {
       <div className="grid grid-cols-10 w-full">
         <div className="mt-6 pb-24 col-span-6 h-rate8">
           <div className="grid grid-cols-5 items-center mb-3">
-            <div class="col-span-4 flex justify-start gap-x-3">
+            <div className="col-span-4 flex justify-start gap-x-3">
               <div className="flex gap-x-5 items-center w-full">
                 <h3 className="text-base font-semibold whitespace-nowrap">
                   그룹 선택
@@ -324,8 +327,9 @@ const ManageBookmark = () => {
           <div className="flex justify-between border-y border-gray-200 py-3 bg-headerColor2 text-gray-200 text-center">
             <div className="grid grid-cols-12 w-full">
               <div className="col-span-1"></div>
-              <div className="col-span-4 border-l border-gray-700">업체명</div>
-              <div className="col-span-4 border-l border-gray-700">주소</div>
+              <div className="col-span-2 border-l border-gray-700">그룹명</div>
+              <div className="col-span-3 border-l border-gray-700">업체명</div>
+              <div className="col-span-3 border-l border-gray-700">주소</div>
               <div className="col-span-3 border-l border-gray-700">연락처</div>
             </div>
           </div>
@@ -334,6 +338,7 @@ const ManageBookmark = () => {
               <>
                 {bookmarkList.map((item, index) => {
                   const {
+                    group_name,
                     bookmarkName,
                     wide,
                     sgg,
@@ -356,10 +361,13 @@ const ManageBookmark = () => {
                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                         />
                       </div>
-                      <div className="px-3 py-5 col-span-4 border-r border-slate-200">
+                      <div className="px-3 py-5 col-span-2 border-r border-slate-200">
+                        {group_name}
+                      </div>
+                      <div className="px-3 py-5 col-span-3 border-r border-slate-200">
                         {bookmarkName}
                       </div>
-                      <div className="px-3 py-5 col-span-4 border-r border-slate-200">
+                      <div className="px-3 py-5 col-span-3 border-r border-slate-200">
                         <div>{`${wide} ${sgg} ${dong}`}</div>
                         <div>{`${detail}`}</div>
                       </div>
