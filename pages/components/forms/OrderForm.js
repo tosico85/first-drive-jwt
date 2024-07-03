@@ -578,7 +578,10 @@ export default function OrderForm({
     // 상하차지 주소정보 update
     //await regStartEndAddress();
     if (isAdmin) {
-      cargoOrder = { ...cargoOrder, create_user: getValues("create_user") };
+      cargoOrder = {
+        ...cargoOrder,
+        create_user: isMobile ? userInfo.email : getValues("create_user"),
+      };
     }
 
     // 화물등록
@@ -1595,33 +1598,28 @@ export default function OrderForm({
               <div className="mt-3">
                 <fieldset>
                   <div className="grid grid-flow-col justify-stretch gap-x-2">
-                    {isAdmin && (
-                      <div
-                        className={
-                          "flex gap-x-3 ring-1 rounded-md px-4 py-2 w-full " +
-                          (watch("multiCargoGub")
-                            ? "ring-2 ring-blue-600 text-blue-600"
-                            : "ring-gray-300")
-                        }
-                        onClick={() => {
-                          setValue(
-                            "multiCargoGub",
-                            !getValues("multiCargoGub")
-                          );
-                        }}
-                      >
-                        <div className="flex h-6 items-center">
-                          <input
-                            {...register("multiCargoGub")}
-                            type="checkbox"
-                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                          />
-                        </div>
-                        <div className="text-sm leading-6">
-                          <label className="font-medium">혼적</label>
-                        </div>
+                    <div
+                      className={
+                        "flex gap-x-3 ring-1 rounded-md px-4 py-2 w-full " +
+                        (watch("multiCargoGub")
+                          ? "ring-2 ring-blue-600 text-blue-600"
+                          : "ring-gray-300")
+                      }
+                      onClick={() => {
+                        setValue("multiCargoGub", !getValues("multiCargoGub"));
+                      }}
+                    >
+                      <div className="flex h-6 items-center">
+                        <input
+                          {...register("multiCargoGub")}
+                          type="checkbox"
+                          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        />
                       </div>
-                    )}
+                      <div className="text-sm leading-6">
+                        <label className="font-medium">혼적</label>
+                      </div>
+                    </div>
                     {isAdmin && (
                       <div
                         className={
@@ -2433,33 +2431,31 @@ export default function OrderForm({
                     <div className="mt-3">
                       <fieldset>
                         <div className="grid grid-flow-col justify-stretch gap-x-2">
-                          {isAdmin && (
-                            <div
-                              className={
-                                "flex gap-x-3 ring-1 rounded-sm px-4 py-2 w-full " +
-                                (watch("multiCargoGub")
-                                  ? "ring-2 ring-blue-600 text-blue-600"
-                                  : "ring-gray-300")
-                              }
-                              onClick={() => {
-                                setValue(
-                                  "multiCargoGub",
-                                  !getValues("multiCargoGub")
-                                );
-                              }}
-                            >
-                              <div className="flex h-6 items-center">
-                                <input
-                                  {...register("multiCargoGub")}
-                                  type="checkbox"
-                                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                />
-                              </div>
-                              <div className="text-sm leading-6">
-                                <label className="font-medium">혼적</label>
-                              </div>
+                          <div
+                            className={
+                              "flex gap-x-3 ring-1 rounded-sm px-4 py-2 w-full " +
+                              (watch("multiCargoGub")
+                                ? "ring-2 ring-blue-600 text-blue-600"
+                                : "ring-gray-300")
+                            }
+                            onClick={() => {
+                              setValue(
+                                "multiCargoGub",
+                                !getValues("multiCargoGub")
+                              );
+                            }}
+                          >
+                            <div className="flex h-6 items-center">
+                              <input
+                                {...register("multiCargoGub")}
+                                type="checkbox"
+                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                              />
                             </div>
-                          )}
+                            <div className="text-sm leading-6">
+                              <label className="font-medium">혼적</label>
+                            </div>
+                          </div>
                           {isAdmin && (
                             <div
                               className={
