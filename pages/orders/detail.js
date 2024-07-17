@@ -721,15 +721,19 @@ export default function Detail() {
                 >
                   배차 신청
                 </button>
-                <button
-                  type="button"
-                  className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
-                  onClick={handleDirectAlloc}
-                >
-                  수기 배차
-                </button>
               </>
             )}
+          </>
+        )}
+        {isAdmin && (
+          <>
+            <button
+              type="button"
+              className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+              onClick={handleDirectAlloc}
+            >
+              수기 배차
+            </button>
           </>
         )}
 
