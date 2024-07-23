@@ -66,6 +66,15 @@ module.exports = {
       spacing: {
         26: "108px",
       },
+      animation: {
+        blink: "blink 1s linear infinite",
+      },
+      keyframes: {
+        blink: {
+          "0%, 100%": { backgroundColor: "rgba(255, 255, 0, 0.5)" },
+          "50%": { backgroundColor: "rgba(255, 255, 255, 1)" },
+        },
+      },
     },
   },
   plugins: [],

@@ -1143,11 +1143,29 @@ const CargoList = () => {
                         )}
                       </div>
                       <div className="col-span-2 px-5">
-                        <p className="mt-1 truncate leading-5 font-bold text-gray-500">
-                          {`${startCompanyName || ""} ${
-                            formatPhoneNumber(startAreaPhone) || ""
-                          }`}
-                        </p>
+                        <div className="relative group">
+                          <p
+                            className={`mt-1 truncate leading-5 font-bold ${
+                              ["씨앤텍", "씨앤택", "씨엔텍", "씨엔택"].some(
+                                (word) => startCompanyName.includes(word)
+                              )
+                                ? "animate-blink text-gray-500"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {`${startCompanyName || ""} ${
+                              formatPhoneNumber(startAreaPhone) || ""
+                            }`}
+                          </p>
+                          {["씨앤텍", "씨앤택", "씨엔텍", "씨엔택"].some(
+                            (word) => startCompanyName.includes(word)
+                          ) && (
+                            <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
+                              차량 출발전 씨앤텍에 연락하고 입차 / 연락 없으면
+                              입차불가
+                            </div>
+                          )}
+                        </div>
                         <p className="mt-1 truncate leading-5 text-gray-500 whitespace-pre-wrap">
                           {`${startWide} ${startSgg} ${startDong} ${startDetail}`}
                         </p>
@@ -1157,12 +1175,60 @@ const CargoList = () => {
                           )} ${startPlanHour}:${startPlanMinute}`}
                         </p>
                       </div>
+
                       <div className="col-span-2 px-5">
-                        <p className="mt-1 truncate leading-5 font-bold text-gray-500">
-                          {`${endCompanyName || ""} ${
-                            formatPhoneNumber(endAreaPhone) || ""
-                          }`}
-                        </p>
+                        <div className="relative group">
+                          <p
+                            className={`mt-1 truncate leading-5 font-bold ${
+                              [
+                                "씨앤텍",
+                                "씨엔택",
+                                "씨엔텍",
+                                "씨엔텍",
+                                "엔코스",
+                                "한국콜마",
+                                "리봄화장품",
+                                "코스맥스",
+                                "여우별",
+                              ].some((word) => endCompanyName.includes(word)) &&
+                              endCompanyName !== "미래엔코스메틱"
+                                ? "animate-blink text-gray-500"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {`${endCompanyName || ""} ${
+                              formatPhoneNumber(endAreaPhone) || ""
+                            }`}
+                          </p>
+                          {["씨앤텍", "씨엔택", "씨엔텍", "씨엔텍"].some(
+                            (word) => endCompanyName.includes(word)
+                          ) && (
+                            <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
+                              차량 출발전 씨앤텍에 통화하고 입차/연락 없으면
+                              입차불가
+                            </div>
+                          )}
+
+                          {["여우별"].some((word) =>
+                            endCompanyName.includes(word)
+                          ) && (
+                            <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
+                              수작업/지게차 없음
+                            </div>
+                          )}
+
+                          {[
+                            "엔코스",
+                            "한국콜마",
+                            "리봄화장품",
+                            "코스맥스",
+                          ].some((word) => endCompanyName.includes(word)) &&
+                            endCompanyName !== "미래엔코스메틱" && (
+                              <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
+                                4시 이전 도착
+                              </div>
+                            )}
+                        </div>
                         <p className="mt-1 truncate leading-5 text-gray-500 whitespace-pre-wrap">
                           {`${endWide} ${endSgg} ${endDong} ${endDetail}`}
                         </p>
@@ -1172,6 +1238,7 @@ const CargoList = () => {
                           )} ${endPlanHour}:${endPlanMinute}`}
                         </p>
                       </div>
+
                       <div className="flex flex-col col-span-2 px-5 gap-y-1">
                         <p className="text-sm font-semibold leading-6 text-gray-500">
                           {cargoDsc}
