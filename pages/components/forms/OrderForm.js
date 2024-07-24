@@ -603,6 +603,9 @@ export default function OrderForm({
    * 북마크 추가
    */
   const insertBookmark = async () => {
+    //북마크 적재 제외대상은 아 배열에 추가
+    if (["agitech@agitech.kr"].includes(userInfo.email)) return;
+
     let [wide, sgg, dong, detail, bookmarkName, areaPhone] = getValues([
       "startWide",
       "startSgg",
