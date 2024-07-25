@@ -1174,7 +1174,7 @@ const CargoList = () => {
                             startCompanyName.includes(word)
                           ) && (
                             <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
-                              5톤 입차불가/3.5톤 초장축 이하로 배차
+                              5톤 입차불가/3.5톤 초장축 5m20 이하로 배차
                             </div>
                           )}
                         </div>
