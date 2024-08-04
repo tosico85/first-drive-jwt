@@ -9,7 +9,7 @@ export default function UserPasswordSetModal({
   onCancel,
   onComplete,
 }) {
-  const { requestServer } = useContext(AuthContext);
+  const { requestServer, userInfo } = useContext(AuthContext);
   const newPassword = useInput("");
 
   // 사용자정보 수정
@@ -21,7 +21,9 @@ export default function UserPasswordSetModal({
 
       //console.log(user);
       const { result, resultCd } = await requestServer(
-        apiPaths.adminChangePassword,
+        userInfo.auth_code == "ADMIN"
+          ? apiPaths.adminChangePassword
+          : apiPaths.userChangePassword,
         user
       );
 
