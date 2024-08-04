@@ -45,7 +45,7 @@ export default function UserPasswordSetModal({
           새로운 비밀번호 입력
         </h2>
         <div className="pt-5">
-          <div className="mb-4 lg:flex lg:gap-x-2">
+          <div className="mb-4 flex gap-x-2">
             <Label title={"비밀번호"} required={true} />
             <input
               {...newPassword}
