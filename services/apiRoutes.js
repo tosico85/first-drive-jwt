@@ -9,6 +9,7 @@ const USER_LOGIN_SUCCESS = "/user/loginSuccess";
 const USER_LOGIN_FAILED = "/user/loginFailed";
 const USER_LOGOUT = "/user/logout";
 const USER_LOGIN_CHECK = "/user/sessionCheck";
+const USER_CHANGE_PASSWORD = "/user/change/password";
 
 //User Address
 const USER_ADDRESS_LIST = "/user/address/list"; //주소목록 조회
@@ -78,6 +79,7 @@ const apiPaths = {
   userLoginFailed: USER_LOGIN_FAILED,
   userLogout: USER_LOGOUT,
   userSessionCheck: USER_LOGIN_CHECK,
+  userChangePassword: USER_CHANGE_PASSWORD,
 
   // User address manage
   userAddressList: USER_ADDRESS_LIST,

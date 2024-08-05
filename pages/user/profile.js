@@ -1,11 +1,51 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import Modal from "react-modal";
+import UserPasswordSetModal from "../components/modals/UserPasswordSetModal";
 import AuthContext from "../context/authContext";
 
 const UserProfile = () => {
   const { userInfo, logout } = useContext(AuthContext);
+  const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] =
+    useState(false);
+
+  const openPasswordChangeModal = () => {
+    setIsPasswordChangeModalOpen(true);
+  };
+
+  const closePasswordChangeModal = () => {
+    setIsPasswordChangeModalOpen(false);
+  };
+
+  const callbackPasswordChangeModal = async () => {
+    closePasswordChangeModal();
+  };
+
+  const customModalStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      width: "320px",
+      height: "200px",
+      borderRadius: "10px",
+      transform: "translate(-50%, -50%)",
+      boxShadow: "0px 0px 10px #e2e2e2",
+    },
+  };
 
   return (
     <div className="w-full h-full flex flex-col items-center">
+      <Modal
+        isOpen={isPasswordChangeModalOpen}
+        onRequestClose={closePasswordChangeModal}
+        contentLabel="Modal"
+        style={customModalStyles}
+      >
+        <UserPasswordSetModal
+          selectedUser={{ email: userInfo.email }}
+          onCancel={closePasswordChangeModal}
+          onComplete={callbackPasswordChangeModal}
+        />
+      </Modal>
       <div className="bg-white flex items-center justify-center w-full py-5">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -67,6 +107,15 @@ const UserProfile = () => {
               <span className="text-gray-400 text-lg font-bold">email</span>
               <span className=" text-xl font-extrabold">{userInfo.email}</span>
             </div>
+          </div>
+          <div className="w-full h-full pb-16 flex items-end justify-center">
+            <button
+              type="button"
+              onClick={openPasswordChangeModal}
+              className="inline rounded-md bg-slate-500 px-5 py-2 text-base font-semibold text-white hover.shadow-sm"
+            >
+              비밀번호 변경
+            </button>
           </div>
         </div>
         <div className="w-full h-full pb-16 flex items-end justify-center">

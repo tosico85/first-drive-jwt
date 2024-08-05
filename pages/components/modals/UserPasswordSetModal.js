@@ -9,7 +9,7 @@ export default function UserPasswordSetModal({
   onCancel,
   onComplete,
 }) {
-  const { requestServer } = useContext(AuthContext);
+  const { requestServer, userInfo } = useContext(AuthContext);
   const newPassword = useInput("");
 
   // 사용자정보 수정
@@ -21,7 +21,9 @@ export default function UserPasswordSetModal({
 
       //console.log(user);
       const { result, resultCd } = await requestServer(
-        apiPaths.adminChangePassword,
+        userInfo.auth_code == "ADMIN"
+          ? apiPaths.adminChangePassword
+          : apiPaths.userChangePassword,
         user
       );
 
@@ -43,7 +45,7 @@ export default function UserPasswordSetModal({
           새로운 비밀번호 입력
         </h2>
         <div className="pt-5">
-          <div className="mb-4 lg:flex lg:gap-x-2">
+          <div className="mb-4 flex gap-x-2">
             <Label title={"비밀번호"} required={true} />
             <input
               {...newPassword}
