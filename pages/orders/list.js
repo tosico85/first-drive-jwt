@@ -84,6 +84,8 @@ const CargoList = () => {
       // 엑셀 헤더 추가
       const headerRow = worksheet.addRow([
         "주문 번호",
+        "상차지 업체명",
+        "하차지 업체명",
         "상차지",
         "하차지",
         //"혼적여부",
@@ -109,6 +111,8 @@ const CargoList = () => {
       // 엑셀 칸 너비 조정
       worksheet.columns = [
         { width: 10 }, // 주문 번호
+        { width: 20 }, // 상차지 업체명
+        { width: 20 }, // 하차지 업체명
         { width: 20 }, // 상차지
         { width: 20 }, // 하차지
         //{ width: 10 }, // 혼적여부
@@ -159,6 +163,8 @@ const CargoList = () => {
         // 엑셀 행 추가
         const row = worksheet.addRow([
           item.ordNo,
+          item.startCompanyName,
+          item.endCompanyName,
           `${item.startWide} ${item.startSgg} ${item.startDong}`,
           `${item.endWide} ${item.endSgg} ${item.endDong}`,
           //item.multiCargoGub,
