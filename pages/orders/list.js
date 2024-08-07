@@ -132,6 +132,7 @@ const CargoList = () => {
         { width: 20 }, // 사용자메모
         isAdmin ? { width: 15 } : 0, // 관리자용 운임료
         isAdmin ? { width: 15 } : 0, // 아이디
+        isAdmin ? { width: 15 } : 0, // 관리번호
       ];
 
       // 테두리 스타일 설정 함수
@@ -187,6 +188,7 @@ const CargoList = () => {
           isAdmin ? item.cjCarNum : "",
           isAdmin ? item.cjTruckType : "",
           isAdmin ? item.cjCargoTon : "",
+          isAdmin ? item.cargo_seq : "",
         ]);
 
         // 각 셀에 테두리 스타일 적용
