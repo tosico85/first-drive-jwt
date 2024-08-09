@@ -1215,6 +1215,7 @@ const CargoList = () => {
                                 "아이큐어",
                                 "바이오코스텍",
                                 "더마밀",
+                                "뉴앤뉴",
                               ].some((word) => endCompanyName.includes(word)) &&
                               endCompanyName !== "미래엔코스메틱"
                                 ? "animate-blink text-gray-500"
@@ -1264,6 +1265,7 @@ const CargoList = () => {
                             "아이큐어",
                             "하나코스",
                             "바이오코스텍",
+                            "뉴앤뉴",
                           ].some((word) => endCompanyName.includes(word)) &&
                             endCompanyName !== "미래엔코스메틱" && (
                               <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
