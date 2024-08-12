@@ -1231,8 +1231,8 @@ const CargoList = () => {
                             (word) => endCompanyName.includes(word)
                           ) && (
                             <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
-                              차량 출발전 씨앤텍에 통화하고 입차/연락 없으면
-                              입차불가
+                              4시이전도착/차량 출발전 씨앤텍에 통화하고
+                              입차/연락 없으면 입차불가
                             </div>
                           )}
 
