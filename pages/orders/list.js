@@ -185,7 +185,6 @@ const CargoList = () => {
           item.addFare,
           item.addFareReason,
           item.userMemo,
-          item.cargoDsc,
           isAdmin ? item.fare : "",
           isAdmin ? item.create_user : "",
           isAdmin ? item.cjCarNum : "",
@@ -951,6 +950,7 @@ const CargoList = () => {
                 userName,
                 receipt_add_yn,
                 farePaytype,
+                change_user,
               } = item;
               return (
                 <li
@@ -1363,6 +1363,9 @@ const CargoList = () => {
                           <div>
                             <p className="text-sm font-semibold leading-6 text-red-500">
                               {`요금(관리자용) : ${fare}`}
+                            </p>
+                            <p className="text-sm font-semibold leading-6 text-red-500">
+                              {`담당 : ${change_user}`}
                             </p>
                             <p className="text-sm font-semibold leading-6 text-red-500">
                               {adminMemo && `관리자메모 : ${adminMemo || ""}`}
