@@ -1365,7 +1365,15 @@ const CargoList = () => {
                               {`요금(관리자용) : ${fare}`}
                             </p>
                             <p className="text-sm font-semibold leading-6 text-red-500">
-                              {`담당 : ${change_user}`}
+                              {`담당 : ${
+                                [
+                                  "hoi64310@naver.com",
+                                  "pinkchina@naver.com",
+                                  "admin@naver.com",
+                                ].includes(change_user)
+                                  ? change_user
+                                  : ""
+                              }`}
                             </p>
                             <p className="text-sm font-semibold leading-6 text-red-500">
                               {adminMemo && `관리자메모 : ${adminMemo || ""}`}
