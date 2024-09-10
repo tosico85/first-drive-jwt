@@ -185,6 +185,7 @@ const CargoList = () => {
           item.addFare,
           item.addFareReason,
           item.userMemo,
+          item.cargoDsc,
           isAdmin ? item.fare : "",
           isAdmin ? item.create_user : "",
           isAdmin ? item.cjCarNum : "",
