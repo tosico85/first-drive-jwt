@@ -1166,6 +1166,7 @@ const CargoList = () => {
                                 "제이앤텍",
                                 "두영",
                                 "씨앤피코리아",
+                                "제이팩토리",
                               ].some((word) => startCompanyName.includes(word))
                                 ? "animate-blink text-gray-500"
                                 : "text-gray-500"
@@ -1189,6 +1190,14 @@ const CargoList = () => {
                           ) && (
                             <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
                               5톤 입차불가/3.5톤 초장축 5m20 이하로 배차
+                            </div>
+                          )}
+
+                          {["제이팩토리"].some((word) =>
+                            startCompanyName.includes(word)
+                          ) && (
+                            <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
+                              5시 30분전 입차/이후 상차불가능
                             </div>
                           )}
 
@@ -1245,6 +1254,7 @@ const CargoList = () => {
                                 "주용테크",
                                 "씨앤피코리아",
                                 "피에프네이처",
+                                "제이팩토리",
                               ].some((word) => endCompanyName.includes(word)) &&
                               endCompanyName !== "미래엔코스메틱"
                                 ? "animate-blink text-gray-500"
@@ -1277,6 +1287,14 @@ const CargoList = () => {
                           ) && (
                             <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
                               수작업/지게차 없음/1.4톤 이하 차량만 입차가능
+                            </div>
+                          )}
+
+                          {["제이팩토리"].some((word) =>
+                            endCompanyName.includes(word)
+                          ) && (
+                            <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
+                              5시30분 이전입차/이후하차 불가능
                             </div>
                           )}
 
