@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useInput, useRadio } from "../../../hooks/useInput";
+import { useInput } from "../../../hooks/useInput";
 import apiPaths from "../../../services/apiRoutes";
 import {
   formatPhoneNumber,
@@ -131,7 +131,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       endPlanDt: cargoOrder.endPlanDt,
       endCompanyName: cargoOrder.endCompanyName,
       create_user: cargoOrder.create_user,
-      change_user: "ttttt",
+      change_user: "테스트",
     };
 
     const result = await requestServer(apiPaths.adminDirectAlloc, paramObj);
