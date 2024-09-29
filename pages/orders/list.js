@@ -1403,7 +1403,7 @@ const CargoList = () => {
                               {`요금(관리자용) : ${fare}`}
                             </p>
 
-                            <p className="text-sm font-semibold leading-6 placeholder-buttonGreen">
+                            <p className="text-sm font-semibold leading-6 text-green-600">
                               {`요금(고객용) : ${fareView}`}
                             </p>
 
