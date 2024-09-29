@@ -1402,6 +1402,11 @@ const CargoList = () => {
                             <p className="text-sm font-semibold leading-6 text-red-500">
                               {`요금(관리자용) : ${fare}`}
                             </p>
+
+                            <p className="text-sm font-semibold leading-6 text-red-500">
+                              {`요금(고객용) : ${fareView}`}
+                            </p>
+
                             <p className="text-sm font-semibold leading-6 text-red-500">
                               {`담당 : ${
                                 [
