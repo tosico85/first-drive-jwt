@@ -63,9 +63,12 @@ const Navbar = () => {
     },
   ];
 
+  const navbarBgColor =
+    user.email === "notalk@naver.com" ? "bg-red-500" : "bg-white";
+
   return (
     <div className="fixed w-full z-50 border-b border-gray-200">
-      <Disclosure as="nav" className="bg-white w-full">
+      <Disclosure as="nav" className={`${navbarBgColor} w-full`}>
         <div className="mx-auto px-5">
           <div className="flex h-16 items-center justify-between gap-10">
             <div className="flex items-center justify-between w-full">
@@ -134,17 +137,9 @@ const Navbar = () => {
               >
                 <span className="sr-only">Open main menu</span>
                 {open ? (
-                  <XMarkIcon
-                    className="block h-6 w-6"
-                    aria-hidden="true"
-                    //onClick={() => setOpen(false)}
-                  />
+                  <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                 ) : (
-                  <Bars3Icon
-                    className="block h-6 w-6"
-                    aria-hidden="true"
-                    //onClick={() => setOpen(true)}
-                  />
+                  <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
                 )}
               </Disclosure.Button>
             </div>
@@ -189,13 +184,6 @@ const Navbar = () => {
                     {user.email}
                   </div>
                 </div>
-                {/* <button
-                type="button"
-                className="ml-auto flex-shrink-0 rounded-full bg-mainColor1 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-mainColor1"
-              >
-                <span className="sr-only">View notifications</span>
-                <BellIcon className="h-6 w-6" aria-hidden="true" />
-              </button> */}
               </div>
               <div className="mt-3 space-y-1 px-2">
                 {userNavigation.map((item) => (
