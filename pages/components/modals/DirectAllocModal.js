@@ -10,7 +10,7 @@ import AuthContext from "../../context/authContext";
 import Label from "../custom/Label";
 
 const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
-  const { requestServer } = useContext(AuthContext);
+  const { requestServer, userInfo } = useContext(AuthContext);
 
   // 차주정보 useInput
   const inputMap = {
@@ -131,7 +131,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       endPlanDt: cargoOrder.endPlanDt,
       endCompanyName: cargoOrder.endCompanyName,
       create_user: cargoOrder.create_user,
-      change_user: "테스트",
+      change_user: userInfo.email, // userInfo.email 확인 후 적용
     };
 
     const result = await requestServer(apiPaths.adminDirectAlloc, paramObj);
