@@ -1552,6 +1552,7 @@ const CargoList = () => {
                                 stroke="currentColor"
                                 className="w-6 h-6"
                               >
+                                <rect width="24" height="24" fill="#FFFFE0" />
                                 <path
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
