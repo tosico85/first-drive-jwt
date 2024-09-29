@@ -100,6 +100,8 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
    * 수기 배차 수행 (화주 알람톡 변수 전송)
    */
   const directAllocProc = async () => {
+    //console.log("change_user:", userInfo.email); // 로그 추가
+
     const paramObj = {
       cargo_seq: cargoOrder.cargo_seq,
       cjName: inputMap.cjName.value,
@@ -131,9 +133,8 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       endPlanDt: cargoOrder.endPlanDt,
       endCompanyName: cargoOrder.endCompanyName,
       create_user: cargoOrder.create_user,
-      userEmail: userInfo.userEmail, // userInfo.email 확인 후 적용
+      change_user: userInfo.email,
     };
-
     const result = await requestServer(apiPaths.adminDirectAlloc, paramObj);
 
     if (result.resultCd == "00") {
