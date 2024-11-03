@@ -106,6 +106,9 @@ const CargoList = () => {
         "화물내용",
         isAdmin ? "운임료(관리자용)" : "",
         isAdmin ? "회원아이디" : "",
+        isAdmin ? "차량정보" : "",
+        isAdmin ? "관리번호" : "",
+        isAdmin ? "관리자메모" : "",
       ]);
       headerRow.font = { bold: true };
 
@@ -134,7 +137,9 @@ const CargoList = () => {
         { width: 20 }, // 화물내용
         isAdmin ? { width: 15 } : 0, // 관리자용 운임료
         isAdmin ? { width: 15 } : 0, // 아이디
+        isAdmin ? { width: 15 } : 0, // 차량번호
         isAdmin ? { width: 15 } : 0, // 관리번호
+        isAdmin ? { width: 15 } : 0, // 관리자용메모
       ];
 
       // 테두리 스타일 설정 함수
@@ -188,10 +193,11 @@ const CargoList = () => {
           item.cargoDsc,
           isAdmin ? item.fare : "",
           isAdmin ? item.create_user : "",
-          isAdmin ? item.cjCarNum : "",
-          isAdmin ? item.cjTruckType : "",
-          isAdmin ? item.cjCargoTon : "",
+          isAdmin
+            ? `${item.cjCarNum}-${item.cjTruckType}-${item.cjCargoTon}-${item.cjName}-${item.cjPhone}`
+            : "",
           isAdmin ? item.cargo_seq : "",
+          isAdmin ? item.adminMemo : "",
         ]);
 
         // 각 셀에 테두리 스타일 적용
