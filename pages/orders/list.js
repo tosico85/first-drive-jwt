@@ -1450,13 +1450,18 @@ const CargoList = () => {
                               {`요금(고객용) : ${fareView}`}
                             </p>
 
-                            <p className="text-sm font-semibold leading-6 text-red-500">
+                            <p className="text-sm font-semibold leading-6 text-blue-500">
                               {`담당 : ${
                                 {
                                   "hoi64310@naver.com": "안수빈",
                                   "pinkchina@naver.com": "신현서",
                                   "admin@naver.com": "곽용호",
                                   "maktoob9681@hanmail.net": "임성수",
+
+                                  "notalk1@naver.com": "안수빈",
+                                  "notalk2@naver.com": "신현서",
+                                  "notalk3@naver.com": "임성수",
+                                  "notalk@naver.com": "곽용호",
                                 }[change_user] || ""
                               }`}
                             </p>
