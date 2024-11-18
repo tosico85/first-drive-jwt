@@ -63,8 +63,16 @@ const Navbar = () => {
     },
   ];
 
-  const navbarBgColor =
-    user.email === "notalk@naver.com" ? "bg-red-500" : "bg-white";
+  const redBgEmails = [
+    "notalk@naver.com",
+    "notalk1@naver.com",
+    "notalk2@naver.com",
+    "notalk3@naver.com",
+  ];
+
+  const navbarBgColor = redBgEmails.includes(user.email)
+    ? "bg-red-500"
+    : "bg-white";
 
   return (
     <div className="fixed w-full z-50 border-b border-gray-200">
