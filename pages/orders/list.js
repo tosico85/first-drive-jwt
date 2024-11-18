@@ -1452,14 +1452,12 @@ const CargoList = () => {
 
                             <p className="text-sm font-semibold leading-6 text-red-500">
                               {`담당 : ${
-                                [
-                                  "hoi64310@naver.com",
-                                  "pinkchina@naver.com",
-                                  "admin@naver.com",
-                                  "maktoob9681@hanmail.net",
-                                ].includes(change_user)
-                                  ? change_user
-                                  : ""
+                                {
+                                  "hoi64310@naver.com": "안수빈",
+                                  "pinkchina@naver.com": "신현서",
+                                  "admin@naver.com": "곽용호",
+                                  "maktoob9681@hanmail.net": "임성수",
+                                }[change_user] || ""
                               }`}
                             </p>
                             <p className="text-sm font-semibold leading-6 text-red-500">
