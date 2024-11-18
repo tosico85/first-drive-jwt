@@ -1447,6 +1447,7 @@ const CargoList = () => {
                                   "hoi64310@naver.com",
                                   "pinkchina@naver.com",
                                   "admin@naver.com",
+                                  "maktoob9681@hanmail.net",
                                 ].includes(change_user)
                                   ? change_user
                                   : ""
