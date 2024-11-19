@@ -102,6 +102,16 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
   const directAllocProc = async () => {
     //console.log("change_user:", userInfo.email); // 로그 추가
 
+    // 숫자로 변환하여 비교
+    const fareValue = parseFloat(inputMap.fare.value) || 0; // fare 값 숫자화
+    const fareViewValue = parseFloat(inputMap.fareView.value) || 0; // fareView 값 숫자화
+
+    // 운임 확인 조건 추가
+    if (fareViewValue < fareValue) {
+      alert("배차금액이 더 높습니다. 확인 후 다시 시도해주세요.");
+      return; // 함수 종료
+    }
+
     const paramObj = {
       cargo_seq: cargoOrder.cargo_seq,
       cjName: inputMap.cjName.value,
@@ -110,6 +120,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       cjCargoTon: inputMap.cjCargoTon.value,
       cjTruckType: inputMap.cjTruckType.value,
 
+      // 다시 문자열로 변환하여 서버에 전달
       fare: inputMap.fare.value,
       fareView: inputMap.fareView.value,
       addFare: inputMap.addFare.value || "0",
@@ -135,6 +146,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       create_user: cargoOrder.create_user,
       change_user: userInfo.email,
     };
+
     const result = await requestServer(apiPaths.adminDirectAlloc, paramObj);
 
     if (result.resultCd == "00") {
