@@ -106,7 +106,7 @@ const ModifyAddFareModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
           <p className="text-xl font-bold">추가요금 수정</p>
         </div>
         <div className="flex flex-col gap-y-3">
-          <p className="text-base">운임료 정보(화주용/관리자용)</p>
+          <p className="text-base">추가 운임 정보</p>
           {fareIterator.map(({ varName, korName, required }) => (
             <div key={varName} className="flex items-center gap-x-2">
               <Label title={korName} required={required} />
