@@ -103,7 +103,7 @@ const ModifyAddFareModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
     <div className="h-full flex flex-col justify-between">
       <div>
         <div className="pb-3 mb-3 border-b border-gray-200">
-          <p className="text-xl font-bold">추가요금 수정</p>
+          <p className="text-xl font-bold">추가요금</p>
         </div>
         <div className="flex flex-col gap-y-3">
           <p className="text-base">추가 운임 정보</p>
