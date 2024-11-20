@@ -100,18 +100,6 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
    * 수기 배차 수행 (화주 알람톡 변수 전송)
    */
   const directAllocProc = async () => {
-    //console.log("change_user:", userInfo.email); // 로그 추가
-
-    // 숫자로 변환하여 비교
-    const fareValue = parseFloat(inputMap.fare.value) || 0; // fare 값 숫자화
-    const fareViewValue = parseFloat(inputMap.fareView.value) || 0; // fareView 값 숫자화
-
-    // 운임 확인 조건 추가
-    if (fareViewValue < fareValue) {
-      alert("배차금액이 더 높습니다. 확인 후 다시 시도해주세요.");
-      return; // 함수 종료
-    }
-
     const paramObj = {
       cargo_seq: cargoOrder.cargo_seq,
       cjName: inputMap.cjName.value,
