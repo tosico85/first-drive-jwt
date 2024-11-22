@@ -1311,7 +1311,7 @@ const CargoList = () => {
                             </div>
                           )}
 
-                          {["지디케이", "이글코리아"].some((word) =>
+                          {["지디케이", "이글코리아", "씨엔에프"].some((word) =>
                             endCompanyName.includes(word)
                           ) && (
                             <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
