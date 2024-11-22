@@ -1268,6 +1268,7 @@ const CargoList = () => {
                                 "지디케이",
                                 "맵시",
                                 "이글코리아",
+                                "씨엔에프",
                               ].some((word) => endCompanyName.includes(word)) &&
                               endCompanyName !== "미래엔코스메틱"
                                 ? "animate-blink text-gray-500"
