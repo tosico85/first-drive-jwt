@@ -1309,7 +1309,7 @@ const CargoList = () => {
                             endCompanyName.includes(word)
                           ) && (
                             <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
-                              5시 30분까지 마감/이후 하차불가
+                              5시 30분 이전입차/이후 하차불가
                             </div>
                           )}
 
