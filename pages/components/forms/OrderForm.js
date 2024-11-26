@@ -660,8 +660,11 @@ export default function OrderForm({
       endAddress,
       change_dtm,
       change_user,
+
       ...rest
     }) => rest)(getValues());
+
+    console.log("change_us5555er value:", change_user);
 
     cargoOrder = checkboxValueReset(cargoOrder);
     cargoOrder = filterTelNoHyphen(cargoOrder);
