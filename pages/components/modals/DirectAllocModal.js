@@ -29,6 +29,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
 
   // 차주정보 map
   const cjIterator = [
+    { varName: "fare", korName: "관리자용", required: true },
     { varName: "cjName", korName: "이름", required: true },
     { varName: "cjPhone", korName: "전화번호", required: true },
     { varName: "cjCarNum", korName: "차량번호", required: true },
@@ -41,7 +42,6 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
     { varName: "fareView", korName: "화주용", required: true },
     { varName: "adminMemo", korName: "관리자메모", required: false },
     { varName: "ordNo", korName: "오더번호", required: false },
-    { varName: "fare", korName: "관리자용", required: true },
     { varName: "addFare", korName: "추가요금", required: false },
     { varName: "addFareReason", korName: "추가사유", required: false },
   ];
