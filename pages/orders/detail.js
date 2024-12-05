@@ -339,9 +339,8 @@ export default function Detail() {
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   <div>
-                    {`${cargoOrder.startWide} ${cargoOrder.startSgg} ${cargoOrder.startDong}`}
+                    {`${cargoOrder.startWide} ${cargoOrder.startSgg} ${cargoOrder.startDong} ${cargoOrder.startDetail}`}
                   </div>
-                  <div>{`${cargoOrder.startDetail}`}</div>
                 </dd>
               </div>
 
@@ -402,9 +401,8 @@ export default function Detail() {
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
                   <div>
-                    {`${cargoOrder.endWide} ${cargoOrder.endSgg} ${cargoOrder.endDong}`}
+                    {`${cargoOrder.endWide} ${cargoOrder.endSgg} ${cargoOrder.endDong} ${cargoOrder.endDetail}`}
                   </div>
-                  <div>{`${cargoOrder.endDetail}`}</div>
                 </dd>
               </div>
               <div className="px-4 py-4 lg:grid lg:grid-cols-3 lg:gap-4 lg:px-0">
