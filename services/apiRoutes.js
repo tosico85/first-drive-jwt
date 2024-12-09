@@ -21,7 +21,7 @@ const USER_ADDRESS_DEL = "/user/address/del"; //주소 등록 (상하차지구�
 const USER_BOOKMARK_LIST = "/user/bookmark/list"; //주소목록 조회
 const USER_BOOKMARK_ADD = "/user/bookmark/add"; //주소 등록 (계정, 거래처명로 insert처리)
 const USER_BOOKMARK_MERGE = "/user/bookmark/merge"; //주소 등록 (계정, 거래처명로 merge처리)
-const USER_BOOKMARK_UPDATE = "/user/bookmark/upd상ate"; //주소 등록 (계정, 거래처명로 update처리)
+const USER_BOOKMARK_UPDATE = "/user/bookmark/update"; //주소 등록 (계정, 거래처명로 update처리)
 const USER_BOOKMARK_DEL = "/user/bookmark/del"; //주소 등록 (계정, 거래처명로 delete처리)
 
 //ADMIN APIs  (TO-DO)
