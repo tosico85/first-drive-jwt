@@ -1469,16 +1469,34 @@ const CargoList = () => {
                             </p>
                           )}
                         </div>
+
+                        {(create_user === "brglobal@brglobal.kr" ||
+                          create_user === "hsy5003@hanmail.net") &&
+                          ordStatus === "배차완료" && (
+                            <div>
+                              <p className="text-sm font-semibold leading-6 text-blue-600">
+                                {`운임 : ${Number(
+                                  fareView
+                                ).toLocaleString()}원`}
+                              </p>
+                              {addFare > 0 && (
+                                <p className="text-sm font-semibold leading-6 text-red-400">
+                                  {`추가운임 : ${Number(
+                                    addFare
+                                  ).toLocaleString()}원`}
+                                </p>
+                              )}
+                            </div>
+                          )}
+
                         {isAdmin && (
                           <div>
                             <p className="text-sm font-semibold leading-6 text-red-500">
                               {`요금(관리자용) : ${fare}`}
                             </p>
-
                             <p className="text-sm font-semibold leading-6 text-purple-400">
                               {`요금(고객용) : ${fareView}`}
                             </p>
-
                             <p className="text-sm font-semibold leading-6 text-blue-500">
                               {`담당 : ${
                                 {
