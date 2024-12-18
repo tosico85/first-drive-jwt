@@ -1470,8 +1470,9 @@ const CargoList = () => {
                           )}
                         </div>
 
-                        {(create_user === "brglobal@brglobal.kr" ||
-                          create_user === "hsy5003@hanmail.net") &&
+                        {!isAdmin &&
+                          (create_user === "brglobal@brglobal.kr" ||
+                            create_user === "hsy5003@hanmail.net") &&
                           ordStatus === "배차완료" && (
                             <div>
                               <p className="text-sm font-semibold leading-6 text-blue-600">
@@ -1492,11 +1493,22 @@ const CargoList = () => {
                         {isAdmin && (
                           <div>
                             <p className="text-sm font-semibold leading-6 text-red-500">
-                              {`요금(관리자용) : ${fare}`}
+                              {`요금(관리자용) : ${Number(
+                                fare
+                              ).toLocaleString()}원`}
                             </p>
                             <p className="text-sm font-semibold leading-6 text-purple-400">
-                              {`요금(고객용) : ${fareView}`}
+                              {`요금(고객용) : ${Number(
+                                fareView
+                              ).toLocaleString()}원`}
                             </p>
+                            {addFare > 0 && (
+                              <p className="text-sm font-semibold leading-6 text-green-500">
+                                {`추가요금 : ${Number(
+                                  addFare
+                                ).toLocaleString()}원`}
+                              </p>
+                            )}
                             <p className="text-sm font-semibold leading-6 text-blue-500">
                               {`담당 : ${
                                 {
@@ -1518,6 +1530,7 @@ const CargoList = () => {
                             </p>
                           </div>
                         )}
+
                         <p className="text-sm font-semibold leading-6 text-gray-500">
                           {userMemo && `사용자메모 : ${userMemo || ""}`}
                         </p>
