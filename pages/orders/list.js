@@ -83,32 +83,33 @@ const CargoList = () => {
 
       // 엑셀 헤더 추가
       const headerRow = worksheet.addRow([
-        "주문 번호",
+        isAdmin ? "전산번호" : "",
+        "오더번호",
+        isAdmin ? "회원아이디" : "",
+        "화물상태",
+        "상차일",
+        "하차일",
+        "등록일시",
         "상차지 업체명",
         "하차지 업체명",
         "상차지",
         "하차지",
-        //"혼적여부",
-        //"긴급여부",
-        "왕복여부",
         "차량종류",
-        //"화물량",
-        "상차일",
-        "하차일",
-        "화물상태",
-        "등록일시",
-        "차주명",
-        "차주연락처",
         "운임료",
         "추가운임료",
-        "추가운임 사유",
-        "사용자메모",
-        "화물내용",
         isAdmin ? "운임료(관리자용)" : "",
-        isAdmin ? "회원아이디" : "",
-        isAdmin ? "차량정보" : "",
-        isAdmin ? "관리번호" : "",
+        "사용자메모",
         isAdmin ? "관리자메모" : "",
+        "추가운임 사유",
+        "왕복여부",
+        "혼적여부",
+        "긴급여부",
+        "착불여부",
+        "차주명",
+        "차주연락처",
+        "차량번호",
+        "화물내용",
+        "배차경로",
       ]);
       headerRow.font = { bold: true };
 
@@ -168,42 +169,52 @@ const CargoList = () => {
       const filteredData = filteredCargoList();
 
       filteredData.forEach((item, index) => {
-        // 엑셀 행 추가
+        // adminMemo 필터링 처리 (null 체크 추가)
+        let adminMemoText = "";
+        if (isAdmin && item.adminMemo) {
+          const keywords = ["인성", "화물24", "원콜", "화물맨"];
+          const matched = keywords.filter((keyword) =>
+            item.adminMemo.includes(keyword)
+          );
+          adminMemoText =
+            matched.length > 0 ? matched.join(",") : item.adminMemo;
+        }
+
+        // 엑셀 행 추가 (item.cargoDsc 다음에 adminMemoText 추가)
         const row = worksheet.addRow([
+          item.cargo_seq,
           item.ordNo,
+          isAdmin ? item.create_user : "",
+          item.ordStatus,
+          `${item.startPlanDt} ${item.startPlanHour}:${item.startPlanMinute}`,
+          `${item.endPlanDt} ${item.endPlanHour}:${item.endPlanMinute}`,
+          item.create_dtm,
           item.startCompanyName,
           item.endCompanyName,
           `${item.startWide} ${item.startSgg} ${item.startDong}`,
           `${item.endWide} ${item.endSgg} ${item.endDong}`,
-          //item.multiCargoGub,
-          //item.urgent,
-          item.shuttleCargoInfo,
           `${item.cargoTon}톤 ${item.truckType}`,
-          //item.cargoTon,
-          `${item.startPlanDt} ${item.startPlanHour}:${item.startPlanMinute}`,
-          `${item.endPlanDt} ${item.endPlanHour}:${item.endPlanMinute}`,
-          item.ordStatus,
-          item.create_dtm,
-          item.cjName,
-          item.cjPhone,
           item.fareView,
           item.addFare,
-          item.addFareReason,
-          item.userMemo,
-          item.cargoDsc,
           isAdmin ? item.fare : "",
-          isAdmin ? item.create_user : "",
-          isAdmin
-            ? `${item.cjCarNum}-${item.cjTruckType}-${item.cjCargoTon}-${item.cjName}-${item.cjPhone}`
-            : "",
-          isAdmin ? item.cargo_seq : "",
+          item.userMemo,
           isAdmin ? item.adminMemo : "",
+          item.addFareReason,
+          item.shuttleCargoInfo,
+          item.multiCargoGub,
+          item.urgent,
+          item.farePaytype === "선착불" ? item.farePaytype : "",
+          item.cjName,
+          item.cjPhone,
+          item.cjCarNum,
+          item.cargoDsc,
+          isAdmin ? adminMemoText : "",
         ]);
 
-        // 각 셀에 테두리 스타일 적용
-        for (let colNumber = 1; colNumber <= 15; colNumber++) {
-          setBorderStyle(row.getCell(colNumber), { style: "thin" });
-        }
+        // 각 셀에 테두리 스타일 적용 (행 전체 셀에 대해 적용)
+        row.eachCell({ includeEmpty: true }, (cell) => {
+          setBorderStyle(cell, { style: "thin" });
+        });
       });
 
       const buffer = await workbook.xlsx.writeBuffer();
