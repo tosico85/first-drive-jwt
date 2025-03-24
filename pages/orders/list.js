@@ -109,7 +109,7 @@ const CargoList = () => {
         "차주연락처",
         "차량번호",
         "화물내용",
-        "배차경로",
+        isAdmin ? "배차경로" : "",
       ]);
       headerRow.font = { bold: true };
 
