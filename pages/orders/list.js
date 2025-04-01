@@ -499,7 +499,7 @@ const CargoList = () => {
     };
 
     if (cargoItem) {
-      const clipboardText = `${isAdmin ? "배차정보 전달 드립니다. \n" : ""}${
+      const clipboardText = `${isAdmin ? "배차정보 전달 드립니다. \n\n" : ""}${
         cargoItem.startCompanyName
       } > ${cargoItem.endCompanyName} \n\n${cargoItem.cjName} \n${
         cargoItem.cjPhone
