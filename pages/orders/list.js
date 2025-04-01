@@ -499,7 +499,7 @@ const CargoList = () => {
     };
 
     if (cargoItem) {
-      const clipboardText = `- 차량정보 \n${cargoItem.cjName} \n${cargoItem.cjPhone}\n${cargoItem.cjCarNum}\n${cargoItem.cjCargoTon}톤/${cargoItem.cjTruckType}\n`;
+      const clipboardText = `${cargoItem.startCompanyName} > ${cargoItem.endCompanyName} \n${cargoItem.cjName} \n${cargoItem.cjPhone}\n${cargoItem.cjCarNum}\n${cargoItem.cjCargoTon}톤/${cargoItem.cjTruckType}\n`;
       try {
         navigator.clipboard.writeText(clipboardText);
       } catch (err) {

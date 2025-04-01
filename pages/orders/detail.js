@@ -677,13 +677,6 @@ export default function Detail() {
             >
               차주전송
             </button>
-            <button
-              type="button"
-              className="rounded-md bg-buttonGreen px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
-              onClick={copyToClipboardbibi}
-            >
-              비비퀵
-            </button>
           </>
         )}
 
