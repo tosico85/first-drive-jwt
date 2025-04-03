@@ -86,7 +86,14 @@ export default function OrderForm({
   const PAY_TYPE_LIST = ["선착불", "인수증", "카드"];
 
   //react-form 관련
-  const methods = useForm({ mode: "onSubmit" });
+  const methods = useForm({
+    mode: "onSubmit",
+    defaultValues: {
+      firstType: "01",
+      frgton: "0", // 여기서 기본값 0 지정
+      // 다른 필드 기본값들...
+    },
+  });
   const {
     reset,
     register,
@@ -2802,7 +2809,6 @@ export default function OrderForm({
                               })}
                               className="block w-full rounded-sm border-0 p-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             >
-                              <option value={""}>의뢰자 구분</option>
                               <option value={"01"}>일반화주</option>
                               <option value={"02"}>주선/운송사</option>
                             </select>
@@ -2818,6 +2824,7 @@ export default function OrderForm({
                               {...register("farePaytype", {
                                 required: `운송료 지불구분을 입력해주세요`,
                               })}
+                              defaultValue="인수증"
                               className="block w-full rounded-sm border-0 p-2 shadow-sm placeholder:text-gray-400 bg-mainInputColor focus:bg-mainInputFocusColor outline-none"
                             >
                               <option value="">운송료 지불구분</option>
@@ -2860,6 +2867,7 @@ export default function OrderForm({
                           <div className="flex gap-x-2">
                             <Label title={"원화주명"} required={true} />
                             <input
+                              defaultValue="00000000"
                               {...register("firstShipperNm", {
                                 required: "원화주 명을 입력해주세요.",
                               })}
@@ -2876,6 +2884,7 @@ export default function OrderForm({
                           <div className="flex gap-x-2">
                             <Label title={"전화번호"} required={true} />
                             <input
+                              defaultValue="00000000"
                               {...register("firstShipperInfo", {
                                 required: "원화주 전화번호를 입력해주세요.",
                               })}
@@ -2893,6 +2902,7 @@ export default function OrderForm({
                           <div className="flex gap-x-2">
                             <Label title={"사업자번호"} required={true} />
                             <input
+                              defaultValue="000000"
                               {...register("firstShipperBizNo", {
                                 required:
                                   getValues("firstType") === "02"
