@@ -1231,7 +1231,7 @@ const CargoList = () => {
                             startCompanyName.includes(word)
                           ) && (
                             <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
-                              주소확인필요/인천 남동 고잔동 676-6
+                              우측 주소 확인후 진행 /인천 남동 고잔동 676-6
                             </div>
                           )}
 
@@ -1351,7 +1351,7 @@ const CargoList = () => {
                             endCompanyName.includes(word)
                           ) && (
                             <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
-                              주소확인필요/인천 남동 고잔동 676-6
+                              우측 주소 확인후 진행 /인천 남동 고잔동 676-6
                             </div>
                           )}
 
