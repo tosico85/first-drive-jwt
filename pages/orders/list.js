@@ -1308,6 +1308,7 @@ const CargoList = () => {
                                 "코리아나",
                                 "리더스코스메틱",
                                 "정코스",
+                                "일진코스메틱",
                               ].some((word) => endCompanyName.includes(word)) &&
                               endCompanyName !== "미래엔코스메틱"
                                 ? "animate-blink text-gray-500"
@@ -1357,6 +1358,15 @@ const CargoList = () => {
                               검수있음/5시40분이전 도착해야함
                             </div>
                           )}
+                          {["일진코스메틱"].some((word) =>
+                            endCompanyName.includes(word)
+                          ) && (
+                            <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
+                              검수있음/보통 한시간정도걸림/차주가 화주님을
+                              귀찮게 하지 않도록 해주세요.
+                            </div>
+                          )}
+
                           {["서울화장품"].some((word) =>
                             endCompanyName.includes(word)
                           ) && (
