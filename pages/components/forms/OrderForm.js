@@ -2566,7 +2566,7 @@ export default function OrderForm({
                               type="checkbox"
                               className="h-4 w-4"
                             />
-                            <span className="font-medium">알람끄기</span>
+                            <span className="font-medium">카톡끄기</span>
                           </label>
                         </div>
                       </fieldset>
