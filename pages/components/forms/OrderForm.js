@@ -515,6 +515,7 @@ export default function OrderForm({
       { key: "multiCargoGub", value: "혼적" },
       { key: "urgent", value: "긴급" },
       { key: "shuttleCargoInfo", value: "왕복" },
+      { key: "muteAlert", value: "Y" }, // ← 이 줄을 추가
     ].forEach((item) => {
       object[item.key] = object[item.key] ? item.value : "";
     });
@@ -661,43 +662,44 @@ export default function OrderForm({
    * - 화물 상태에 따른 호출 API를 다르게 하여 호출
    */
   const updateCargoOrder = async () => {
-    const cargoOrder = (({
-      ordStatus,
+    // 1) 폼의 모든 값을 가져옵니다.
+    const values = getValues();
+
+    // 2) DB에 없는 필드들(startAddress, endAddress 등)을 구조분해할당으로 제외합니다.
+    const {
       startAddress,
       endAddress,
       change_dtm,
-      change_user,
+      ordStatus,
+      create_dtm,
+      fee,
+      alarm_talk,
+      delete_yn,
+      // ...필요에 따라 더 빼야 할 필드가 있으면 여기에 추가
+      ...restValues
+    } = values;
 
-      ...rest
-    }) => rest)(getValues());
+    // 3) change_user만 별도 추출하고 나머지를 cargoOrder로 사용합니다.
+    const { change_user, ...payload } = restValues;
+    console.log("change_user:", change_user);
 
-    console.log("change_us5555er value:", change_user);
-
-    cargoOrder = checkboxValueReset(cargoOrder);
+    // 4) 체크박스·전화번호 처리
+    let cargoOrder = checkboxValueReset(payload);
     cargoOrder = filterTelNoHyphen(cargoOrder);
 
-    console.log(cargoOrder);
-
-    /**
-     * 1. 화주가 접수상태의 화물 수정
-     * 2. 관리자가 접수상태의 화물/운송료 정보 수정
-     * 3. 관리자가 배차신청 상태의 화물정보 수정
-     */
-    const url = apiPaths.custReqModCargoOrder;
+    // 5) URL 결정
+    let url = apiPaths.custReqModCargoOrder;
     if (isAdmin) {
-      if (isDirectApi) {
-        url = apiPaths.apiOrderMod;
-      } else {
-        url = apiPaths.adminModCargoOrder;
-      }
+      url = isDirectApi ? apiPaths.apiOrderMod : apiPaths.adminModCargoOrder;
     }
 
-    const { result, resultCd, code, message } = await requestServer(
-      url,
-      cargoOrder
-    );
+    // 6) API 호출 — 이제 payload에 DB 없는 칼럼이 없습니다.
+    const { result, resultCd, code, message } = await requestServer(url, {
+      ...cargoOrder,
+      change_user, // 필요하면 넣고, 아니면 빼도 됩니다.
+    });
 
-    // API의 경우 리턴 양식이 다름
+    // 7) 응답 처리
     if (isDirectApi) {
       if (code === 1) {
         alert("배차 신청정보가 수정되었습니다.");
@@ -1608,6 +1610,7 @@ export default function OrderForm({
                   className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
               </div>
+
               <div className="mt-3">
                 <fieldset>
                   <div className="grid grid-flow-col justify-stretch gap-x-2">
@@ -2545,6 +2548,26 @@ export default function OrderForm({
                               <label className="font-medium">왕복</label>
                             </div>
                           </div>
+                          {/* 새로 추가된 알람끄기 */}
+                          {/* 알람끄기 */}
+                          <label
+                            className={
+                              "flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer " +
+                              (watch("muteAlert") /*이 줄을 추가*/
+                                ? "border-2 border-red-600 text-red-600"
+                                : "border border-gray-300 text-gray-700")
+                            }
+                            onClick={() =>
+                              setValue("muteAlert", !getValues("muteAlert"))
+                            }
+                          >
+                            <input
+                              {...register("muteAlert")}
+                              type="checkbox"
+                              className="h-4 w-4"
+                            />
+                            <span className="font-medium">알람끄기</span>
+                          </label>
                         </div>
                       </fieldset>
                     </div>
