@@ -25,6 +25,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
     addFareReason: useInput(cargoOrder.addFareReason || ""),
     adminMemo: useInput(cargoOrder.adminMemo || ""),
     ordNo: useInput(cargoOrder.ordNo || ""),
+    muteAlert: useInput(cargoOrder.muteAlert || false, "boolean"), // ← 이 줄을 추가
   };
 
   // 차주정보 map
@@ -133,6 +134,7 @@ const DirectAllocModal = ({ onCancel, onComplete, paramObj: cargoOrder }) => {
       endCompanyName: cargoOrder.endCompanyName,
       create_user: cargoOrder.create_user,
       change_user: userInfo.email,
+      muteAlert: inputMap.muteAlert.value, // ← 이 줄을 추가
     };
 
     const result = await requestServer(apiPaths.adminDirectAlloc, paramObj);
