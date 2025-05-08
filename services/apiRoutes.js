@@ -42,6 +42,7 @@ const ADMIN_MOD_GROUP = "/admin/mod/group"; //그룹 관리(수정)
 const ADMIN_DEL_GROUP = "/admin/del/group"; //그룹 관리(삭제)
 const ADMIN_DIRECT_ALLOC = "/admin/direct/alloc"; //수기 배차(접수중=>배차완료)
 const ADMIN_CHANGE_PASSWORD = "/admin/change/password"; //사용자 비번 변경
+const ADMIN_GET_PAST_ALLOC_FARE = "/admin/get/pastAllocFare"; // 과거 배차 운임 조회
 
 //Call24 APIs (ADMIN)
 const API_ORDER_ADD = "/api/order/addOrder"; //화물등록
@@ -113,6 +114,9 @@ const apiPaths = {
   adminDelGroup: ADMIN_DEL_GROUP,
   adminDirectAlloc: ADMIN_DIRECT_ALLOC,
   adminChangePassword: ADMIN_CHANGE_PASSWORD,
+
+  // 과거 배차 운임 조회
+  adminGetPastAllocFare: ADMIN_GET_PAST_ALLOC_FARE,
 
   // Cust
   custReqAddCargoOrder: CUST_REQ_ADD_CARGO_ORDER,

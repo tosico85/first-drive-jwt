@@ -311,6 +311,7 @@ export default function Detail() {
           cargo_seq={cargoOrder.cargo_seq}
           onCancel={closeModal}
           onComplete={callbackModal}
+          style={customModalStyles}
         />
       </Modal>
       <Modal
