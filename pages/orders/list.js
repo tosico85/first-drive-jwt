@@ -110,7 +110,8 @@ const CargoList = () => {
         "차주연락처",
         "차량번호",
         "화물내용",
-        isAdmin ? "배차경로" : "",
+        isAdmin ? "관리자메모" : "",
+        isAdmin ? "배차담당자" : "",
       ]);
       headerRow.font = { bold: true };
 
@@ -141,6 +142,7 @@ const CargoList = () => {
         isAdmin ? { width: 15 } : 0, // 아이디
         isAdmin ? { width: 15 } : 0, // 차량번호
         isAdmin ? { width: 15 } : 0, // 관리번호
+        isAdmin ? { width: 15 } : 0, // 관리자용메모
         isAdmin ? { width: 15 } : 0, // 관리자용메모
       ];
 
@@ -211,6 +213,7 @@ const CargoList = () => {
           item.cjCarNum,
           item.cargoDsc,
           isAdmin ? adminMemoText : "",
+          isAdmin ? item.change_user : "",
         ]);
 
         // 각 셀에 테두리 스타일 적용 (행 전체 셀에 대해 적용)
