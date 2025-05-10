@@ -35,7 +35,42 @@ const CargoList = () => {
   const [isAddReceiptModalOpen, setIsAddReceiptModalOpen] = useState(false);
   const [isViewReceiptModalOpen, setIsViewReceiptModalOpen] = useState(false);
 
+  // ① 과거 운임 10건 저장용
+  const [pastFares, setPastFares] = useState([]);
+  const [loadingPast, setLoadingPast] = useState(false);
+
   //const [companySearch, setCompanySearch] = useState("");
+  const [hoveredCargoSeq, setHoveredCargoSeq] = useState(null);
+
+  const fetchPastFares = async (cargoSeq) => {
+    setLoadingPast(true);
+    try {
+      const { resultCd, data } = await requestServer(
+        apiPaths.adminGetPastAllocFare,
+        { cargo_seq: cargoSeq }
+      );
+      if (resultCd === "00") setPastFares(data);
+      else setPastFares([]);
+    } catch {
+      setPastFares([]);
+    }
+    setLoadingPast(false);
+  };
+
+  const formatDateHour = (isoString) => {
+    const d = new Date(isoString);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    const h = String(d.getHours()).padStart(2, "0");
+    return `${y}-${m}-${day} ${h}시`;
+  };
+
+  // 숫자에 콤마 추가
+  const formatNumber = (num) => {
+    if (num == null) return "";
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
 
   // 조회 조건 set
   let searchOptions = {
@@ -704,7 +739,7 @@ const CargoList = () => {
                     title={"기간입력"}
                   />
                 </div>
-                <div className="z-0">
+                <div className="z-1">
                   <DateInput
                     dateValue={startSearchDt}
                     onDateChange={setStartSearchDt}
@@ -713,7 +748,7 @@ const CargoList = () => {
                   />
                 </div>
                 <span>~</span>
-                <div className="z-0">
+                <div className="z-1">
                   <DateInput
                     dateValue={endSearchDt}
                     onDateChange={setEndSearchDt}
@@ -1763,35 +1798,119 @@ const CargoList = () => {
                             />
                           </svg>
                         </div>
-                        {isAdmin /* && ordStatus == "화물접수" */ && (
+                        {isAdmin && (
                           <>
+                            {/* 배차 버튼 + 호버 팝업 래퍼 */}
                             <div
-                              className="text-sm font-semibold flex items-center justify-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleDirectAlloc(cargo_seq);
+                              className="relative inline-block w-full"
+                              onMouseEnter={() => {
+                                setHoveredCargoSeq(cargo_seq);
+                                fetchPastFares(cargo_seq); // ← 여기에 호출을 추가하세요
                               }}
+                              onMouseLeave={() => setHoveredCargoSeq(null)}
                             >
-                              <p className="shrink-0">배차</p>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="w-6 h-6"
+                              {/* 실제 배차 버튼 */}
+                              <div
+                                className="text-sm font-semibold flex items-center justify-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 cursor-pointer hover:shadow-md"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDirectAlloc(cargo_seq);
+                                }}
                               >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
-                                />
-                              </svg>
-                            </div>
-                            {ordStatus == "배차완료" &&
-                              receipt_add_yn == "" && (
+                                <p className="shrink-0">배차</p>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth={1.5}
+                                  stroke="currentColor"
+                                  className="w-6 h-6"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 
+               0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 
+               4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 
+               0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 
+               17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25
+               M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048
+               -.987-1.106a48.554 48.554 0 00-10.026 0 1.106 
+               1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 
+               4.5v-4.5m0 0h-12"
+                                  />
+                                </svg>
+                              </div>
+
+                              {/* 호버할 때만 나타나는 팝업 */}
+                              {hoveredCargoSeq === cargo_seq && (
                                 <div
-                                  className="text-sm font-semibold flex items-center justify-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 hover:cursor-pointer hover:shadow-md"
+                                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 p-2 bg-white border border-gray-300 shadow-lg z-50"
+                                  style={{ width: 280 }}
+                                >
+                                  <div className="text-sm font-bold mb-1">
+                                    최근 10건 과거 운임
+                                  </div>
+                                  {loadingPast ? (
+                                    <p className="text-center text-xs">
+                                      로딩 중…
+                                    </p>
+                                  ) : pastFares.length > 0 ? (
+                                    <table className="w-full text-xs border-collapse">
+                                      <thead>
+                                        <tr>
+                                          <th className="border px-1">
+                                            생성일시
+                                          </th>
+                                          <th className="border px-1">
+                                            운송료
+                                          </th>
+                                          <th className="border px-1">
+                                            화주용 운임
+                                          </th>
+                                          <th className="border px-1">
+                                            추가운임
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {pastFares.map((f, idx) => (
+                                          <tr
+                                            key={idx}
+                                            className={
+                                              idx % 2 === 0 ? "bg-gray-50" : ""
+                                            }
+                                          >
+                                            <td className="border px-1">
+                                              {formatDateHour(f.fetchedAt)}
+                                            </td>
+                                            <td className="border px-1">
+                                              {formatNumber(f.fare)}
+                                            </td>
+                                            <td className="border px-1">
+                                              {formatNumber(f.fareView)}
+                                            </td>
+                                            <td className="border px-1">
+                                              {formatNumber(f.addFare)}
+                                            </td>
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
+                                  ) : (
+                                    <p className="text-center text-xs text-gray-500">
+                                      조회된 과거 운임이 없습니다.
+                                    </p>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* 인수증 버튼 (배차완료 상태에서만) */}
+                            {ordStatus === "배차완료" &&
+                              receipt_add_yn === "" && (
+                                <div
+                                  className="text-sm font-semibold flex items-center justify-center gap-x-3 w-full text-slate-500 border border-slate-500 rounded-md py-1 px-3 cursor-pointer hover:shadow-md mt-2"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     handleReceiptUpload(cargo_seq);
@@ -1809,7 +1928,11 @@ const CargoList = () => {
                                     <path
                                       strokeLinecap="round"
                                       strokeLinejoin="round"
-                                      d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15"
+                                      d="M9 8.25H7.5a2.25 2.25 0 0 
+               0-2.25 2.25v9a2.25 2.25 0 0 
+               0 2.25 2.25h9a2.25 2.25 0 0 
+               0 2.25-2.25v-9a2.25 2.25 0 0 
+               0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15"
                                     />
                                   </svg>
                                 </div>
