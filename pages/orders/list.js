@@ -739,7 +739,7 @@ const CargoList = () => {
                     title={"기간입력"}
                   />
                 </div>
-                <div className="z-1">
+                <div className="z-">
                   <DateInput
                     dateValue={startSearchDt}
                     onDateChange={setStartSearchDt}
@@ -809,6 +809,16 @@ const CargoList = () => {
                     엑셀
                   </button>
                 </div>
+                {isAdmin && (
+                  <div className="shrink-0 ml-3">
+                    <button
+                      onClick={handleExportClick}
+                      className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
+                    >
+                      정산서
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
             <div className="grid grid-cols-5">
@@ -1348,6 +1358,7 @@ const CargoList = () => {
                                 "정코스",
                                 "일진코스메틱",
                                 "화성코스메틱",
+                                "하나테크",
                               ].some((word) => endCompanyName.includes(word)) &&
                               endCompanyName !== "미래엔코스메틱"
                                 ? "animate-blink text-gray-500"
@@ -1539,6 +1550,14 @@ const CargoList = () => {
                           ) && (
                             <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
                               5시 이전도착/이후 절대 입고불가
+                            </div>
+                          )}
+
+                          {["하나테크"].some((word) =>
+                            endCompanyName.includes(word)
+                          ) && (
+                            <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
+                              수작업
                             </div>
                           )}
 
