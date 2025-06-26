@@ -1359,6 +1359,7 @@ const CargoList = () => {
                                 "일진코스메틱",
                                 "화성코스메틱",
                                 "하나테크",
+                                "영일 스크린",
                               ].some((word) => endCompanyName.includes(word)) &&
                               endCompanyName !== "미래엔코스메틱"
                                 ? "animate-blink text-gray-500"
@@ -1406,6 +1407,13 @@ const CargoList = () => {
                           ) && (
                             <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
                               검수있음
+                            </div>
+                          )}
+                          {["영일 스크린"].some((word) =>
+                            endCompanyName.includes(word)
+                          ) && (
+                            <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
+                              지게차 없음/수작업
                             </div>
                           )}
 
@@ -1687,12 +1695,12 @@ const CargoList = () => {
                             <p className="text-sm font-semibold leading-6 text-blue-500">
                               {`담당 : ${
                                 {
-                                  "hoi64310@naver.com": "안수빈",
+                                  "hoi64310@naver.com": "안동진",
                                   "pinkchina@naver.com": "신현서",
                                   "admin@naver.com": "곽용호",
                                   "maktoob9681@hanmail.net": "임성수",
                                   "whdtn9186@naver.com": "김종수",
-                                  "notalk1@naver.com": "안수빈",
+                                  "notalk1@naver.com": "안동진",
                                   "notalk2@naver.com": "신현서",
                                   "notalk3@naver.com": "임성수",
                                   "notalk@naver.com": "곽용호",
