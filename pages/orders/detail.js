@@ -268,6 +268,28 @@ export default function Detail() {
     }
   };
 
+  const copyStartAddress = async () => {
+    const { startWide, startSgg, startDong, startDetail } = cargoOrder;
+    const text = `${startWide} ${startSgg} ${startDong} ${startDetail}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      //      alert("주소가 복사되었습니다.");
+    } catch (err) {
+      console.error("복사 실패:", err);
+    }
+  };
+
+  const copyEndAddress = async () => {
+    const { endWide, endSgg, endDong, endDetail } = cargoOrder;
+    const text = `${endWide} ${endSgg} ${endDong} ${endDetail}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      //alert("하차지 주소가 복사되었습니다.");
+    } catch (err) {
+      console.error("복사 실패:", err);
+    }
+  };
+
   const copyToClipboard = async () => {
     // 클립보드에 복사할 내용 생성
     const {
@@ -339,8 +361,17 @@ export default function Detail() {
                   상차지 주소
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
-                  <div>
-                    {`${cargoOrder.startWide} ${cargoOrder.startSgg} ${cargoOrder.startDong} ${cargoOrder.startDetail}`}
+                  <div className="inline-flex items-center space-x-2">
+                    <span>
+                      {`${cargoOrder.startWide} ${cargoOrder.startSgg} ${cargoOrder.startDong} ${cargoOrder.startDetail}`}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={copyStartAddress}
+                      className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-100"
+                    >
+                      복사
+                    </button>
                   </div>
                 </dd>
               </div>
@@ -401,8 +432,17 @@ export default function Detail() {
                   하차지 주소
                 </dt>
                 <dd className="mt-1 text-sm leading-6 text-gray-700 lg:col-span-2 lg:mt-0">
-                  <div>
-                    {`${cargoOrder.endWide} ${cargoOrder.endSgg} ${cargoOrder.endDong} ${cargoOrder.endDetail}`}
+                  <div className="inline-flex items-center space-x-2">
+                    <span>
+                      {`${cargoOrder.endWide} ${cargoOrder.endSgg} ${cargoOrder.endDong} ${cargoOrder.endDetail}`}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={copyEndAddress}
+                      className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-100"
+                    >
+                      복사
+                    </button>
                   </div>
                 </dd>
               </div>
