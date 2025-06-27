@@ -1360,6 +1360,7 @@ const CargoList = () => {
                                 "화성코스메틱",
                                 "하나테크",
                                 "영일 스크린",
+                                "이용재",
                               ].some((word) => endCompanyName.includes(word)) &&
                               endCompanyName !== "미래엔코스메틱"
                                 ? "animate-blink text-gray-500"
@@ -1566,6 +1567,14 @@ const CargoList = () => {
                           ) && (
                             <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
                               수작업
+                            </div>
+                          )}
+
+                          {["이용재"].some((word) =>
+                            endCompanyName.includes(word)
+                          ) && (
+                            <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
+                              배차시 유의해주세요.클래임주의
                             </div>
                           )}
 
