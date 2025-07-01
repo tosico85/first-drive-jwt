@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import apiPaths from "../../services/apiRoutes";
 import Seo from "../components/Seo";
 import AuthContext from "../context/authContext";
+
 import {
   addCommas,
   formatDate,
@@ -19,6 +20,8 @@ export default function Detail() {
   const [cargoOrder, setCargoOrder] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAllocModalOpen, setIsAllocModalOpen] = useState(false);
+  const [dupModalOpen, setDupModalOpen] = useState(false);
+
   let isAdmin = userInfo.auth_code === "ADMIN";
 
   useEffect(() => {
@@ -218,22 +221,33 @@ export default function Detail() {
   const handleAdminChangeOrderStatus = async (e) => {
     e.preventDefault();
 
-    const { code, message } = await requestServer(
-      apiPaths.adminChangeOrderStatus,
-      {
-        cargo_seq: cargoOrder.cargo_seq,
-      }
+    // 1) 서버 응답 전체를 찍어보기 (디버깅용)
+    const resp = await requestServer(apiPaths.adminChangeOrderStatus, {
+      cargo_seq: cargoOrder.cargo_seq,
+    });
+    console.log("서버 응답:", resp);
+
+    // 2) 올바른 프로퍼티로 구조분해 할당
+    const { resultCd, result } = resp;
+
+    // 3) debug alert
+    /*    
+    alert(
+      `서버에서 받은 resultCd: ${resultCd}\n서버에서 받은 result: ${result}`
     );
-    if (code === -98) {
-      alert("메세지98");
+*/
+    // 4) resultCd가 "96"(DUP_ADMIN)일 때 → 모달 열기
+    if (resultCd === "96" || resultCd === 96) {
+      setDupModalOpen(true);
       return;
     }
 
-    if (code !== -99) {
+    // 5) 성공/실패 처리
+    if (resultCd === "00") {
       alert("화물 오더 상태가 변경되었습니다.");
       router.push("/orders/list");
     } else {
-      alert(message);
+      alert(result);
     }
   };
 
@@ -352,6 +366,49 @@ export default function Detail() {
           onComplete={callbackAllocModal}
         />
       </Modal>
+
+      <Modal
+        isOpen={dupModalOpen}
+        onRequestClose={() => setDupModalOpen(false)}
+        contentLabel="중복 알림"
+        style={{
+          content: {
+            top: "50%",
+            left: "50%",
+            width: "320px",
+            padding: "20px",
+            borderRadius: "8px",
+            transform: "translate(-50%, -50%)",
+          },
+        }}
+      >
+        <p
+          style={{
+            color: "red",
+            fontSize: "18px",
+            textAlign: "center",
+            marginBottom: "16px",
+          }}
+        >
+          이미 배차중 입니다.
+        </p>
+        <button
+          onClick={() => setDupModalOpen(false)}
+          style={{
+            display: "block",
+            margin: "0 auto",
+            padding: "8px 16px",
+            border: "none",
+            borderRadius: "4px",
+            backgroundColor: "#e74c3c",
+            color: "#fff",
+            cursor: "pointer",
+          }}
+        >
+          확인
+        </button>
+      </Modal>
+
       <div className="px-5 py-10 pb-20 bg-white">
         <div className="lg:px-4 px-0">
           <h3 className="text-base font-semibold leading-7 ">상차지 정보</h3>
