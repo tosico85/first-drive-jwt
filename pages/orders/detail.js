@@ -224,6 +224,10 @@ export default function Detail() {
         cargo_seq: cargoOrder.cargo_seq,
       }
     );
+    if (code === -98) {
+      alert("메세지98");
+      return;
+    }
 
     if (code !== -99) {
       alert("화물 오더 상태가 변경되었습니다.");
