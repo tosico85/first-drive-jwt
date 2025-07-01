@@ -34,6 +34,7 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
       alert("오류 발생~!!");
       return;
     }
+    // getValues()에 palletCount, inspectionRequired 포함됨
     const payload = { cargo_seq, ...getValues() };
     const { result, resultCd } = await requestServer(
       apiPaths.adminModCargoOrder,
@@ -42,8 +43,9 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
 
     if (resultCd === "00") {
       alert("화물 오더가 수정되었습니다.");
-      const [fare, fareView] = getValues(["fare", "fareView"]);
-      onComplete({ fare, fareView });
+      // 필요한 값들만 꺼내서 부모 콜백 전달
+      const { fare, fareView, palletCount, inspectionRequired } = getValues();
+      onComplete({ fare, fareView, palletCount, inspectionRequired });
     } else {
       alert(result);
     }
@@ -60,7 +62,6 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
   // mount 시, cargo_seq 기준으로 과거 운임 10건 조회
   useEffect(() => {
     if (!cargo_seq) return;
-
     (async () => {
       const { resultCd, data, result } = await requestServer(
         apiPaths.adminGetPastAllocFare,
@@ -76,13 +77,13 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
 
   return (
     <form onSubmit={handleSubmit(onValid, onInvalid)}>
-      {/* 운송료 입력 */}
       <div className="border-b border-gray-900/10 pb-8">
         <h2 className="text-lg font-semibold leading-7">운송료 정보</h2>
         <p className="mt-1 text-sm leading-6 mb-5 text-gray-600">
-          운송료를 입력해주세요.
+          필요한 정보를 입력해주세요.
         </p>
         <div className="grid grid-cols-1 gap-y-6">
+          {/* 운송료 */}
           <div>
             <label className="block text-sm font-medium leading-6">
               운송료
@@ -90,33 +91,61 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
             <input
               {...register("fare", { required: "운송료를 입력해주세요." })}
               type="number"
-              maxLength={10}
               placeholder="숫자만 입력하세요"
-              className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+              className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600"
             />
             <div className="text-red-500 text-center mt-1">
               {errors.fare?.message}
             </div>
           </div>
+          {/* 화주노출용 운임 */}
           <div>
             <label className="block text-sm font-medium leading-6">
               운송료(화주노출용)
             </label>
             <input
-              {...register("fareView", {
-                required: "운송료를 입력해주세요.",
-              })}
+              {...register("fareView", { required: "운송료를 입력해주세요." })}
               type="number"
-              maxLength={10}
               placeholder="숫자만 입력하세요"
-              className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+              className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600"
             />
             <div className="text-red-500 text-center mt-1">
               {errors.fareView?.message}
             </div>
           </div>
-
-          {/* 버튼을 운송료 입력 바로 아래에 배치 */}
+          {/* 파레트 수량 */}
+          <div>
+            <label className="block text-sm font-medium leading-6">
+              파레트 수량
+            </label>
+            <input
+              {...register("pallet_Count", {
+                required: "파레트 수량을 입력해주세요.",
+                min: { value: 0, message: "0개 이상 입력하세요." },
+              })}
+              type="number"
+              placeholder="파레트 개수 입력"
+              className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600"
+            />
+            <div className="text-red-500 text-center mt-1">
+              {errors.palletCount?.message}
+            </div>
+          </div>
+          {/* 검수 있음 체크박스 */}
+          <div className="flex items-center space-x-2">
+            <input
+              {...register("inspection_Required", {
+                setValueAs: (v) => (v ? 1 : 0),
+              })}
+              type="checkbox"
+              id="inspectionRequired"
+              className="h-4 w-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
+            />
+            <label htmlFor="inspectionRequired" className="text-sm font-medium">
+              검수 있음
+            </label>
+          </div>
+          {/* 버튼 그룹 */}
           <div className="flex justify-end gap-x-3 mt-4">
             <button
               type="button"
@@ -135,7 +164,7 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
         </div>
       </div>
 
-      {/* 최근 10건 과거 운임 리스트 */}
+      {/* 최근 10건 과거 운임 리스트 (변경 없음) */}
       <div className="mt-8">
         <h3 className="text-md font-medium mb-2">최근 10건 과거 운임</h3>
         {pastFares.length > 0 ? (
