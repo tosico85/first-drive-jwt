@@ -1364,6 +1364,7 @@ const CargoList = () => {
                                 "지앤텍",
                                 "비앤비코리아",
                                 "오션브리즈",
+                                "배쓰프로젝트",
                               ].some((word) => endCompanyName.includes(word)) &&
                               endCompanyName !== "미래엔코스메틱"
                                 ? "animate-blink text-gray-500"
@@ -1388,6 +1389,14 @@ const CargoList = () => {
                           ) && (
                             <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
                               하차지 수작업
+                            </div>
+                          )}
+                          {["배쓰프로젝트"].some((word) =>
+                            endCompanyName.includes(word)
+                          ) && (
+                            <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
+                              차량 높이 3.6M이하 차량만 입차가능/길이는
+                              확인해야함
                             </div>
                           )}
                           {["비앤비코리아"].some((word) =>
