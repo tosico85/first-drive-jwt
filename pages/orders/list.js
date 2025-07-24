@@ -21,6 +21,23 @@ import ReceiptUploadModal from "../components/modals/ReceiptUploadModal";
 import ReceiptViewModal from "../components/modals/ReceptViewModal";
 import { useGlobalContext } from "../../components/globalContext";
 
+export function formatDate_excel(dateInput) {
+  const d = new Date(dateInput);
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+export function formatYYYYMMDD(dateStr) {
+  // dateStr: "20250702"
+  if (!dateStr || dateStr.length !== 8) return "";
+  const y = dateStr.substr(0, 4);
+  const m = dateStr.substr(4, 2);
+  const d = dateStr.substr(6, 2);
+  return `${y}-${m}-${d}`;
+}
+
 const CargoList = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
   const { globalVariable, updateGlobalVariable } = useGlobalContext();
@@ -477,11 +494,24 @@ const CargoList = () => {
 
       // 8) 12행부터: 실데이터 삽입
       const dataList = filteredCargoList();
+      // summaryList[0].group_name 으로 회사명을 가져왔기 때문에
+      if (company === "데코큐비클" || company === "쎌바이오택") {
+        dataList.sort((a, b) => {
+          // YYYYMMDD 형식이라 문자열 비교로도 작동하지만, 안전하게 숫자로 변환
+          return parseInt(a.startPlanDt, 10) - parseInt(b.startPlanDt, 10);
+        });
+      }
+
       dataList.forEach((item, idx) => {
         const rowIdx = 12 + idx;
+        const dateCell =
+          company === "쎌바이오택"
+            ? formatYYYYMMDD(item.startPlanDt) // YYYY-MM-DD로 포맷
+            : formatDate_excel(item.create_dtm);
+
         const vals = [
           idx + 1,
-          formatDate(item.startPlanDt),
+          dateCell,
           item.startCompanyName,
           item.endCompanyName,
           `${item.cargoTon}톤 ${item.truckType}`,
