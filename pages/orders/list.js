@@ -2071,7 +2071,8 @@ const CargoList = () => {
 
                         {!isAdmin &&
                           (create_user === "brglobal@brglobal.kr" ||
-                            create_user === "hsy5003@hanmail.net") &&
+                            create_user === "hsy5003@hanmail.net" ||
+                            create_user === "bc137@hanmail.net") &&
                           ordStatus === "배차완료" && (
                             <div>
                               <p className="text-sm font-semibold leading-6 text-blue-600">
