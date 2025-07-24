@@ -272,8 +272,343 @@ const CargoList = () => {
     }
   };
 
+  const exportToExcelSummrary = async () => {
+    try {
+      const workbook = new ExcelJS.Workbook();
+      const sheet = workbook.addWorksheet("정산내역서");
+
+      // ▶ 사용자 조정 값: F열 폭 (원래 E열이던 곳)
+      const fColWidth = 25;
+
+      // ─── 요약용 리스트 한 번만 추출 ───
+      const summaryList = filteredCargoList();
+      let month = "";
+      let company = "";
+      if (summaryList.length > 0) {
+        const rawDate = summaryList[0].startPlanDt; // "YYYYMMDD"
+        const mm = rawDate.substr(4, 2); // "05"
+        month = String(parseInt(mm, 10)); // "5"
+
+        company = summaryList[0].group_name || "";
+      }
+      // ──────────────────────────────────
+
+      // 1) 타이틀 (B1–E1)
+      sheet.mergeCells("A1", "E1");
+      sheet.mergeCells("A3", "B3");
+      sheet.mergeCells("A4", "B4");
+
+      const titleCell = sheet.getCell("A1");
+      titleCell.value = `${month}월 차량배차 정산 내역서 (${company})`;
+
+      titleCell.font = { size: 14, bold: true };
+      titleCell.alignment = { vertical: "middle", horizontal: "left" };
+      sheet.getRow(1).height = 20;
+      sheet.getRow(7).height = 22;
+
+      // 2) 요약 영역 (B3–C4 & E3–F4)
+      sheet.getCell("B3").value = "항목";
+      sheet.getCell("C3").value = "금액 (VAT 포함)";
+      sheet.getCell("B4").value = `${month}월 차량비`;
+
+      //      sheet.getCell("C4").value = 5167800;
+      sheet.getCell("C4").numFmt = "#,##0";
+
+      sheet.getCell("E3").value = "입금계좌";
+      sheet.getCell("F3").value = "기업은행 : 052-114226-04-011 ㈜오성컨버전스";
+      sheet.getCell("E4").value = "결제일";
+      sheet.getCell("F4").value = "";
+
+      const outer = { style: "thin" };
+      const blueFill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFBDD7EE" },
+      };
+      const whiteFill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFFFFFFF" },
+      };
+
+      // 요약 외곽선 & 배경
+      // 파란 배경 & 테두리 적용 대상
+      ["B3", "C3", "E3", "E4", "F4"].forEach((addr) => {
+        const c = sheet.getCell(addr);
+        c.fill = blueFill;
+        c.border = { top: outer, left: outer, right: outer, bottom: outer };
+        c.font = { bold: true };
+        c.alignment = { vertical: "middle", horizontal: "center" };
+      });
+
+      // 흰 배경 & 테두리 적용 대상
+      ["B4", "C4"].forEach((addr) => {
+        const c = sheet.getCell(addr);
+        c.fill = whiteFill;
+        c.border = { top: outer, left: outer, right: outer, bottom: outer };
+        c.font = { bold: true };
+        c.alignment = { vertical: "middle", horizontal: "center" };
+      });
+
+      ["E3"].forEach((addr) => {
+        const c = sheet.getCell(addr);
+        c.border = { top: outer, left: outer, right: outer, bottom: outer };
+        c.fill = blueFill;
+        c.font = { bold: true };
+        c.alignment = { vertical: "middle", horizontal: "center" };
+      });
+      ["F4"].forEach((addr) => {
+        const c = sheet.getCell(addr);
+        c.border = { top: outer, left: outer, right: outer, bottom: outer };
+        c.fill = whiteFill;
+        c.font = { bold: true };
+        c.alignment = { vertical: "middle", horizontal: "center" };
+      });
+      // ─── F3에도 테두리 추가 ───
+      const f3 = sheet.getCell("F3");
+      f3.border = { top: outer, left: outer, right: outer, bottom: outer };
+      f3.value = "기업은행 : 052-114226-04-011 ㈜오성컨버전스";
+      f3.alignment = { vertical: "middle", horizontal: "center" };
+      f3.font = { bold: true };
+
+      sheet.getRow(3).height = 18;
+      sheet.getRow(4).height = 18;
+
+      // 3) 6행부터 빈 행 3개 삽입
+      sheet.spliceRows(6, 0, [], [], []);
+
+      // 4) 본문 헤더 (9행)
+      // B9: "월"
+      sheet.getCell("E6").value = "5월";
+      sheet.getCell("E6").fill = blueFill;
+      sheet.getCell("E6").font = { bold: true };
+      sheet.getCell("E6").alignment = {
+        vertical: "middle",
+        horizontal: "center",
+      };
+      sheet.getCell("E6").border = {
+        top: outer,
+        left: outer,
+        bottom: outer,
+        right: outer,
+      };
+
+      [
+        ["F6", "차량비"],
+        ["G6", "부가세"],
+        ["J6", "총액"],
+      ].forEach(([range, text]) => {
+        sheet.mergeCells(range);
+        const cell = sheet.getCell(range.split(":")[0]);
+        cell.value = text;
+        cell.fill = blueFill;
+        cell.font = { bold: true };
+        cell.alignment = { vertical: "middle", horizontal: "center" };
+        cell.border = { top: outer, left: outer, bottom: outer, right: outer };
+      });
+
+      [["H7:I7", "대외비"]].forEach(([range, text]) => {
+        sheet.mergeCells(range);
+        const cell = sheet.getCell(range.split(":")[0]);
+        cell.value = text;
+        cell.fill = blueFill;
+        cell.font = { bold: true };
+        cell.alignment = { vertical: "middle", horizontal: "center" };
+        cell.border = { top: outer, left: outer, bottom: outer, right: outer };
+      });
+
+      sheet.getRow(9).height = 25;
+
+      // 5) 본문 데이터 (10행)
+      sheet.mergeCells("F3:J3");
+      sheet.mergeCells("F4:J4");
+
+      [
+        ["E7", ""],
+        ["F7", 5162000],
+        ["G7", 516200],
+        ["J7", 5678200],
+      ].forEach(([addr, val]) => {
+        const c = sheet.getCell(addr);
+        c.value = val;
+        c.numFmt = "#,##0";
+        c.alignment = { vertical: "middle", horizontal: "center" };
+        c.border = { top: outer, left: outer, bottom: outer, right: outer };
+      });
+      sheet.getRow(10).height = 18;
+
+      // 6) 컬럼 너비 (A–H)
+      [5, 11, 20, 20, 12, 12, 12, 12, 12, 20, fColWidth].forEach((w, idx) => {
+        sheet.getColumn(idx + 1).width = w;
+      });
+
+      // ──────────────────────────────────────────────────
+      // ▼ 여기까지 1∼6단계: 기존 데이터와 위치 변경 없이 유지
+      // ──────────────────────────────────────────────────
+
+      // 7) 11행: 신규 테이블 헤더 삽입
+      const extraHeaders = [
+        "NO",
+        "날짜",
+        "픽업지",
+        "도착지",
+        "운송형태",
+        "견적",
+        "추가요금",
+        "실운임",
+        "착불수익",
+        "특이사항",
+      ];
+      sheet.spliceRows(11, 0, extraHeaders);
+      const hdrRow = sheet.getRow(11);
+      hdrRow.eachCell((cell) => {
+        cell.font = { bold: true };
+        cell.alignment = { vertical: "middle", horizontal: "center" };
+        cell.border = { top: outer, left: outer, bottom: outer, right: outer };
+        cell.fill = blueFill;
+      });
+      sheet.getRow(11).height = 20;
+
+      const lightRedFill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFFFCCCC" }, // 연한 붉은색
+      };
+
+      // 8) 12행부터: 실데이터 삽입
+      const dataList = filteredCargoList();
+      dataList.forEach((item, idx) => {
+        const rowIdx = 12 + idx;
+        const vals = [
+          idx + 1,
+          formatDate(item.startPlanDt),
+          item.startCompanyName,
+          item.endCompanyName,
+          `${item.cargoTon}톤 ${item.truckType}`,
+          Number(item.fareView), // 견적
+          Number(item.addFare), // 추가요금
+          Number(item.fare), // 실운임(관리자용 운임)
+          item.farePaytype === "착불" ? item.fareView : 0,
+          item.adminMemo || "",
+          item.userMemo || "",
+        ];
+        sheet.spliceRows(rowIdx, 0, vals);
+        const r = sheet.getRow(rowIdx);
+        r.eachCell((cell, col) => {
+          cell.alignment = { vertical: "middle", horizontal: "center" };
+          cell.border = {
+            top: outer,
+            left: outer,
+            bottom: outer,
+            right: outer,
+          };
+
+          const row = sheet.getRow(rowIdx);
+          row.eachCell((cell, col) => {
+            cell.font = { size: 10 };
+
+            // 3,4번 컬럼만 좌측 정렬
+            if (col === 3 || col === 4) {
+              cell.alignment = { vertical: "middle", horizontal: "left" };
+            } else {
+              cell.alignment = { vertical: "middle", horizontal: "center" };
+            }
+            cell.border = {
+              top: outer,
+              left: outer,
+              bottom: outer,
+              right: outer,
+            };
+            if ([6, 7, 8, 9].includes(col) && typeof cell.value === "number") {
+              cell.numFmt = '_(* #,##0_);_(* (#,##0);_(* "-"_);_(@_)'; // ← 회계 서식
+            }
+          });
+          row.height = 18;
+        });
+      });
+
+      // ──────────────────────────────────────────────
+      // ↓↓  수정된 부분 ↓↓
+
+      const startRow = 12;
+      const endRow = startRow + dataList.length - 1;
+
+      // F7: F12~F끝 + G12~G끝 합계
+      const f7 = sheet.getCell("F7");
+      f7.value = {
+        formula: `SUM(F${startRow}:F${endRow},G${startRow}:G${endRow})`,
+      };
+      f7.numFmt = "#,##0";
+      f7.alignment = { vertical: "middle", horizontal: "center" };
+      f7.border = { top: outer, left: outer, bottom: outer, right: outer };
+
+      // G7: F7의 10%
+      const g7 = sheet.getCell("G7");
+      g7.value = {
+        formula: `F7*0.1`,
+      };
+      g7.numFmt = "#,##0";
+      g7.alignment = { vertical: "middle", horizontal: "center" };
+      g7.border = { top: outer, left: outer, bottom: outer, right: outer };
+
+      // J7: F7 + G7
+      const j7 = sheet.getCell("J7");
+      j7.value = {
+        formula: `F7+G7`, // ← 수정된 부분: J7에 F7+G7 수식
+      };
+      j7.numFmt = "#,##0";
+      j7.alignment = { vertical: "middle", horizontal: "center" };
+      j7.border = { top: outer, left: outer, bottom: outer, right: outer };
+
+      const c4 = sheet.getCell("C4");
+      c4.value = { formula: "F7+G7" }; // ← F7과 G7 값을 더하는 수식
+      c4.numFmt = "#,##0";
+      c4.alignment = { vertical: "middle", horizontal: "center" };
+      c4.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        right: { style: "thin" },
+        bottom: { style: "thin" },
+      };
+      // ← 여기에 배경색 노란색 적용
+      c4.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFFFFF00" },
+      };
+
+      // ──────────────────────────────────────────────
+
+      sheet.eachRow((row, rowNumber) => {
+        if (rowNumber >= 6) {
+          [8, 9].forEach((col) => {
+            const cell = row.getCell(col);
+            cell.fill = lightRedFill;
+          });
+        }
+      });
+      // 9) 다운로드
+      const buffer = await workbook.xlsx.writeBuffer();
+      const blob = new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "정산내역서.xlsx";
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleExportClick = () => {
     exportToExcel();
+  };
+
+  const handleExportClickSummrary = () => {
+    exportToExcelSummrary();
   };
 
   const handlePeriodChange = (value) => {
@@ -812,7 +1147,7 @@ const CargoList = () => {
                 {isAdmin && (
                   <div className="shrink-0 ml-3">
                     <button
-                      onClick={handleExportClick}
+                      onClick={handleExportClickSummrary}
                       className="rounded-md bg-mainBlue px-5 py-3 text-sm lg:text-base font-semibold text-white shadow-sm cursor-pointer"
                     >
                       정산서
