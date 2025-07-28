@@ -1483,18 +1483,50 @@ const CargoList = () => {
                             운송상태
                           </span>
                           <div
-                            className={`rounded-lg shadow-lg py-1 w-20 text-center ${getStatusColorClass(
-                              ordStatus
-                            )}`}
+                            className={`rounded-lg shadow-lg py-1 w-20 text-center ${
+                              ordStatus === "배차완료" && receipt_add_yn === "Y"
+                                ? "bg-blue-500 text-white border-blue-500"
+                                : getStatusColorClass(ordStatus)
+                            }`}
+                            style={{
+                              cursor:
+                                ordStatus === "배차완료"
+                                  ? "pointer"
+                                  : "default",
+                            }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (ordStatus === "배차완료") {
+                                if (receipt_add_yn === "Y") {
+                                  // 이미 인수증 있으면 보기
+                                  handleReceiptView(cargo_seq);
+                                } else {
+                                  // 인수증 없으면 업로드
+                                  handleReceiptUpload(cargo_seq);
+                                }
+                              }
+                            }}
                           >
-                            <span className="shrink-0 p-3">
+                            <span
+                              className={`
+      shrink-0 p-3 relative
+      ${
+        ordStatus === "배차완료" && receipt_add_yn === "Y"
+          ? "text-[10px] -top-1" /* 인수증 있으면 10px 글씨 + 위로 0.25rem */
+          : "text-base" /* 그 외 기본 크기 */
+      }
+    `}
+                            >
                               {ordStatus === "화물접수"
                                 ? "접수중"
                                 : ordStatus === "배차신청"
                                 ? "배차중"
-                                : ordStatus === "배차완료" // 추가: "배차완료" 처리
+                                : ordStatus === "배차완료" &&
+                                  receipt_add_yn === "Y"
+                                ? "완료(인수증)"
+                                : ordStatus === "배차완료"
                                 ? "완료"
-                                : ordStatus === "화물취소" // 추가: "배차완료" 처리
+                                : ordStatus === "화물취소"
                                 ? "취소"
                                 : ordStatus}
                             </span>
