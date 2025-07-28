@@ -1428,7 +1428,7 @@ const CargoList = () => {
                             출발
                           </p>
                           <p className="truncate leading-5 text-gray-600 whitespace-pre-wrap ">
-                            {`${startWide} ${startSgg} ${startDong} ${startDetail} ${startCompanyName}`}
+                            {`${startWide} ${startSgg} ${startDong} ${startDetail} [${startCompanyName}]`}
                           </p>
                         </div>
                         <div className="flex gap-x-2 items-center">
@@ -1436,7 +1436,7 @@ const CargoList = () => {
                             도착
                           </p>
                           <p className="truncate leading-5 text-gray-600 whitespace-pre-wrap">
-                            {`${endWide} ${endSgg} ${endDong} ${endDetail} ${endCompanyName}`}
+                            {`${endWide} ${endSgg} ${endDong} ${endDetail} [${endCompanyName}]`}
                           </p>
                         </div>
                       </div>
