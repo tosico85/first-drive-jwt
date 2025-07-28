@@ -1500,30 +1500,21 @@ const CargoList = () => {
                                 if (receipt_add_yn === "Y") {
                                   // 이미 인수증 있으면 보기
                                   handleReceiptView(cargo_seq);
-                                } else {
+                                } else if (isAdmin) {
                                   // 인수증 없으면 업로드
                                   handleReceiptUpload(cargo_seq);
                                 }
                               }
                             }}
                           >
-                            <span
-                              className={`
-      shrink-0 p-3 relative
-      ${
-        ordStatus === "배차완료" && receipt_add_yn === "Y"
-          ? "text-[10px] -top-1" /* 인수증 있으면 10px 글씨 + 위로 0.25rem */
-          : "text-base" /* 그 외 기본 크기 */
-      }
-    `}
-                            >
+                            <span className="shrink-0 p-3">
                               {ordStatus === "화물접수"
                                 ? "접수중"
                                 : ordStatus === "배차신청"
                                 ? "배차중"
                                 : ordStatus === "배차완료" &&
                                   receipt_add_yn === "Y"
-                                ? "완료(인수증)"
+                                ? "완료"
                                 : ordStatus === "배차완료"
                                 ? "완료"
                                 : ordStatus === "화물취소"
