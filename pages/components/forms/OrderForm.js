@@ -1805,6 +1805,20 @@ export default function OrderForm({
               )}
             </div>
             {isAdmin && (
+              <div className="p-3 mb-5 rounded-md shadow-lg border border-gray-300">
+                <label className="block mb-1 font-medium">계정 선택</label>
+                <input
+                  {...register("create_user")}
+                  type="text"
+                  readOnly
+                  placeholder="계정을 선택하세요"
+                  onClick={openUserAccountSelectModal}
+                  className="w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                />
+              </div>
+            )}
+
+            {isAdmin && (
               <div className="border-b border-gray-900/10 relative p-3 mb-5 rounded-md shadow-lg pt-8 border border-gray-300">
                 <div className="absolute top-0 left-0 w-full bg-mainColor2 rounded-t-md">
                   <h2 className="text-base font-semibold leading-5 text-white py-2 shadow-md text-center">
