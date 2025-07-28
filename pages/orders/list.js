@@ -1311,21 +1311,21 @@ const CargoList = () => {
                 />
               </div>
 
-              {/* 출발지/도착지 한 줄 배치 */}
+              {/* 출발지/도착지 한 줄 배치 (너비 제한) */}
               <div className="mt-2 flex gap-3">
                 <input
                   type="text"
                   placeholder="출발지 업체명"
                   onKeyDown={handleCompanySearch}
                   {...startCompanySearch}
-                  className="flex-1 rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  className="w-40 min-w-0 rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
                 <input
                   type="text"
                   placeholder="도착지 업체명"
                   onKeyDown={handleCompanySearch}
                   {...endCompanySearch}
-                  className="flex-1 rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  className="w-40 min-w-0 rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 />
               </div>
             </>
