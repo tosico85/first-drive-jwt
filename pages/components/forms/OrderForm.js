@@ -588,7 +588,7 @@ export default function OrderForm({
     if (isAdmin) {
       cargoOrder = {
         ...cargoOrder,
-        create_user: isMobile ? userInfo.email : getValues("create_user"),
+        create_user: getValues("create_user") || userInfo.email,
       };
     }
 
