@@ -1299,16 +1299,38 @@ const CargoList = () => {
             </div>
           </div>
           {isAdmin && (
-            <div className="">
-              <input
-                type="text"
-                placeholder="업체명 검색"
-                onKeyDown={handleCompanySearch}
-                {...companySearch}
-                className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-              />
-            </div>
+            <>
+              {/* 기존 업체명 검색 */}
+              <div>
+                <input
+                  type="text"
+                  placeholder="업체명 검색"
+                  onKeyDown={handleCompanySearch}
+                  {...companySearch}
+                  className="block w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                />
+              </div>
+
+              {/* 출발지/도착지 한 줄 배치 */}
+              <div className="mt-2 flex gap-3">
+                <input
+                  type="text"
+                  placeholder="출발지 업체명"
+                  onKeyDown={handleCompanySearch}
+                  {...startCompanySearch}
+                  className="flex-1 rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                />
+                <input
+                  type="text"
+                  placeholder="도착지 업체명"
+                  onKeyDown={handleCompanySearch}
+                  {...endCompanySearch}
+                  className="flex-1 rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                />
+              </div>
+            </>
           )}
+
           <p className="text-right">{`${filteredCargoList().length} 건`}</p>
         </div>
 
@@ -1406,7 +1428,7 @@ const CargoList = () => {
                             출발
                           </p>
                           <p className="truncate leading-5 text-gray-600 whitespace-pre-wrap ">
-                            {`${startWide} ${startSgg} ${startDong} ${startDetail}`}
+                            {`${startWide} ${startSgg} ${startDong} ${startDetail} ${startCompanyName}`}
                           </p>
                         </div>
                         <div className="flex gap-x-2 items-center">
@@ -1414,7 +1436,7 @@ const CargoList = () => {
                             도착
                           </p>
                           <p className="truncate leading-5 text-gray-600 whitespace-pre-wrap">
-                            {`${endWide} ${endSgg} ${endDong} ${endDetail}`}
+                            {`${endWide} ${endSgg} ${endDong} ${endDetail} ${endCompanyName}`}
                           </p>
                         </div>
                       </div>
