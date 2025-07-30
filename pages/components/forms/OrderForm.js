@@ -1808,13 +1808,18 @@ export default function OrderForm({
               <div className="p-3 mb-5 rounded-md shadow-lg border border-gray-300">
                 <label className="block mb-1 font-medium">계정 선택</label>
                 <input
-                  {...register("create_user")}
+                  {...register("create_user", {
+                    required: "계정을 선택해주세요.",
+                  })}
                   type="text"
                   readOnly
                   placeholder="계정을 선택하세요"
                   onClick={openUserAccountSelectModal}
-                  className="w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                  className="w-full rounded-md border-0 px-2 py-3 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-indigo-600"
                 />
+                <p className="mt-1 text-red-500 text-sm">
+                  {errors.create_user?.message}
+                </p>
               </div>
             )}
 

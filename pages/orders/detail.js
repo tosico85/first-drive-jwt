@@ -349,6 +349,14 @@ export default function Detail() {
       >
         <OrderAddInfoForm
           cargo_seq={cargoOrder.cargo_seq}
+          startWide={cargoOrder.startWide}
+          startSgg={cargoOrder.startSgg}
+          startDong={cargoOrder.startDong}
+          startDetail={cargoOrder.startDetail} // ← 디테일 주소 추가
+          endWide={cargoOrder.endWide}
+          endSgg={cargoOrder.endSgg}
+          endDong={cargoOrder.endDong}
+          endDetail={cargoOrder.endDetail} // ← 디테일 주소 추가
           onCancel={closeModal}
           onComplete={callbackModal}
           style={customModalStyles}

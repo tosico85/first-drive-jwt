@@ -3,7 +3,19 @@ import { useContext, useEffect, useState } from "react";
 import apiPaths from "../../../services/apiRoutes";
 import AuthContext from "../../context/authContext";
 
-export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
+export default function OrderAddInfoForm({
+  cargo_seq,
+  startWide,
+  startSgg,
+  startDong,
+  startDetail,
+  endWide,
+  endSgg,
+  endDong,
+  endDetail,
+  onCancel,
+  onComplete,
+}) {
   const { requestServer } = useContext(AuthContext);
 
   // react-hook-form 세팅
@@ -17,6 +29,9 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
 
   // 최근 10건 과거 운임 데이터
   const [pastFares, setPastFares] = useState([]);
+  // TMAP 경로 계산 상태
+  const [routeInfo, setRouteInfo] = useState(null);
+  const [routeLoading, setRouteLoading] = useState(false);
 
   // 날짜 형식 변환 헬퍼
   const formatDateHour = (isoString) => {
@@ -28,22 +43,145 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
     return `${y}-${m}-${day} ${h}시`;
   };
 
+  // 숫자에 콤마 추가 헬퍼
+  const formatNumber = (num) => {
+    if (num == null) return "";
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  // 과거 운임 10건 조회
+  useEffect(() => {
+    if (!cargo_seq) return;
+    (async () => {
+      const { resultCd, data, result } = await requestServer(
+        apiPaths.adminGetPastAllocFare,
+        { cargo_seq }
+      );
+      if (resultCd === "00") setPastFares(data);
+      else console.warn("과거 운임 조회 실패:", result);
+    })();
+  }, [cargo_seq, requestServer]);
+
+  // TMAP geocoding & routing helpers
+  const TMAP_APP_KEY = "5VAwKbaMgf7WdTDgQL7cd2FugS2UR2JI82D1OwRz";
+
+  async function geocodeWebGeo(address) {
+    const url = `https://apis.openapi.sk.com/tmap/geo?${new URLSearchParams({
+      version: "1",
+      addressTypes: "ROAD",
+      coordType: "WGS84GEO",
+      address,
+    })}`;
+    const resp = await fetch(url, {
+      headers: { appKey: TMAP_APP_KEY, "Content-Type": "application/json" },
+    });
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    const coords = data.features?.[0]?.geometry?.coordinates;
+    return coords ? { lng: coords[0], lat: coords[1] } : null;
+  }
+
+  async function geocodePOI(address) {
+    const url = `https://apis.openapi.sk.com/tmap/pois?${new URLSearchParams({
+      version: "1",
+      format: "json",
+      count: "1",
+      searchKeyword: address,
+      reqCoordType: "WGS84GEO",
+      resCoordType: "WGS84GEO",
+    })}`;
+    const resp = await fetch(url, {
+      headers: { appKey: TMAP_APP_KEY, "Content-Type": "application/json" },
+    });
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    const poi = data.searchPoiInfo?.pois?.poi?.[0];
+    return poi
+      ? { lng: parseFloat(poi.frontLon), lat: parseFloat(poi.frontLat) }
+      : null;
+  }
+
+  async function geocodeAddress(address) {
+    return (await geocodeWebGeo(address)) || (await geocodePOI(address));
+  }
+
+  async function getRouteTmap(orig, dest, startName, endName) {
+    const params = {
+      version: "1",
+      startX: orig.lng,
+      startY: orig.lat,
+      endX: dest.lng,
+      endY: dest.lat,
+      searchOption: "0",
+      reqCoordType: "WGS84GEO",
+      resCoordType: "WGS84GEO",
+      startName,
+      endName,
+    };
+    const resp = await fetch(
+      `https://apis.openapi.sk.com/tmap/routes?${new URLSearchParams(params)}`,
+      {
+        headers: {
+          appKey: TMAP_APP_KEY,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    const props = data.features?.[0]?.properties;
+    if (!props?.totalDistance || !props?.totalTime) return null;
+    return {
+      distance_km: Math.round((props.totalDistance / 1000) * 100) / 100,
+      duration_min: Math.round((props.totalTime / 60) * 10) / 10,
+    };
+  }
+
+  // 상세주소 포함한 TMAP 경로 계산
+  useEffect(() => {
+    if (!startWide || !endWide) return;
+    (async () => {
+      setRouteLoading(true);
+      const startAddr = `${startWide} ${startSgg} ${startDong} ${
+        startDetail || ""
+      }`.trim();
+      const endAddr = `${endWide} ${endSgg} ${endDong} ${
+        endDetail || ""
+      }`.trim();
+      const orig = await geocodeAddress(startAddr);
+      const dest = await geocodeAddress(endAddr);
+      if (orig && dest) {
+        const result = await getRouteTmap(orig, dest, startAddr, endAddr);
+        setRouteInfo(result || { error: "경로 탐색 오류" });
+      } else {
+        setRouteInfo({ error: "주소 변환 실패" });
+      }
+      setRouteLoading(false);
+    })();
+  }, [
+    startWide,
+    startSgg,
+    startDong,
+    startDetail,
+    endWide,
+    endSgg,
+    endDong,
+    endDetail,
+  ]);
+
   // 화물 수정 API 호출
   const updateCargoOrder = async () => {
     if (!cargo_seq) {
       alert("오류 발생~!!");
       return;
     }
-    // getValues()에 palletCount, inspectionRequired 포함됨
     const payload = { cargo_seq, ...getValues() };
     const { result, resultCd } = await requestServer(
       apiPaths.adminModCargoOrder,
       payload
     );
-
     if (resultCd === "00") {
       alert("화물 오더가 수정되었습니다.");
-      // 필요한 값들만 꺼내서 부모 콜백 전달
       const { fare, fareView, palletCount, inspectionRequired } = getValues();
       onComplete({ fare, fareView, palletCount, inspectionRequired });
     } else {
@@ -54,27 +192,6 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
   const onValid = () => updateCargoOrder();
   const onInvalid = () => console.log(errors);
 
-  const formatNumber = (num) => {
-    if (num == null) return "";
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
-  // mount 시, cargo_seq 기준으로 과거 운임 10건 조회
-  useEffect(() => {
-    if (!cargo_seq) return;
-    (async () => {
-      const { resultCd, data, result } = await requestServer(
-        apiPaths.adminGetPastAllocFare,
-        { cargo_seq }
-      );
-      if (resultCd === "00") {
-        setPastFares(data);
-      } else {
-        console.warn("과거 운임 조회 실패:", result);
-      }
-    })();
-  }, [cargo_seq, requestServer]);
-
   return (
     <form onSubmit={handleSubmit(onValid, onInvalid)}>
       <div className="border-b border-gray-900/10 pb-8">
@@ -82,6 +199,18 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
         <p className="mt-1 text-sm leading-6 mb-5 text-gray-600">
           필요한 정보를 입력해주세요.
         </p>
+
+        {/* TMAP 경로 결과 */}
+        <div className="mb-4 text-sm">
+          {routeLoading ? (
+            <p className="text-gray-500">경로 계산 중…</p>
+          ) : routeInfo?.error ? (
+            <p className="text-red-500">{routeInfo.error}</p>
+          ) : routeInfo ? (
+            <p className="text-gray-700">{`거리: ${routeInfo.distance_km} km / 소요: ${routeInfo.duration_min} 분`}</p>
+          ) : null}
+        </div>
+
         <div className="grid grid-cols-1 gap-y-6">
           {/* 운송료 */}
           <div>
@@ -98,6 +227,7 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
               {errors.fare?.message}
             </div>
           </div>
+
           {/* 화주노출용 운임 */}
           <div>
             <label className="block text-sm font-medium leading-6">
@@ -113,6 +243,7 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
               {errors.fareView?.message}
             </div>
           </div>
+
           {/* 파레트 수량 */}
           <div>
             <label className="block text-sm font-medium leading-6">
@@ -131,7 +262,8 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
               {errors.palletCount?.message}
             </div>
           </div>
-          {/* 검수 있음 체크박스 */}
+
+          {/* 검수 있음 */}
           <div className="flex items-center space-x-2">
             <input
               {...register("inspection_Required", {
@@ -145,26 +277,10 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
               검수 있음
             </label>
           </div>
-          {/* 버튼 그룹 */}
-          <div className="flex justify-end gap-x-3 mt-4">
-            <button
-              type="button"
-              onClick={onCancel}
-              className="px-3 py-2 text-sm border rounded"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 text-sm bg-mainColor3 text-white rounded-md hover:bg-mainColor2"
-            >
-              화물 수정
-            </button>
-          </div>
         </div>
       </div>
 
-      {/* 최근 10건 과거 운임 리스트 (변경 없음) */}
+      {/* 최근 10건 과거 운임 리스트 */}
       <div className="mt-8">
         <h3 className="text-md font-medium mb-2">최근 10건 과거 운임</h3>
         {pastFares.length > 0 ? (
@@ -193,6 +309,23 @@ export default function OrderAddInfoForm({ cargo_seq, onCancel, onComplete }) {
         ) : (
           <p className="text-gray-500">조회된 과거 운임이 없습니다.</p>
         )}
+      </div>
+
+      {/* 버튼 그룹 */}
+      <div className="flex justify-end gap-x-3 mt-4">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="px-3 py-2 text-sm border rounded"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="px-4 py-2 text-sm bg-mainColor3 text-white rounded-md hover:bg-mainColor2"
+        >
+          화물 수정
+        </button>
       </div>
     </form>
   );

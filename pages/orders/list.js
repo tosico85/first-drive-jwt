@@ -58,6 +58,76 @@ const CargoList = () => {
 
   //const [companySearch, setCompanySearch] = useState("");
   const [hoveredCargoSeq, setHoveredCargoSeq] = useState(null);
+  const TMAP_APP_KEY = "5VAwKbaMgf7WdTDgQL7cd2FugS2UR2JI82D1OwRz";
+  const [routeInfo, setRouteInfo] = useState(null);
+  const [routeLoading, setRouteLoading] = useState(false);
+
+  async function geocodeWebGeo(address) {
+    const url = `https://apis.openapi.sk.com/tmap/geo?${new URLSearchParams({
+      version: "1",
+      addressTypes: "ROAD",
+      coordType: "WGS84GEO",
+      address,
+    })}`;
+    const resp = await fetch(url, {
+      headers: { appKey: TMAP_APP_KEY, "Content-Type": "application/json" },
+    });
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    const coords = data.features?.[0]?.geometry?.coordinates;
+    return coords ? { lng: coords[0], lat: coords[1] } : null;
+  }
+
+  async function geocodePOI(address) {
+    const url = `https://apis.openapi.sk.com/tmap/pois?${new URLSearchParams({
+      version: "1",
+      format: "json",
+      count: "1",
+      searchKeyword: address,
+      reqCoordType: "WGS84GEO",
+      resCoordType: "WGS84GEO",
+    })}`;
+    const resp = await fetch(url, {
+      headers: { appKey: TMAP_APP_KEY, "Content-Type": "application/json" },
+    });
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    const poi = data.searchPoiInfo?.pois?.poi?.[0];
+    return poi
+      ? { lng: parseFloat(poi.frontLon), lat: parseFloat(poi.frontLat) }
+      : null;
+  }
+
+  async function geocodeAddress(address) {
+    return (await geocodeWebGeo(address)) || (await geocodePOI(address));
+  }
+
+  async function getRouteTmap(orig, dest, startName, endName) {
+    const params = {
+      version: "1",
+      startX: orig.lng,
+      startY: orig.lat,
+      endX: dest.lng,
+      endY: dest.lat,
+      searchOption: "0",
+      reqCoordType: "WGS84GEO",
+      resCoordType: "WGS84GEO",
+      startName,
+      endName,
+    };
+    const resp = await fetch(
+      `https://apis.openapi.sk.com/tmap/routes?${new URLSearchParams(params)}`,
+      { headers: { appKey: TMAP_APP_KEY, "Content-Type": "application/json" } }
+    );
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    const props = data.features?.[0]?.properties;
+    if (!props?.totalDistance || !props?.totalTime) return null;
+    return {
+      distance_km: Math.round((props.totalDistance / 1000) * 100) / 100,
+      duration_min: Math.round((props.totalTime / 60) * 10) / 10,
+    };
+  }
 
   const fetchPastFares = async (cargoSeq) => {
     setLoadingPast(true);
@@ -2292,11 +2362,36 @@ const CargoList = () => {
                             {/* 배차 버튼 + 호버 팝업 래퍼 */}
                             <div
                               className="relative inline-block w-full"
-                              onMouseEnter={() => {
+                              onMouseEnter={async (e) => {
+                                e.stopPropagation();
                                 setHoveredCargoSeq(cargo_seq);
-                                fetchPastFares(cargo_seq); // ← 여기에 호출을 추가하세요
+                                fetchPastFares(cargo_seq);
+
+                                // Tmap 경로 계산
+                                setRouteLoading(true);
+                                const startAddr = `${startWide} ${startSgg} ${startDong}`;
+                                const endAddr = `${endWide} ${endSgg} ${endDong}`;
+                                const orig = await geocodeAddress(startAddr);
+                                const dest = await geocodeAddress(endAddr);
+                                if (orig && dest) {
+                                  const result = await getRouteTmap(
+                                    orig,
+                                    dest,
+                                    startAddr,
+                                    endAddr
+                                  );
+                                  setRouteInfo(
+                                    result || { error: "경로 탐색 오류" }
+                                  );
+                                } else {
+                                  setRouteInfo({ error: "주소 변환 실패" });
+                                }
+                                setRouteLoading(false);
                               }}
-                              onMouseLeave={() => setHoveredCargoSeq(null)}
+                              onMouseLeave={() => {
+                                setHoveredCargoSeq(null);
+                                setRouteInfo(null);
+                              }}
                             >
                               {/* 실제 배차 버튼 */}
                               <div
@@ -2318,15 +2413,7 @@ const CargoList = () => {
                                   <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
-                                    d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 
-               0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 
-               4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 
-               0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 
-               17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25
-               M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048
-               -.987-1.106a48.554 48.554 0 00-10.026 0 1.106 
-               1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 
-               4.5v-4.5m0 0h-12"
+                                    d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25 M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
                                   />
                                 </svg>
                               </div>
@@ -2391,6 +2478,21 @@ const CargoList = () => {
                                       조회된 과거 운임이 없습니다.
                                     </p>
                                   )}
+
+                                  {/* Tmap 경로 정보 */}
+                                  <div className="mt-2 text-xs text-gray-700">
+                                    {routeLoading && <p>경로 계산 중…</p>}
+                                    {routeInfo?.error && (
+                                      <p className="text-red-500">
+                                        {routeInfo.error}
+                                      </p>
+                                    )}
+                                    {!routeLoading &&
+                                      routeInfo &&
+                                      !routeInfo.error && (
+                                        <p>{`거리: ${routeInfo.distance_km} km / 소요: ${routeInfo.duration_min} 분`}</p>
+                                      )}
+                                  </div>
                                 </div>
                               )}
                             </div>
@@ -2417,11 +2519,7 @@ const CargoList = () => {
                                     <path
                                       strokeLinecap="round"
                                       strokeLinejoin="round"
-                                      d="M9 8.25H7.5a2.25 2.25 0 0 
-               0-2.25 2.25v9a2.25 2.25 0 0 
-               0 2.25 2.25h9a2.25 2.25 0 0 
-               0 2.25-2.25v-9a2.25 2.25 0 0 
-               0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15"
+                                      d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15"
                                     />
                                   </svg>
                                 </div>
