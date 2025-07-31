@@ -1516,11 +1516,30 @@ const CargoList = () => {
                         <div className="grid grid-cols-2 items-center">
                           <div className="flex flex-col items-start gap-y-1">
                             <span className="text-sm text-gray-400">
-                              그룹명
+                              그룹명1
                             </span>
                             <span className="text-gray-600">
                               {group_name || "-"}
                             </span>
+                            {/* 관리자일 때만 담당 표시 */}
+                            {isAdmin && (
+                              <span className="text-sm text-red-500">
+                                {`담당 : ${
+                                  {
+                                    "hoi64310@naver.com": "안동진",
+                                    "pinkchina@naver.com": "신현서",
+                                    "admin@naver.com": "곽용호",
+                                    "maktoob9681@hanmail.net": "임성수",
+                                    "whdtn9186@naver.com": "김종수",
+                                    "notalk1@naver.com": "안동진",
+                                    "notalk2@naver.com": "신현서",
+                                    "notalk3@hanmail.net": "임성수",
+                                    "notalk@naver.com": "곽용호",
+                                    "notalk4@naver.com": "김종수",
+                                  }[change_user] || ""
+                                }`}
+                              </span>
+                            )}
                           </div>
                           <div className="flex flex-col items-start gap-y-1">
                             <span className="text-sm text-gray-400">
