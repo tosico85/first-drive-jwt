@@ -207,7 +207,14 @@ export default function OrderAddInfoForm({
           ) : routeInfo?.error ? (
             <p className="text-red-500">{routeInfo.error}</p>
           ) : routeInfo ? (
-            <p className="text-gray-700">{`거리: ${routeInfo.distance_km} km / 소요: ${routeInfo.duration_min} 분`}</p>
+            <p className="text-gray-700">
+              {`거리: ${routeInfo.distance_km} km / 소요: ${(() => {
+                const totalMin = Math.floor(routeInfo.duration_min);
+                return totalMin >= 60
+                  ? `${Math.floor(totalMin / 60)}시간 ${totalMin % 60}분`
+                  : `${totalMin}분`;
+              })()}`}
+            </p>
           ) : null}
         </div>
 
