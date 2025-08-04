@@ -466,7 +466,7 @@ const CargoList = () => {
 
       // 4) 본문 헤더 (9행)
       // B9: "월"
-      sheet.getCell("E6").value = "5월";
+      sheet.getCell("E6").value = `${month}월`;
       sheet.getCell("E6").fill = blueFill;
       sheet.getCell("E6").font = { bold: true };
       sheet.getCell("E6").alignment = {
