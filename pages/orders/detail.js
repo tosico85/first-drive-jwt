@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import apiPaths from "../../services/apiRoutes";
 import Seo from "../components/Seo";
 import AuthContext from "../context/authContext";
+import axios from "axios";
 
 import {
   addCommas,
@@ -85,6 +86,81 @@ export default function Detail() {
       transform: "translate(-50%, -50%)",
       boxShadow: "0px 0px 10px #e2e2e2",
     },
+  };
+
+  // Detail.js 상단에
+
+  // … Detail 컴포넌트 내부 …
+
+  const handleInsung = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      user_id: userInfo.user_id,
+      c_name: cargoOrder.group_name,
+      c_mobile: userInfo.mobile,
+      s_start: cargoOrder.startCompanyName,
+      start_telno: cargoOrder.startAreaPhone,
+      start_sido: cargoOrder.startWide,
+      start_gugun: cargoOrder.startSgg,
+      start_dong: cargoOrder.startDong,
+      start_location: `${cargoOrder.startWide} ${cargoOrder.startSgg} ${cargoOrder.startDong} ${cargoOrder.startDetail}`,
+      s_dest: cargoOrder.endCompanyName,
+      dest_telno: cargoOrder.endAreaPhone,
+      dest_sido: cargoOrder.endWide,
+      dest_gugun: cargoOrder.endSgg,
+      dest_dong: cargoOrder.endDong,
+      dest_location: `${cargoOrder.endWide} ${cargoOrder.endSgg} ${cargoOrder.endDong} ${cargoOrder.endDetail}`,
+      kind: "2",
+      pay_gbn: "3",
+      doc: "1",
+      sfast: "1",
+      item_type: "2",
+      memo: cargoOrder.cargoDsc,
+      cargo_seq: cargoOrder.cargo_seq,
+    };
+
+    try {
+      const { data } = await axios.post(
+        "https://4pl.store/pages/in.php",
+        payload,
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      // 1) 언제나 콘솔에 전체 응답 찍어보기
+      console.log("handleInsung 응답 전체:", data);
+
+      // 2) 에러 키가 있을 때
+      if (data && data.error) {
+        return alert(`서버 에러: ${data.error}`);
+      }
+
+      // 3) 성공 케이스
+      if (Array.isArray(data) && data[0]?.code === "1000") {
+        const serial = data[1]?.serial_number || "";
+        alert(`인성 신청 완료\n운송장: ${serial}`);
+        setCargoOrder((prev) => ({
+          ...prev,
+          ordNo: serial,
+          ordStatus: "배차중",
+        }));
+        return;
+      }
+
+      // 4) 그 외: data[0].msg 또는 JSON 문자열로 보여주기
+      let errMsg;
+      if (Array.isArray(data)) {
+        errMsg = data[0]?.msg || JSON.stringify(data);
+      } else if (typeof data === "object") {
+        errMsg = JSON.stringify(data);
+      } else {
+        errMsg = String(data);
+      }
+      alert(`실패: ${errMsg}`);
+    } catch (err) {
+      console.error("인성 신청 중 네트워크/예외 에러:", err);
+      alert(`인성 신청 중 예외가 발생했습니다:\n${err.message}`);
+    }
   };
 
   /**
@@ -815,6 +891,14 @@ export default function Detail() {
             </button>
             {isAdmin && (
               <>
+                {/* 인성 신청 버튼 */}
+                <button
+                  type="button"
+                  className="rounded-md bg-buttonZamboa px-4 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+                  onClick={handleInsung}
+                >
+                  인성 신청
+                </button>
                 <button
                   type="button"
                   className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
