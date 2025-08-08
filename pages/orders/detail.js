@@ -123,26 +123,26 @@ export default function Detail() {
       "pinkchina@naver.com": "신현서",
     };
 
-    // 이름별 휴대폰 매핑
+    // 2) 이메일 → 번호 코드
     const chargeMobileMap = {
-      김종수: "010-5196-9881",
-      안동진: "010-2660-9881",
-      곽용호: "010-3981-1822",
-      신현서: "010-4902-2652",
-      임성수: "010-5373-9681",
+      "whdtn9186@naver.com": "01051969881",
+      "hoi64310@naver.com": "01026609881",
+      "maktoob9681@hanmail.net": "01053739681",
+      "admin@naver.com": "01039811822",
+      "pinkchina@naver.com": "01049022652",
     };
 
-    let username = cargoOrder.change_user;
+    let username = userInfo.email; // 예: "hoi64310@naver.com"
     const chargeName = chargeNameMap[username] || "";
-    // chargeName에 해당하는 휴대폰이 없으면 userInfo.mobile 사용
-    const chargeMobile = chargeMobileMap[chargeName] || "없음";
 
-    //
+    // 이메일 키로 매핑된 번호, 없으면 기존 mobile 유지
+    const chargeMobile = chargeMobileMap[username] || userInfo.mobile;
+
     // 3) 페이로드 구성
     const payload = {
       user_id: userInfo.user_id,
       c_name: cargoOrder.group_name,
-      c_mobile: chargeMobile,
+      c_mobile: chargeMobile, // 여기 바뀐 값이 들어갑니다
       s_start: cargoOrder.startCompanyName,
       start_telno: cargoOrder.startAreaPhone,
       start_sido: cargoOrder.startWide,
@@ -168,6 +168,7 @@ export default function Detail() {
     try {
       const { data } = await axios.post(
         "https://4pl.store/pages/in.php",
+        //"http://localhost:4000/in.php",
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
