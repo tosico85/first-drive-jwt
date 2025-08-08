@@ -153,7 +153,7 @@ export default function Detail() {
 
     try {
       const { data } = await axios.post(
-        "http://141.164.41.7:4000/in.php",
+        "https://4pl.store/pages/in.php",
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
