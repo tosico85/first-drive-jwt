@@ -88,13 +88,43 @@ export default function Detail() {
     },
   };
 
-  // Detail.js 상단에
-
-  // … Detail 컴포넌트 내부 …
+  // 인성데이터
 
   const handleInsung = async (e) => {
     e.preventDefault();
 
+    // 1) kind 값 결정 (라보→5, 다마스→2, 오토바이→1, 기본 2)
+    let kind;
+    switch (cargoOrder.truckType) {
+      case "라보":
+        kind = "5";
+        break;
+      case "다마스":
+        kind = "2";
+        break;
+      case "오토바이":
+        kind = "1";
+        break;
+      default:
+        kind = "2";
+    }
+
+    // 2) sfast 값 결정 (오토바이 + 특송일 때만 3, 그 외 1)
+    let sfast = "1";
+    if (cargoOrder.truckType === "오토바이" && cargoOrder.cargoTon === "특송") {
+      sfast = "3";
+    }
+    let username = cargoOrder.change_user;
+
+    const chargeNameMap = {
+      "whdtn9186@naver.com": "김종수",
+      "hoi64310@naver.com": "안동진",
+      "maktoob9681@hanmail.net": "임성수",
+      "admin@naver.com": "곽용호",
+      "pinkchina@naver.com": "신현서",
+    };
+
+    // 3) 페이로드 구성
     const payload = {
       user_id: userInfo.user_id,
       c_name: cargoOrder.group_name,
@@ -111,26 +141,24 @@ export default function Detail() {
       dest_gugun: cargoOrder.endSgg,
       dest_dong: cargoOrder.endDong,
       dest_location: `${cargoOrder.endWide} ${cargoOrder.endSgg} ${cargoOrder.endDong} ${cargoOrder.endDetail}`,
-      kind: "2",
+      kind, // 동적 할당
       pay_gbn: "3",
       doc: "1",
-      sfast: "1",
+      sfast, // 동적 할당
       item_type: "2",
       memo: cargoOrder.cargoDsc,
       cargo_seq: cargoOrder.cargo_seq,
+      c_charge_name: username,
     };
 
     try {
       const { data } = await axios.post(
-        "https://4pl.store/pages/in.php",
+        "http://localhost:4000/in.php",
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
 
-      // 1) 언제나 콘솔에 전체 응답 찍어보기
-      console.log("handleInsung 응답 전체:", data);
-
-      // 2) 에러 키가 있을 때
+      // 2) 서버가 에러 키를 반환한 경우
       if (data && data.error) {
         return alert(`서버 에러: ${data.error}`);
       }
@@ -147,7 +175,7 @@ export default function Detail() {
         return;
       }
 
-      // 4) 그 외: data[0].msg 또는 JSON 문자열로 보여주기
+      // 4) 그 외 오류 메시지 처리
       let errMsg;
       if (Array.isArray(data)) {
         errMsg = data[0]?.msg || JSON.stringify(data);
@@ -892,13 +920,7 @@ export default function Detail() {
             {isAdmin && (
               <>
                 {/* 인성 신청 버튼 */}
-                <button
-                  type="button"
-                  className="rounded-md bg-buttonZamboa px-4 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
-                  onClick={handleInsung}
-                >
-                  인성 신청
-                </button>
+
                 <button
                   type="button"
                   className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
@@ -912,6 +934,13 @@ export default function Detail() {
         )}
         {isAdmin && (
           <>
+            <button
+              type="button"
+              className="rounded-md bg-pastelGreen px-4 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+              onClick={handleInsung}
+            >
+              인성 신청
+            </button>
             <button
               type="button"
               className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
