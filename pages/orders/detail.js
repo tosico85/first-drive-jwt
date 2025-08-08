@@ -123,14 +123,24 @@ export default function Detail() {
       "pinkchina@naver.com": "신현서",
     };
 
+    const chargeMobileMap = {
+      김종수: "010-5196-9881",
+      안동진: "010-2660-9881",
+      곽용호: "010-3981-1822",
+      신현서: "010-4902-2652",
+      임성수: "010-5373-9681",
+    };
+
     let username = cargoOrder.change_user;
     const chargeName = chargeNameMap[username] || "";
+    const chargeMobile = chargeMobileMap[chargeName] || userInfo.mobile;
+
     //
     // 3) 페이로드 구성
     const payload = {
       user_id: userInfo.user_id,
       c_name: cargoOrder.group_name,
-      c_mobile: userInfo.mobile,
+      c_mobile: chargeMobile,
       s_start: cargoOrder.startCompanyName,
       start_telno: cargoOrder.startAreaPhone,
       start_sido: cargoOrder.startWide,
