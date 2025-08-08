@@ -115,6 +115,7 @@ export default function Detail() {
       sfast = "3";
     }
     let username = cargoOrder.change_user;
+    const chargeName = chargeNameMap[username] || "";
 
     const chargeNameMap = {
       "whdtn9186@naver.com": "김종수",
@@ -148,7 +149,7 @@ export default function Detail() {
       item_type: "2",
       memo: cargoOrder.cargoDsc,
       cargo_seq: cargoOrder.cargo_seq,
-      c_charge_name: username,
+      c_charge_name: chargeName,
     };
 
     try {
