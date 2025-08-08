@@ -153,7 +153,7 @@ export default function Detail() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/in.php",
+        "http://141.164.41.7:4000/in.php",
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
