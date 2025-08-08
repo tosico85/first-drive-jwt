@@ -114,8 +114,6 @@ export default function Detail() {
     if (cargoOrder.truckType === "오토바이" && cargoOrder.cargoTon === "특송") {
       sfast = "3";
     }
-    let username = cargoOrder.change_user;
-    const chargeName = chargeNameMap[username] || "";
 
     const chargeNameMap = {
       "whdtn9186@naver.com": "김종수",
@@ -124,6 +122,9 @@ export default function Detail() {
       "admin@naver.com": "곽용호",
       "pinkchina@naver.com": "신현서",
     };
+
+    let username = cargoOrder.change_user;
+    const chargeName = chargeNameMap[username] || "";
 
     // 3) 페이로드 구성
     const payload = {
