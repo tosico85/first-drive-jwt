@@ -125,7 +125,7 @@ export default function Detail() {
 
     let username = cargoOrder.change_user;
     const chargeName = chargeNameMap[username] || "";
-
+    //
     // 3) 페이로드 구성
     const payload = {
       user_id: userInfo.user_id,
