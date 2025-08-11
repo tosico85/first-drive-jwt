@@ -115,6 +115,7 @@ export default function Detail() {
       sfast = "3";
     }
 
+    // 1) 맵 (그대로 사용)
     const chargeNameMap = {
       "whdtn9186@naver.com": "김종수",
       "hoi64310@naver.com": "안동진",
@@ -123,7 +124,6 @@ export default function Detail() {
       "pinkchina@naver.com": "신현서",
     };
 
-    // 2) 이메일 → 번호 코드
     const chargeMobileMap = {
       "whdtn9186@naver.com": "01051969881",
       "hoi64310@naver.com": "01026609881",
@@ -132,17 +132,32 @@ export default function Detail() {
       "pinkchina@naver.com": "01049022652",
     };
 
-    let username = userInfo.email; // 예: "hoi64310@naver.com"
-    const chargeName = chargeNameMap[username] || "";
+    // 2) username 정규화 (email → lower/trim, fallback은 change_user)
+    const rawUsername = userInfo?.email ?? cargoOrder?.change_user ?? "";
+    const username = rawUsername.trim().toLowerCase();
 
-    // 이메일 키로 매핑된 번호, 없으면 기존 mobile 유지
-    const chargeMobile = chargeMobileMap[username] || userInfo.mobile;
+    // 디버깅용(공백 확인)
+    console.log(
+      `username='${username}'`,
+      "hasKey:",
+      username in chargeMobileMap
+    );
 
-    // 3) 페이로드 구성
+    // 3) 이름/번호 결정 (널 병합으로 undefined 방지)
+    const chargeName = chargeNameMap[username] ?? "";
+    const chargeMobile = chargeMobileMap[username] ?? userInfo?.mobile ?? "";
+
+    // 4) userInfo 로드 전이면 중단
+    if (!username) {
+      console.warn("username 없음: userInfo/change_user 로드 대기");
+      // return 또는 이후 로직 실행 지연
+    }
+
+    // 5) 페이로드
     const payload = {
-      user_id: userInfo.user_id,
+      user_id: userInfo?.user_id ?? "",
       c_name: cargoOrder.group_name,
-      c_mobile: "01039811822", // 여기 바뀐 값이 들어갑니다
+      c_mobile: chargeMobile, // 여기서 항상 값이 들어가도록 위에서 보정
       s_start: cargoOrder.startCompanyName,
       start_telno: cargoOrder.startAreaPhone,
       start_sido: cargoOrder.startWide,
@@ -155,10 +170,10 @@ export default function Detail() {
       dest_gugun: cargoOrder.endSgg,
       dest_dong: cargoOrder.endDong,
       dest_location: `${cargoOrder.endWide} ${cargoOrder.endSgg} ${cargoOrder.endDong} ${cargoOrder.endDetail}`,
-      kind, // 동적 할당
+      kind,
       pay_gbn: "3",
       doc: "1",
-      sfast, // 동적 할당
+      sfast,
       item_type: "2",
       memo: cargoOrder.cargoDsc,
       cargo_seq: cargoOrder.cargo_seq,
