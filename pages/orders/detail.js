@@ -155,7 +155,7 @@ export default function Detail() {
 
     // 5) 페이로드
     const payload = {
-      user_id: userInfo?.user_id ?? "",
+      user_id: "kawadd",
       c_name: cargoOrder.group_name,
       c_mobile: chargeMobile, // 여기서 항상 값이 들어가도록 위에서 보정
       s_start: cargoOrder.startCompanyName,
