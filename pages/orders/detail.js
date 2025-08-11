@@ -142,7 +142,7 @@ export default function Detail() {
     const payload = {
       user_id: userInfo.user_id,
       c_name: cargoOrder.group_name,
-      c_mobile: chargeMobile, // 여기 바뀐 값이 들어갑니다
+      c_mobile: "01039811822", // 여기 바뀐 값이 들어갑니다
       s_start: cargoOrder.startCompanyName,
       start_telno: cargoOrder.startAreaPhone,
       start_sido: cargoOrder.startWide,
