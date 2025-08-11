@@ -58,7 +58,11 @@ const CargoList = () => {
 
   //const [companySearch, setCompanySearch] = useState("");
   const [hoveredCargoSeq, setHoveredCargoSeq] = useState(null);
-  const TMAP_APP_KEY = "5VAwKbaMgf7WdTDgQL7cd2FugS2UR2JI82D1OwRz";
+  //곽용호
+  //const TMAP_APP_KEY = "5VAwKbaMgf7WdTDgQL7cd2FugS2UR2JI82D1OwRz";
+
+  //신현서
+  const TMAP_APP_KEY = "5joQITdyiA1UujfL5sizFaRy0QQKr2CMaZJLx0EP";
   const [routeInfo, setRouteInfo] = useState(null);
   const [routeLoading, setRouteLoading] = useState(false);
 
