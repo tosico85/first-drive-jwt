@@ -198,12 +198,58 @@ const CargoList = () => {
     { name: "지난달", value: 8 },
   ];
 
+  const getStartAddr = (item) =>
+    `${item.startWide || ""} ${item.startSgg || ""} ${item.startDong || ""}`
+      .replace(/\s+/g, " ")
+      .trim();
+  const getEndAddr = (item) =>
+    `${item.endWide || ""} ${item.endSgg || ""} ${item.endDong || ""}`
+      .replace(/\s+/g, " ")
+      .trim();
+
+  const _distCache = new Map(); // "출발→도착" 캐시
+
+  async function calcDistanceKm(item) {
+    const startAddr = getStartAddr(item);
+    const endAddr = getEndAddr(item);
+    if (!startAddr || !endAddr) return "";
+
+    const key = `${startAddr}→${endAddr}`;
+    if (_distCache.has(key)) return _distCache.get(key);
+
+    try {
+      const [orig, dest] = await Promise.all([
+        geocodeAddress(startAddr),
+        geocodeAddress(endAddr),
+      ]);
+      if (!orig || !dest) {
+        _distCache.set(key, "");
+        return "";
+      }
+      const route = await getRouteTmap(
+        orig,
+        dest,
+        item.startCompanyName || "출발지",
+        item.endCompanyName || "도착지"
+      );
+
+      const km =
+        typeof route?.distance_km === "number"
+          ? Math.round(route.distance_km * 100) / 100 // 소수 둘째자리
+          : "";
+      _distCache.set(key, km);
+      return km;
+    } catch (e) {
+      return "";
+    }
+  }
+
   const exportToExcel = async () => {
     try {
       const workbook = new ExcelJS.Workbook();
       const worksheet = workbook.addWorksheet("Cargo Orders");
 
-      // 엑셀 헤더 추가
+      // 헤더 (하차지 다음에 거리(km) 추가)
       const headerRow = worksheet.addRow([
         isAdmin ? "전산번호" : "",
         "오더번호",
@@ -217,6 +263,7 @@ const CargoList = () => {
         "하차지 업체명",
         "상차지",
         "하차지",
+        "거리(km)", // <-- 추가
         "차량종류",
         "운임료",
         "추가운임료",
@@ -237,38 +284,41 @@ const CargoList = () => {
       ]);
       headerRow.font = { bold: true };
 
-      // 엑셀 칸 너비 조정
+      // 열 너비 (거리(km) 폭 추가)
       worksheet.columns = [
-        { width: 10 }, // 주문 번호
+        { width: 10 }, // 전산번호
+        { width: 20 }, // 오더번호
+        { width: 20 }, // 회원아이디
+        { width: 20 }, // 회원이름
+        { width: 15 }, // 화물상태
+        { width: 20 }, // 상차일
+        { width: 20 }, // 하차일
+        { width: 20 }, // 등록일시
         { width: 20 }, // 상차지 업체명
         { width: 20 }, // 하차지 업체명
         { width: 20 }, // 상차지
         { width: 20 }, // 하차지
-        //{ width: 10 }, // 혼적여부
-        //{ width: 10 }, // 긴급여부
-        { width: 10 }, // 왕복여부
+        { width: 12 }, // 거리(km)  <-- 추가
         { width: 25 }, // 차량종류
-        //{ width: 10 }, // 화물량
-        { width: 20 }, // 상차일
-        { width: 20 }, // 하차일
-        { width: 15 }, // 화물상태
-        { width: 20 }, // 등록일시
-        { width: 15 }, // 차주명
-        { width: 15 }, // 차주연락처
         { width: 15 }, // 운임료
         { width: 15 }, // 추가운임료
-        { width: 20 }, // 추가운임료 사유
+        { width: 15 }, // 운임료(관리자용)
         { width: 20 }, // 사용자메모
+        { width: 20 }, // 관리자메모
+        { width: 20 }, // 추가운임 사유
+        { width: 10 }, // 왕복여부
+        { width: 10 }, // 혼적여부
+        { width: 10 }, // 긴급여부
+        { width: 10 }, // 착불여부
+        { width: 15 }, // 차주명
+        { width: 15 }, // 차주연락처
+        { width: 15 }, // 차량번호
         { width: 20 }, // 화물내용
-        isAdmin ? { width: 15 } : 0, // 관리자용 운임료
-        isAdmin ? { width: 15 } : 0, // 아이디
-        isAdmin ? { width: 15 } : 0, // 차량번호
-        isAdmin ? { width: 15 } : 0, // 관리번호
-        isAdmin ? { width: 15 } : 0, // 관리자용메모
-        isAdmin ? { width: 15 } : 0, // 관리자용메모
+        { width: 20 }, // 관리자메모(중복)
+        { width: 15 }, // 배차담당자
       ];
 
-      // 테두리 스타일 설정 함수
+      // 테두리 스타일 함수
       const setBorderStyle = (cell, style) => {
         cell.border = {
           top: style,
@@ -278,34 +328,41 @@ const CargoList = () => {
         };
       };
 
-      // 데이터가 있는 헤더 셀에 배경색과 테두리 스타일 적용
-      headerRow.eachCell((cell, colNumber) => {
-        if (colNumber <= (isAdmin ? 16 : 15)) {
+      // 값이 있는 헤더만 색/테두리 적용 (컬럼 수 변동에 안전)
+      headerRow.eachCell((cell) => {
+        if (cell.value) {
           cell.fill = {
             type: "pattern",
             pattern: "solid",
-            fgColor: { argb: "FFFF00" }, // 노란색 배경
+            fgColor: { argb: "FFFF00" },
           };
           setBorderStyle(cell, { style: "thin" });
         }
       });
 
-      // 필터링된 데이터 가져오기
-      const filteredData = filteredCargoList();
+      // 거리 칼럼 index 구해두기
+      const distanceColIndex = headerRow.values.findIndex(
+        (v) => v === "거리(km)"
+      );
 
-      filteredData.forEach((item, index) => {
-        // adminMemo 필터링 처리 (null 체크 추가)
+      // 데이터
+      const data = filteredCargoList();
+
+      // for...of 로 순차 처리 (API 과다호출 방지)
+      for (const item of data) {
+        // adminMemo 필터링
         let adminMemoText = "";
         if (isAdmin && item.adminMemo) {
           const keywords = ["인성", "화물24", "원콜", "화물맨"];
-          const matched = keywords.filter((keyword) =>
-            item.adminMemo.includes(keyword)
-          );
+          const matched = keywords.filter((k) => item.adminMemo.includes(k));
           adminMemoText =
             matched.length > 0 ? matched.join(",") : item.adminMemo;
         }
 
-        // 엑셀 행 추가 (item.cargoDsc 다음에 adminMemoText 추가)
+        // 거리 계산
+        const distanceKm = await calcDistanceKm(item);
+
+        // 행 추가 (하차지 다음에 거리(km) 삽입)
         const row = worksheet.addRow([
           item.cargo_seq,
           item.ordNo,
@@ -319,6 +376,7 @@ const CargoList = () => {
           item.endCompanyName,
           `${item.startWide} ${item.startSgg} ${item.startDong}`,
           `${item.endWide} ${item.endSgg} ${item.endDong}`,
+          typeof distanceKm === "number" ? distanceKm : "", // <-- 거리(km)
           `${item.cargoTon}톤 ${item.truckType}`,
           item.fareView,
           item.addFare,
@@ -338,11 +396,16 @@ const CargoList = () => {
           isAdmin ? item.change_user : "",
         ]);
 
-        // 각 셀에 테두리 스타일 적용 (행 전체 셀에 대해 적용)
+        // 테두리
         row.eachCell({ includeEmpty: true }, (cell) => {
           setBorderStyle(cell, { style: "thin" });
         });
-      });
+
+        // 거리 숫자형식
+        if (distanceColIndex > 0 && typeof distanceKm === "number") {
+          row.getCell(distanceColIndex).numFmt = "0.00";
+        }
+      }
 
       const buffer = await workbook.xlsx.writeBuffer();
       const blob = new Blob([buffer], {
