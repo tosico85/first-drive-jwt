@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import apiPaths from "../../services/apiRoutes";
 import AuthContext from "../context/authContext";
+
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 import {
@@ -72,6 +73,7 @@ const buildDeviceId = (change_user, cjPhone) => {
 };
 
 const requestPhoneCall = async ({ cjPhone, change_user }) => {
+  ////alert(change_user);
   if (!cjPhone) {
     alert("차주 연락처(cjPhone)가 없습니다.");
     return;
@@ -124,7 +126,6 @@ const CargoList = () => {
   const TMAP_APP_KEY = "5VAwKbaMgf7WdTDgQL7cd2FugS2UR2JI82D1OwRz";
   const [routeInfo, setRouteInfo] = useState(null);
   const [routeLoading, setRouteLoading] = useState(false);
-  const currentEmail = (userInfo?.email || "").toLowerCase();
 
   async function geocodeWebGeo(address) {
     const url = `https://apis.openapi.sk.com/tmap/geo?${new URLSearchParams({
@@ -2294,13 +2295,18 @@ const CargoList = () => {
                               tabIndex={0}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                requestPhoneCall({ cjPhone, currentEmail });
+
+                                const change_user = (
+                                  userInfo?.email || ""
+                                ).toLowerCase();
+
+                                requestPhoneCall({ cjPhone, change_user });
                               }}
                               onKeyDown={(e) => {
                                 if (e.key === "Enter" || e.key === " ") {
                                   e.preventDefault();
                                   e.stopPropagation();
-                                  requestPhoneCall({ cjPhone, currentEmail });
+                                  requestPhoneCall({ cjPhone, change_user });
                                 }
                               }}
                             >
