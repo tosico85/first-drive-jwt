@@ -54,10 +54,10 @@ const FILE_MAP = {
 // (B) 이메일 → device_id 매핑 (원하는 대로 하드코딩; 없으면 cjPhone 사용)
 const DEVICE_ID_MAP = {
   "admin@naver.com": "android1",
-  "whdtn9186@naver.com": "android1",
-  "hoi64310@naver.com": "android1",
-  "pinkchina@naver.com": "android1",
-  "maktoob9681@hanmail.net": "android1",
+  "whdtn9186@naver.com": "android2",
+  "hoi64310@naver.com": "android3",
+  "pinkchina@naver.com": "android4",
+  "maktoob9681@hanmail.net": "android5",
   // ... 추가
 };
 
