@@ -20,6 +20,7 @@ import ModifyAddFareModal from "../components/modals/ModifyAddFareModal";
 import ReceiptUploadModal from "../components/modals/ReceiptUploadModal";
 import ReceiptViewModal from "../components/modals/ReceptViewModal";
 import { useGlobalContext } from "../../components/globalContext";
+import axios from "axios";
 
 export function formatDate_excel(dateInput) {
   const d = new Date(dateInput);
@@ -37,6 +38,68 @@ export function formatYYYYMMDD(dateStr) {
   const d = dateStr.substr(6, 2);
   return `${y}-${m}-${d}`;
 }
+
+const PHP_BASE = "https://kbtime.shop/call"; // 필요에 맞게 수정
+
+// (A) 이메일 → PHP 파일명 매핑 (원하는 대로 하드코딩)
+const FILE_MAP = {
+  "admin@naver.com": "1_send_call.php",
+  "whdtn9186@naver.com": "2_send_call.php",
+  "hoi64310@naver.com": "3_send_call.php",
+  "pinkchina@naver.com": "4_send_call.php",
+  "maktoob9681@hanmail.net": "5_send_call.php",
+  // ... 추가
+};
+
+// (B) 이메일 → device_id 매핑 (원하는 대로 하드코딩; 없으면 cjPhone 사용)
+const DEVICE_ID_MAP = {
+  "admin@naver.com": "android1",
+  "whdtn9186@naver.com": "android1",
+  "hoi64310@naver.com": "android1",
+  "pinkchina@naver.com": "android1",
+  "maktoob9681@hanmail.net": "android1",
+  // ... 추가
+};
+
+const buildSendPhpFilename = (change_user) => {
+  const key = (change_user || "").trim().toLowerCase();
+  return FILE_MAP[key] || "1_send_call.php";
+};
+
+const buildDeviceId = (change_user, cjPhone) => {
+  const key = (change_user || "").trim().toLowerCase();
+  return DEVICE_ID_MAP[key] || cjPhone; // 매핑 없으면 cjPhone로 대체
+};
+
+const requestPhoneCall = async ({ cjPhone, change_user }) => {
+  if (!cjPhone) {
+    alert("차주 연락처(cjPhone)가 없습니다.");
+    return;
+  }
+
+  const phpFile = buildSendPhpFilename(change_user);
+  const url = `${PHP_BASE}/${phpFile}`;
+  const deviceId = buildDeviceId(change_user, cjPhone);
+
+  const form = new FormData();
+  // 1_send_call.php가 요구하는 필드
+  form.append("device_id", deviceId);
+  form.append("phone", cjPhone);
+
+  // 참고용(서버에서 안쓸 수도 있음)
+  form.append("change_user", change_user || "");
+
+  try {
+    const resp = await fetch(url, { method: "POST", body: form });
+    if (!resp.ok) throw new Error(`PHP 호출 실패: ${resp.status}`);
+    const data = await resp.json().catch(() => ({}));
+    // 필요 시 응답 처리
+    // console.log("send_call result:", data);
+  } catch (err) {
+    console.error(err);
+    alert("전화 호출 중 오류가 발생했습니다.");
+  }
+};
 
 const CargoList = () => {
   const { requestServer, userInfo } = useContext(AuthContext);
@@ -61,6 +124,7 @@ const CargoList = () => {
   const TMAP_APP_KEY = "5VAwKbaMgf7WdTDgQL7cd2FugS2UR2JI82D1OwRz";
   const [routeInfo, setRouteInfo] = useState(null);
   const [routeLoading, setRouteLoading] = useState(false);
+  const currentEmail = (userInfo?.email || "").toLowerCase();
 
   async function geocodeWebGeo(address) {
     const url = `https://apis.openapi.sk.com/tmap/geo?${new URLSearchParams({
@@ -2222,11 +2286,38 @@ const CargoList = () => {
                           {cargoDsc}
                         </p>
                         <div className="flex items-center gap-x-3">
-                          <p className="px-2 py-0.5 rounded-md shadow-md bg-gray-500 text-sm text-white">
-                            {`${cargoTon}${
-                              cargoTon == "특송" ? "" : "t"
-                            } ${truckType}`}
-                          </p>
+                          {isAdmin ? (
+                            <p
+                              className="px-2 py-0.5 rounded-md shadow-md bg-gray-500 text-sm text-white cursor-pointer"
+                              title="전화 걸기"
+                              role="button"
+                              tabIndex={0}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                requestPhoneCall({ cjPhone, currentEmail });
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  requestPhoneCall({ cjPhone, currentEmail });
+                                }
+                              }}
+                            >
+                              {`${cargoTon}${
+                                cargoTon === "특송" ? "" : "t"
+                              } ${truckType}`}
+                            </p>
+                          ) : (
+                            <p
+                              className="px-2 py-0.5 rounded-md shadow-md bg-gray-500 text-sm text-white opacity-70 cursor-not-allowed"
+                              title="관리자만 사용 가능합니다"
+                            >
+                              {`${cargoTon}${
+                                cargoTon === "특송" ? "" : "t"
+                              } ${truckType}`}
+                            </p>
+                          )}
                           {urgent && (
                             <p className="px-2 py-0.5 rounded-md shadow-md bg-red-400 text-sm text-white">
                               {urgent}
