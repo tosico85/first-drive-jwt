@@ -2311,7 +2311,7 @@ const CargoList = () => {
                           ) : (
                             <p
                               className="px-2 py-0.5 rounded-md shadow-md bg-gray-500 text-sm text-white opacity-70 cursor-not-allowed"
-                              title="관리자만 사용 가능합니다"
+                              title=""
                             >
                               {`${cargoTon}${
                                 cargoTon === "특송" ? "" : "t"
