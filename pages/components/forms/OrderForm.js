@@ -388,7 +388,7 @@ export default function OrderForm({
         result = result.slice(0, 8);
       }
       setRecentCargoList(() => result);
-      console.log("Cargo order >>", result);
+      //console.log("Cargo order >>", result);
     }
   };
 
