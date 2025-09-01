@@ -1648,6 +1648,7 @@ const CargoList = () => {
                                     "notalk3@hanmail.net": "임성수",
                                     "notalk@naver.com": "곽용호",
                                     "notalk4@naver.com": "김종수",
+                                    "notalk5@naver.com": "김형국",
                                   }[change_user] || ""
                                 }`}
                               </span>
@@ -2417,6 +2418,7 @@ const CargoList = () => {
                                   "notalk3@naver.com": "임성수",
                                   "notalk@naver.com": "곽용호",
                                   "notalk4@naver.com": "김종수",
+                                  "notalk5@naver.com": "김형국",
                                 }[change_user] || ""
                               }`}
                             </p>

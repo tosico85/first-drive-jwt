@@ -69,6 +69,7 @@ const Navbar = () => {
     "notalk2@naver.com",
     "notalk3@naver.com",
     "notalk4@naver.com",
+    "notalk5@naver.com",
   ];
 
   const navbarBgColor = redBgEmails.includes(user.email)
