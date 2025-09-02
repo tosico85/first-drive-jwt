@@ -63,10 +63,10 @@ export default function OrderAddInfoForm({
   }, [cargo_seq, requestServer]);
 
   // 곽용호
-  //const TMAP_APP_KEY = "5VAwKbaMgf7WdTDgQL7cd2FugS2UR2JI82D1OwRz";
+  const TMAP_APP_KEY = "5VAwKbaMgf7WdTDgQL7cd2FugS2UR2JI82D1OwRz";
 
   //신현서
-  const TMAP_APP_KEY = "5VAwKbaMgf7WdTDgQL7cd2FugS2UR2JI82D1OwRz";
+  //const TMAP_APP_KEY = "5VAwKbaMgf7WdTDgQL7cd2FugS2UR2JI82D1OwRz";
 
   async function geocodeWebGeo(address) {
     const url = `https://apis.openapi.sk.com/tmap/geo?${new URLSearchParams({
@@ -84,6 +84,50 @@ export default function OrderAddInfoForm({
     return coords ? { lng: coords[0], lat: coords[1] } : null;
   }
 
+  // 공통: 안전 파서
+  async function safeJson(resp) {
+    const text = await resp.text();
+    if (!text) return null;
+    try {
+      return JSON.parse(text);
+    } catch {
+      return null;
+    }
+  }
+
+  // 1) 자유주소 지오코딩 (정식 엔드포인트)
+  async function geocodeFullAddr(address) {
+    const url = `https://apis.openapi.sk.com/tmap/geo/fullAddrGeo?${new URLSearchParams(
+      {
+        version: "1",
+        addressFlag: "F00", // F00: 지번+도로명 모두 시도
+        coordType: "WGS84GEO",
+        fullAddr: address,
+        page: "1",
+        count: "1",
+      }
+    )}`;
+
+    const resp = await fetch(url, {
+      headers: { appKey: TMAP_APP_KEY, Accept: "application/json" },
+    });
+    if (!resp.ok) {
+      console.warn("fullAddrGeo failed", resp.status, await resp.text());
+      return null;
+    }
+
+    const data = await safeJson(resp);
+    const coord = data?.coordinateInfo?.coordinate?.[0];
+    if (!coord) return null;
+
+    const lat = parseFloat(coord.newLat ?? coord.lat);
+    const lon = parseFloat(coord.newLon ?? coord.lon);
+    return Number.isFinite(lat) && Number.isFinite(lon)
+      ? { lat, lng: lon }
+      : null;
+  }
+
+  // 2) POI 검색 보완 (GET에 Content-Type 제거 + 안전 파싱)
   async function geocodePOI(address) {
     const url = `https://apis.openapi.sk.com/tmap/pois?${new URLSearchParams({
       version: "1",
@@ -93,19 +137,26 @@ export default function OrderAddInfoForm({
       reqCoordType: "WGS84GEO",
       resCoordType: "WGS84GEO",
     })}`;
+
     const resp = await fetch(url, {
-      headers: { appKey: TMAP_APP_KEY, "Content-Type": "application/json" },
+      headers: { appKey: TMAP_APP_KEY, Accept: "application/json" },
     });
-    if (!resp.ok) return null;
-    const data = await resp.json();
-    const poi = data.searchPoiInfo?.pois?.poi?.[0];
+    if (!resp.ok) {
+      console.warn("pois failed", resp.status, await resp.text());
+      return null;
+    }
+
+    const data = await safeJson(resp);
+    const poi = data?.searchPoiInfo?.pois?.poi?.[0];
     return poi
       ? { lng: parseFloat(poi.frontLon), lat: parseFloat(poi.frontLat) }
       : null;
   }
 
+  // 3) 주소 → 좌표 (우선 fullAddr, 실패 시 POI로 폴백)
   async function geocodeAddress(address) {
-    return (await geocodeWebGeo(address)) || (await geocodePOI(address));
+    // 회사명/상세주소를 함께 보내면 매칭률이 늘어납니다.
+    return (await geocodeFullAddr(address)) || (await geocodePOI(address));
   }
 
   async function getRouteTmap(orig, dest, startName, endName) {

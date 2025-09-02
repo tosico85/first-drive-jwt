@@ -947,36 +947,34 @@ export default function Detail() {
             >
               화물 삭제
             </button>
-            {isAdmin && (
-              <>
-                {/* 인성 신청 버튼 */}
-
-                <button
-                  type="button"
-                  className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
-                  onClick={handleAdminOrderAdd}
-                >
-                  배차 신청
-                </button>
-              </>
-            )}
           </>
         )}
         {isAdmin && (
           <>
+            {/* 인성 신청 버튼 */}
+
             <button
               type="button"
-              className="rounded-md bg-pastelGreen px-4 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
-              onClick={handleInsung}
+              className="rounded-md bg-pink-300 px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+              onClick={handleAdminOrderAdd}
             >
-              인성 신청
+              24시 신청
             </button>
+
             <button
               type="button"
               className="rounded-md bg-buttonZamboa px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               onClick={handleDirectAlloc}
             >
               수기 배차
+            </button>
+
+            <button
+              type="button"
+              className="rounded-md bg-pastelGreen px-4 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
+              onClick={handleInsung}
+            >
+              인성 신청
             </button>
           </>
         )}
