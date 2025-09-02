@@ -958,7 +958,7 @@ export default function Detail() {
               className="rounded-md bg-pink-300 px-2 py-2 text-sm lg:text-base font-semibold text-white shadow-sm"
               onClick={handleAdminOrderAdd}
             >
-              24시 신청
+              241시 신청
             </button>
 
             <button
