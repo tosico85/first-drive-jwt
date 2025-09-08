@@ -1721,22 +1721,24 @@ export default function OrderForm({
                   <div>
                     <select
                       {...register("cargoTon", {
-                        required: "차량톤수(t)를 입력해주세요",
+                        required: `차량톤수(t)를 입력해주세요`,
                         onChange: () => getTruckTypeList(),
                       })}
                       className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     >
                       <option value="">차량톤수(t)</option>
-                      <option value="기본">기본</option>
-                      <option value="특송">특송</option>
-
-                      {["0.5", "1", "3.5", "5", "11"].map((v) => (
-                        <option key={v} value={v}>
-                          {v}톤
+                      <option key={91} value="기본">
+                        기본
+                      </option>
+                      <option key={90} value="특송">
+                        특송
+                      </option>
+                      {cargoTonList.map(({ nm }, i) => (
+                        <option key={i} value={nm}>
+                          {nm} 톤
                         </option>
                       ))}
                     </select>
-
                     <div className="text-red-500 mx-auto font-bold text-center">
                       {errors.cargoTon?.message}
                     </div>
@@ -1744,14 +1746,18 @@ export default function OrderForm({
                   <div>
                     <select
                       {...register("truckType", {
-                        required: "차량종류를 입력해주세요",
+                        required: `차량종류를 입력해주세요`,
                       })}
-                      defaultValue="전체"
                       className="block w-full rounded-md border-0 p-2 shadow-sm ring-1 ring-inset ring-gray-300 bg-white placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     >
-                      <option value="전체">전체</option>
+                      <option value="">차량종류</option>
+                      {truckTypeList &&
+                        truckTypeList.map(({ nm }, i) => (
+                          <option key={i} value={nm}>
+                            {nm}
+                          </option>
+                        ))}
                     </select>
-
                     <div className="text-red-500 mx-auto font-bold text-center">
                       {errors.truckType?.message}
                     </div>
