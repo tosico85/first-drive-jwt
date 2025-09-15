@@ -122,6 +122,7 @@ export default function Detail() {
       "maktoob9681@hanmail.net": "임성수",
       "admin@naver.com": "곽용호",
       "pinkchina@naver.com": "신현서",
+      "rlagudrnr@naver.com": "김형국",
     };
 
     const chargeMobileMap = {
@@ -130,6 +131,7 @@ export default function Detail() {
       "maktoob9681@hanmail.net": "01053739681",
       "admin@naver.com": "01039811822",
       "pinkchina@naver.com": "01049022652",
+      "rlagudrnr@naver.com": "01095809881",
     };
 
     // 2) username 정규화 (email → lower/trim, fallback은 change_user)
@@ -182,8 +184,8 @@ export default function Detail() {
 
     try {
       const { data } = await axios.post(
-        "https://4pl.store/pages/in.php",
-        //"http://localhost:4000/in.php",
+        //"https://4pl.store/pages/in.php",
+        "http://localhost:4000/in.php",
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
