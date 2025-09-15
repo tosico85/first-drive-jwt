@@ -2414,7 +2414,7 @@ const CargoList = () => {
                                   "admin@naver.com": "곽용호",
                                   "maktoob9681@hanmail.net": "임성수",
                                   "whdtn9186@naver.com": "김종수",
-                                  "dladudal@naver.com": "임영미",
+                                  "rlagudrnr@naver.com": "김형국",
                                   "notalk1@naver.com": "안동진",
                                   "notalk2@naver.com": "신현서",
                                   "notalk3@naver.com": "임성수",
