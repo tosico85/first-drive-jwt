@@ -184,8 +184,8 @@ export default function Detail() {
 
     try {
       const { data } = await axios.post(
-        //"https://4pl.store/pages/in.php",
-        "http://localhost:4000/in.php",
+        "https://4pl.store/pages/in.php",
+        //"http://localhost:4000/in.php",
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
