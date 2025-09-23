@@ -1981,6 +1981,7 @@ const CargoList = () => {
                                 "성진하이텍",
                                 "코스모코스",
                                 "코스원",
+                                "그린코스",
                               ].some((word) => endCompanyName.includes(word)) &&
                               endCompanyName !== "미래엔코스메틱"
                                 ? "animate-blink text-gray-500"
@@ -1997,6 +1998,14 @@ const CargoList = () => {
                             <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
                               4시이전도착/차량 출발전 씨앤텍에 통화하고
                               입차/연락 없으면 입차불가
+                            </div>
+                          )}
+
+                          {["그린코스"].some((word) =>
+                            endCompanyName.includes(word)
+                          ) && (
+                            <div className="absolute left-0 bottom-full mb-2 hidden w-64 p-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg group-hover:block">
+                              오류동 3시30분 접수마감/학운리는 확인중
                             </div>
                           )}
 
