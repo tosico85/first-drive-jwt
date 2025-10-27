@@ -183,6 +183,7 @@ export default function Detail() {
     };
 
     try {
+      console.log(chargeMobile);
       const { data } = await axios.post(
         "https://4pl.store/pages/in.php",
         //"http://localhost:4000/in.php",
