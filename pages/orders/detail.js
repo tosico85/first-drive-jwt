@@ -123,6 +123,7 @@ export default function Detail() {
       "admin@naver.com": "곽용호",
       "pinkchina@naver.com": "신현서",
       "rlagudrnr@naver.com": "김형국",
+      "notalk@naver.com": "notalk",
     };
 
     const chargeMobileMap = {
@@ -132,6 +133,7 @@ export default function Detail() {
       "admin@naver.com": "01039811822",
       "pinkchina@naver.com": "01049022652",
       "rlagudrnr@naver.com": "01095809881",
+      "notalk@naver.com": "01012341234",
     };
 
     // 2) username 정규화 (email → lower/trim, fallback은 change_user)
