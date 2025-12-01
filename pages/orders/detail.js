@@ -127,7 +127,7 @@ export default function Detail() {
     };
 
     const chargeMobileMap = {
-      "cjstk0815@naver.com": "01030532926",
+      "cjstk0815@naver.com": "01051969881",
       "hoi64310@naver.com": "01026609881",
       "maktoob9681@hanmail.net": "01053739681",
       "admin@naver.com": "01039811822",
