@@ -1642,13 +1642,13 @@ const CargoList = () => {
                                     "pinkchina@naver.com": "신현서",
                                     "admin@naver.com": "곽용호",
                                     "maktoob9681@hanmail.net": "임성수",
-                                    "whdtn9186@naver.com": "김종수",
+                                    "cjstk0815@naver.com": "홍경숙",
                                     "rlagudrnr@naver.com": "김형국",
                                     "notalk1@naver.com": "안동진",
                                     "notalk2@naver.com": "신현서",
                                     "notalk3@hanmail.net": "임성수",
                                     "notalk@naver.com": "곽용호",
-                                    "notalk4@naver.com": "김종수",
+                                    "cjstk0815@naver.com": "홍경숙",
                                     "notalk5@naver.com": "김형국",
                                   }[change_user] || ""
                                 }`}

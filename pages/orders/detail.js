@@ -117,7 +117,7 @@ export default function Detail() {
 
     // 1) 맵 (그대로 사용)
     const chargeNameMap = {
-      "whdtn9186@naver.com": "김종수",
+      "cjstk0815@naver.com": "홍경숙",
       "hoi64310@naver.com": "안동진",
       "maktoob9681@hanmail.net": "임성수",
       "admin@naver.com": "곽용호",
@@ -127,7 +127,7 @@ export default function Detail() {
     };
 
     const chargeMobileMap = {
-      "whdtn9186@naver.com": "01051969881",
+      "cjstk0815@naver.com": "01030532926",
       "hoi64310@naver.com": "01026609881",
       "maktoob9681@hanmail.net": "01053739681",
       "admin@naver.com": "01039811822",
