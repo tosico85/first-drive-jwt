@@ -1169,6 +1169,7 @@ const CargoList = () => {
         onRequestClose={closeAllocModal}
         contentLabel="Modal"
         style={customModalStyles}
+        shouldCloseOnOverlayClick={false}
       >
         <DirectAllocModal
           paramObj={selectedOrder}
