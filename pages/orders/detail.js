@@ -317,7 +317,7 @@ export default function Detail() {
       JSON.stringify({ cargoOrder: cargoOrder, isDirectApi: true })
     );
     router.push({
-      pathname: "/orders/modify",
+      pathname: "/orders/list",
       query: { serializedQuery },
     });
 
