@@ -311,26 +311,14 @@ export default function Detail() {
    * @note 배차신청 상태에서만 호출 가능 : 화물24 API - 화물수정 호출
    */
   const handleAdminOrderModify = async () => {
-    //e.preventDefault();
+    // e.preventDefault();
 
     const serializedQuery = encodeURIComponent(
-      JSON.stringify({ cargoOrder: cargoOrder, isDirectApi: true })
+      JSON.stringify({ cargoOrder, isDirectApi: true })
     );
-    router.push({
-      pathname: "/orders/list",
-      query: { serializedQuery },
-    });
 
-    /* const { code, message } = await requestServer(apiPaths.apiOrderMod, {
-      cargo_seq: cargoOrder.cargo_seq,
-    });
-
-    if (code === 1) {
-      alert("화물 오더가 수정 되었습니다.");
-      router.push("/");
-    } else {
-      alert(message);
-    } */
+    // query를 같이 보내고 싶으면 문자열로 직접 붙여야 함
+    router.push(`/orders/list?serializedQuery=${serializedQuery}`);
   };
 
   /**
