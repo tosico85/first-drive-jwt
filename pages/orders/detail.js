@@ -310,15 +310,23 @@ export default function Detail() {
    * (상태 : 배차신청) 화물 배차 신청정보 수정(관리자 only)
    * @note 배차신청 상태에서만 호출 가능 : 화물24 API - 화물수정 호출
    */
+  /**
+   * (상태 : 배차신청) 화물 배차 신청정보 수정(관리자 only)
+   * @note 배차신청 상태에서만 호출 가능 : 화물24 API - 화물수정 호출
+   */
   const handleAdminOrderModify = async () => {
-    // e.preventDefault();
+    // 1) 화물24 수정 API 호출
+    const { code, message } = await requestServer(apiPaths.apiOrderMod, {
+      cargo_seq: cargoOrder.cargo_seq,
+    });
 
-    const serializedQuery = encodeURIComponent(
-      JSON.stringify({ cargoOrder, isDirectApi: true })
-    );
-
-    // query를 같이 보내고 싶으면 문자열로 직접 붙여야 함
-    router.push(`/orders/list?serializedQuery=${serializedQuery}`);
+    // 2) 결과 처리
+    if (code === 1) {
+      alert("신청되었습니다.");
+      router.push("/orders/list");
+    } else {
+      alert(message || "신청에 실패했습니다.");
+    }
   };
 
   /**
