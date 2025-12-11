@@ -310,16 +310,16 @@ export default function Detail() {
    * (상태 : 배차신청) 화물 배차 신청정보 수정(관리자 only)
    * @note 배차신청 상태에서만 호출 가능 : 화물24 API - 화물수정 호출
    */
-  const handleAdminOrderModify = async () => {
-    //e.preventDefault();
-
-    const serializedQuery = encodeURIComponent(
-      JSON.stringify({ cargoOrder: cargoOrder, isDirectApi: true })
-    );
-    router.push({
-      pathname: "/orders/list",
-      query: { serializedQuery },
-    });
+    const handleAdminOrderModify = async () => {
+      // e.preventDefault();
+    
+      const serializedQuery = encodeURIComponent(
+        JSON.stringify({ cargoOrder, isDirectApi: true })
+      );
+    
+      // query를 같이 보내고 싶으면 문자열로 직접 붙여야 함
+      router.push(`/orders/list?serializedQuery=${serializedQuery}`);
+    };
 
     /* const { code, message } = await requestServer(apiPaths.apiOrderMod, {
       cargo_seq: cargoOrder.cargo_seq,
