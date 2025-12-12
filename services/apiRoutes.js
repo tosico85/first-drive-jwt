@@ -11,6 +11,8 @@ const USER_LOGOUT = "/user/logout";
 const USER_LOGIN_CHECK = "/user/sessionCheck";
 const USER_CHANGE_PASSWORD = "/user/change/password";
 
+const USER_COMPANY_NOTICE_RULES = "/user/get/companyNoticeRules"; // 상하차지 특이사항
+
 //User Address
 const USER_ADDRESS_LIST = "/user/address/list"; //주소목록 조회
 const USER_ADDRESS_BASE = "/user/address/base"; //기본주소 조회
@@ -94,6 +96,9 @@ const apiPaths = {
   userBookmarkMerge: USER_BOOKMARK_MERGE,
   userBookmarkUpdate: USER_BOOKMARK_UPDATE,
   userBookmarkDel: USER_BOOKMARK_DEL,
+
+  //
+  userCompanyNoticeRules: USER_COMPANY_NOTICE_RULES, //
 
   // Admin
   adminGetUserList: ADMIN_GET_USER_LIST,
